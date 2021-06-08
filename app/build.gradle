@@ -134,7 +134,7 @@ dependencies {
     kaptAndroidTest "com.google.dagger:dagger-android-processor:$daggerVersion"
     implementation "com.google.dagger:dagger-android:$daggerVersion"
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
-    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+    implementation 'com.github.tbruyelle:rxpermissions:2.x.v0.9.3'
 
     // Glide
     def glide = "4.12.0"
