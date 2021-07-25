@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask
+import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.tasks.ExtractDeepLinksTask
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 
@@ -193,6 +195,16 @@ tasks.withType(ExtractDeepLinksTask).configureEach {
     // Workaround for: https://github.com/gradle/gradle/issues/8057
     if (tasks.getNames().contains(easylauncherTaskName)) {
         dependsOn(easylauncherTaskName)
+    }
+}
+
+tasks.withType(DeviceProviderInstrumentTestTask).configureEach {
+    doFirst {
+        LoggerWrapper.Switch.shouldShowInfoLogsAsLifecycle = true
+    }
+
+    doLast {
+        LoggerWrapper.Switch.shouldShowInfoLogsAsLifecycle = false
     }
 }
 
