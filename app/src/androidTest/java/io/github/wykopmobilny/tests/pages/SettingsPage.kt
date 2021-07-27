@@ -1,11 +1,15 @@
 package io.github.wykopmobilny.tests.pages
 
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItem
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isNotChecked
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.tests.matchers.onPreference
@@ -24,7 +28,8 @@ object SettingsPage {
     }
 
     fun tapBlacklistSettings() {
-        onView(withText(R.string.pref_manage_blacklist)).perform(click())
+        onView(withId(R.id.recycler_view))
+            .perform(actionOnItem<ViewHolder>(hasDescendant(withText(R.string.pref_manage_blacklist)), click()))
     }
 
     fun assertConfirmationOptionChecked() {

@@ -90,7 +90,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         )
     }
 
-    protected open val storages by lazy {
+    public open val storages by lazy {
         DaggerStoragesComponent.factory().create(
             context = this,
             executor = AppDispatchers.IO.asExecutor(),

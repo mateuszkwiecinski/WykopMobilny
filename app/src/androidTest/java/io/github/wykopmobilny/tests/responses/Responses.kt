@@ -37,7 +37,7 @@ fun MockWebServerRule.connectPage() {
     }
     enqueue("/ConnectSuccess") {
         MockResponse()
-            .setBody("Redirected")
+            .setBody("ConnectSuccess page content")
     }
 }
 
