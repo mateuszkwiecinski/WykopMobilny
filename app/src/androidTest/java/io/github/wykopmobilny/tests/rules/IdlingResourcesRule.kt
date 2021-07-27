@@ -21,8 +21,11 @@ class IdlingResourcesRule : TestRule {
                 val okHttp3IdlingResource = OkHttp3IdlingResource(TestApp.instance.okHttpClient.dispatcher)
 
                 idlingRegistry.register(okHttp3IdlingResource)
-                base.evaluate()
-                idlingRegistry.unregister(okHttp3IdlingResource)
+                try {
+                    base.evaluate()
+                } finally {
+                    idlingRegistry.unregister(okHttp3IdlingResource)
+                }
             }
         }
     }

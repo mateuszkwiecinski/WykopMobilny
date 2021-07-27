@@ -1,27 +1,30 @@
 package io.github.wykopmobilny.tests.pages
 
+import androidx.annotation.IdRes
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
-import io.github.wykopmobilny.R
+import androidx.test.espresso.contrib.DrawerActions.close
+import androidx.test.espresso.contrib.DrawerActions.open
+import androidx.test.espresso.contrib.NavigationViewActions.navigateTo
+import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
+import com.google.android.material.navigation.NavigationView
 import io.github.wykopmobilny.tests.base.Page
 
 object MainPage : Page {
 
-    private val openDrawer = withContentDescription(R.string.nav_drawer_open)
-    private val closeDrawer = withContentDescription(R.string.nav_drawer_closed)
+    private val drawer = isAssignableFrom(DrawerLayout::class.java)
 
-    fun assertVisible() {
-        onView(openDrawer).check(matches(isDisplayed()))
+    private val navigationView = isAssignableFrom(NavigationView::class.java)
+
+    fun tapDrawerOption(@IdRes option: Int) {
+        onView(navigationView).perform(navigateTo(option))
     }
 
     fun openDrawer() {
-        onView(openDrawer).perform(click())
+        onView(drawer).perform(open())
     }
 
     fun closeDrawer() {
-        onView(closeDrawer).perform(click())
+        onView(drawer).perform(close())
     }
 }

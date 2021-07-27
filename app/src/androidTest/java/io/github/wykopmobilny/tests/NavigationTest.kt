@@ -3,12 +3,12 @@ package io.github.wykopmobilny.tests
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import io.github.wykopmobilny.R
 import io.github.wykopmobilny.tests.pages.AboutDialog
 import io.github.wykopmobilny.tests.pages.AppearanceSettingsPage
-import io.github.wykopmobilny.tests.pages.DrawerRegion
 import io.github.wykopmobilny.tests.pages.MainPage
 import io.github.wykopmobilny.tests.pages.SettingsPage
-import io.github.wykopmobilny.tests.responses.promoted
+import io.github.wykopmobilny.tests.responses.callsOnAppStart
 import io.github.wykopmobilny.ui.modules.mainnavigation.MainNavigationActivity
 import io.github.wykopmobilny.utils.assertLinkHandled
 import io.github.wykopmobilny.utils.interceptingIntents
@@ -20,12 +20,12 @@ class NavigationTest : BaseActivityTest() {
 
     @Test
     fun navigation() {
-        mockWebServerRule.promoted()
+        mockWebServerRule.callsOnAppStart()
         launchActivity<MainNavigationActivity>()
         Espresso.onIdle()
 
         MainPage.openDrawer()
-        DrawerRegion.tapOption("O aplikacji")
+        MainPage.tapDrawerOption(R.id.about)
 
         interceptingIntents {
             AboutDialog.tapAppInfo()
@@ -34,7 +34,7 @@ class NavigationTest : BaseActivityTest() {
         }
 
         MainPage.openDrawer()
-        DrawerRegion.tapOption("Ustawienia")
+        MainPage.tapDrawerOption(R.id.nav_settings)
         SettingsPage.assertVisible()
 
         SettingsPage.tapAppearance()
@@ -44,6 +44,7 @@ class NavigationTest : BaseActivityTest() {
         SettingsPage.assertVisible()
 
         Espresso.pressBack()
-        MainPage.assertVisible()
+        MainPage.openDrawer()
+        MainPage.closeDrawer()
     }
 }

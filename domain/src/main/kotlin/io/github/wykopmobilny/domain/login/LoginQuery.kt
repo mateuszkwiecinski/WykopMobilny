@@ -15,7 +15,6 @@ import io.github.wykopmobilny.ui.login.InfoMessageUi
 import io.github.wykopmobilny.ui.login.Login
 import io.github.wykopmobilny.ui.login.LoginUi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -30,21 +29,22 @@ class LoginQuery @Inject constructor(
     private val appScopes: AppScopes,
 ) : Login {
 
-    override fun invoke(): Flow<LoginUi> = viewStateStorage.state.map { viewState ->
-        LoginUi(
-            urlToLoad = loginConfig.connectUrl,
-            isLoading = viewState.isLoading,
-            visibleError = viewState.visibleError?.let {
-                InfoMessageUi(
-                    title = "Oops...",
-                    message = it.message ?: it.toString(),
-                    confirmAction = ::dismissError,
-                    dismissAction = ::dismissError,
-                )
-            },
-            parseUrlAction = ::onUrlInvoked,
-        )
-    }
+    override fun invoke() =
+        viewStateStorage.state.map { viewState ->
+            LoginUi(
+                urlToLoad = loginConfig.connectUrl,
+                isLoading = viewState.isLoading,
+                visibleError = viewState.visibleError?.let {
+                    InfoMessageUi(
+                        title = "Oops...",
+                        message = it.message ?: it.toString(),
+                        confirmAction = ::dismissError,
+                        dismissAction = ::dismissError,
+                    )
+                },
+                parseUrlAction = ::onUrlInvoked,
+            )
+        }
 
     private fun onUrlInvoked(url: String) = appScopes.launchIn<LoginScope> {
         val userSession = withContext(Dispatchers.Default) {

@@ -1,10 +1,11 @@
 package io.github.wykopmobilny.tests
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import io.github.wykopmobilny.R
 import io.github.wykopmobilny.tests.pages.BlacklistPage
-import io.github.wykopmobilny.tests.pages.DrawerRegion
 import io.github.wykopmobilny.tests.pages.MainPage
 import io.github.wykopmobilny.tests.pages.SettingsPage
+import io.github.wykopmobilny.tests.responses.blacklist
 import io.github.wykopmobilny.tests.responses.unblockTag
 import io.github.wykopmobilny.tests.responses.unblockUser
 import org.junit.Before
@@ -16,9 +17,10 @@ class BlacklistTest : BaseActivityTest() {
 
     @Before
     fun setUp() {
-        startLoggedInApp()
+        launchLoggedInApp()
         MainPage.openDrawer()
-        DrawerRegion.tapOption("Ustawienia")
+        MainPage.tapDrawerOption(R.id.nav_settings)
+        mockWebServerRule.blacklist()
         SettingsPage.tapBlacklistSettings()
     }
 
