@@ -9,22 +9,16 @@ import io.github.wykopmobilny.ui.settings.GetAppearancePreferences
 import io.github.wykopmobilny.ui.settings.LinkImagePositionUi
 import io.github.wykopmobilny.ui.settings.MainScreenUi
 import io.github.wykopmobilny.ui.settings.MikroblogScreenUi
-import io.github.wykopmobilny.ui.settings.android.di.DaggerSettingsUiComponent
+import io.github.wykopmobilny.ui.settings.SettingsDependencies
 import io.github.wykopmobilny.utils.requireDependency
 import kotlinx.coroutines.flow.collect
-import javax.inject.Inject
 
 internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
 
-    @Inject
     lateinit var getAppearancePreferences: GetAppearancePreferences
 
     override fun onAttach(context: Context) {
-        DaggerSettingsUiComponent.factory()
-            .create(
-                deps = context.requireDependency(),
-            )
-            .inject(this)
+        getAppearancePreferences = context.requireDependency<SettingsDependencies>().appearance()
         super.onAttach(context)
     }
 

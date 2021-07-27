@@ -6,22 +6,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceFragmentCompat
 import io.github.wykopmobilny.ui.settings.GeneralPreferencesUi.NotificationsUi.RefreshPeriodUi
 import io.github.wykopmobilny.ui.settings.GetGeneralPreferences
-import io.github.wykopmobilny.ui.settings.android.di.DaggerSettingsUiComponent
+import io.github.wykopmobilny.ui.settings.SettingsDependencies
 import io.github.wykopmobilny.utils.requireDependency
 import kotlinx.coroutines.flow.collect
-import javax.inject.Inject
 
 internal class GeneralPreferencesFragment : PreferenceFragmentCompat() {
 
-    @Inject
     lateinit var getGeneralPreferences: GetGeneralPreferences
 
     override fun onAttach(context: Context) {
-        DaggerSettingsUiComponent.factory()
-            .create(
-                deps = context.requireDependency(),
-            )
-            .inject(this)
+        getGeneralPreferences = context.requireDependency<SettingsDependencies>().general()
         super.onAttach(context)
     }
 

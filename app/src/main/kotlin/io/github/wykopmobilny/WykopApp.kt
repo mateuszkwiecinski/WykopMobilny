@@ -2,6 +2,7 @@ package io.github.wykopmobilny
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.webkit.CookieManager
 import android.widget.Toast
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -27,6 +28,7 @@ import io.github.wykopmobilny.ui.blacklist.BlacklistDependencies
 import io.github.wykopmobilny.ui.login.LoginDependencies
 import io.github.wykopmobilny.ui.modules.blacklist.BlacklistActivity
 import io.github.wykopmobilny.ui.modules.search.SuggestionDatabase
+import io.github.wykopmobilny.ui.profile.ProfileDependencies
 import io.github.wykopmobilny.ui.settings.SettingsDependencies
 import io.github.wykopmobilny.utils.ApplicationInjector
 import io.github.wykopmobilny.utils.usermanager.SimpleUserManagerApi
@@ -135,37 +137,44 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         )
     }
 
-    private val scopes = mutableMapOf<KClass<out Any>, SubScope<Any>>()
+    private val scopes = mutableMapOf<Any, SubScope<Any>>()
 
     data class SubScope<T>(
         val dependencyContainer: T,
         val coroutineScope: CoroutineScope,
     )
 
+    // TODO @mk : 25/07/2021 I don't know where I'm going here yet. Will figure something out 👀 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> getDependency(clazz: KClass<T>): T =
+    override fun <T : Any> getDependency(clazz: KClass<T>, scopeId: String?): T =
         when (clazz) {
             LoginDependencies::class -> scopes.getOrPut(LoginScope::class) { SubScope(domainComponent.login(), newScope()) }
             StylesDependencies::class -> scopes.getOrPut(StylesScope::class) { SubScope(domainComponent.styles(), newScope()) }
             SettingsDependencies::class -> scopes.getOrPut(SettingsScope::class) { SubScope(domainComponent.settings(), newScope()) }
             BlacklistDependencies::class -> scopes.getOrPut(BlacklistScope::class) { SubScope(domainComponent.blacklist(), newScope()) }
+            ProfileDependencies::class -> {
+                checkNotNull(scopeId)
+                scopes.getOrPut(scopeId) { SubScope(domainComponent.profile().create(scopeId), newScope()) }
+            }
             else -> error("Unknown dependency type $clazz")
-        }.dependencyContainer as T
+        }.dependencyContainer.also { Log.i("WykopApp", "Create component clazz=${clazz.java.simpleName}, scopeId=$scopeId") } as T
 
     private fun newScope() = CoroutineScope(Job(applicationScope.coroutineContext[Job]) + Dispatchers.Default)
 
-    override fun <T : Any> destroyDependency(clazz: KClass<T>) {
+    override fun <T : Any> destroyDependency(clazz: KClass<T>, scopeId: String?) {
+        Log.i("WykopApp", "Destroy component clazz=${clazz.java.simpleName}, scopeId=$scopeId")
         when (clazz) {
             LoginDependencies::class -> scopes.remove(LoginScope::class)
             StylesDependencies::class -> scopes.remove(StylesScope::class)
             SettingsDependencies::class -> scopes.remove(SettingsScope::class)
             BlacklistDependencies::class -> scopes.remove(BlacklistScope::class)
+            ProfileDependencies::class -> scopes.remove(checkNotNull(scopeId))
             else -> error("Unknown dependency type $clazz")
         }?.coroutineScope?.cancel()
     }
 
-    override fun <T : Any> launchScoped(clazz: KClass<T>, block: suspend CoroutineScope.() -> Unit) =
-        scopes.getValue(clazz).coroutineScope.launch(block = block)
+    override fun <T : Any> launchScoped(clazz: KClass<T>, id: String?, block: suspend CoroutineScope.() -> Unit) =
+        scopes.getValue(id ?: clazz).coroutineScope.launch(block = block)
 
     private fun doInterop() {
         applicationScope.launch {

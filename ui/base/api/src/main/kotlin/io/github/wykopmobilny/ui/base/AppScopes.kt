@@ -11,7 +11,11 @@ interface AppScopes {
 
     val applicationScope: CoroutineScope
 
-    fun <T : Any> launchScoped(clazz: KClass<T>, block: suspend CoroutineScope.() -> Unit): Job
+    fun <T : Any> launchScoped(
+        clazz: KClass<T>,
+        id: String? = null,
+        block: suspend CoroutineScope.() -> Unit,
+    ): Job
 }
 
 object AppDispatchers {
@@ -31,4 +35,11 @@ object AppDispatchers {
     }
 }
 
-inline fun <reified T : Any> AppScopes.launchIn(noinline block: suspend CoroutineScope.() -> Unit) = launchScoped(T::class, block)
+inline fun <reified T : Any> AppScopes.launchIn(
+    noinline block: suspend CoroutineScope.() -> Unit,
+) = launchScoped(T::class, block = block)
+
+inline fun <reified T : Any> AppScopes.launchInKeyed(
+    id: String,
+    noinline block: suspend CoroutineScope.() -> Unit,
+) = launchScoped(T::class, id, block)

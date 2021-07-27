@@ -1,6 +1,5 @@
 plugins {
     id("com.starter.library.android")
-    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -11,10 +10,8 @@ android {
 
 dependencies {
     implementation(projects.ui.base.android)
-    implementation("androidx.preference:preference-ktx:1.1.1")
+    api(projects.ui.blacklist.api)
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    api(projects.ui.blacklist.api)
-    kapt("com.google.dagger:dagger-compiler:2.38")
 }

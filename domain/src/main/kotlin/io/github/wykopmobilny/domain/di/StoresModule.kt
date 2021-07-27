@@ -6,6 +6,8 @@ import com.dropbox.android.external.store4.StoreBuilder
 import dagger.Module
 import dagger.Provides
 import io.github.wykopmobilny.api.endpoints.LoginRetrofitApi
+import io.github.wykopmobilny.api.endpoints.ProfileRetrofitApi
+import io.github.wykopmobilny.api.responses.ProfileResponse
 import io.github.wykopmobilny.blacklist.api.ScraperRetrofitApi
 import io.github.wykopmobilny.domain.api.apiCall
 import io.github.wykopmobilny.storage.api.Blacklist
@@ -37,6 +39,20 @@ internal class StoresModule {
             delete = { storage.clear() },
             deleteAll = { storage.clear() },
         ),
+    )
+        .build()
+
+    @Singleton
+    @Provides
+    fun profileStore(
+        retrofitApi: ProfileRetrofitApi,
+    ) = StoreBuilder.from<String, ProfileResponse>(
+        fetcher = Fetcher.ofResult { username ->
+            apiCall(
+                rawCall = { retrofitApi.getIndex(username) },
+                mapping = { this },
+            )
+        },
     )
         .build()
 
