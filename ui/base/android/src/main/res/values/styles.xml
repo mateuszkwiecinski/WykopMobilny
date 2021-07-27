@@ -5,8 +5,21 @@
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
     </style>
 
+    <style name="Widget.App.Toolbar.Dark">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar.Dark</item>
+    </style>
+
     <style name="ThemeOverlay.App.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
-        <item name="colorControlHighlight">?colorControlHighlightOnSurface</item>
+        <item name="colorControlHighlight">?colorControlHighlightOnPrimary</item>
+        <item name="popupTheme">@style/ThemeOverlay.MaterialComponents.Light</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Toolbar.Dark">
+        <item name="popupTheme">@style/ThemeOverlay.MaterialComponents.Dark</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Toolbar.Transparent">
+        <item name="colorPrimary">#00000000</item>
     </style>
 
     <style name="Widget.App.Tab.Dark" parent="Widget.MaterialComponents.TabLayout">

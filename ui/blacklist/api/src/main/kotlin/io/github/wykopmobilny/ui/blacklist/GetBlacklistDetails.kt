@@ -1,6 +1,7 @@
 package io.github.wykopmobilny.ui.blacklist
 
 import io.github.wykopmobilny.ui.base.Query
+import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
 
 interface GetBlacklistDetails : Query<BlacklistedDetailsUi>
 
@@ -23,7 +24,6 @@ class BlacklistedDetailsUi(
         ) : Content() {
 
             data class ElementPage(
-                val blockElement: (String) -> Unit = {}, // TODO @mk : 19/07/2021 not supported yet
                 val isRefreshing: Boolean,
                 val refreshAction: () -> Unit,
                 val elements: List<BlacklistedElementUi>,
@@ -31,12 +31,6 @@ class BlacklistedDetailsUi(
         }
     }
 }
-
-data class ErrorDialogUi(
-    val error: Throwable,
-    val retryAction: () -> Unit,
-    val dismissAction: () -> Unit,
-)
 
 class BlacklistedElementUi(
     val name: String,

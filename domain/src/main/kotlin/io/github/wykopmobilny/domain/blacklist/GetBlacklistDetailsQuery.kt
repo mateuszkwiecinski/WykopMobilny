@@ -10,9 +10,9 @@ import io.github.wykopmobilny.domain.blacklist.di.BlacklistScope
 import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.storage.api.Blacklist
 import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
 import io.github.wykopmobilny.ui.blacklist.BlacklistedDetailsUi
 import io.github.wykopmobilny.ui.blacklist.BlacklistedElementUi
-import io.github.wykopmobilny.ui.blacklist.ErrorDialogUi
 import io.github.wykopmobilny.ui.blacklist.GetBlacklistDetails
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject

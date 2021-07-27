@@ -20,6 +20,7 @@ import io.github.wykopmobilny.utils.requireDependency
 import io.github.wykopmobilny.utils.viewBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
+
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -29,8 +30,8 @@ fun loginFragment(): Fragment = LoginFragment()
 
 internal class LoginFragment : Fragment(R.layout.fragment_login) {
 
+    private val binding by viewBinding(FragmentLoginBinding::bind)
     private lateinit var login: Login
-    val binding by viewBinding(FragmentLoginBinding::bind)
 
     override fun onAttach(context: Context) {
         login = context.requireDependency<LoginDependencies>().login()
@@ -61,16 +62,12 @@ internal class LoginFragment : Fragment(R.layout.fragment_login) {
             launch {
                 sharedFlow.map { it.urlToLoad }
                     .distinctUntilChanged()
-                    .collect {
-                        binding.webView.loadUrl(it)
-                    }
+                    .collect { binding.webView.loadUrl(it) }
             }
             launch {
                 sharedFlow.map { it.isLoading }
                     .distinctUntilChanged()
-                    .collect {
-                        binding.fullScreenProgress.isVisible = it
-                    }
+                    .collect { binding.fullScreenProgress.isVisible = it }
             }
             launch {
                 var dialog: Dialog? = null

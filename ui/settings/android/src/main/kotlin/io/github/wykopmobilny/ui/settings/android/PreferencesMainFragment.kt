@@ -1,31 +1,19 @@
 package io.github.wykopmobilny.ui.settings.android
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import io.github.wykopmobilny.ui.settings.SettingsDependencies
 import io.github.wykopmobilny.ui.settings.android.databinding.FragmentSettingsBinding
-import io.github.wykopmobilny.ui.settings.android.di.DaggerSettingsUiComponent
 import io.github.wykopmobilny.utils.destroyDependency
-import io.github.wykopmobilny.utils.requireDependency
 import io.github.wykopmobilny.utils.viewBinding
 
-fun preferencesMainFragment(): Fragment = MainPreferencesFragment()
+fun preferencesMainFragment(): Fragment = PreferencesMainFragment()
 
-internal class MainPreferencesFragment : Fragment(R.layout.fragment_settings) {
+internal class PreferencesMainFragment : Fragment(R.layout.fragment_settings) {
 
     val binding by viewBinding(FragmentSettingsBinding::bind)
-
-    override fun onAttach(context: Context) {
-        DaggerSettingsUiComponent.factory()
-            .create(
-                deps = context.requireDependency(),
-            )
-            .inject(this)
-        super.onAttach(context)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

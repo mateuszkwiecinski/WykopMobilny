@@ -10,6 +10,7 @@ import io.github.wykopmobilny.domain.login.di.LoginDomainComponent
 import io.github.wykopmobilny.domain.navigation.Framework
 import io.github.wykopmobilny.domain.navigation.InteropModule
 import io.github.wykopmobilny.domain.navigation.InteropRequestService
+import io.github.wykopmobilny.domain.profile.di.ProfileDomainComponent
 import io.github.wykopmobilny.domain.promoted.PromotedModule
 import io.github.wykopmobilny.domain.settings.di.SettingsDomainComponent
 import io.github.wykopmobilny.domain.styles.di.StylesDomainComponent
@@ -54,6 +55,8 @@ interface DomainComponent {
     fun settings(): SettingsDomainComponent
 
     fun blacklist(): BlacklistDomainComponent
+
+    fun profile(): ProfileDomainComponent.Factory
 
     fun navigation(): InteropRequestService
 

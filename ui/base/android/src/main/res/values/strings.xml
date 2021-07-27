@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="error_dialog_title">Oops</string>
+    <string name="error_dialog_retry">Spróbuj ponownie</string>
+    <string name="error_dialog_confirm">OK</string>
+</resources>

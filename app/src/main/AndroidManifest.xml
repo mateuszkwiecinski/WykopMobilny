@@ -274,6 +274,12 @@
             android:windowSoftInputMode="stateUnchanged|adjustResize"
             />
         <activity
+            android:name=".ui.modules.profile.ProfileActivityV2"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/TransparentActivityTheme"
+            android:windowSoftInputMode="stateUnchanged|adjustResize"
+            />
+        <activity
             android:name=".ui.modules.notificationslist.NotificationsListActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/TransparentActivityTheme"

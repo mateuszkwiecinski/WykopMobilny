@@ -79,7 +79,7 @@
         <item name="bottomSheetUnobserve">@drawable/ic_unobserve</item>
         <item name="bottomSheetLock">@drawable/ic_lock</item>
         <item name="bottomSheetUnlock">@drawable/ic_lock_open</item>
-        <item name="bottomSheetEdit">@drawable/ic_pen</item>
+        <item name="bottomSheetEdit">@drawable/ic_edit</item>
         <item name="bottomSheetCopy">@drawable/ic_copy_content_light</item>
         <item name="bottomSheetReport">@drawable/ic_report</item>
         <item name="bottomSheetBury">@drawable/ic_bury</item>
