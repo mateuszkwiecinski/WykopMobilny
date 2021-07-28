@@ -24,12 +24,15 @@ internal class CleanupRule : TestRule {
                     PreferenceManager.getDefaultSharedPreferences(context),
                     context.getSharedPreferences("Preferences", Context.MODE_PRIVATE),
                 ).forEach { prefs -> prefs.edit { clear() } }
+
                 runBlocking {
                     withContext(Dispatchers.Main) {
                         suspendCoroutine<Unit> { continuation ->
                             CookieManager.getInstance().removeAllCookies { continuation.resume(Unit) }
                         }
                     }
+
+                    context.noBackupFilesDir.deleteRecursively()
                 }
 
                 base.evaluate()

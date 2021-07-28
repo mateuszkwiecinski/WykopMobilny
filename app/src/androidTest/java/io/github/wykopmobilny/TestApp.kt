@@ -2,6 +2,7 @@ package io.github.wykopmobilny
 
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
+import io.github.wykopmobilny.data.cache.sqldelight.ApplicationCacheComponent
 import io.github.wykopmobilny.di.DaggerTestAppComponent
 import io.github.wykopmobilny.domain.login.ConnectConfig
 import io.github.wykopmobilny.fakes.FakeCookieProvider
@@ -61,6 +62,7 @@ internal class TestApp : WykopApp() {
             scraper = scraper,
             wykop = wykopApi,
             framework = framework,
+            applicationCache = applicationCache
         )
     }
 
