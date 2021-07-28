@@ -1,6 +1,20 @@
+/*
+ * Copyright (C) 2012 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.android.build.gradle.internal
 
-import com.android.ide.common.resources.MergingException
 import com.android.utils.ILogger
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.logging.Logger
@@ -8,6 +22,12 @@ import org.gradle.api.logging.Logging
 import java.io.Serializable
 import java.util.function.Supplier
 
+/**
+ * Implementation of Android's [ILogger] over Gradle's [Logger].
+ *
+ * Note that this maps info to the default user-visible lifecycle.
+ */
+@Suppress("UNCHECKED_CAST")
 class LoggerWrapper(private val logger: Logger) : ILogger {
 
     object Switch {
@@ -18,7 +38,7 @@ class LoggerWrapper(private val logger: Logger) : ILogger {
 
     override fun error(throwable: Throwable?, s: String?, vararg objects: Any) {
         var message = s
-        if (throwable is MergingException) {
+        if (throwable != null && throwable::class.java.simpleName.contains("MergingException")) {
             // MergingExceptions have a known cause: they aren't internal errors, they
             // are errors in the user's code, so a full exception is not helpful (and
             // these exceptions should include a pointer to the user's error right in
@@ -44,23 +64,23 @@ class LoggerWrapper(private val logger: Logger) : ILogger {
     }
 
     override fun warning(s: String, vararg objects: Any) {
-        log(ILOGGER_WARNING, s, objects)
+        log(ILOGGER_WARNING, s, objects as Array<Any>?)
     }
 
     override fun quiet(s: String, vararg objects: Any) {
-        log(ILOGGER_QUIET, s, objects)
+        log(ILOGGER_QUIET, s, objects as Array<Any>?)
     }
 
     override fun lifecycle(s: String, vararg objects: Any) {
-        log(ILOGGER_LIFECYCLE, s, objects)
+        log(ILOGGER_LIFECYCLE, s, objects as Array<Any>?)
     }
 
     override fun info(s: String, vararg objects: Any) {
-        log(ILOGGER_INFO, s, objects)
+        log(ILOGGER_INFO, s, objects as Array<Any>?)
     }
 
     override fun verbose(s: String, vararg objects: Any) {
-        log(ILOGGER_VERBOSE, s, objects)
+        log(ILOGGER_VERBOSE, s, objects as Array<Any>?)
     }
 
     private fun log(logLevel: LogLevel, s: String, objects: Array<out Any>?) {
@@ -75,7 +95,7 @@ class LoggerWrapper(private val logger: Logger) : ILogger {
         if (objects == null || objects.isEmpty()) {
             logger.log(newLogLevel, s)
         } else {
-            logger.log(newLogLevel, String.format(s, *objects))
+            logger.log(logLevel, String.format(s, *objects))
         }
     }
 
