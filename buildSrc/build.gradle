@@ -12,4 +12,5 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics-gradle:2.7.1")
     implementation("com.slack.keeper:keeper:0.10.0")
     implementation("com.google.firebase:perf-plugin:1.4.0")
+    implementation("com.squareup.sqldelight:gradle-plugin:1.5.0")
 }

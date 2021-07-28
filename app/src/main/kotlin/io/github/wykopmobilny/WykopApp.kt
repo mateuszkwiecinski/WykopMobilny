@@ -10,6 +10,7 @@ import dagger.Lazy
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import io.github.wykopmobilny.api.ApiSignInterceptor
+import io.github.wykopmobilny.data.cache.sqldelight.DaggerApplicationCacheComponent
 import io.github.wykopmobilny.di.DaggerAppComponent
 import io.github.wykopmobilny.domain.blacklist.di.BlacklistScope
 import io.github.wykopmobilny.domain.di.DomainComponent
@@ -89,6 +90,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             scraper = scraper,
             wykop = wykopApi,
             framework = framework,
+            applicationCache = applicationCache,
         )
     }
 
@@ -134,6 +136,12 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
     protected open val framework by lazy {
         DaggerFrameworkComponent.factory().create(
             application = this,
+        )
+    }
+
+    protected open val applicationCache by lazy {
+        DaggerApplicationCacheComponent.factory().create(
+            context = this,
         )
     }
 

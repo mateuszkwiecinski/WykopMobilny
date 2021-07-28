@@ -29,7 +29,7 @@ abstract class BaseActivityTest {
         storages.sessionStorage().updateSession(UserSession(login = "fixture-user", token = "fixture_token"))
         storages.userInfoStorage().updateLoggedUser(
             LoggedUserInfo(
-                userName = "Fixture name",
+                id = "Fixture name",
                 userToken = "fixture_token",
                 avatarUrl = "",
                 backgroundUrl = null,

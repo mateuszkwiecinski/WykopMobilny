@@ -41,14 +41,14 @@ internal class CredentialsPreferences @Inject constructor(
     private var userInfo: LoggedUserInfo?
         get() {
             return LoggedUserInfo(
-                userName = login ?: return null,
+                id = login ?: return null,
                 userToken = userToken ?: return null,
                 avatarUrl = avatarUrl ?: return null,
                 backgroundUrl = backgroundUrl,
             )
         }
         set(value) {
-            login = value?.userName
+            login = value?.id
             userToken = value?.userToken
             avatarUrl = value?.avatarUrl
             backgroundUrl = value?.backgroundUrl

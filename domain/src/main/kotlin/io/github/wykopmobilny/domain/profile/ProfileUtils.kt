@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.first
 internal const val DEFAULT_PROFILE_BACKGROUND = "https://i.imgur.com/aSm6pSJ.jpg"
 
 @Suppress("MagicNumber")
-internal suspend fun Int.getNickColor(getAppTheme: GetAppTheme) = when (this) {
+internal suspend fun Number.getNickColor(getAppTheme: GetAppTheme) = when (this) {
     0 -> "#339933"
     1 -> "#ff5917"
     2 -> "#BB0000"

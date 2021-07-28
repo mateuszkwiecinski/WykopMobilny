@@ -6,8 +6,6 @@ import com.dropbox.android.external.store4.StoreBuilder
 import dagger.Module
 import dagger.Provides
 import io.github.wykopmobilny.api.endpoints.LoginRetrofitApi
-import io.github.wykopmobilny.api.endpoints.ProfileRetrofitApi
-import io.github.wykopmobilny.api.responses.ProfileResponse
 import io.github.wykopmobilny.blacklist.api.ScraperRetrofitApi
 import io.github.wykopmobilny.domain.api.apiCall
 import io.github.wykopmobilny.storage.api.Blacklist
@@ -15,9 +13,10 @@ import io.github.wykopmobilny.storage.api.BlacklistPreferencesApi
 import io.github.wykopmobilny.storage.api.LoggedUserInfo
 import io.github.wykopmobilny.storage.api.UserInfoStorage
 import io.github.wykopmobilny.storage.api.UserSession
+import io.github.wykopmobilny.ui.base.AppScopes
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [ProfileStores::class])
 internal class StoresModule {
 
     @Singleton
@@ -25,6 +24,7 @@ internal class StoresModule {
     fun blacklistStore(
         retrofitApi: ScraperRetrofitApi,
         storage: BlacklistPreferencesApi,
+        appScopes: AppScopes,
     ) = StoreBuilder.from<Unit, Blacklist, Blacklist>(
         fetcher = Fetcher.of {
             val api = retrofitApi.getBlacklist()
@@ -40,20 +40,7 @@ internal class StoresModule {
             deleteAll = { storage.clear() },
         ),
     )
-        .build()
-
-    @Singleton
-    @Provides
-    fun profileStore(
-        retrofitApi: ProfileRetrofitApi,
-    ) = StoreBuilder.from<String, ProfileResponse>(
-        fetcher = Fetcher.ofResult { username ->
-            apiCall(
-                rawCall = { retrofitApi.getIndex(username) },
-                mapping = { this },
-            )
-        },
-    )
+        .scope(appScopes.applicationScope)
         .build()
 
     @Singleton
@@ -61,13 +48,14 @@ internal class StoresModule {
     fun loginStore(
         retrofitApi: LoginRetrofitApi,
         storage: UserInfoStorage,
+        appScopes: AppScopes,
     ) = StoreBuilder.from(
         fetcher = Fetcher.ofResult { request: UserSession ->
             apiCall(
                 rawCall = { retrofitApi.getUserSessionToken(request.login, request.token) },
                 mapping = {
                     LoggedUserInfo(
-                        userName = profile.login,
+                        id = profile.id,
                         userToken = userkey,
                         avatarUrl = profile.avatar,
                         backgroundUrl = profile.background,
@@ -82,5 +70,6 @@ internal class StoresModule {
             deleteAll = { storage.updateLoggedUser(null) },
         ),
     )
+        .scope(appScopes.applicationScope)
         .build()
 }

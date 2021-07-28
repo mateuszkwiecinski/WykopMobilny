@@ -4,6 +4,7 @@ import dagger.BindsInstance
 import dagger.Component
 import io.github.wykopmobilny.api.WykopApi
 import io.github.wykopmobilny.blacklist.api.Scraper
+import io.github.wykopmobilny.data.cache.api.ApplicationCache
 import io.github.wykopmobilny.domain.blacklist.di.BlacklistDomainComponent
 import io.github.wykopmobilny.domain.login.ConnectConfig
 import io.github.wykopmobilny.domain.login.di.LoginDomainComponent
@@ -31,6 +32,7 @@ import javax.inject.Singleton
         Scraper::class,
         WykopApi::class,
         Framework::class,
+        ApplicationCache::class,
     ],
 )
 interface DomainComponent {
@@ -45,6 +47,7 @@ interface DomainComponent {
             scraper: Scraper,
             wykop: WykopApi,
             framework: Framework,
+            applicationCache: ApplicationCache,
         ): DomainComponent
     }
 

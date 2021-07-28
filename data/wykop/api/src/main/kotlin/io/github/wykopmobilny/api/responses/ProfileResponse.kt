@@ -20,8 +20,8 @@ data class ProfileResponse(
     @field:Json(name = "facebook") val facebookUrl: String?,
     @field:Json(name = "twitter") val twitterUrl: String?,
     @field:Json(name = "instagram") val instagramUrl: String?,
-    @field:Json(name = "links_added_count") val linksAddedCount: Int,
-    @field:Json(name = "links_published_count") val linksPublishedCount: Int,
+    @field:Json(name = "links_added_count") val linksAddedCount: Int?,
+    @field:Json(name = "links_published_count") val linksPublishedCount: Int?,
     @field:Json(name = "comments_count") val commentsCount: Int?,
     @field:Json(name = "rank") val rank: Int?,
     @field:Json(name = "followers") val followers: Int?,
@@ -32,9 +32,8 @@ data class ProfileResponse(
     @field:Json(name = "buries") val buriesCount: Int?,
     @field:Json(name = "violation_url") val violationUrl: String?,
     @field:Json(name = "ban") val ban: BanResponse?,
-    @field:Json(name = "login") val login: String,
+    @field:Json(name = "login") val id: String,
     @field:Json(name = "color") val color: Int,
     @field:Json(name = "sex") val sex: String?,
     @field:Json(name = "avatar") val avatar: String,
-
 )

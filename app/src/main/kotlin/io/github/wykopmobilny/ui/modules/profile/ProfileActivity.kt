@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import io.github.wykopmobilny.BuildConfig
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.api.patrons.PatronsApi
 import io.github.wykopmobilny.api.patrons.getBadgeFor
@@ -38,8 +39,12 @@ class ProfileActivity : BaseActivity(), ProfileView {
         const val DATA_FRAGMENT_TAG = "PROFILE_DATAFRAGMENT"
 
         fun createIntent(context: Context, username: String) =
-            Intent(context, ProfileActivity::class.java).apply {
-                putExtra(EXTRA_USERNAME, username)
+            if (BuildConfig.DEBUG) {
+                ProfileActivityV2.createIntent(context, userId = username)
+            } else {
+                Intent(context, ProfileActivity::class.java).apply {
+                    putExtra(EXTRA_USERNAME, username)
+                }
             }
     }
 
@@ -96,11 +101,11 @@ class ProfileActivity : BaseActivity(), ProfileView {
         dataFragment.data = profileResponse
         binding.pager.offscreenPageLimit = 2
         binding.pager.adapter = pagerAdapter
-        patronsApi.getBadgeFor(profileResponse.login)?.drawBadge(binding.patronBadgeTextView)
+        patronsApi.getBadgeFor(profileResponse.id)?.drawBadge(binding.patronBadgeTextView)
         binding.tabLayout.setupWithViewPager(binding.pager)
         binding.profilePicture.loadImage(profileResponse.avatar)
         binding.signup.text = profileResponse.signupAt.toDurationPrettyDate()
-        binding.nickname.text = profileResponse.login
+        binding.nickname.text = profileResponse.id
         binding.nickname.setTextColor(getGroupColor(profileResponse.color))
         binding.loadingView.isVisible = false
         binding.description.isVisible = profileResponse.description != null
@@ -162,7 +167,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.pw -> dataFragment.data?.let { navigator.openConversationListActivity(dataFragment.data!!.login) }
+            R.id.pw -> dataFragment.data?.let { navigator.openConversationListActivity(dataFragment.data!!.id) }
             R.id.unblock -> {
                 presenter.markUnblocked()
             }

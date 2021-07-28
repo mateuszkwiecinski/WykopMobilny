@@ -11,6 +11,7 @@ dependencies {
     implementation projects.data.storage.api
     implementation projects.data.wykop.api
     implementation projects.data.framework.api
+    implementation projects.data.cache.api
     implementation projects.ui.styles.api
     implementation projects.ui.login.api
     implementation projects.ui.promoted.api
@@ -18,7 +19,7 @@ dependencies {
     implementation projects.ui.blacklist.api
     implementation projects.ui.profile.api
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
-    implementation("androidx.paging:paging-common-ktx:3.0.0")
+    implementation("androidx.paging:paging-common-ktx:3.0.1")
     implementation("com.dropbox.mobile.store:store4:4.0.2-KT15")
     implementation("com.google.dagger:dagger:2.38")
     kapt "com.google.dagger:dagger-compiler:2.38"
