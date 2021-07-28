@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.MediaStore.Images
@@ -15,11 +16,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
+import com.google.android.exoplayer2.util.MimeTypes
 import io.github.wykopmobilny.base.WykopSchedulers
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.SingleOnSubscribe
 import java.io.File
+import java.nio.file.Files
 
 interface PhotoViewCallbacks {
     fun shareImage(url: String)
@@ -46,11 +49,11 @@ class PhotoViewActions(val context: Context) : PhotoViewCallbacks {
                 val file = Glide.with(context).downloadOnly().load(url).submit().get()
                 val newFile = File(
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                    "$SAVED_FOLDER/$SHARED_FOLDER/" + url.substringAfterLast("/")
+                    "$SAVED_FOLDER/$SHARED_FOLDER/" + url.substringAfterLast("/"),
                 )
                 file.copyTo(newFile, true)
                 it.onSuccess(newFile)
-            }
+            },
         ).subscribeOn(WykopSchedulers().backgroundThread()).observeOn(WykopSchedulers().mainThread()).subscribe { file: File ->
             addImageToGallery(file.path, context)
 
@@ -75,38 +78,52 @@ class PhotoViewActions(val context: Context) : PhotoViewCallbacks {
         if (!checkForWriteReadPermission()) {
             return
         }
-        Completable.fromAction {
-            val file = Glide.with(context).downloadOnly().load(url).submit().get()
-            var path = File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                SAVED_FOLDER
-            )
-            path = File(path, photoView.url.substringAfterLast('/'))
-            file.copyTo(path, true)
-            addImageToGallery(path.path, context)
-        }.subscribeOn(WykopSchedulers().backgroundThread())
+        saveImageV2(url)
+            .subscribeOn(WykopSchedulers().backgroundThread())
             .observeOn(WykopSchedulers().mainThread()).subscribe(
-                {
-                    showToastMessage("Zapisano plik")
-                },
-                {
-                    showToastMessage("Błąd podczas zapisu pliku")
-                }
+                { showToastMessage("Zapisano plik") },
+                { showToastMessage("Błąd podczas zapisu pliku") },
             )
+    }
+
+    private fun saveImageV2(url: String): Completable {
+        return Completable.fromAction {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val source = Glide.with(context).downloadOnly().load(url).submit().get()
+                val values = ContentValues().apply {
+                    put(Images.Media.DISPLAY_NAME, url.substringAfterLast('/'))
+                    put(Images.Media.MIME_TYPE, MimeTypes.IMAGE_JPEG)
+                    put(Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + SAVED_FOLDER)
+                    put(Images.Media.DATE_TAKEN, System.currentTimeMillis())
+                }
+
+                val uri = context.contentResolver.insert(Images.Media.EXTERNAL_CONTENT_URI, values).let(::checkNotNull)
+                context.contentResolver.openOutputStream(uri)?.use { Files.copy(source.toPath(), it) }
+            } else {
+                val source = Glide.with(context).downloadOnly().load(url).submit().get()
+                val directory = File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                    SAVED_FOLDER,
+                )
+                val targetFile = File(directory, photoView.url.substringAfterLast('/'))
+                source.copyTo(targetFile, true)
+                addImageToGallery(targetFile.path, context)
+            }
+        }
     }
 
     private fun checkForWriteReadPermission(): Boolean {
         ActivityCompat.requestPermissions(
             photoView,
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), 1
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), 1,
         )
         val writePermission = ContextCompat.checkSelfPermission(
             context,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
         )
         val readPermission = ContextCompat.checkSelfPermission(
             context,
-            Manifest.permission.READ_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE,
         )
         return writePermission != PackageManager.PERMISSION_DENIED && readPermission != PackageManager.PERMISSION_DENIED
     }
@@ -116,7 +133,9 @@ class PhotoViewActions(val context: Context) : PhotoViewCallbacks {
     private fun addImageToGallery(filePath: String, context: Context) {
         val values = ContentValues()
 
-        values.put(Images.Media.DATE_TAKEN, System.currentTimeMillis())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(Images.Media.DATE_TAKEN, System.currentTimeMillis())
+        }
         values.put(Images.Media.MIME_TYPE, getMimeType(filePath))
         values.put(MediaStore.MediaColumns.DATA, filePath)
 
