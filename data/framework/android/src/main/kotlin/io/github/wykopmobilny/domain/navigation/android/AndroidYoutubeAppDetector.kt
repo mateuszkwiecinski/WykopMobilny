@@ -28,7 +28,7 @@ private fun Context.isPackageInstalled(packageName: String): Boolean {
     return try {
         packageManager.getPackageInfo(packageName, 0)
         true
-    } catch (exception: PackageManager.NameNotFoundException) {
+    } catch (ignored: PackageManager.NameNotFoundException) {
         false
     }
 }
