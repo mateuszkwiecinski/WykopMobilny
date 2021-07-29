@@ -80,7 +80,20 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
             presenter.subscribe(this)
             presenter.playUrl(extraUrl)
         }
-        binding.videoView.player = SimpleExoPlayer.Builder(this).build()
+        binding.videoView.player = SimpleExoPlayer.Builder(this).build().apply {
+            addListener(
+                object : Player.Listener {
+
+                    override fun onIsLoadingChanged(isLoading: Boolean) {
+                        binding.videoView.keepScreenOn = isPlaying || isLoading
+                    }
+
+                    override fun onIsPlayingChanged(isPlaying: Boolean) {
+                        binding.videoView.keepScreenOn = isPlaying || isLoading
+                    }
+                },
+            )
+        }
         binding.videoView.controllerAutoShow = false
         binding.videoView.setShowBuffering(SHOW_BUFFERING_WHEN_PLAYING)
     }
@@ -189,7 +202,8 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
                 it.onError(Exception("Could not download the file, http code ${result.code}"))
             }
             it.onSuccess(path.path)
-        }.subscribeOn(WykopSchedulers().backgroundThread())
+        }
+            .subscribeOn(WykopSchedulers().backgroundThread())
             .observeOn(WykopSchedulers().mainThread())
             .subscribe(
                 {

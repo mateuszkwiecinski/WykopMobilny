@@ -42,7 +42,7 @@ class UserManager @Inject constructor(
     override fun saveCredentials(credentials: LoginResponse) = runBlocking {
         userInfoStorage.updateLoggedUser(
             value = LoggedUserInfo(
-                userName = credentials.profile.login,
+                id = credentials.profile.id,
                 userToken = credentials.userkey,
                 avatarUrl = credentials.profile.avatar,
                 backgroundUrl = credentials.profile.background,
@@ -56,7 +56,7 @@ class UserManager @Inject constructor(
         runBlocking {
             userInfoStorage.loggedUser.first()?.let {
                 UserCredentials(
-                    login = it.userName,
+                    login = it.id,
                     avatarUrl = it.avatarUrl,
                     backgroundUrl = it.backgroundUrl,
                     userKey = it.userToken,

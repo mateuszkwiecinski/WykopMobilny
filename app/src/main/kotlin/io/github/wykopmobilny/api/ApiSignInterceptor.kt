@@ -68,6 +68,7 @@ class ApiSignInterceptor(private val userManagerApi: SimpleUserManagerApi) : Int
         var tryCount = 0
         while (!response.isSuccessful && response.code != 401 && tryCount < MAX_RETRY_COUNT) {
             tryCount++
+            response.close()
             response = chain.proceed(newRequest)
         }
         return response

@@ -1,4 +1,4 @@
-[*.{kt, kts, gradle, java}]
+[*.{kt, kts, gradle, java, sq}]
 indent_size = 4
 max_line_length = 140
 insert_final_newline = true

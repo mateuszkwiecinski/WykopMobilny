@@ -7,6 +7,7 @@ import io.github.wykopmobilny.domain.settings.LinkImagePosition
 import io.github.wykopmobilny.domain.settings.UserSetting
 import io.github.wykopmobilny.domain.settings.UserSettings
 import io.github.wykopmobilny.domain.settings.get
+import io.github.wykopmobilny.domain.settings.prefs.GetMediaPreferences
 import io.github.wykopmobilny.domain.settings.prefs.MainScreen
 import io.github.wykopmobilny.domain.settings.prefs.MikroblogScreen
 import io.github.wykopmobilny.domain.settings.update
@@ -33,6 +34,7 @@ internal abstract class InteropModule {
 @Singleton
 internal class InteropSettingPreferencesApi @Inject constructor(
     private val userPreferenceApi: UserPreferenceApi,
+    private val getMediaPreferences: GetMediaPreferences,
 ) : SettingsPreferencesApi {
 
     override val hotEntriesScreen: String?
@@ -97,7 +99,7 @@ internal class InteropSettingPreferencesApi @Inject constructor(
     override val hideBlacklistedViews: Boolean
         get() = interop(UserSettings.hideBlacklistedContent) ?: false
     override val enableYoutubePlayer: Boolean
-        get() = interop(UserSettings.useYoutubePlayer) ?: true
+        get() = runBlocking { getMediaPreferences().first().useYoutubePlayer }
     override val enableEmbedPlayer: Boolean
         get() = interop(UserSettings.useEmbeddedPlayer) ?: true
     override val useBuiltInBrowser: Boolean

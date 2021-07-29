@@ -10,7 +10,7 @@ interface UserInfoStorage {
 }
 
 data class LoggedUserInfo(
-    val userName: String,
+    val id: String,
     val userToken: String,
     val avatarUrl: String,
     val backgroundUrl: String?,

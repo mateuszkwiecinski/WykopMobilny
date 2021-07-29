@@ -2,8 +2,7 @@ package io.github.wykopmobilny.domain.profile
 
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreRequest
-import dagger.Lazy
-import io.github.wykopmobilny.api.responses.ProfileResponse
+import io.github.wykopmobilny.data.cache.api.ProfileEntity
 import io.github.wykopmobilny.domain.blacklist.actions.UsersRepository
 import io.github.wykopmobilny.domain.profile.di.ProfileScope
 import io.github.wykopmobilny.domain.styles.GetAppTheme
@@ -25,10 +24,10 @@ import javax.inject.Inject
 
 internal class GetProfileDetailsQuery @Inject constructor(
     @ProfileId private val profileId: String,
-    private val profileStore: Store<String, ProfileResponse>,
+    private val profileStore: Store<String, ProfileEntity>,
     private val getAppTheme: GetAppTheme,
     private val userInfoStorage: UserInfoStorage,
-    private val usersRepository: Lazy<UsersRepository>,
+    private val usersRepository: UsersRepository,
     private val appScopes: AppScopes,
 ) : GetProfileDetails {
 
@@ -52,17 +51,19 @@ internal class GetProfileDetailsQuery @Inject constructor(
                         genderStrip = profile.sex?.let(::getGender),
                     ),
                     backgroundUrl = profile.background ?: DEFAULT_PROFILE_BACKGROUND,
-                    banReason = profile.ban?.let { ban ->
+                    banReason = if (profile.banReason != null || profile.banDate != null) {
                         BanReasonUi(
-                            reason = ban.reason,
-                            endDate = ban.date,
+                            reason = profile.banReason,
+                            endDate = profile.banDate,
                         )
+                    } else {
+                        null
                     },
                     nick = NickUi(
-                        name = profile.login,
+                        name = profile.id,
                         color = profile.color.getNickColor(getAppTheme),
                     ),
-                    followersCount = profile.followers ?: 0,
+                    followersCount = profile.followers?.toInt() ?: 0,
                     joinedAgo = profile.signupAt,
                 )
             } else {
@@ -70,7 +71,7 @@ internal class GetProfileDetailsQuery @Inject constructor(
             }
 
             @OptIn(ExperimentalStdlibApi::class)
-            val contextMenuOptions = if (loggedUser == null || loggedUser.userName == profileId) {
+            val contextMenuOptions = if (loggedUser == null || loggedUser.id == profileId) {
                 listOf(badgesOption())
             } else {
                 buildList {
@@ -111,22 +112,22 @@ internal class GetProfileDetailsQuery @Inject constructor(
 
     private fun blockOption() = ContextMenuOptionUi(
         option = ProfileMenuOption.Block,
-        onClick = { appScopes.launchInKeyed<ProfileScope>(profileId) { usersRepository.get().blockUser(profileId) } },
+        onClick = { appScopes.launchInKeyed<ProfileScope>(profileId) { usersRepository.blockUser(profileId) } },
     )
 
     private fun unblockOption() = ContextMenuOptionUi(
         option = ProfileMenuOption.Unblock,
-        onClick = { appScopes.launchInKeyed<ProfileScope>(profileId) { usersRepository.get().unblockUser(profileId) } },
+        onClick = { appScopes.launchInKeyed<ProfileScope>(profileId) { usersRepository.unblockUser(profileId) } },
     )
 
     private fun observeOption() = ContextMenuOptionUi(
         option = ProfileMenuOption.ObserveProfile,
-        onClick = { appScopes.launchInKeyed<ProfileScope>(profileId) { usersRepository.get().observeUser(profileId) } },
+        onClick = { appScopes.launchInKeyed<ProfileScope>(profileId) { usersRepository.observeUser(profileId) } },
     )
 
     private fun unobserveOption() = ContextMenuOptionUi(
         option = ProfileMenuOption.UnobserveProfile,
-        onClick = { appScopes.launchInKeyed<ProfileScope>(profileId) { usersRepository.get().unobserveUser(profileId) } },
+        onClick = { appScopes.launchInKeyed<ProfileScope>(profileId) { usersRepository.unobserveUser(profileId) } },
     )
 
     private fun reportOption() = ContextMenuOptionUi(

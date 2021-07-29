@@ -108,6 +108,7 @@ dependencies {
     implementation projects.data.scraper.remote
     implementation projects.data.storage.android
     implementation projects.data.framework.android
+    implementation projects.data.cache.sqldelight
     implementation projects.ui.base.android
     implementation projects.ui.login.android
     implementation projects.ui.settings.android

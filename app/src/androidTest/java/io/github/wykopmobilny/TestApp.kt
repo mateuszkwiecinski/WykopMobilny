@@ -61,6 +61,7 @@ internal class TestApp : WykopApp() {
             scraper = scraper,
             wykop = wykopApi,
             framework = framework,
+            applicationCache = applicationCache
         )
     }
 
