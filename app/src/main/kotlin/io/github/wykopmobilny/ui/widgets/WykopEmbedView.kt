@@ -8,11 +8,11 @@ import androidx.core.view.isVisible
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.databinding.WykopembedviewBinding
 import io.github.wykopmobilny.models.dataclass.Embed
+import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.modules.NewNavigatorApi
 import io.github.wykopmobilny.utils.getActivityContext
 import io.github.wykopmobilny.utils.layoutInflater
 import io.github.wykopmobilny.utils.openBrowser
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import java.lang.ref.WeakReference
 import java.net.URI
 
@@ -48,8 +48,9 @@ class WykopEmbedView(context: Context, attrs: AttributeSet) : FrameLayout(contex
         resized = false
         settingsPreferences = settingsPreferencesApi
         navigator = navigatorApi
-        if (embed == null || !Patterns.WEB_URL.matcher(embed.url.replace("\\", "")).matches()) isVisible = false
-        else {
+        if (embed == null || !Patterns.WEB_URL.matcher(embed.url.replace("\\", "")).matches()) {
+            isVisible = false
+        } else {
             embed.apply {
                 binding.image.resetImage()
                 mEmbed = WeakReference(embed)
