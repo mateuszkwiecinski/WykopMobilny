@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -32,12 +33,13 @@ import io.github.wykopmobilny.utils.ClipboardHelperApi
 import io.github.wykopmobilny.utils.openBrowser
 import io.github.wykopmobilny.utils.viewBinding
 import io.github.wykopmobilny.utils.wykopLog
-import io.reactivex.Single
+import io.reactivex.Completable
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.buffer
 import okio.sink
 import java.io.File
+import java.nio.file.Files
 import javax.inject.Inject
 
 class EmbedViewActivity : BaseActivity(), EmbedView {
@@ -178,41 +180,62 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
         return pathSegments.last()
     }
 
-    private fun saveFile() {
-        Single.create<String> {
-            val url = presenter.mp4Url
-            val path = File(
+    private fun saveFileV2(url: String) {
+        val request = Request.Builder()
+            .url(url)
+            .build()
+        val result = OkHttpClient().newCall(request).execute()
+        val source = if (result.isSuccessful) {
+            File(cacheDir, getFilenameFromResult(result)).apply {
+                sink().buffer().use { it.writeAll(result.body!!.source()) }
+            }
+        } else {
+            error("Could not download the file, http code ${result.code}")
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val values = ContentValues().apply {
+                put(MediaStore.Images.Media.DISPLAY_NAME, Uri.parse(url).lastPathSegment)
+                put(MediaStore.Images.Media.MIME_TYPE, getMimeType(url))
+                put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + PhotoViewActions.SAVED_FOLDER)
+                put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
+            }
+
+            val uri = contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values).let(::checkNotNull)
+            contentResolver.openOutputStream(uri)?.use { Files.copy(source.toPath(), it) }
+        } else {
+            val directory = File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                 PhotoViewActions.SAVED_FOLDER,
             )
-            if (!path.exists()) {
-                path.mkdirs()
-            }
+            val targetFile = File(directory, Uri.parse(url).lastPathSegment ?: "video.mp4")
+            source.copyTo(targetFile, true)
+            addVideoToGallery(targetFile.path, this)
+        }
+        source.delete()
+    }
 
-            val request = Request.Builder()
-                .url(url)
-                .build()
-            val result = OkHttpClient().newCall(request).execute()
-            if (result.isSuccessful) {
-                val file = File(path, getFilenameFromResult(result))
-                val sink = file.sink().buffer()
-                sink.writeAll(result.body!!.source())
-                sink.close()
-            } else {
-                it.onError(Exception("Could not download the file, http code ${result.code}"))
-            }
-            it.onSuccess(path.path)
+    private fun addVideoToGallery(filePath: String, context: Context) {
+        val values = ContentValues()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
+        }
+        values.put(MediaStore.Images.Media.MIME_TYPE, getMimeType(filePath))
+        values.put(MediaStore.MediaColumns.DATA, filePath)
+
+        context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+    }
+
+    private fun saveFile() {
+        Completable.fromCallable {
+            saveFileV2(presenter.mp4Url)
         }
             .subscribeOn(WykopSchedulers().backgroundThread())
             .observeOn(WykopSchedulers().mainThread())
             .subscribe(
                 {
-                    val values = ContentValues()
-                    values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
-                    values.put(MediaStore.Images.Media.MIME_TYPE, getMimeType(it))
-                    values.put(MediaStore.MediaColumns.DATA, it)
                     Toast.makeText(this, R.string.save_file_ok, Toast.LENGTH_SHORT).show()
-                    contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
                 },
                 {
                     wykopLog(Log::e, "Exception when trying to save file", it)
@@ -222,6 +245,9 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
     }
 
     private fun checkForWriteReadPermission(): Boolean {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            return true
+        }
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), 1,
@@ -234,7 +260,7 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
             this,
             Manifest.permission.READ_EXTERNAL_STORAGE,
         )
-        return writePermission != PackageManager.PERMISSION_DENIED && readPermission != PackageManager.PERMISSION_DENIED
+        return writePermission == PackageManager.PERMISSION_GRANTED && readPermission == PackageManager.PERMISSION_GRANTED
     }
 
     private fun getMimeType(url: String): String? {

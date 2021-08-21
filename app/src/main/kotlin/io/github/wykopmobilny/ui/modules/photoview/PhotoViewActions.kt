@@ -113,6 +113,9 @@ class PhotoViewActions(val context: Context) : PhotoViewCallbacks {
     }
 
     private fun checkForWriteReadPermission(): Boolean {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            return true
+        }
         ActivityCompat.requestPermissions(
             photoView,
             arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), 1,
@@ -125,7 +128,7 @@ class PhotoViewActions(val context: Context) : PhotoViewCallbacks {
             context,
             Manifest.permission.READ_EXTERNAL_STORAGE,
         )
-        return writePermission != PackageManager.PERMISSION_DENIED && readPermission != PackageManager.PERMISSION_DENIED
+        return writePermission == PackageManager.PERMISSION_GRANTED && readPermission == PackageManager.PERMISSION_GRANTED
     }
 
     private fun showToastMessage(text: String) = Toast.makeText(context, text, Toast.LENGTH_SHORT).show()

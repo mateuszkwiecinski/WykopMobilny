@@ -5,7 +5,7 @@ plugins {
     id("com.starter.versioning")
     id("com.gradleup.auto.manifest")
     id("com.osacky.doctor") version("0.7.0")
-    id("com.starter.easylauncher") version("4.0.0") apply(false)
+    id("com.starter.easylauncher") version("4.1.0") apply(false)
 }
 
 autoManifest {
