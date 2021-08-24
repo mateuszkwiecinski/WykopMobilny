@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.webkit.MimeTypeMap
@@ -22,6 +21,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.StyledPlayerView.SHOW_BUFFERING_WHEN_PLAYING
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.base.BaseActivity
 import io.github.wykopmobilny.base.WykopSchedulers
@@ -32,7 +32,6 @@ import io.github.wykopmobilny.ui.modules.photoview.PhotoViewActions
 import io.github.wykopmobilny.utils.ClipboardHelperApi
 import io.github.wykopmobilny.utils.openBrowser
 import io.github.wykopmobilny.utils.viewBinding
-import io.github.wykopmobilny.utils.wykopLog
 import io.reactivex.Completable
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -238,7 +237,7 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
                     Toast.makeText(this, R.string.save_file_ok, Toast.LENGTH_SHORT).show()
                 },
                 {
-                    wykopLog(Log::e, "Exception when trying to save file", it)
+                    Napier.e("Exception when trying to save file", it)
                     Toast.makeText(this, R.string.save_file_failed, Toast.LENGTH_SHORT).show()
                 },
             )

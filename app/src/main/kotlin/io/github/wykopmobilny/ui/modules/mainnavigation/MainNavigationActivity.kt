@@ -378,22 +378,14 @@ class MainNavigationActivity :
     }
 
     private fun showAppPatronsDialog() {
-        val dialog2 = BottomSheetDialog(this)
+        val patronsDialog = BottomSheetDialog(this)
         val badgesDialogView2 = PatronsBottomsheetBinding.inflate(layoutInflater)
-        dialog2.setContentView(badgesDialogView2.root)
+        patronsDialog.setContentView(badgesDialogView2.root)
 
-        val headerItem = PatronListItemBinding.inflate(layoutInflater)
-        headerItem.root.setOnClickListener {
-            dialog2.dismiss()
-            linkHandler.handleUrl("https://patronite.pl/wykop-mobilny")
-        }
-        headerItem.nickname.text = badgesDialogView2.root.context.getString(R.string.support_app)
-        headerItem.tierTextView.text = badgesDialogView2.root.context.getString(R.string.became_patron)
-        badgesDialogView2.patronsList.addView(headerItem.root)
         for (badge in patronsApi.patrons.filter { patron -> patron.listMention }) {
             val item = PatronListItemBinding.inflate(layoutInflater)
             item.root.setOnClickListener {
-                dialog2.dismiss()
+                patronsDialog.dismiss()
                 linkHandler.handleUrl("https://wykop.pl/ludzie/" + badge.username)
             }
             item.nickname.text = badge.username
@@ -406,7 +398,7 @@ class MainNavigationActivity :
             }
             badgesDialogView2.patronsList.addView(item.root)
         }
-        dialog2.show()
+        patronsDialog.show()
     }
 
     override fun forceRefreshNotifications() {

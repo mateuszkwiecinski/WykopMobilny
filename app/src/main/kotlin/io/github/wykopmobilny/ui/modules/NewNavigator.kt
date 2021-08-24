@@ -3,9 +3,9 @@ package io.github.wykopmobilny.ui.modules
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ShareCompat
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.models.dataclass.Link
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
@@ -31,7 +31,6 @@ import io.github.wykopmobilny.ui.modules.profile.ProfileActivity
 import io.github.wykopmobilny.ui.modules.settings.SettingsActivity
 import io.github.wykopmobilny.ui.modules.tag.TagActivity
 import io.github.wykopmobilny.utils.openBrowser
-import io.github.wykopmobilny.utils.wykopLog
 
 interface NewNavigatorApi {
     fun openMainActivity(targetFragment: String? = null)
@@ -169,7 +168,7 @@ class NewNavigator(private val context: Activity) : NewNavigatorApi {
             val intent = intentCreator()
             context.startActivity(intent)
         } catch (ex: Exception) {
-            wykopLog(Log::e, "Failed to create and start '$actionName' activity", ex)
+            Napier.e("Failed to create and start '$actionName' activity", ex)
             val message = context.getString(R.string.error_cannot_open_activity).format(actionName)
             AlertDialog.Builder(context)
                 .setTitle(R.string.error_occured)

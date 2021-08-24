@@ -5,15 +5,15 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.base.BaseFragment
 import io.github.wykopmobilny.databinding.ActivityNotificationsListBinding
 import io.github.wykopmobilny.models.dataclass.Notification
 import io.github.wykopmobilny.ui.adapters.NotificationsListAdapter
-import io.github.wykopmobilny.utils.prepare
-import io.github.wykopmobilny.utils.printout
-import io.github.wykopmobilny.utils.viewBinding
 import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.prepare
+import io.github.wykopmobilny.utils.viewBinding
 
 abstract class BaseNotificationsListFragment :
     BaseFragment(R.layout.activity_notifications_list),
@@ -32,10 +32,8 @@ abstract class BaseNotificationsListFragment :
         val notification = notificationAdapter.data[position]
         notification.new = false
         notificationAdapter.notifyDataSetChanged()
-        notification.url?.let {
-            printout(notification.url)
-            linkHandler.handleUrl(notification.url, true)
-        }
+        Napier.d("Notification url=${notification.url}")
+        notification.url?.let { linkHandler.handleUrl(it, true) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,7 +57,7 @@ abstract class BaseNotificationsListFragment :
         binding.swiperefresh.isRefreshing = false
         notificationAdapter.addData(
             if (!shouldClearAdapter) notifications.filterNot { notificationAdapter.data.contains(it) } else notifications,
-            shouldClearAdapter
+            shouldClearAdapter,
         )
     }
 

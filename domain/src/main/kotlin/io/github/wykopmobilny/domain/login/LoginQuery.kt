@@ -23,7 +23,7 @@ class LoginQuery @Inject constructor(
     private val sessionStorage: SessionStorage,
     private val userInfoStore: Store<UserSession, LoggedUserInfo>,
     private val blacklistStore: Store<Unit, Blacklist>,
-    private val loginConfig: ConnectConfig,
+    private val loginConfig: () -> ConnectConfig,
     private val appRestarter: AppRestarter,
     private val viewStateStorage: SimpleViewStateStorage,
     private val appScopes: AppScopes,
@@ -32,7 +32,7 @@ class LoginQuery @Inject constructor(
     override fun invoke() =
         viewStateStorage.state.map { viewState ->
             LoginUi(
-                urlToLoad = loginConfig.connectUrl,
+                urlToLoad = loginConfig().connectUrl,
                 isLoading = viewState.isLoading,
                 visibleError = viewState.visibleError?.let {
                     InfoMessageUi(
