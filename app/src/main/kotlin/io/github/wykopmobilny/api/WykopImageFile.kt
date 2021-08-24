@@ -7,8 +7,8 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.util.Log
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.utils.FileUtils
-import io.github.wykopmobilny.utils.printout
 import io.github.wykopmobilny.utils.queryFileName
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -43,7 +43,7 @@ class WykopImageFile(val uri: Uri, val context: Context) {
         }
 
         val rotatedFile = ensureRotation(file)
-        printout(rotatedFile!!.name)
+        Napier.d("Rotated ${rotatedFile!!.name}")
         return MultipartBody.Part.createFormData("embed", rotatedFile.name, rotatedFile.asRequestBody(mimetype?.toMediaTypeOrNull()))
     }
 
@@ -74,7 +74,7 @@ class WykopImageFile(val uri: Uri, val context: Context) {
             val exif = ExifInterface(f!!.path)
             val orientation = exif.getAttributeInt(
                 ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_NORMAL
+                ExifInterface.ORIENTATION_NORMAL,
             )
 
             val angle = when (orientation) {
@@ -91,11 +91,11 @@ class WykopImageFile(val uri: Uri, val context: Context) {
 
             val bmp = BitmapFactory.decodeStream(
                 FileInputStream(f),
-                null, options
+                null, options,
             )
             val bitmap = Bitmap.createBitmap(
                 bmp!!, 0, 0, bmp.width,
-                bmp.height, mat, true
+                bmp.height, mat, true,
             )
 
             val file = File.createTempFile("rSaved", ".0", context.cacheDir)

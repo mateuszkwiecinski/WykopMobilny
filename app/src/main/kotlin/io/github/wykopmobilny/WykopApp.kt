@@ -5,10 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.webkit.CookieManager
 import android.widget.Toast
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.Lazy
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.api.ApiSignInterceptor
 import io.github.wykopmobilny.data.cache.sqldelight.DaggerApplicationCacheComponent
 import io.github.wykopmobilny.di.DaggerAppComponent
@@ -41,6 +45,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.Cache
@@ -68,7 +73,26 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
     override fun onCreate() {
         super.onCreate()
         AndroidThreeTen.init(this)
+        if (BuildConfig.DEBUG) {
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
+            Napier.base(DebugAntilog())
+        } else {
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
+            Napier.base(CrashlyticsAntilog())
+        }
+
+        FirebaseRemoteConfig.getInstance().setDefaultsAsync(
+            mapOf(
+                "wykop_app_key" to BuildConfig.APP_KEY,
+                "wykop_app_secret" to BuildConfig.APP_SECRET,
+            ),
+        )
         doInterop()
+        applicationScope.launch {
+            storages.userInfoStorage().loggedUser
+                .mapNotNull { it?.id }
+                .collect { FirebaseCrashlytics.getInstance().setUserId(it) }
+        }
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
@@ -85,7 +109,10 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
     protected open val domainComponent: DomainComponent by lazy {
         daggerDomain().create(
             appScopes = this,
-            connectConfig = ConnectConfig(connectUrl = "https://a2.wykop.pl/login/connect/appkey/${BuildConfig.APP_KEY}"),
+            connectConfig = {
+                val appKey = FirebaseRemoteConfig.getInstance().getString("wykop_app_key")
+                ConnectConfig(connectUrl = "https://a2.wykop.pl/login/connect/appkey/$appKey")
+            },
             storages = storages,
             scraper = scraper,
             wykop = wykopApi,
@@ -94,7 +121,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         )
     }
 
-    public open val storages by lazy {
+    open val storages by lazy {
         DaggerStoragesComponent.factory().create(
             context = this,
             executor = AppDispatchers.IO.asExecutor(),
@@ -122,7 +149,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         daggerWykop().create(
             okHttpClient = okHttpClient,
             baseUrl = WYKOP_API_URL,
-            appKey = BuildConfig.APP_KEY,
+            appKey = { FirebaseRemoteConfig.getInstance().getString("wykop_app_key") },
             cacheDir = cacheDir.resolve("okhttp/wykop"),
             signingInterceptor = ApiSignInterceptor(
                 object : SimpleUserManagerApi {

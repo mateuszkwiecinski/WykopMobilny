@@ -1,6 +1,6 @@
 package io.github.wykopmobilny.api
 
-import io.github.wykopmobilny.APP_SECRET
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import io.github.wykopmobilny.utils.api.encryptMD5
 import io.github.wykopmobilny.utils.usermanager.SimpleUserManagerApi
 import okhttp3.FormBody
@@ -10,7 +10,6 @@ import okhttp3.Response
 import okio.buffer
 import okio.sink
 import java.io.ByteArrayOutputStream
-import java.util.ArrayList
 
 const val REMOVE_USERKEY_HEADER = "REMOVE_USERKEY"
 
@@ -31,6 +30,7 @@ class ApiSignInterceptor(private val userManagerApi: SimpleUserManagerApi) : Int
         if (credentials != null && !customHeaders.contains(REMOVE_USERKEY_HEADER)) {
             url += "/userkey/${credentials.userKey}"
         }
+        val appSecret = FirebaseRemoteConfig.getInstance().getString("wykop_app_secret")
 
         val encodeUrl: String = when (request.body) {
             is FormBody -> {
@@ -39,7 +39,7 @@ class ApiSignInterceptor(private val userManagerApi: SimpleUserManagerApi) : Int
                     .filter { formBody.value(it).isNotEmpty() }
                     .mapTo(ArrayList<String>()) { formBody.value(it) }
                     .toList()
-                APP_SECRET + url + paramList.joinToString(",")
+                appSecret + url + paramList.joinToString(",")
             }
             is MultipartBody -> {
                 val multipart = request.body as MultipartBody
@@ -51,9 +51,9 @@ class ApiSignInterceptor(private val userManagerApi: SimpleUserManagerApi) : Int
                     part.writeTo(bufferedSink)
                     parts.add(bufferedSink.buffer.readUtf8())
                 }
-                APP_SECRET + url + parts.joinToString(",")
+                appSecret + url + parts.joinToString(",")
             }
-            else -> APP_SECRET + url
+            else -> appSecret + url
         }
 
         builder.apply {

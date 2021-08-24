@@ -33,7 +33,7 @@ internal class TestApp : WykopApp() {
         daggerWykop().create(
             okHttpClient = okHttpClient,
             baseUrl = "http://localhost:8000",
-            appKey = "fixture-app-key",
+            appKey = { "fixture-app-key" },
             signingInterceptor = { it.proceed(it.request()) },
             cacheDir = cacheDir.resolve("tests/okhttp-cache"),
         )
@@ -56,12 +56,12 @@ internal class TestApp : WykopApp() {
     override val domainComponent by lazy {
         daggerDomain().create(
             appScopes = this,
-            connectConfig = ConnectConfig("http://localhost:8000/Login/Connect"),
+            connectConfig = { ConnectConfig("http://localhost:8000/Login/Connect") },
             storages = storages,
             scraper = scraper,
             wykop = wykopApi,
             framework = framework,
-            applicationCache = applicationCache
+            applicationCache = applicationCache,
         )
     }
 

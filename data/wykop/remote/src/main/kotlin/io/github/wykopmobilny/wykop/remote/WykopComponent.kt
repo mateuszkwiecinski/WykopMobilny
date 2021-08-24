@@ -18,7 +18,7 @@ interface WykopComponent : WykopApi {
             @BindsInstance @BaseUrl
             baseUrl: String,
             @BindsInstance @AppKey
-            appKey: String,
+            appKey: () -> String,
             @BindsInstance @SigningInterceptor
             signingInterceptor: Interceptor,
             @BindsInstance cacheDir: File,

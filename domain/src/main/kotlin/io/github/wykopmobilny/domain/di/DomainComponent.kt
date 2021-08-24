@@ -42,7 +42,7 @@ interface DomainComponent {
 
         fun create(
             @BindsInstance appScopes: AppScopes,
-            @BindsInstance connectConfig: ConnectConfig,
+            @BindsInstance connectConfig: () -> ConnectConfig,
             storages: Storages,
             scraper: Scraper,
             wykop: WykopApi,

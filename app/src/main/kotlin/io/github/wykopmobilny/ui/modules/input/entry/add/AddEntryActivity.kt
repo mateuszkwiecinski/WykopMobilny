@@ -4,12 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.api.suggest.SuggestApi
 import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.modules.NewNavigatorApi
 import io.github.wykopmobilny.ui.modules.input.BaseInputActivity
-import io.github.wykopmobilny.utils.printout
 import javax.inject.Inject
 
 class AddEntryActivity : BaseInputActivity<AddEntryPresenter>(), AddEntryActivityView {
@@ -51,7 +51,7 @@ class AddEntryActivity : BaseInputActivity<AddEntryPresenter>(), AddEntryActivit
                 val imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM) as Uri?
                 imageUri?.let {
                     binding.markupToolbar.photo = imageUri
-                    printout(imageUri.toString())
+                    Napier.d("Image uri $imageUri")
                 }
             }
         }

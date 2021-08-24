@@ -6,7 +6,7 @@ import okhttp3.Response
 import javax.inject.Inject
 
 internal class AppKeyReplacingInterceptor @Inject constructor(
-    @AppKey private val appKey: String,
+    @AppKey private val appKey: () -> String,
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -14,7 +14,7 @@ internal class AppKeyReplacingInterceptor @Inject constructor(
         val originalUrl = originalRequest.url
         val index = originalUrl.pathSegments.indexOf(APP_KEY)
         val newUrl = if (index >= 0) {
-            originalUrl.newBuilder().setPathSegment(index, appKey).build()
+            originalUrl.newBuilder().setPathSegment(index, appKey()).build()
         } else {
             originalUrl
         }

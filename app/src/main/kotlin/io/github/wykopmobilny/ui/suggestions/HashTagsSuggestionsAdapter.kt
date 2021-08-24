@@ -12,7 +12,6 @@ import io.github.wykopmobilny.api.suggest.SuggestApi
 import io.github.wykopmobilny.databinding.AutosuggestItemBinding
 import io.github.wykopmobilny.models.dataclass.TagSuggestion
 import io.github.wykopmobilny.utils.layoutInflater
-import io.github.wykopmobilny.utils.printout
 
 class HashTagsSuggestionsAdapter(
     context: Context,
@@ -26,7 +25,6 @@ class HashTagsSuggestionsAdapter(
     override fun getItem(index: Int) = items[index]
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        printout(items.size.toString())
         val view = convertView?.let(AutosuggestItemBinding::bind) ?: AutosuggestItemBinding.inflate(context.layoutInflater)
         val item = items[position]
         view.textView.text = "${item.tag} (${item.followers})"
