@@ -46,7 +46,6 @@
             android:title="@string/pref_disable_exit_confirmation"
             app:iconSpaceReserved="false"
             />
-
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory

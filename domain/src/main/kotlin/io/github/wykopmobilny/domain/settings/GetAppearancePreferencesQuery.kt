@@ -81,6 +81,10 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
                     currentValue = appearance.defaultScreen.toUi(),
                     onSelected = { updateUserSetting(UserSettings.defaultScreen, it.toDomain()) },
                 ),
+                disableEdgeSlide = Setting(
+                    currentValue = appearance.disableEdgeSlide,
+                    onClicked = { updateUserSetting(UserSettings.disableEdgeSlide, !appearance.disableEdgeSlide) },
+                ),
             )
         }
 

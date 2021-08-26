@@ -31,6 +31,7 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
                 bindCheckbox("useAmoledTheme", it.appearance.useAmoledTheme)
                 bindList("defaultScreen", it.appearance.startScreen, defaultScreenMapping)
                 bindList("fontSize", it.appearance.fontSize, fontMapping)
+                bindCheckbox("disableEdgeSlide", it.appearance.disableEdgeSlide)
                 bindCheckbox("enableYoutubePlayer", it.mediaPlayerSection.enableYoutubePlayer)
                 bindCheckbox("enableEmbedPlayer", it.mediaPlayerSection.enableEmbedPlayer)
                 bindList("hotEntriesScreen", it.mikroblogSection.mikroblogScreen, defaultMikroblogScreenMapping)

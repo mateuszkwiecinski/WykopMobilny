@@ -6,20 +6,24 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.r0adkll.slidr.Slidr
+import com.r0adkll.slidr.model.SlidrConfig
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.styles.AppThemeUi
-import io.github.wykopmobilny.styles.StyleUi
 import io.github.wykopmobilny.styles.StylesDependencies
 import io.github.wykopmobilny.ui.dialogs.showExceptionDialog
 import io.github.wykopmobilny.utils.requireDependency
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -42,13 +46,38 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
-        initTheme()
+        val initialTheme = runBlocking { getAppStyle().first() }.theme
+        initTheme(initialTheme)
         super.onCreate(savedInstanceState)
 
+        val slidr = if (enableSwipeBackLayout) {
+            Slidr.attach(this, SlidrConfig(edgeOnly = true))
+        } else {
+            null
+        }
         lifecycleScope.launchWhenResumed {
-            getAppStyle().distinctUntilChanged().drop(1).collect {
-                updateTheme(it)
-                recreate()
+            val shared = getAppStyle().stateIn(this)
+            launch {
+                shared
+                    .map { it.theme }
+                    .distinctUntilChanged()
+                    .dropWhile { it == initialTheme }
+                    .collect {
+                        updateTheme(it)
+                        recreate()
+                    }
+            }
+            launch {
+                shared
+                    .map { it.edgeSlidingBehaviorEnabled }
+                    .distinctUntilChanged()
+                    .collect { isEnabled ->
+                        if (isEnabled) {
+                            slidr?.unlock()
+                        } else {
+                            slidr?.lock()
+                        }
+                    }
             }
         }
     }
@@ -64,8 +93,8 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
     }
 
     // This function initializes activity theme based on settings
-    private fun initTheme() {
-        updateTheme(runBlocking { getAppStyle().first() })
+    private fun initTheme(initialTheme: AppThemeUi) {
+        updateTheme(initialTheme)
         if (isActivityTransfluent || enableSwipeBackLayout) {
             theme.applyStyle(R.style.TransparentActivityTheme, true)
             window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -82,9 +111,9 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
         }
     }
 
-    private fun updateTheme(appStyle: StyleUi) {
+    private fun updateTheme(newTheme: AppThemeUi) {
         val (appTheme, navColor) = runBlocking {
-            when (appStyle.theme) {
+            when (newTheme) {
                 AppThemeUi.Light -> R.style.WykopAppTheme to R.color.colorPrimaryDark
                 AppThemeUi.Dark -> R.style.WykopAppTheme_Dark to R.color.colorPrimaryDark_Dark
                 AppThemeUi.DarkAmoled -> R.style.WykopAppTheme_Amoled to R.color.colorPrimaryDark_Amoled

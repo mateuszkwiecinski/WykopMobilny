@@ -17,6 +17,7 @@ internal class ProfileActivityV2 : ThemableActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(binding.fragmentContainer.id, profileMainFragment(userId))

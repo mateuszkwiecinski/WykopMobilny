@@ -17,6 +17,7 @@ data class AppearancePreferencesUi(
         val useAmoledTheme: Setting,
         val startScreen: ListSetting<MainScreenUi>,
         val fontSize: ListSetting<FontSizeUi>,
+        val disableEdgeSlide: Setting,
     )
 
     data class MediaPlayerSectionUi(

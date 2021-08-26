@@ -276,7 +276,7 @@
         <activity
             android:name=".ui.modules.profile.ProfileActivityV2"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/TransparentActivityTheme"
+            android:theme="@style/Theme.App.Dark"
             android:windowSoftInputMode="stateUnchanged|adjustResize"
             />
         <activity

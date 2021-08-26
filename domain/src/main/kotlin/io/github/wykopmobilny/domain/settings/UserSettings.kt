@@ -26,6 +26,7 @@ internal object UserSettings {
             FontSize.VeryLarge to "very_large",
         ),
     )
+    val disableEdgeSlide = booleanMapping(preferencesKey = "settings.appearance.disable_edge_slide")
 
     val notificationsEnabled = booleanMapping(preferencesKey = "settings.notifications.enabled")
     val notificationsRefreshPeriod = durationMapping(preferencesKey = "settings.notifications.refresh_period")
