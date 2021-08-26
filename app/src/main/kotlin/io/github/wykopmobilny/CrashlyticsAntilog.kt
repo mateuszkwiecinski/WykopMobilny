@@ -12,11 +12,10 @@ internal class CrashlyticsAntilog : Antilog() {
         throwable: Throwable?,
         message: String?,
     ) {
-        if (priority < LogLevel.WARNING) {
-            return
-        }
-
         message?.let { FirebaseCrashlytics.getInstance().log(message) }
-        throwable?.let { FirebaseCrashlytics.getInstance().recordException(it) }
+
+        if (priority >= LogLevel.WARNING) {
+            throwable?.let { FirebaseCrashlytics.getInstance().recordException(it) }
+        }
     }
 }

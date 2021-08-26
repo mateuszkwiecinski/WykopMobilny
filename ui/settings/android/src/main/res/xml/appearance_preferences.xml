@@ -35,6 +35,13 @@
             android:title="@string/pref_fontsize"
             app:iconSpaceReserved="false"
             />
+
+        <androidx.preference.CheckBoxPreference
+            android:key="disableEdgeSlide"
+            android:persistent="false"
+            android:title="@string/pref_disable_edge_slide"
+            app:iconSpaceReserved="false"
+            />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory

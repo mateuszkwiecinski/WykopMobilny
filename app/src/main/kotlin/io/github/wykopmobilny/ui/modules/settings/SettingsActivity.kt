@@ -13,7 +13,6 @@ internal class SettingsActivity : ThemableActivity() {
     private val binding by viewBinding(ActivityContainerBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {

@@ -28,6 +28,7 @@
     <string name="pref_use_built_in_browser">Użyj wbudowanej przeglądarki</string>
     <string name="pref_clear_history">Wyczyść historię wyszukiwarki</string>
     <string name="pref_disable_exit_confirmation">Wyłącz potwierdzenie wyjścia z aplikacji</string>
+    <string name="pref_disable_edge_slide">Wyłącz nawigację wstecz gestem</string>
     <string name="link_simple_list">Prosta lista znalezisk</string>
     <string name="link_show_author">Pokaż autora znaleziska</string>
     <string name="link_show_image">Pokaż miniaturkę znaleziska</string>

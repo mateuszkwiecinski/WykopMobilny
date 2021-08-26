@@ -3,6 +3,7 @@
 
     <style name="Theme.App.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">#ffffff</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="colorAccent">#3a80ba</item>
         <item name="colorPrimary">#3a80ba</item>
         <item name="colorOnPrimary">#ffffff</item>
@@ -23,6 +24,7 @@
 
     <style name="Theme.App.Dark" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">#2c2c2c</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="colorAccent">#3a80bc</item>
         <item name="colorPrimary">#212121</item>
         <item name="colorOnPrimary">#deffffff</item>

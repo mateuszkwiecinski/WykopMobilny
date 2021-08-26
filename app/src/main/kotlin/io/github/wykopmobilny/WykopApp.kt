@@ -2,7 +2,6 @@ package io.github.wykopmobilny
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.webkit.CookieManager
 import android.widget.Toast
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -192,12 +191,12 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                 scopes.getOrPut(scopeId) { SubScope(domainComponent.profile().create(scopeId), newScope()) }
             }
             else -> error("Unknown dependency type $clazz")
-        }.dependencyContainer.also { Log.i("WykopApp", "Create component clazz=${clazz.java.simpleName}, scopeId=$scopeId") } as T
+        }.dependencyContainer.also { Napier.i("Create component clazz=${clazz.java.simpleName}, scopeId=$scopeId") } as T
 
     private fun newScope() = CoroutineScope(Job(applicationScope.coroutineContext[Job]) + Dispatchers.Default)
 
     override fun <T : Any> destroyDependency(clazz: KClass<T>, scopeId: String?) {
-        Log.i("WykopApp", "Destroy component clazz=${clazz.java.simpleName}, scopeId=$scopeId")
+        Napier.i("Destroy component clazz=${clazz.java.simpleName}, scopeId=$scopeId")
         when (clazz) {
             LoginDependencies::class -> scopes.remove(LoginScope::class)
             StylesDependencies::class -> scopes.remove(StylesScope::class)

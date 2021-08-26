@@ -1,5 +1,7 @@
 package io.github.wykopmobilny.domain.settings.prefs
 
+import io.github.wykopmobilny.domain.navigation.NavigationMode
+import io.github.wykopmobilny.domain.navigation.SystemSettingsDetector
 import io.github.wykopmobilny.domain.settings.FontSize
 import io.github.wykopmobilny.domain.settings.UserSettings
 import io.github.wykopmobilny.domain.settings.get
@@ -12,6 +14,7 @@ import javax.inject.Inject
 internal class GetAppearanceSectionPreferences @Inject constructor(
     private val userPreferences: UserPreferenceApi,
     private val getAppTheme: GetAppTheme,
+    private val systemSettingsDetector: SystemSettingsDetector,
 ) {
 
     operator fun invoke() = combine(
@@ -19,7 +22,8 @@ internal class GetAppearanceSectionPreferences @Inject constructor(
         userPreferences.get(UserSettings.useAmoledTheme),
         userPreferences.get(UserSettings.font),
         userPreferences.get(UserSettings.defaultScreen),
-    ) { currentAppTheme, amoledTheme, fontSize, defaultScreen ->
+        userPreferences.get(UserSettings.disableEdgeSlide),
+    ) { currentAppTheme, amoledTheme, fontSize, defaultScreen, disableEdgeSlide ->
         val isDarkTheme = when (currentAppTheme) {
             AppTheme.Light -> false
             AppTheme.Dark -> true
@@ -28,14 +32,26 @@ internal class GetAppearanceSectionPreferences @Inject constructor(
         val isAmoledTheme = amoledTheme == true
         val screen = defaultScreen ?: MainScreen.Promoted
         val font = fontSize ?: FontSize.Normal
+        val disableEdgeSlideBehavior = disableEdgeSlide ?: findDefaultEdgeSlide()
 
         AppearanceSection(
             isDarkTheme = isDarkTheme,
             isAmoledTheme = isAmoledTheme,
             defaultScreen = screen,
             defaultFont = font,
+            disableEdgeSlide = disableEdgeSlideBehavior,
         )
     }
+
+    private suspend fun findDefaultEdgeSlide() =
+        when (systemSettingsDetector.getNavigationMode()) {
+            NavigationMode.ThreeButtons,
+            NavigationMode.TwoButtons,
+            -> false
+            NavigationMode.FullScreenGesture,
+            NavigationMode.Unknown,
+            -> true
+        }
 }
 
 internal data class AppearanceSection(
@@ -43,6 +59,7 @@ internal data class AppearanceSection(
     val isAmoledTheme: Boolean,
     val defaultScreen: MainScreen,
     val defaultFont: FontSize,
+    val disableEdgeSlide: Boolean,
 )
 
 internal enum class MainScreen {

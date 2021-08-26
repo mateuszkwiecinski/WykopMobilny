@@ -1,7 +1,7 @@
 package io.github.wykopmobilny.domain.styles
 
-import io.github.wykopmobilny.domain.navigation.NightModeDetector
 import io.github.wykopmobilny.domain.navigation.NightModeState
+import io.github.wykopmobilny.domain.navigation.SystemSettingsDetector
 import io.github.wykopmobilny.domain.settings.UserSettings
 import io.github.wykopmobilny.domain.settings.get
 import io.github.wykopmobilny.storage.api.UserPreferenceApi
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 internal class GetAppTheme @Inject constructor(
     private val userPreferenceApi: UserPreferenceApi,
-    private val nightModeDetector: NightModeDetector,
+    private val systemSettingsDetector: SystemSettingsDetector,
 ) {
 
     operator fun invoke() =
@@ -32,7 +32,7 @@ internal class GetAppTheme @Inject constructor(
             .distinctUntilChanged()
 
     private suspend fun shouldBeDarkByDefault() =
-        when (nightModeDetector.getNightModeState()) {
+        when (systemSettingsDetector.getNightModeState()) {
             NightModeState.Enabled -> true
             NightModeState.Disabled,
             NightModeState.Unknown,

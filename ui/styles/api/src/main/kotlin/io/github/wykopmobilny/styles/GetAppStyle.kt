@@ -6,6 +6,7 @@ interface GetAppStyle : Query<StyleUi>
 
 data class StyleUi(
     val theme: AppThemeUi,
+    val edgeSlidingBehaviorEnabled: Boolean,
 )
 
 enum class AppThemeUi {
