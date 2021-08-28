@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.r0adkll.slidr.Slidr
+import com.r0adkll.slidr.attachSlidr
 import com.r0adkll.slidr.model.SlidrConfig
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
@@ -51,7 +51,7 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
         super.onCreate(savedInstanceState)
 
         val slidr = if (enableSwipeBackLayout) {
-            Slidr.attach(this, SlidrConfig(edgeOnly = true))
+            attachSlidr(SlidrConfig(edgeOnly = true))
         } else {
             null
         }
