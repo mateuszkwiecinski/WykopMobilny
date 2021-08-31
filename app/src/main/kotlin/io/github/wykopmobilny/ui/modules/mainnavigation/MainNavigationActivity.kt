@@ -147,8 +147,7 @@ class MainNavigationActivity :
                 confirmationDialog(this) {
                     runBlocking {
                         appStorage.blacklistQueries.transaction {
-                            appStorage.blacklistQueries.deleteAllTags()
-                            appStorage.blacklistQueries.deleteAllProfiles()
+                            appStorage.blacklistQueries.deleteAll()
                         }
                     }
                     userManagerApi.logoutUser()

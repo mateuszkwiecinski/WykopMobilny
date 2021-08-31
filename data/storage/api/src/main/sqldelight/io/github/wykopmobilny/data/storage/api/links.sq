@@ -9,3 +9,7 @@ VALUES (?);
 contains:
 SELECT COUNT(1) FROM readLinkEntity
 WHERE ? = linkId;
+
+deleteAll {
+  DELETE FROM readLinkEntity;
+}

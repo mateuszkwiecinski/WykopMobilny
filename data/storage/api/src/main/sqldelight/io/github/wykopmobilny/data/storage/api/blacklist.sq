@@ -28,8 +28,7 @@ deleteProfile:
 DELETE FROM blockedProfilesEntity
 WHERE ? = profileId;
 
-deleteAllTags:
-DELETE FROM blockedTagEntity;
-
-deleteAllProfiles:
-DELETE FROM blockedProfilesEntity;
+deleteAll {
+  DELETE FROM blockedTagEntity;
+  DELETE FROM blockedProfilesEntity;
+}

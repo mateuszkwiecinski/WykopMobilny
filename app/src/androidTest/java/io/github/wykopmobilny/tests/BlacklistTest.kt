@@ -20,8 +20,9 @@ class BlacklistTest : BaseActivityTest() {
         launchLoggedInApp()
         MainPage.openDrawer()
         MainPage.tapDrawerOption(R.id.nav_settings)
-        mockWebServerRule.blacklist()
         SettingsPage.tapBlacklistSettings()
+        mockWebServerRule.blacklist()
+        BlacklistPage.tapImportButton()
     }
 
     @Test

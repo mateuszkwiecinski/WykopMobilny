@@ -51,17 +51,15 @@ internal class StoresModule {
             },
             writer = { _, newValue ->
                 storage.blacklistQueries.transaction {
-                    storage.blacklistQueries.deleteAllProfiles()
-                    newValue.tags.forEach {
-                    }
-                    storage.blacklistQueries.deleteAllTags()
+                    storage.blacklistQueries.deleteAll()
+                    newValue.tags.forEach(storage.blacklistQueries::insertOrReplaceTag)
+                    newValue.users.forEach(storage.blacklistQueries::insertOrReplaceProfile)
                 }
             },
             delete = { error("unsupported") },
             deleteAll = {
                 storage.blacklistQueries.transaction {
-                    storage.blacklistQueries.deleteAllProfiles()
-                    storage.blacklistQueries.deleteAllTags()
+                    storage.blacklistQueries.deleteAll()
                 }
             },
         ),
