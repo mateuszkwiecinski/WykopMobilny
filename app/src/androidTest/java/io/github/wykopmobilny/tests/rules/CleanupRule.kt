@@ -31,8 +31,6 @@ internal class CleanupRule : TestRule {
                             CookieManager.getInstance().removeAllCookies { continuation.resume(Unit) }
                         }
                     }
-
-                    context.noBackupFilesDir.deleteRecursively()
                 }
 
                 base.evaluate()

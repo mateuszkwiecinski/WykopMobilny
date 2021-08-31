@@ -14,9 +14,9 @@ internal interface InteropRequestsProvider {
     suspend fun request(navigation: InteropRequest)
 }
 
-enum class InteropRequest {
-    BlackListScreen,
-    ClearSuggestionDatabase,
+sealed class InteropRequest {
+    object BlackListScreen : InteropRequest()
+    data class ShowToast(val message: String) : InteropRequest()
 }
 
 @Singleton

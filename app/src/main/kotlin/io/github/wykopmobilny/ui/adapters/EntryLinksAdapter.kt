@@ -7,6 +7,7 @@ import io.github.wykopmobilny.models.dataclass.Entry
 import io.github.wykopmobilny.models.dataclass.EntryLink
 import io.github.wykopmobilny.models.dataclass.Link
 import io.github.wykopmobilny.storage.api.LinksPreferencesApi
+import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.adapters.viewholders.BlockedViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.EntryViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.LinkViewHolder
@@ -14,9 +15,8 @@ import io.github.wykopmobilny.ui.adapters.viewholders.SimpleLinkViewHolder
 import io.github.wykopmobilny.ui.fragments.entries.EntryActionListener
 import io.github.wykopmobilny.ui.fragments.links.LinkActionListener
 import io.github.wykopmobilny.ui.modules.NewNavigatorApi
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import javax.inject.Inject
 
 class EntryLinksAdapter @Inject constructor(
@@ -41,12 +41,10 @@ class EntryLinksAdapter @Inject constructor(
 
     override fun addData(items: List<EntryLink>, shouldClearAdapter: Boolean) {
         super.addData(
-            items.asSequence()
-                .filterNot {
-                    val isBlocked = if (it.entry != null) it.entry!!.isBlocked else it.link!!.isBlocked
-                    settingsPreferencesApi.hideBlacklistedViews && isBlocked
-                }
-                .toList(),
+            items.filterNot {
+                val isBlocked = it.entry?.isBlocked == true || it.link?.isBlocked == true
+                settingsPreferencesApi.hideBlacklistedViews && isBlocked
+            },
             shouldClearAdapter,
         )
     }

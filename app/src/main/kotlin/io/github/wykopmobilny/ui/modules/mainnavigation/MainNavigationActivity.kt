@@ -182,16 +182,16 @@ class MainNavigationActivity :
                 when (intent.getStringExtra(TARGET_FRAGMENT_KEY)) {
                     TARGET_NOTIFICATIONS -> openFragment(NotificationsListFragment.newInstance())
                 }
-            } else openMainFragment()
+            } else {
+                openMainFragment()
+            }
         }
         setupNavigation()
         shortcutsDispatcher.dispatchIntent(
-            intent,
-            this::openFragment,
-            {
-                this.navigator.openLoginScreen()
-            },
-            userManagerApi.isUserAuthorized(),
+            intent = intent,
+            startFragment = ::openFragment,
+            startActivity = navigator::openLoginScreen,
+            isUserAuthorized = userManagerApi.isUserAuthorized(),
         )
     }
 

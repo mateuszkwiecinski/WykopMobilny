@@ -1,0 +1,17 @@
+CREATE TABLE suggestionEntity (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  suggestion TEXT NOT NULL UNIQUE
+);
+
+searchByText:
+SELECT suggestion
+FROM suggestionEntity
+WHERE suggestion LIKE (:text || '%')
+LIMIT 6;
+
+insertOrReplace:
+INSERT OR REPLACE INTO suggestionEntity (suggestion)
+VALUES (?);
+
+deleteAll:
+DELETE FROM suggestionEntity;

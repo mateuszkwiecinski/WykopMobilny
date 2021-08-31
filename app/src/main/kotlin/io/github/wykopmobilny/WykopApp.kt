@@ -21,6 +21,7 @@ import io.github.wykopmobilny.domain.login.ConnectConfig
 import io.github.wykopmobilny.domain.login.di.LoginScope
 import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.android.DaggerFrameworkComponent
+import io.github.wykopmobilny.domain.search.di.SearchScope
 import io.github.wykopmobilny.domain.settings.di.SettingsScope
 import io.github.wykopmobilny.domain.styles.di.StylesScope
 import io.github.wykopmobilny.storage.android.DaggerStoragesComponent
@@ -31,8 +32,8 @@ import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.blacklist.BlacklistDependencies
 import io.github.wykopmobilny.ui.login.LoginDependencies
 import io.github.wykopmobilny.ui.modules.blacklist.BlacklistActivity
-import io.github.wykopmobilny.ui.modules.search.SuggestionDatabase
 import io.github.wykopmobilny.ui.profile.ProfileDependencies
+import io.github.wykopmobilny.ui.search.SearchDependencies
 import io.github.wykopmobilny.ui.settings.SettingsDependencies
 import io.github.wykopmobilny.utils.ApplicationInjector
 import io.github.wykopmobilny.utils.usermanager.SimpleUserManagerApi
@@ -55,7 +56,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
 
     companion object {
 
-        const val WYKOP_API_URL = "https://a2.wykop.pl"
+        private const val WYKOP_API_URL = "https://a2.wykop.pl"
     }
 
     @Inject
@@ -119,9 +120,10 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         )
     }
 
-    open val storages by lazy {
+    protected open val storages by lazy {
         DaggerStoragesComponent.factory().create(
             context = this,
+            dbName = "wykop_storage.sqlite",
             executor = AppDispatchers.IO.asExecutor(),
         )
     }
@@ -185,6 +187,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             StylesDependencies::class -> scopes.getOrPut(StylesScope::class) { SubScope(domainComponent.styles(), newScope()) }
             SettingsDependencies::class -> scopes.getOrPut(SettingsScope::class) { SubScope(domainComponent.settings(), newScope()) }
             BlacklistDependencies::class -> scopes.getOrPut(BlacklistScope::class) { SubScope(domainComponent.blacklist(), newScope()) }
+            SearchDependencies::class -> scopes.getOrPut(SearchScope::class) { SubScope(domainComponent.search(), newScope()) }
             ProfileDependencies::class -> {
                 checkNotNull(scopeId)
                 scopes.getOrPut(scopeId) { SubScope(domainComponent.profile().create(scopeId), newScope()) }
@@ -201,6 +204,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             StylesDependencies::class -> scopes.remove(StylesScope::class)
             SettingsDependencies::class -> scopes.remove(SettingsScope::class)
             BlacklistDependencies::class -> scopes.remove(BlacklistScope::class)
+            SearchDependencies::class -> scopes.remove(SearchScope::class)
             ProfileDependencies::class -> scopes.remove(checkNotNull(scopeId))
             else -> error("Unknown dependency type $clazz")
         }?.coroutineScope?.cancel()
@@ -237,10 +241,9 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                 val context = currentActivity ?: return@collect
                 when (it) {
                     InteropRequest.BlackListScreen -> context.startActivity(BlacklistActivity.createIntent(context))
-                    InteropRequest.ClearSuggestionDatabase -> {
-                        SuggestionDatabase(context).clearDb()
+                    is InteropRequest.ShowToast -> {
                         withContext(AppDispatchers.Main) {
-                            Toast.makeText(context, "Wyczyszczono historię wyszukiwarki", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                         }
                     }
                 }

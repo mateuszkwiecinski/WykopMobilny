@@ -68,7 +68,7 @@ class OWMContentFilter @Inject constructor(
     private fun String.bodyContainsBlockedTags(): Boolean {
         return !Collections.disjoint(
             blacklistPreferences.blockedTags.orEmpty(),
-            tagsRegex.matchEntire(this)?.groupValues?.map { it.removePrefix("#") } ?: emptyList<String>()
+            tagsRegex.matchEntire(this)?.groupValues?.map { it.removePrefix("#") }.orEmpty()
         )
     }
 

@@ -5,6 +5,10 @@ import dagger.android.support.DaggerApplication
 import io.github.wykopmobilny.di.DaggerTestAppComponent
 import io.github.wykopmobilny.domain.login.ConnectConfig
 import io.github.wykopmobilny.fakes.FakeCookieProvider
+import io.github.wykopmobilny.storage.android.DaggerStoragesComponent
+import io.github.wykopmobilny.storage.android.StoragesComponent
+import io.github.wykopmobilny.ui.base.AppDispatchers
+import kotlinx.coroutines.asExecutor
 import okhttp3.OkHttpClient
 
 internal class TestApp : WykopApp() {
@@ -50,6 +54,14 @@ internal class TestApp : WykopApp() {
             okHttpClient = okHttpClient,
             baseUrl = "http://localhost:8000",
             cookieProvider = cookieProvider::cookieForSite,
+        )
+    }
+
+    public override val storages: StoragesComponent by lazy {
+        DaggerStoragesComponent.factory().create(
+            context = this,
+            dbName = null,
+            executor = AppDispatchers.IO.asExecutor(),
         )
     }
 

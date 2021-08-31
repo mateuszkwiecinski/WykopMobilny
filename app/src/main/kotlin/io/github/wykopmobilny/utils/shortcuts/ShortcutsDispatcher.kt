@@ -19,9 +19,9 @@ class ShortcutsDispatcher {
             "hot" -> startFragment.invoke(HotFragment.newInstance())
             "search" -> startFragment.invoke(SearchFragment.newInstance())
             "mywykop" -> if (isUserAuthorized) {
-                startFragment.invoke(MyWykopFragment.newInstance())
+                startFragment(MyWykopFragment.newInstance())
             } else {
-                startActivity.invoke()
+                startActivity()
             }
             "hits" -> startFragment.invoke(HitsFragment.newInstance())
         }

@@ -115,6 +115,7 @@ dependencies {
     implementation(projects.ui.blacklist.android)
     implementation(projects.ui.styles.android)
     implementation(projects.ui.profile.android)
+    implementation(projects.ui.search.android)
     implementation(projects.domain)
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("androidx.appcompat:appcompat:1.4.0-alpha03")

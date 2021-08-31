@@ -1,5 +1,7 @@
 package io.github.wykopmobilny.storage.api
 
+import io.github.wykopmobilny.data.storage.api.AppStorage
+
 interface Storages {
 
     fun linksPreferences(): LinksPreferencesApi
@@ -11,4 +13,6 @@ interface Storages {
     fun userInfoStorage(): UserInfoStorage
 
     fun userPreferences(): UserPreferenceApi
+
+    fun storage(): AppStorage
 }

@@ -1,7 +1,24 @@
 plugins {
     id("com.starter.library.kotlin")
+    id("com.squareup.sqldelight")
 }
 
 dependencies {
+    api("com.squareup.sqldelight:coroutines-extensions-jvm:1.5.0")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+}
+
+sqldelight {
+    AppStorage {
+        packageName = "io.github.wykopmobilny.data.storage.api"
+        schemaOutputDirectory = file("src/main/sqldelight/databases")
+        verifyMigrations = true
+    }
+}
+
+tasks.named("lintKotlinMain") {
+    source = project.file("src/main/kotlin")
+}
+tasks.named("formatKotlinMain") {
+    source = project.file("src/main/kotlin")
 }
