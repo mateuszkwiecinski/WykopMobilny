@@ -23,20 +23,20 @@ interface LinksApi {
     fun getUpcoming(page: Int, sortBy: String): Single<List<Link>>
 
     fun getObserved(page: Int): Single<List<Link>>
-    fun getLinkComments(linkId: Int, sortBy: String): Single<List<LinkComment>>
-    fun getLink(linkId: Int): Single<Link>
+    fun getLinkComments(linkId: Long, sortBy: String): Single<List<LinkComment>>
+    fun getLink(linkId: Long): Single<Link>
 
-    fun commentVoteUp(linkId: Int): Single<LinkVoteResponse>
-    fun commentVoteDown(linkId: Int): Single<LinkVoteResponse>
+    fun commentVoteUp(linkId: Long): Single<LinkVoteResponse>
+    fun commentVoteDown(linkId: Long): Single<LinkVoteResponse>
     fun relatedVoteUp(relatedId: Int): Single<VoteResponse>
     fun relatedVoteDown(relatedId: Int): Single<VoteResponse>
-    fun commentVoteCancel(linkId: Int): Single<LinkVoteResponse>
+    fun commentVoteCancel(linkId: Long): Single<LinkVoteResponse>
     fun commentDelete(commentId: Int): Single<LinkComment>
     fun commentAdd(
         body: String,
         plus18: Boolean,
         inputStream: WykopImageFile,
-        linkId: Int,
+        linkId: Long,
         linkComment: Int
     ): Single<LinkComment>
 
@@ -44,14 +44,14 @@ interface LinksApi {
         title: String,
         url: String,
         plus18: Boolean,
-        linkId: Int
+        linkId: Long
     ): Single<Related>
 
     fun commentAdd(
         body: String,
         embed: String?,
         plus18: Boolean,
-        linkId: Int,
+        linkId: Long,
         linkComment: Int
     ): Single<LinkComment>
 
@@ -59,22 +59,22 @@ interface LinksApi {
         body: String,
         plus18: Boolean,
         inputStream: WykopImageFile,
-        linkId: Int
+        linkId: Long
     ): Single<LinkComment>
 
     fun commentAdd(
         body: String,
         embed: String?,
         plus18: Boolean,
-        linkId: Int
+        linkId: Long
     ): Single<LinkComment>
 
-    fun commentEdit(body: String, linkId: Int): Single<LinkComment>
-    fun voteUp(linkId: Int, notifyPublisher: Boolean = true): Single<DigResponse>
-    fun voteDown(linkId: Int, reason: Int, notifyPublisher: Boolean = true): Single<DigResponse>
-    fun voteRemove(linkId: Int, notifyPublisher: Boolean = true): Single<DigResponse>
-    fun getUpvoters(linkId: Int): Single<List<Upvoter>>
-    fun getDownvoters(linkId: Int): Single<List<Downvoter>>
-    fun markFavorite(linkId: Int): Single<Boolean>
-    fun getRelated(linkId: Int): Single<List<Related>>
+    fun commentEdit(body: String, linkId: Long): Single<LinkComment>
+    fun voteUp(linkId: Long, notifyPublisher: Boolean = true): Single<DigResponse>
+    fun voteDown(linkId: Long, reason: Long, notifyPublisher: Boolean = true): Single<DigResponse>
+    fun voteRemove(linkId: Long, notifyPublisher: Boolean = true): Single<DigResponse>
+    fun getUpvoters(linkId: Long): Single<List<Upvoter>>
+    fun getDownvoters(linkId: Long): Single<List<Downvoter>>
+    fun markFavorite(linkId: Long): Single<Boolean>
+    fun getRelated(linkId: Long): Single<List<Related>>
 }

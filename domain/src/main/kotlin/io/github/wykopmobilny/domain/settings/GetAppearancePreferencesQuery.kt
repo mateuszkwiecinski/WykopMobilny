@@ -1,5 +1,6 @@
 package io.github.wykopmobilny.domain.settings
 
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.settings.di.SettingsScope
 import io.github.wykopmobilny.domain.settings.prefs.GetAppearanceSectionPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetImagesPreferences
@@ -10,7 +11,6 @@ import io.github.wykopmobilny.domain.settings.prefs.GetMediaPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetMikroblogPreferences
 import io.github.wykopmobilny.domain.settings.prefs.MainScreen
 import io.github.wykopmobilny.domain.settings.prefs.MikroblogScreen
-import io.github.wykopmobilny.storage.api.UserPreferenceApi
 import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.base.launchIn
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi
@@ -33,7 +33,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetAppearancePreferencesQuery @Inject internal constructor(
-    private val userPreferences: UserPreferenceApi,
+    private val appStorage: AppStorage,
     private val getMediaPreferences: GetMediaPreferences,
     private val getMikroblogPreferences: GetMikroblogPreferences,
     private val getAppearanceSectionPreferences: GetAppearanceSectionPreferences,
@@ -171,7 +171,7 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
         }
 
     private fun <T> updateUserSetting(key: UserSetting<T>, value: T) {
-        appScopes.launchIn<SettingsScope> { userPreferences.update(key, value) }
+        appScopes.launchIn<SettingsScope> { appStorage.update(key, value) }
     }
 }
 

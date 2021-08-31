@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.isVisible
 import io.github.wykopmobilny.R
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.databinding.SimpleLinkLayoutBinding
 import io.github.wykopmobilny.models.dataclass.Link
 import io.github.wykopmobilny.storage.api.LinksPreferencesApi
@@ -21,7 +22,7 @@ class SimpleLinkViewHolder(
     private val navigatorApi: NewNavigatorApi,
     private val userManagerApi: UserManagerApi,
     private val linkActionListener: LinkActionListener,
-    private val linksPreferences: LinksPreferencesApi,
+    private val appStorage: AppStorage,
 ) : RecyclableViewHolder(binding.root) {
 
     companion object {
@@ -39,14 +40,14 @@ class SimpleLinkViewHolder(
             settingsPreferencesApi: SettingsPreferencesApi,
             navigatorApi: NewNavigatorApi,
             linkActionListener: LinkActionListener,
-            linksPreferences: LinksPreferencesApi,
+            appStorage: AppStorage,
         ) = SimpleLinkViewHolder(
             binding = SimpleLinkLayoutBinding.inflate(parent.layoutInflater, parent, false),
             settingsApi = settingsPreferencesApi,
             navigatorApi = navigatorApi,
             userManagerApi = userManagerApi,
             linkActionListener = linkActionListener,
-            linksPreferences = linksPreferences,
+            appStorage = appStorage,
         )
 
         fun getViewTypeForLink(link: Link): Int =
@@ -94,7 +95,7 @@ class SimpleLinkViewHolder(
             if (!link.gotSelected) {
                 setWidgetAlpha(ALPHA_VISITED)
                 link.gotSelected = true
-                linksPreferences.readLinksIds = linksPreferences.readLinksIds.orEmpty().plusElement("link_${link.id}")
+                appStorage.linksQueries.insertOrReplace(linkId = link.id)
             }
         }
     }

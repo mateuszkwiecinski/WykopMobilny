@@ -3,9 +3,9 @@ package io.github.wykopmobilny.ui.adapters.viewholders
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.isVisible
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.databinding.LinkLayoutBinding
 import io.github.wykopmobilny.models.dataclass.Link
-import io.github.wykopmobilny.storage.api.LinksPreferencesApi
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.fragments.links.LinkActionListener
 import io.github.wykopmobilny.ui.modules.NewNavigatorApi
@@ -19,7 +19,7 @@ class LinkViewHolder(
     private val navigatorApi: NewNavigatorApi,
     private val userManagerApi: UserManagerApi,
     private val linkActionListener: LinkActionListener,
-    private val linksPreferences: LinksPreferencesApi,
+    private val appStorage: AppStorage,
 ) : RecyclableViewHolder(binding.root) {
 
     companion object {
@@ -39,7 +39,7 @@ class LinkViewHolder(
             settingsPreferencesApi: SettingsPreferencesApi,
             navigatorApi: NewNavigatorApi,
             linkActionListener: LinkActionListener,
-            linksPreferences: LinksPreferencesApi,
+            appStorage: AppStorage,
         ): LinkViewHolder {
             val view = LinkViewHolder(
                 LinkLayoutBinding.inflate(parent.layoutInflater, parent, false),
@@ -47,7 +47,7 @@ class LinkViewHolder(
                 navigatorApi,
                 userManagerApi,
                 linkActionListener,
-                linksPreferences,
+                appStorage,
             )
             if (viewType == TYPE_IMAGE) {
                 view.inflateCorrectImageView()
@@ -100,7 +100,7 @@ class LinkViewHolder(
         if (!link.gotSelected) {
             setWidgetAlpha(ALPHA_VISITED)
             link.gotSelected = true
-            linksPreferences.readLinksIds = linksPreferences.readLinksIds.orEmpty().plusElement("link_${link.id}")
+            appStorage.linksQueries.insertOrReplace(linkId = link.id)
         }
     }
 

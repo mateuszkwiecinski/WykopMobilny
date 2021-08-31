@@ -1,23 +1,23 @@
 package io.github.wykopmobilny.domain.styles
 
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.navigation.NightModeState
 import io.github.wykopmobilny.domain.navigation.SystemSettingsDetector
 import io.github.wykopmobilny.domain.settings.UserSettings
 import io.github.wykopmobilny.domain.settings.get
-import io.github.wykopmobilny.storage.api.UserPreferenceApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 internal class GetAppTheme @Inject constructor(
-    private val userPreferenceApi: UserPreferenceApi,
+    private val appStorage: AppStorage,
     private val systemSettingsDetector: SystemSettingsDetector,
 ) {
 
     operator fun invoke() =
         combine(
-            userPreferenceApi.get(UserSettings.darkTheme),
-            userPreferenceApi.get(UserSettings.useAmoledTheme),
+            appStorage.get(UserSettings.darkTheme),
+            appStorage.get(UserSettings.useAmoledTheme),
         ) { darkTheme, amoledTheme ->
             if (darkTheme ?: shouldBeDarkByDefault()) {
                 if (amoledTheme == true) {

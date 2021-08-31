@@ -63,7 +63,7 @@ interface LinksRetrofitApi {
 
     @GET("/links/votedown/{linkId}/{voteType}/appkey/$APP_KEY")
     suspend fun voteDown(
-        @Path("linkId") linkId: Int,
+        @Path("linkId") linkId: Long,
         @Path("voteType") reason: Int
     ): WykopApiResponse<DigResponse>
 

@@ -14,18 +14,20 @@ import io.github.wykopmobilny.R
 import io.github.wykopmobilny.api.WykopImageFile
 import io.github.wykopmobilny.api.suggest.SuggestApi
 import io.github.wykopmobilny.base.BaseActivity
+import io.github.wykopmobilny.data.storage.api.AppStorage
+import io.github.wykopmobilny.data.storage.api.PreferenceEntity
 import io.github.wykopmobilny.databinding.ActivityLinkDetailsBinding
 import io.github.wykopmobilny.models.dataclass.Link
 import io.github.wykopmobilny.models.dataclass.LinkComment
+import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.adapters.LinkDetailsAdapter
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentViewListener
 import io.github.wykopmobilny.ui.modules.input.BaseInputActivity
 import io.github.wykopmobilny.ui.widgets.InputToolbarListener
-import io.github.wykopmobilny.storage.api.LinksPreferencesApi
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.utils.prepare
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.utils.viewBinding
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class LinkDetailsActivity :
@@ -62,7 +64,7 @@ class LinkDetailsActivity :
     lateinit var suggestionsApi: SuggestApi
 
     @Inject
-    lateinit var linkPreferences: LinksPreferencesApi
+    lateinit var appStorage: AppStorage
 
     @Inject
     lateinit var adapter: LinkDetailsAdapter
@@ -76,7 +78,7 @@ class LinkDetailsActivity :
     override val enableSwipeBackLayout: Boolean = true
     val linkId by lazy {
         if (intent.hasExtra(EXTRA_LINK)) link.id else {
-            intent.getIntExtra(EXTRA_LINK_ID, -1)
+            intent.getLongExtra(EXTRA_LINK_ID, -1L)
         }
     }
     private val link by lazy { intent.getParcelableExtra<Link>(EXTRA_LINK)!! }
@@ -145,7 +147,9 @@ class LinkDetailsActivity :
 
         binding.swiperefresh.setOnRefreshListener(this)
 
-        presenter.sortBy = linkPreferences.linkCommentsDefaultSort ?: "best"
+        presenter.sortBy =
+            runBlocking { appStorage.preferencesQueries.getPreference("settings.links.comments_sort").executeAsOneOrNull() }
+                ?: "best"
         adapter.notifyDataSetChanged()
         binding.loadingView.isVisible = true
         hideInputToolbar()
@@ -170,7 +174,7 @@ class LinkDetailsActivity :
                 "new" -> R.string.sortby_newest
                 "old" -> R.string.sortby_oldest
                 else -> R.string.sortby_best
-            }
+            },
         )
     }
 
@@ -179,14 +183,14 @@ class LinkDetailsActivity :
             R.id.refresh -> onRefresh()
             R.id.sortbyBest -> {
                 presenter.sortBy = "best"
-                linkPreferences.linkCommentsDefaultSort = "best"
+                appStorage.preferencesQueries.insertOrReplace(PreferenceEntity(key = "settings.links.comments_sort", value = "best"))
                 setSubtitle()
                 presenter.loadComments()
                 binding.swiperefresh.isRefreshing = true
             }
             R.id.sortbyNewest -> {
                 presenter.sortBy = "new"
-                linkPreferences.linkCommentsDefaultSort = "new"
+                appStorage.preferencesQueries.insertOrReplace(PreferenceEntity(key = "settings.links.comments_sort", value = "new"))
                 setSubtitle()
                 presenter.loadComments()
                 binding.swiperefresh.isRefreshing = true
@@ -194,7 +198,7 @@ class LinkDetailsActivity :
 
             R.id.sortbyOldest -> {
                 presenter.sortBy = "old"
-                linkPreferences.linkCommentsDefaultSort = "old"
+                appStorage.preferencesQueries.insertOrReplace(PreferenceEntity(key = "settings.links.comments_sort", value = "old"))
                 setSubtitle()
                 presenter.loadComments()
                 binding.swiperefresh.isRefreshing = true

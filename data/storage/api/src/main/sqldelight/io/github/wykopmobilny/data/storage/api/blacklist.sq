@@ -1,0 +1,35 @@
+CREATE TABLE blockedTagEntity (
+  tagId TEXT NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE blockedProfilesEntity (
+  profileId TEXT NOT NULL PRIMARY KEY
+);
+
+allTags:
+SELECT * FROM blockedTagEntity;
+
+allProfiles:
+SELECT * FROM blockedProfilesEntity;
+
+insertOrReplaceTag:
+INSERT OR REPLACE INTO blockedTagEntity
+VALUES (?);
+
+insertOrReplaceProfile:
+INSERT OR REPLACE INTO blockedProfilesEntity
+VALUES (?);
+
+deleteTag:
+DELETE FROM blockedTagEntity
+WHERE ? = tagId;
+
+deleteProfile:
+DELETE FROM blockedProfilesEntity
+WHERE ? = profileId;
+
+deleteAllTags:
+DELETE FROM blockedTagEntity;
+
+deleteAllProfiles:
+DELETE FROM blockedProfilesEntity;

@@ -100,7 +100,7 @@ class LinksRepository @Inject constructor(
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
 
-    override fun voteUp(linkId: Int, notifyPublisher: Boolean) =
+    override fun voteUp(linkId: Long, notifyPublisher: Boolean) =
         rxSingle { linksApi.voteUp(linkId) }
             .flatMap { patronsApi.ensurePatrons(it) }
             .retryWhen(userTokenRefresher)
@@ -112,7 +112,7 @@ class LinksRepository @Inject constructor(
             }
 
     override fun voteDown(
-        linkId: Int,
+        linkId: Long,
         reason: Int,
         notifyPublisher: Boolean
     ) =

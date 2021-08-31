@@ -6,6 +6,7 @@ import io.github.wykopmobilny.api.errorhandler.ErrorHandlerTransformer
 import io.github.wykopmobilny.api.filters.OWMContentFilter
 import io.github.wykopmobilny.api.responses.BadgeResponse
 import io.github.wykopmobilny.api.responses.ProfileResponse
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.models.dataclass.Entry
 import io.github.wykopmobilny.models.dataclass.EntryComment
 import io.github.wykopmobilny.models.dataclass.EntryLink
@@ -18,7 +19,6 @@ import io.github.wykopmobilny.models.mapper.apiv2.EntryMapper
 import io.github.wykopmobilny.models.mapper.apiv2.LinkCommentMapper
 import io.github.wykopmobilny.models.mapper.apiv2.LinkMapper
 import io.github.wykopmobilny.models.mapper.apiv2.RelatedMapper
-import io.github.wykopmobilny.storage.api.BlacklistPreferencesApi
 import io.reactivex.Single
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.rx2.rxSingle
@@ -28,7 +28,7 @@ class ProfileRepository @Inject constructor(
     private val profileApi: ProfileRetrofitApi,
     private val userTokenRefresher: UserTokenRefresher,
     private val owmContentFilter: OWMContentFilter,
-    private val blacklistPreferencesApi: BlacklistPreferencesApi,
+    private val appStorage: AppStorage,
 ) : ProfileApi {
 
     override fun getIndex(username: String): Single<ProfileResponse> =
@@ -106,10 +106,10 @@ class ProfileRepository @Inject constructor(
     override fun block(tag: String) = rxSingle { profileApi.block(tag) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
-        .doOnSuccess { runBlocking { blacklistPreferencesApi.update { it.copy(users = it.users + tag.removePrefix("@")) } } }
+        .doOnSuccess { runBlocking { appStorage.blacklistQueries.insertOrReplaceProfile(tag.removePrefix("@")) } }
 
     override fun unblock(tag: String) = rxSingle { profileApi.unblock(tag) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
-        .doOnSuccess { runBlocking { blacklistPreferencesApi.update { it.copy(users = it.users - tag.removePrefix("@")) } } }
+        .doOnSuccess { runBlocking { appStorage.blacklistQueries.deleteProfile(tag.removePrefix("@")) } }
 }

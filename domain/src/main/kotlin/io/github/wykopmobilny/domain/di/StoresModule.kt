@@ -3,17 +3,21 @@ package io.github.wykopmobilny.domain.di
 import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.StoreBuilder
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
 import dagger.Module
 import dagger.Provides
 import io.github.wykopmobilny.api.endpoints.LoginRetrofitApi
 import io.github.wykopmobilny.blacklist.api.ScraperRetrofitApi
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.api.apiCall
 import io.github.wykopmobilny.storage.api.Blacklist
-import io.github.wykopmobilny.storage.api.BlacklistPreferencesApi
 import io.github.wykopmobilny.storage.api.LoggedUserInfo
 import io.github.wykopmobilny.storage.api.UserInfoStorage
 import io.github.wykopmobilny.storage.api.UserSession
+import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.base.AppScopes
+import kotlinx.coroutines.flow.combine
 import javax.inject.Singleton
 
 @Module(includes = [ProfileStores::class])
@@ -23,7 +27,7 @@ internal class StoresModule {
     @Provides
     fun blacklistStore(
         retrofitApi: ScraperRetrofitApi,
-        storage: BlacklistPreferencesApi,
+        storage: AppStorage,
         appScopes: AppScopes,
     ) = StoreBuilder.from<Unit, Blacklist, Blacklist>(
         fetcher = Fetcher.of {
@@ -34,10 +38,32 @@ internal class StoresModule {
             )
         },
         sourceOfTruth = SourceOfTruth.of(
-            reader = { storage.blacklist },
-            writer = { _, newValue -> storage.update { newValue } },
-            delete = { storage.clear() },
-            deleteAll = { storage.clear() },
+            reader = {
+                combine(
+                    storage.blacklistQueries.allTags().asFlow().mapToList(AppDispatchers.Default),
+                    storage.blacklistQueries.allProfiles().asFlow().mapToList(AppDispatchers.Default),
+                ) { tags, profiles ->
+                    Blacklist(
+                        tags = tags.toSet(),
+                        users = profiles.toSet(),
+                    )
+                }
+            },
+            writer = { _, newValue ->
+                storage.blacklistQueries.transaction {
+                    storage.blacklistQueries.deleteAllProfiles()
+                    newValue.tags.forEach {
+                    }
+                    storage.blacklistQueries.deleteAllTags()
+                }
+            },
+            delete = { error("unsupported") },
+            deleteAll = {
+                storage.blacklistQueries.transaction {
+                    storage.blacklistQueries.deleteAllProfiles()
+                    storage.blacklistQueries.deleteAllTags()
+                }
+            },
         ),
     )
         .scope(appScopes.applicationScope)

@@ -1,0 +1,11 @@
+CREATE TABLE readLinkEntity (
+  linkId INTEGER NOT NULL PRIMARY KEY
+);
+
+insertOrReplace:
+INSERT OR REPLACE INTO readLinkEntity
+VALUES (?);
+
+contains:
+SELECT COUNT(1) FROM readLinkEntity
+WHERE ? = linkId;

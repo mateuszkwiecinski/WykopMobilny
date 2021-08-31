@@ -1,24 +1,28 @@
 package io.github.wykopmobilny.domain.settings
 
-import io.github.wykopmobilny.storage.api.UserPreferenceApi
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
+import io.github.wykopmobilny.data.storage.api.AppStorage
+import io.github.wykopmobilny.data.storage.api.PreferenceEntity
+import io.github.wykopmobilny.ui.base.AppDispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import kotlin.time.Duration
 
-internal fun <T> UserPreferenceApi.get(key: UserSetting<T>): Flow<T?> =
-    get(key.preferencesKey)
-        .map { value ->
-            value?.let(key.mapping)
-        }
+internal fun <T> AppStorage.get(key: UserSetting<T>): Flow<T?> =
+    preferencesQueries.getPreference(key.preferencesKey).asFlow()
+        .mapToOneOrNull(AppDispatchers.IO)
+        .map { value -> value?.let(key.mapping) }
         .distinctUntilChanged()
 
-internal suspend fun <T> UserPreferenceApi.update(key: UserSetting<T>, value: T?) {
+internal suspend fun <T> AppStorage.update(key: UserSetting<T>, value: T?) = withContext(AppDispatchers.IO) {
     val mapped = value?.let(key.reverseMapping)
     if (mapped == null) {
-        clear(key.preferencesKey)
+        preferencesQueries.delete(key.preferencesKey)
     } else {
-        update(key.preferencesKey, mapped)
+        preferencesQueries.insertOrReplace(PreferenceEntity(key = key.preferencesKey, mapped))
     }
 }
 

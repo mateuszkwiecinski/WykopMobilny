@@ -23,12 +23,12 @@ import io.github.wykopmobilny.R
 import io.github.wykopmobilny.api.patrons.PatronsApi
 import io.github.wykopmobilny.base.BaseActivity
 import io.github.wykopmobilny.base.BaseNavigationView
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.databinding.ActivityNavigationBinding
 import io.github.wykopmobilny.databinding.AppAboutBottomsheetBinding
 import io.github.wykopmobilny.databinding.DrawerHeaderViewLayoutBinding
 import io.github.wykopmobilny.databinding.PatronListItemBinding
 import io.github.wykopmobilny.databinding.PatronsBottomsheetBinding
-import io.github.wykopmobilny.storage.api.BlacklistPreferencesApi
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.dialogs.confirmationDialog
 import io.github.wykopmobilny.ui.modules.NewNavigator
@@ -85,7 +85,7 @@ class MainNavigationActivity :
     lateinit var patronsApi: PatronsApi
 
     @Inject
-    lateinit var blacklistPreferencesApi: BlacklistPreferencesApi
+    lateinit var appStorage: AppStorage
 
     @Inject
     lateinit var settingsPreferencesApi: SettingsPreferencesApi
@@ -145,7 +145,12 @@ class MainNavigationActivity :
             R.id.about -> openAboutSheet()
             R.id.logout -> {
                 confirmationDialog(this) {
-                    runBlocking { blacklistPreferencesApi.clear() }
+                    runBlocking {
+                        appStorage.blacklistQueries.transaction {
+                            appStorage.blacklistQueries.deleteAllTags()
+                            appStorage.blacklistQueries.deleteAllProfiles()
+                        }
+                    }
                     userManagerApi.logoutUser()
                     restartActivity()
                 }.show()

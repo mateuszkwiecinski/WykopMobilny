@@ -8,8 +8,9 @@ import io.github.wykopmobilny.blacklist.remote.ScraperComponent
 import io.github.wykopmobilny.di.modules.NetworkModule
 import io.github.wykopmobilny.di.modules.RepositoryModule
 import io.github.wykopmobilny.patrons.remote.PatronsComponent
-import io.github.wykopmobilny.storage.android.StoragesComponent
+import io.github.wykopmobilny.storage.android.InteropUnscopedStorages
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
+import io.github.wykopmobilny.storage.api.Storages
 import io.github.wykopmobilny.wykop.remote.WykopComponent
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
@@ -27,7 +28,7 @@ import javax.inject.Singleton
         WykopComponent::class,
         PatronsComponent::class,
         ScraperComponent::class,
-        StoragesComponent::class,
+        Storages::class,
     ],
 )
 internal interface TestAppComponent : AppComponent {
@@ -40,8 +41,8 @@ internal interface TestAppComponent : AppComponent {
             @BindsInstance okHttpClient: OkHttpClient,
             wykop: WykopComponent,
             patrons: PatronsComponent,
-            scraper: ScraperComponent,
-            storages: StoragesComponent,
+            scraper: Storages,
+            storages: InteropUnscopedStorages,
             @BindsInstance settingsInterop: SettingsPreferencesApi,
         ): TestAppComponent
     }

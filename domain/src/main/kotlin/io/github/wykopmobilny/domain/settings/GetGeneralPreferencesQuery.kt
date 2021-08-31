@@ -8,7 +8,6 @@ import io.github.wykopmobilny.domain.settings.prefs.GetFilteringPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetNotificationPreferences
 import io.github.wykopmobilny.domain.settings.prefs.NotificationsPreferences.RefreshPeriod
 import io.github.wykopmobilny.storage.api.UserInfoStorage
-import io.github.wykopmobilny.storage.api.UserPreferenceApi
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.base.launchIn
@@ -26,7 +25,6 @@ import javax.inject.Inject
 class GetGeneralPreferencesQuery @Inject internal constructor(
     private val getNotificationPreferences: GetNotificationPreferences,
     private val getFilteringPreferences: GetFilteringPreferences,
-    private val userPreferences: UserPreferenceApi,
     private val userInfoStorage: UserInfoStorage,
     private val interopRequests: InteropRequestsProvider,
     private val appScopes: AppScopes,
@@ -106,7 +104,7 @@ class GetGeneralPreferencesQuery @Inject internal constructor(
         }
 
     private fun <T> updateUserSetting(key: UserSetting<T>, value: T) {
-        appScopes.launchIn<SettingsScope> { userPreferences.update(key, value) }
+        appScopes.launchIn<SettingsScope> { appStorage.update(key, value) }
     }
 
     private fun clearSuggestions() {

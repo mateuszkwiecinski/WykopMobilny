@@ -5,12 +5,12 @@ import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import io.github.wykopmobilny.WykopApp
-import io.github.wykopmobilny.blacklist.remote.ScraperComponent
+import io.github.wykopmobilny.blacklist.api.Scraper
 import io.github.wykopmobilny.di.modules.NetworkModule
 import io.github.wykopmobilny.di.modules.RepositoryModule
 import io.github.wykopmobilny.patrons.remote.PatronsComponent
-import io.github.wykopmobilny.storage.android.InteropUnscopedStorages
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
+import io.github.wykopmobilny.storage.api.Storages
 import io.github.wykopmobilny.wykop.remote.WykopComponent
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
@@ -27,8 +27,8 @@ import javax.inject.Singleton
     dependencies = [
         WykopComponent::class,
         PatronsComponent::class,
-        ScraperComponent::class,
-        InteropUnscopedStorages::class,
+        Scraper::class,
+        Storages::class,
     ],
 )
 interface AppComponent : AndroidInjector<WykopApp> {
@@ -41,8 +41,8 @@ interface AppComponent : AndroidInjector<WykopApp> {
             @BindsInstance okHttpClient: OkHttpClient,
             wykop: WykopComponent,
             patrons: PatronsComponent,
-            scraper: ScraperComponent,
-            storages: InteropUnscopedStorages,
+            scraper: Scraper,
+            storages: Storages,
             @BindsInstance settingsInterop: SettingsPreferencesApi,
         ): AppComponent
     }

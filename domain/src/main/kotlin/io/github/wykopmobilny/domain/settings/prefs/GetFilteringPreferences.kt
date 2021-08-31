@@ -1,23 +1,23 @@
 package io.github.wykopmobilny.domain.settings.prefs
 
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.settings.UserSettings
 import io.github.wykopmobilny.domain.settings.get
-import io.github.wykopmobilny.storage.api.UserPreferenceApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 internal class GetFilteringPreferences @Inject constructor(
-    private val userPreferences: UserPreferenceApi,
+    private val appStorage: AppStorage,
 ) {
 
     operator fun invoke() = combine(
-        userPreferences.get(UserSettings.hidePlus18Content),
-        userPreferences.get(UserSettings.hideNsfwContent),
-        userPreferences.get(UserSettings.hideNewUserContent),
-        userPreferences.get(UserSettings.hideContentWithNoTags),
-        userPreferences.get(UserSettings.hideBlacklistedContent),
-        userPreferences.get(UserSettings.useEmbeddedBrowser),
+        appStorage.get(UserSettings.hidePlus18Content),
+        appStorage.get(UserSettings.hideNsfwContent),
+        appStorage.get(UserSettings.hideNewUserContent),
+        appStorage.get(UserSettings.hideContentWithNoTags),
+        appStorage.get(UserSettings.hideBlacklistedContent),
+        appStorage.get(UserSettings.useEmbeddedBrowser),
     ) { items ->
         @Suppress("MagicNumber")
         FilteringPreferences(

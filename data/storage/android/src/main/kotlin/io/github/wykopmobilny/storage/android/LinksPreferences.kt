@@ -13,6 +13,4 @@ internal class LinksPreferences @Inject constructor(
 ) : BasePreferences(context, executor), LinksPreferencesApi {
 
     override var readLinksIds by stringSetPref(key = "readLinksIds")
-    override var linkCommentsDefaultSort by stringPref(key = "linkCommentsDefaultSort")
-    override var upcomingDefaultSort by stringPref(key = "upcomingDefaultSort")
 }

@@ -3,6 +3,7 @@ package io.github.wykopmobilny.ui.adapters
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import io.github.wykopmobilny.base.adapter.EndlessProgressAdapter
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.models.dataclass.Entry
 import io.github.wykopmobilny.models.dataclass.EntryLink
 import io.github.wykopmobilny.models.dataclass.Link
@@ -24,7 +25,7 @@ class EntryLinksAdapter @Inject constructor(
     private val settingsPreferencesApi: SettingsPreferencesApi,
     private val navigatorApi: NewNavigatorApi,
     private val linkHandlerApi: WykopLinkHandlerApi,
-    private val linksPreferences: LinksPreferencesApi,
+    private val appStorage: AppStorage,
 ) : EndlessProgressAdapter<ViewHolder, EntryLink>() {
     // Required field, interacts with presenter. Otherwise will throw exception
     lateinit var entryActionListener: EntryActionListener
@@ -59,7 +60,7 @@ class EntryLinksAdapter @Inject constructor(
                     settingsPreferencesApi = settingsPreferencesApi,
                     navigatorApi = navigatorApi,
                     linkActionListener = linkActionListener,
-                    linksPreferences = linksPreferences,
+                    appStorage = appStorage,
                 )
             EntryViewHolder.TYPE_BLOCKED, LinkViewHolder.TYPE_BLOCKED -> BlockedViewHolder.inflateView(parent, ::notifyItemChanged)
             else -> EntryViewHolder.inflateView(

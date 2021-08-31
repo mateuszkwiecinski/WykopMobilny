@@ -21,7 +21,7 @@ class LinkDetailsPresenter(
 ) : BasePresenter<LinkDetailsView>(), LinkCommentActionListener, LinkHeaderActionListener {
 
     var sortBy = "best"
-    var linkId = -1
+    var linkId = -1L
 
     override fun digLink(link: Link) =
         linkHeaderInteractor.digLink(link).processLinkSingle(link)

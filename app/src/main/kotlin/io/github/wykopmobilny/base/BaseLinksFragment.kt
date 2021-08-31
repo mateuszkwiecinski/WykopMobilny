@@ -66,7 +66,7 @@ open class BaseLinksFragment : BaseFragment(R.layout.entries_fragment), LinksFra
         )
     }
 
-    private fun updateLinkVoteState(linkId: Int, buryCount: Int, voteCount: Int, userVote: String?) {
+    private fun updateLinkVoteState(linkId: Long, buryCount: Int, voteCount: Int, userVote: String?) {
         linksAdapter.data.firstOrNull { it.id == linkId }?.apply {
             this.buryCount = buryCount
             this.voteCount = voteCount
