@@ -46,7 +46,7 @@ class MarkdownToolbar(context: Context, attrs: AttributeSet?) : LinearLayout(con
     var containsAdultContent = false
     var floatingImageView: FloatingImageView? = null
     private val markdownDialogs by lazy { MarkdownDialogs(context) }
-    private var formatText: FormatDialogCallback = {
+    private val formatText: FormatDialogCallback = {
         markdownListener?.apply {
             val prefix = textBody.substring(0, selectionStart)
             textBody = prefix + it + textBody.substring(selectionStart, textBody.length)
@@ -57,6 +57,19 @@ class MarkdownToolbar(context: Context, attrs: AttributeSet?) : LinearLayout(con
     init {
         val binding = MarkdownToolbarBinding.inflate(layoutInflater, this, true)
 
+        val activity = getActivityContext() as BaseActivity
+        val permissions = activity.registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                showUploadPhotoBottomsheet()
+            } else {
+                Toast.makeText(
+                    activity,
+                    "Aplikacja wymaga uprawnień zapisu do pamięci aby wysyłać zdjęcia.",
+                    Toast.LENGTH_LONG,
+                )
+                    .show()
+            }
+        }
         // Create callbacks
         markdownDialogs.apply {
             binding.formatBold.setOnClickListener { insertFormat("**", "**") }
@@ -67,28 +80,14 @@ class MarkdownToolbar(context: Context, attrs: AttributeSet?) : LinearLayout(con
             binding.insertSpoiler.setOnClickListener { insertFormat("\n!", "") }
             binding.insertEmoticon.setOnClickListener { showLennyfaceDialog(formatText) }
             binding.insertPhoto.setOnClickListener {
-                val activity = getActivityContext() as? BaseActivity
-                activity?.apply {
-                    if (ContextCompat.checkSelfPermission(
-                            this,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        ) == PackageManager.PERMISSION_GRANTED
-                    ) {
-                        showUploadPhotoBottomsheet()
-                    } else {
-                        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-                            if (isGranted) {
-                                showUploadPhotoBottomsheet()
-                            } else {
-                                Toast.makeText(
-                                    activity,
-                                    "Aplikacja wymaga uprawnień zapisu do pamięci aby wysyłać zdjęcia.",
-                                    Toast.LENGTH_LONG,
-                                )
-                                    .show()
-                            }
-                        }.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    }
+                if (ContextCompat.checkSelfPermission(
+                        activity,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    showUploadPhotoBottomsheet()
+                } else {
+                    permissions.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 }
             }
         }
@@ -161,7 +160,9 @@ class MarkdownToolbar(context: Context, attrs: AttributeSet?) : LinearLayout(con
     }
 
     private fun insertImageFromUrl(url: String) {
-        remoteImageInserted()
-        floatingImageView?.loadPhotoUrl(url)
+        if (url.isNotBlank()) {
+            remoteImageInserted()
+            floatingImageView?.loadPhotoUrl(url)
+        }
     }
 }
