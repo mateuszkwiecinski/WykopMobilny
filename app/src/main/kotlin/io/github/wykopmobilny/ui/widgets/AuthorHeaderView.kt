@@ -2,9 +2,9 @@ package io.github.wykopmobilny.ui.widgets
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.databinding.AuthorHeaderLayoutBinding
 import io.github.wykopmobilny.models.dataclass.Author
@@ -32,7 +32,7 @@ class AuthorHeaderView(context: Context, attrs: AttributeSet?) : ConstraintLayou
                 try {
                     badge.drawBadge(binding.patronBadgeTextView)
                 } catch (exception: Throwable) {
-                    Log.w(this::class.simpleName, "Couldn't draw badge", exception)
+                    Napier.w("Couldn't draw badge", exception)
                 }
             }
             binding.userNameTextView.setOnClickListener { openProfile(author.nick) }

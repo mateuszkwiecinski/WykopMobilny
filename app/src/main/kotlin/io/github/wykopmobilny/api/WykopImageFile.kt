@@ -4,9 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.media.ExifInterface
 import android.net.Uri
-import android.util.Log
+import androidx.exifinterface.media.ExifInterface
 import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.utils.FileUtils
 import io.github.wykopmobilny.utils.queryFileName
@@ -42,7 +41,7 @@ class WykopImageFile(val uri: Uri, val context: Context) {
             mimetype = opt.outMimeType
         }
 
-        val rotatedFile = ensureRotation(file)
+        val rotatedFile = file?.let(::ensureRotation)
         Napier.d("Rotated ${rotatedFile!!.name}")
         return MultipartBody.Part.createFormData("embed", rotatedFile.name, rotatedFile.asRequestBody(mimetype?.toMediaTypeOrNull()))
     }
@@ -69,9 +68,9 @@ class WykopImageFile(val uri: Uri, val context: Context) {
         }
     }
 
-    private fun ensureRotation(f: File?): File? {
+    private fun ensureRotation(f: File): File? {
         try {
-            val exif = ExifInterface(f!!.path)
+            val exif = ExifInterface(f.path)
             val orientation = exif.getAttributeInt(
                 ExifInterface.TAG_ORIENTATION,
                 ExifInterface.ORIENTATION_NORMAL,
@@ -91,7 +90,8 @@ class WykopImageFile(val uri: Uri, val context: Context) {
 
             val bmp = BitmapFactory.decodeStream(
                 FileInputStream(f),
-                null, options,
+                null,
+                options,
             )
             val bitmap = Bitmap.createBitmap(
                 bmp!!, 0, 0, bmp.width,
@@ -99,15 +99,14 @@ class WykopImageFile(val uri: Uri, val context: Context) {
             )
 
             val file = File.createTempFile("rSaved", ".0", context.cacheDir)
-            val fileOutputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
-            fileOutputStream.close()
+            file.outputStream().use { bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it) }
             return file
         } catch (error: IOException) {
-            Log.w("TAG", "-- Error in setting image", error)
+            Napier.w("-- Error in setting image", error)
         } catch (_: OutOfMemoryError) {
-            Log.w("TAG", "-- OOM Error in setting image")
+            Napier.w("-- OOM Error in setting image")
         }
+
         return f
     }
 }

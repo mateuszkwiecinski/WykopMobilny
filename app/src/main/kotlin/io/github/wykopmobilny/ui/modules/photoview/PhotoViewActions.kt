@@ -86,6 +86,7 @@ class PhotoViewActions(val context: Context) : PhotoViewCallbacks {
             )
     }
 
+    @Suppress("DEPRECATION")
     private fun saveImageV2(url: String): Completable {
         return Completable.fromAction {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

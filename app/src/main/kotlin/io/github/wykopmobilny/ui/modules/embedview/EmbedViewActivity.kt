@@ -179,6 +179,7 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
         return pathSegments.last()
     }
 
+    @Suppress("DEPRECATION")
     private fun saveFileV2(url: String) {
         val request = Request.Builder()
             .url(url)

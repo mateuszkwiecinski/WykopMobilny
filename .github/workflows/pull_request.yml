@@ -114,3 +114,39 @@ jobs:
         with:
           name: uitests-report
           path: "${{ github.workspace }}/**/build/**/connected/"
+
+  screenshot_test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - name: Cache .gradle
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          job-id: default-jdk11
+          gradle-distribution-sha-256-sum-warning: false
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 28
+          profile: pixel_xl
+          target: google_apis
+          arch: x86_64
+          disable-spellchecker: true
+          script: ./gradlew executeScreenshotTests
+
+      - name: Upload ui tests result
+        uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: uitests-report
+          path: "${{ github.workspace }}/**/build/**/shot/"

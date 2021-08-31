@@ -6,7 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.CursorFactory
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
+import io.github.aakira.napier.Napier
 
 class SuggestionDatabase(context: Context) {
 
@@ -28,7 +28,7 @@ class SuggestionDatabase(context: Context) {
     fun getSuggestions(text: String): Cursor {
         return db.query(
             TABLE_SUGGESTION, arrayOf(FIELD_ID, FIELD_SUGGESTION),
-            "$FIELD_SUGGESTION LIKE '$text%'", null, null, null, null, "6"
+            "$FIELD_SUGGESTION LIKE '$text%'", null, null, null, null, "6",
         )
     }
 
@@ -38,15 +38,15 @@ class SuggestionDatabase(context: Context) {
         context: Context,
         name: String,
         factory: CursorFactory?,
-        version: Int
+        version: Int,
     ) : SQLiteOpenHelper(context, name, factory, version) {
 
         override fun onCreate(db: SQLiteDatabase) {
             db.execSQL(
                 "CREATE TABLE " + TABLE_SUGGESTION + " (" +
-                    FIELD_ID + " integer primary key autoincrement, " + FIELD_SUGGESTION + " text unique);"
+                    FIELD_ID + " integer primary key autoincrement, " + FIELD_SUGGESTION + " text unique);",
             )
-            Log.d("SUGGESTION", "DB CREATED")
+            Napier.d("DB CREATED", tag = "SUGGESTION")
         }
 
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

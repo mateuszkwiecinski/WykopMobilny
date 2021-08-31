@@ -22,7 +22,7 @@ internal class GeneralPreferencesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.general_preferences, rootKey)
 
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.launchWhenCreated {
             getGeneralPreferences().collect {
                 bindPreference("appearance", ::openAppearanceSettings)
                 bindCheckbox("showNotifications", it.notifications.notificationsEnabled)

@@ -1,22 +1,13 @@
 package io.github.wykopmobilny.utils.textview
 
-import android.os.Build
-import android.text.Html
 import android.text.Spannable
 import androidx.core.text.HtmlCompat
+import androidx.core.text.toSpannable
 import java.net.URLDecoder
 import java.util.regex.Pattern
 
-fun String.toSpannable(): Spannable {
-    @Suppress("DEPRECATION")
-    (
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.fromHtml(this, Html.FROM_HTML_MODE_COMPACT, null, CodeTagHandler()) as Spannable
-        } else {
-            Html.fromHtml(this, null, CodeTagHandler()) as Spannable
-        }
-        )
-}
+fun String.toSpannable(): Spannable =
+    HtmlCompat.fromHtml(this, HtmlCompat.FROM_HTML_MODE_COMPACT, null, CodeTagHandler()).toSpannable()
 
 fun String.removeHtml() =
     HtmlCompat.fromHtml(this, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
@@ -34,7 +25,7 @@ fun String.removeSpoilerHtml(): String {
     matches.forEach {
         val text = "! " + URLDecoder.decode(
             it.replace(regexBegin, "").replace("\">[pokaż spoiler]</a>", ""),
-            "UTF-8"
+            "UTF-8",
         )
         fullstring = fullstring.replaceFirst(it, text)
     }

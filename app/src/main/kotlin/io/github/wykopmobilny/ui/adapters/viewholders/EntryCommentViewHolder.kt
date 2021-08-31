@@ -1,13 +1,13 @@
 package io.github.wykopmobilny.ui.adapters.viewholders
 
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.databinding.CommentListItemBinding
 import io.github.wykopmobilny.databinding.EntryCommentMenuBottomsheetBinding
@@ -120,7 +120,7 @@ class EntryCommentViewHolder(
                 try {
                     badge?.drawBadge(binding.patronBadgeTextView)
                 } catch (exception: Throwable) {
-                    Log.w(this::class.simpleName, "Couldn't draw badge", exception)
+                    Napier.w("Couldn't draw badge", exception)
                 }
             }
             binding.dateTextView.text = comment.date.replace(" temu", "")

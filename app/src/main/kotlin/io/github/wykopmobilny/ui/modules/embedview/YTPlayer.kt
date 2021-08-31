@@ -9,7 +9,6 @@ import android.content.res.Configuration
 import android.media.AudioManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.FrameLayout.LayoutParams
@@ -19,6 +18,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayer.ErrorReason
 import com.google.android.youtube.player.YouTubePlayerView
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.GOOGLE_KEY
 import io.github.wykopmobilny.utils.youtubeTimestampToMsOrNull
 import java.net.URLDecoder
@@ -134,7 +134,7 @@ class YTPlayer :
         try {
             googleApiKey = GOOGLE_KEY
         } catch (notFound: PackageManager.NameNotFoundException) {
-            Log.w(YTPlayer::class.java.simpleName, "Failed to initialize YTplayer", notFound)
+            Napier.i("Failed to initialize YTplayer", notFound)
         }
 
         if (googleApiKey == null) {
@@ -254,7 +254,7 @@ class YTPlayer :
 
     // YouTubePlayer.PlayerStateChangeListener
     override fun onError(reason: ErrorReason) {
-        Log.e("onError", "onError : " + reason.name)
+        Napier.i("onError : " + reason.name)
         if (ErrorReason.NOT_PLAYABLE == reason) {
             val videoUri = Uri.parse(YouTubeUrlParser.getVideoUrl(videoId!!))
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$videoId"))

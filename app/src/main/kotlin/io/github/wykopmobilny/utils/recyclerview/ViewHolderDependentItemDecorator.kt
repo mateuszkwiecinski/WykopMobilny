@@ -4,10 +4,10 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.ui.adapters.viewholders.RecyclableViewHolder
 
@@ -33,7 +33,7 @@ class ViewHolderDependentItemDecorator(val context: Context) : RecyclerView.Item
                 outRect.set(0, 0, 0, normalHeight)
             }
         } catch (exception: Throwable) {
-            Log.w(this::class.simpleName, "Couldn't get item offset", exception)
+            Napier.w("Couldn't get item offset", exception)
         }
     }
 
