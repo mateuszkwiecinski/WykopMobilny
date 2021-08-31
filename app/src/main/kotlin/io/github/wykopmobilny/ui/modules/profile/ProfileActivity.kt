@@ -41,6 +41,9 @@ class ProfileActivity : BaseActivity(), ProfileView {
         fun createIntent(context: Context, username: String) =
             if (BuildConfig.DEBUG) {
                 ProfileActivityV2.createIntent(context, userId = username)
+                Intent(context, ProfileActivity::class.java).apply {
+                    putExtra(EXTRA_USERNAME, username)
+                }
             } else {
                 Intent(context, ProfileActivity::class.java).apply {
                     putExtra(EXTRA_USERNAME, username)

@@ -1,11 +1,11 @@
 package io.github.wykopmobilny.ui.adapters.viewholders
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.databinding.LinkCommentLayoutBinding
 import io.github.wykopmobilny.models.dataclass.LinkComment
@@ -106,7 +106,7 @@ class LinkCommentViewHolder(
                 try {
                     badge?.drawBadge(binding.patronBadgeTextView)
                 } catch (exception: Throwable) {
-                    Log.w(this::class.simpleName, "Couldn't draw badge", exception)
+                    Napier.w("Couldn't draw badge", exception)
                 }
             }
             binding.dateTextView.text = linkComment.date.replace(" temu", "")

@@ -18,6 +18,7 @@ import io.github.wykopmobilny.tests.matchers.tapPreference
 object SettingsPage {
 
     private val confirmationOption = withText("Wyłącz potwierdzenie wyjścia z aplikacji")
+    private val manageBlacklistOption = withText(R.string.pref_manage_blacklist)
 
     fun tapExitConfirmationOption() {
         tapPreference(confirmationOption)
@@ -29,7 +30,7 @@ object SettingsPage {
 
     fun tapBlacklistSettings() {
         onView(withId(R.id.recycler_view))
-            .perform(actionOnItem<ViewHolder>(hasDescendant(withText(R.string.pref_manage_blacklist)), click()))
+            .perform(actionOnItem<ViewHolder>(hasDescendant(manageBlacklistOption), click()))
     }
 
     fun assertConfirmationOptionChecked() {

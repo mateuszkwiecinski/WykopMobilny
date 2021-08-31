@@ -16,6 +16,7 @@ import io.github.wykopmobilny.utils.requireDependency
 import io.github.wykopmobilny.utils.viewBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 
 class BlacklistUsersFragment : Fragment(R.layout.fragment_page) {
@@ -39,7 +40,7 @@ class BlacklistUsersFragment : Fragment(R.layout.fragment_page) {
             getBlacklistDetails()
                 .mapNotNull { it.content }
                 .filterIsInstance<BlacklistedDetailsUi.Content.WithData>()
-                .mapNotNull { it.users }
+                .map { it.users }
                 .collect { page ->
                     binding.swipeRefresh.isRefreshing = page.isRefreshing
                     binding.swipeRefresh.setOnRefreshListener { page.refreshAction() }

@@ -5,18 +5,19 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.ui.settings.ListSetting
 import io.github.wykopmobilny.ui.settings.Setting
 import io.github.wykopmobilny.ui.settings.SliderSetting
 
 internal fun PreferenceFragmentCompat.bindPreference(key: String, onClick: (() -> Unit)?) {
-    val pref = findPreference<Preference>(key) ?: return
+    val pref = findPreference<Preference>(key) ?: return Napier.w("missing preference with key=$key")
     pref.isVisible = onClick != null
     pref.setOnPreferenceClickListener { onClick?.invoke(); true }
 }
 
 internal fun PreferenceFragmentCompat.bindCheckbox(key: String, setting: Setting) {
-    val pref = findPreference<CheckBoxPreference>(key) ?: return
+    val pref = findPreference<CheckBoxPreference>(key) ?: return Napier.w("missing preference with key=$key")
     pref.isChecked = setting.currentValue
     pref.isEnabled = setting.isEnabled
     pref.setOnPreferenceClickListener { setting.onClicked(); true }

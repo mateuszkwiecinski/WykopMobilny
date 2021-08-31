@@ -25,7 +25,7 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.appearance_preferences, rootKey)
 
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.launchWhenCreated {
             getAppearancePreferences().collect {
                 bindCheckbox("useDarkTheme", it.appearance.useDarkTheme)
                 bindCheckbox("useAmoledTheme", it.appearance.useAmoledTheme)

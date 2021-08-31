@@ -8,13 +8,13 @@ import io.github.wykopmobilny.storage.api.Blacklist
 import io.github.wykopmobilny.storage.api.LoggedUserInfo
 import io.github.wykopmobilny.storage.api.SessionStorage
 import io.github.wykopmobilny.storage.api.UserSession
+import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.base.SimpleViewStateStorage
 import io.github.wykopmobilny.ui.base.launchIn
 import io.github.wykopmobilny.ui.login.InfoMessageUi
 import io.github.wykopmobilny.ui.login.Login
 import io.github.wykopmobilny.ui.login.LoginUi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -47,7 +47,7 @@ class LoginQuery @Inject constructor(
         }
 
     private fun onUrlInvoked(url: String) = appScopes.launchIn<LoginScope> {
-        val userSession = withContext(Dispatchers.Default) {
+        val userSession = withContext(AppDispatchers.Default) {
             val match = loginPattern.find(url) ?: return@withContext null
 
             val login = match.groups[1]?.value?.takeIf { it.isNotBlank() }

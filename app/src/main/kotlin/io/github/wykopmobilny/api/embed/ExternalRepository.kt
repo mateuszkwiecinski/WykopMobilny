@@ -1,7 +1,7 @@
 package io.github.wykopmobilny.api.embed
 
 import io.github.wykopmobilny.api.endpoints.ExternalRetrofitApi
-import kotlinx.coroutines.Dispatchers
+import io.github.wykopmobilny.ui.base.AppDispatchers
 import kotlinx.coroutines.rx2.rxSingle
 import kotlinx.coroutines.withContext
 import java.net.URL
@@ -15,7 +15,7 @@ class ExternalRepository @Inject constructor(
         rxSingle {
             val streamable = embedApi.getStreamableFile(streamableId)
 
-            withContext(Dispatchers.Default) {
+            withContext(AppDispatchers.Default) {
                 URL(streamable.files.mp4Mobile?.url ?: streamable.files.mp4.url)
             }
         }

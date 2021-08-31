@@ -1,10 +1,11 @@
 package io.github.wykopmobilny.ui.adapters
 
-import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.models.dataclass.Link
 import io.github.wykopmobilny.models.dataclass.LinkComment
+import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.adapters.viewholders.BaseLinkCommentViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.BlockedViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.LinkCommentViewHolder
@@ -15,16 +16,15 @@ import io.github.wykopmobilny.ui.fragments.link.LinkHeaderActionListener
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentActionListener
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentViewListener
 import io.github.wykopmobilny.ui.modules.NewNavigatorApi
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import javax.inject.Inject
 
 class LinkDetailsAdapter @Inject constructor(
     private val userManagerApi: UserManagerApi,
     private val navigatorApi: NewNavigatorApi,
     private val linkHandlerApi: WykopLinkHandlerApi,
-    private val settingsPreferencesApi: SettingsPreferencesApi
+    private val settingsPreferencesApi: SettingsPreferencesApi,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var link: Link? = null
@@ -66,7 +66,7 @@ class LinkDetailsAdapter @Inject constructor(
                 }
             }
         } catch (exception: Exception) {
-            Log.w(this::class.simpleName, "Couldn't bind view holder", exception)
+            Napier.w("Couldn't bind view holder", exception)
         }
     }
 
@@ -89,7 +89,7 @@ class LinkDetailsAdapter @Inject constructor(
                 userManagerApi,
                 navigatorApi,
                 linkHandlerApi,
-                linkHeaderActionListener
+                linkHeaderActionListener,
             )
             TopLinkCommentViewHolder.TYPE_TOP_EMBED, TopLinkCommentViewHolder.TYPE_TOP_NORMAL -> TopLinkCommentViewHolder.inflateView(
                 parent,
@@ -99,7 +99,7 @@ class LinkDetailsAdapter @Inject constructor(
                 navigatorApi,
                 linkHandlerApi,
                 linkCommentActionListener,
-                linkCommentViewListener
+                linkCommentViewListener,
             )
             LinkCommentViewHolder.TYPE_EMBED, LinkCommentViewHolder.TYPE_NORMAL -> LinkCommentViewHolder.inflateView(
                 parent,
@@ -109,7 +109,7 @@ class LinkDetailsAdapter @Inject constructor(
                 navigatorApi,
                 linkHandlerApi,
                 linkCommentActionListener,
-                linkCommentViewListener
+                linkCommentViewListener,
             )
             else -> BlockedViewHolder.inflateView(parent) { notifyItemChanged(it) }
         }

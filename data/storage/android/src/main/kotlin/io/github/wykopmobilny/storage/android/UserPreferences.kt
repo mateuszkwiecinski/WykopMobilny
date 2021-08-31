@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.core.content.edit
 import dagger.Reusable
 import io.github.wykopmobilny.storage.api.UserPreferenceApi
-import kotlinx.coroutines.Dispatchers
+import io.github.wykopmobilny.ui.base.AppDispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -27,11 +27,11 @@ internal class UserPreferences @Inject constructor(
             }
             .onStart { emit(prefs.getString(key, null)) }
 
-    override suspend fun update(key: String, newValue: String) = withContext(Dispatchers.IO) {
+    override suspend fun update(key: String, newValue: String) = withContext(AppDispatchers.IO) {
         prefs.edit { putString(key, newValue) }
     }
 
-    override suspend fun clear(key: String) = withContext(Dispatchers.IO) {
+    override suspend fun clear(key: String) = withContext(AppDispatchers.IO) {
         prefs.edit { remove(key) }
     }
 }
