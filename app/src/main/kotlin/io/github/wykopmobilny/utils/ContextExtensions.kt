@@ -8,6 +8,7 @@ import android.net.Uri
 import android.util.TypedValue
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import io.github.wykopmobilny.R
 
@@ -17,7 +18,11 @@ fun Context.openBrowser(url: String) {
     val customTabsIntent = builder.build()
     val typedValue = TypedValue()
     theme.resolveAttribute(R.attr.colorPrimaryDark, typedValue, true)
-    builder.setToolbarColor(typedValue.data)
+    builder.setDefaultColorSchemeParams(
+        CustomTabColorSchemeParams.Builder()
+            .setToolbarColor(typedValue.data)
+            .build(),
+    )
     customTabsIntent.launchUrl(this, Uri.parse(url))
 }
 

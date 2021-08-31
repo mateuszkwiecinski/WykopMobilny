@@ -15,7 +15,7 @@ class LinkCommentEditActivity : BaseInputActivity<LinkCommentEditPresenter>(), L
         private const val EXTRA_LINKID = "LINK_ID"
         private const val EXTRA_COMMENTID = "COMMENT_ID"
 
-        fun createIntent(context: Context, commentId: Int, body: String, linkId: Int): Intent {
+        fun createIntent(context: Context, commentId: Long, body: String, linkId: Long): Intent {
             val intent = Intent(context, LinkCommentEditActivity::class.java)
             intent.putExtra(EXTRA_BODY, body)
             intent.putExtra(EXTRA_LINKID, linkId)
@@ -30,12 +30,12 @@ class LinkCommentEditActivity : BaseInputActivity<LinkCommentEditPresenter>(), L
     @Inject
     override lateinit var suggestionApi: SuggestApi
 
-    val commentId by lazy { intent.getIntExtra(EXTRA_COMMENTID, 0) }
+    val commentId by lazy { intent.getLongExtra(EXTRA_COMMENTID, 0) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter.subscribe(this)
-        presenter.linkCommentId = intent.getIntExtra(EXTRA_LINKID, 0)
+        presenter.linkCommentId = intent.getLongExtra(EXTRA_LINKID, 0)
         setupSuggestions()
         supportActionBar?.setTitle(R.string.edit_comment)
     }

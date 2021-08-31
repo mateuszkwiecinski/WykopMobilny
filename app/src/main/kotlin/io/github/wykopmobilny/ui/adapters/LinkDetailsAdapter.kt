@@ -28,7 +28,7 @@ class LinkDetailsAdapter @Inject constructor(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var link: Link? = null
-    var highlightCommentId = -1
+    var highlightCommentId = -1L
     lateinit var linkCommentViewListener: LinkCommentViewListener
     lateinit var linkCommentActionListener: LinkCommentActionListener
     lateinit var linkHeaderActionListener: LinkHeaderActionListener

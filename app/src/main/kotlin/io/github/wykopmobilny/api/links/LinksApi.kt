@@ -31,13 +31,13 @@ interface LinksApi {
     fun relatedVoteUp(relatedId: Int): Single<VoteResponse>
     fun relatedVoteDown(relatedId: Int): Single<VoteResponse>
     fun commentVoteCancel(linkId: Long): Single<LinkVoteResponse>
-    fun commentDelete(commentId: Int): Single<LinkComment>
+    fun commentDelete(commentId: Long): Single<LinkComment>
     fun commentAdd(
         body: String,
         plus18: Boolean,
         inputStream: WykopImageFile,
         linkId: Long,
-        linkComment: Int
+        linkComment: Long
     ): Single<LinkComment>
 
     fun relatedAdd(
@@ -52,7 +52,7 @@ interface LinksApi {
         embed: String?,
         plus18: Boolean,
         linkId: Long,
-        linkComment: Int
+        linkComment: Long
     ): Single<LinkComment>
 
     fun commentAdd(
@@ -71,7 +71,7 @@ interface LinksApi {
 
     fun commentEdit(body: String, linkId: Long): Single<LinkComment>
     fun voteUp(linkId: Long, notifyPublisher: Boolean = true): Single<DigResponse>
-    fun voteDown(linkId: Long, reason: Long, notifyPublisher: Boolean = true): Single<DigResponse>
+    fun voteDown(linkId: Long, reason: Int, notifyPublisher: Boolean = true): Single<DigResponse>
     fun voteRemove(linkId: Long, notifyPublisher: Boolean = true): Single<DigResponse>
     fun getUpvoters(linkId: Long): Single<List<Upvoter>>
     fun getDownvoters(linkId: Long): Single<List<Downvoter>>

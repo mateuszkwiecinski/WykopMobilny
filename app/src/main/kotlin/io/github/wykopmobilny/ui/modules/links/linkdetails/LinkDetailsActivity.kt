@@ -47,7 +47,7 @@ class LinkDetailsActivity :
                 putExtra(EXTRA_LINK, link)
             }
 
-        fun createIntent(context: Context, linkId: Int, commentId: Int? = null) =
+        fun createIntent(context: Context, linkId: Long, commentId: Long? = null) =
             Intent(context, LinkDetailsActivity::class.java).apply {
                 putExtra(EXTRA_LINK_ID, linkId)
                 putExtra(EXTRA_COMMENT_ID, commentId)
@@ -82,9 +82,9 @@ class LinkDetailsActivity :
         }
     }
     private val link by lazy { intent.getParcelableExtra<Link>(EXTRA_LINK)!! }
-    private var replyLinkId: Int = 0
+    private var replyLinkId: Long = 0
     private val linkCommentId by lazy {
-        intent.getIntExtra(EXTRA_COMMENT_ID, -1)
+        intent.getLongExtra(EXTRA_COMMENT_ID, -1)
     }
 
     override fun updateLinkComment(comment: LinkComment) {
@@ -109,8 +109,8 @@ class LinkDetailsActivity :
         adapter.notifyDataSetChanged()
     }
 
-    override fun getReplyCommentId(): Int {
-        return if (replyLinkId != 0 && binding.inputToolbar.textBody.contains("@")) replyLinkId
+    override fun getReplyCommentId(): Long {
+        return if (replyLinkId != 0L && binding.inputToolbar.textBody.contains("@")) replyLinkId
         else -1
     }
 
@@ -231,7 +231,7 @@ class LinkDetailsActivity :
         binding.swiperefresh.isRefreshing = false
         adapter.notifyDataSetChanged()
         binding.inputToolbar.show()
-        if (linkCommentId != -1 && adapter.link != null) {
+        if (linkCommentId != -1L && adapter.link != null) {
             if (settingsApi.hideLinkCommentsByDefault) {
                 expandAndScrollToComment(linkCommentId)
             } else {
@@ -240,7 +240,7 @@ class LinkDetailsActivity :
         }
     }
 
-    private fun expandAndScrollToComment(linkCommentId: Int) {
+    private fun expandAndScrollToComment(linkCommentId: Long) {
         adapter.link?.comments?.let { allComments ->
             val parentId = allComments.find { it.id == linkCommentId }?.parentId
             allComments.forEach {
@@ -262,7 +262,7 @@ class LinkDetailsActivity :
         binding.recyclerView.scrollToPosition(index + 1)
     }
 
-    override fun scrollToComment(id: Int) {
+    override fun scrollToComment(id: Long) {
         val index = adapter.link!!.comments.indexOfFirst { it.id == id }
         binding.recyclerView.scrollToPosition(index + 1)
     }
@@ -325,9 +325,9 @@ class LinkDetailsActivity :
                 }
 
                 BaseInputActivity.EDIT_LINK_COMMENT -> {
-                    val commentId = data?.getIntExtra("commentId", -1)
+                    val commentId = data?.getLongExtra("commentId", -1)
                     onRefresh()
-                    scrollToComment(commentId ?: -1)
+                    scrollToComment(commentId ?: -1L)
                 }
             }
         }

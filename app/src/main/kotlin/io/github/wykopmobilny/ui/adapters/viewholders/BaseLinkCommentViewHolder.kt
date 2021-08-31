@@ -80,7 +80,7 @@ abstract class BaseLinkCommentViewHolder(
     abstract var shareButton: TextView
     open var collapsedCommentsTextView: TextView? = null
 
-    open fun bindView(linkComment: LinkComment, isAuthorComment: Boolean, commentId: Int = -1) {
+    open fun bindView(linkComment: LinkComment, isAuthorComment: Boolean, commentId: Long = -1) {
         setupBody(linkComment)
         setupButtons(linkComment)
         setStyleForComment(linkComment, isAuthorComment, commentId)
@@ -115,7 +115,7 @@ abstract class BaseLinkCommentViewHolder(
         }
     }
 
-    private fun setStyleForComment(comment: LinkComment, isAuthorComment: Boolean, commentId: Int = -1) {
+    private fun setStyleForComment(comment: LinkComment, isAuthorComment: Boolean, commentId: Long = -1) {
         val credentials = userManagerApi.getUserCredentials()
         if (credentials != null && credentials.login == comment.author.nick) {
             authorBadgeStrip.isVisible = true

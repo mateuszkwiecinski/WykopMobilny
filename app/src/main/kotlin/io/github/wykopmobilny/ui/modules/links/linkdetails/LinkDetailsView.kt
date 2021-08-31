@@ -11,6 +11,6 @@ interface LinkDetailsView : BaseView {
     fun hideInputbarProgress()
     fun resetInputbarState()
     fun hideInputToolbar()
-    fun getReplyCommentId(): Int
-    fun scrollToComment(id: Int)
+    fun getReplyCommentId(): Long
+    fun scrollToComment(id: Long)
 }

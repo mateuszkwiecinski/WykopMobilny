@@ -1,8 +1,9 @@
 package io.github.wykopmobilny.ui.adapters
 
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.models.dataclass.Link
-import io.github.wykopmobilny.storage.api.LinksPreferencesApi
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.adapters.viewholders.BlockedViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.LinkViewHolder
@@ -16,8 +17,8 @@ class NoProgressLinkAdapter @Inject constructor(
     private val userManagerApi: UserManagerApi,
     private val settingsPreferencesApi: SettingsPreferencesApi,
     private val navigatorApi: NewNavigatorApi,
-    private val linksPreferences: LinksPreferencesApi,
-) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
+    private val appStorage: AppStorage,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // Required field, interacts with presenter. Otherwise will throw exception
     val items = mutableListOf<Link>()
@@ -31,7 +32,7 @@ class NoProgressLinkAdapter @Inject constructor(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             SimpleLinkViewHolder.TYPE_SIMPLE_LINK -> {
                 SimpleLinkViewHolder.inflateView(
@@ -40,7 +41,7 @@ class NoProgressLinkAdapter @Inject constructor(
                     settingsPreferencesApi = settingsPreferencesApi,
                     navigatorApi = navigatorApi,
                     linkActionListener = linksActionListener,
-                    linksPreferences = linksPreferences,
+                    appStorage = appStorage,
                 )
             }
             SimpleLinkViewHolder.TYPE_BLOCKED, LinkViewHolder.TYPE_BLOCKED ->
@@ -52,12 +53,12 @@ class NoProgressLinkAdapter @Inject constructor(
                 settingsPreferencesApi = settingsPreferencesApi,
                 navigatorApi = navigatorApi,
                 linkActionListener = linksActionListener,
-                linksPreferences = linksPreferences,
+                appStorage = appStorage,
             )
         }
     }
 
-    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is LinkViewHolder -> holder.bindView(items[position])
             is SimpleLinkViewHolder -> holder.bindView(items[position])

@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class LinkResponse(
-    @field:Json(name = "id") val id: Int,
+    @field:Json(name = "id") val id: Long,
     @field:Json(name = "title") val title: String?,
     @field:Json(name = "description") val description: String?,
     @field:Json(name = "tags") val tags: String,

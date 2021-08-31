@@ -89,7 +89,7 @@ class LinkCommentViewHolder(
     override var moreOptionsButton: TextView = binding.moreOptionsTextView
     override var shareButton: TextView = binding.shareTextView
 
-    override fun bindView(linkComment: LinkComment, isAuthorComment: Boolean, commentId: Int) {
+    override fun bindView(linkComment: LinkComment, isAuthorComment: Boolean, commentId: Long) {
         super.bindView(linkComment, isAuthorComment, commentId)
 
         // setup header

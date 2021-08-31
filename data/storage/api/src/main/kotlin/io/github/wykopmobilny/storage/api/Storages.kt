@@ -4,8 +4,6 @@ import io.github.wykopmobilny.data.storage.api.AppStorage
 
 interface Storages {
 
-    fun linksPreferences(): LinksPreferencesApi
-
     fun sessionStorage(): SessionStorage
 
     fun userInfoStorage(): UserInfoStorage

@@ -8,7 +8,6 @@ import io.github.wykopmobilny.R
 import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.databinding.SimpleLinkLayoutBinding
 import io.github.wykopmobilny.models.dataclass.Link
-import io.github.wykopmobilny.storage.api.LinksPreferencesApi
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.fragments.links.LinkActionListener
 import io.github.wykopmobilny.ui.modules.NewNavigatorApi

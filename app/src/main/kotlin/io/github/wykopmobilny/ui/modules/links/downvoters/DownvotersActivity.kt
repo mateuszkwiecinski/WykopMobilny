@@ -23,7 +23,7 @@ class DownvotersActivity : BaseActivity(), androidx.swiperefreshlayout.widget.Sw
         const val DATA_FRAGMENT_TAG = "DOWNVOTERS_LIST"
         const val EXTRA_LINKID = "LINK_ID_EXTRA"
 
-        fun createIntent(linkId: Int, activity: Activity) =
+        fun createIntent(linkId: Long, activity: Activity) =
             Intent(activity, DownvotersActivity::class.java).apply {
                 putExtra(EXTRA_LINKID, linkId)
             }
@@ -50,7 +50,7 @@ class DownvotersActivity : BaseActivity(), androidx.swiperefreshlayout.widget.Sw
             adapter = downvotersAdapter
         }
         binding.swiperefresh.isRefreshing = false
-        presenter.linkId = intent.getIntExtra(EXTRA_LINKID, -1)
+        presenter.linkId = intent.getLongExtra(EXTRA_LINKID, -1)
         presenter.subscribe(this)
 
         if (downvotersDataFragment.data == null) {

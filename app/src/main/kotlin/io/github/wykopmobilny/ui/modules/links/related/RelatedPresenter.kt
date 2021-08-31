@@ -6,11 +6,11 @@ import io.github.wykopmobilny.base.Schedulers
 import io.github.wykopmobilny.utils.intoComposite
 
 class RelatedPresenter(
-    val schedulers: Schedulers,
-    val linksApi: LinksApi
+    private val schedulers: Schedulers,
+    private val linksApi: LinksApi
 ) : BasePresenter<RelatedView>() {
 
-    var linkId = -1
+    var linkId = -1L
 
     fun getRelated() {
         linksApi.getRelated(linkId)

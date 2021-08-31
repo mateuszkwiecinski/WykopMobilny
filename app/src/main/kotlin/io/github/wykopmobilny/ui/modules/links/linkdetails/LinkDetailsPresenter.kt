@@ -47,7 +47,7 @@ class LinkDetailsPresenter(
     override fun deleteComment(comment: LinkComment) =
         linkCommentInteractor.removeComment(comment).processLinkCommentSingle(comment)
 
-    fun loadComments(scrollCommentId: Int? = null) {
+    fun loadComments(scrollCommentId: Long? = null) {
         linksApi.getLinkComments(linkId, sortBy)
             .subscribeOn(schedulers.backgroundThread())
             .observeOn(schedulers.mainThread())
@@ -63,7 +63,7 @@ class LinkDetailsPresenter(
             .intoComposite(compositeObservable)
     }
 
-    fun loadLinkAndComments(scrollCommentId: Int? = null) {
+    fun loadLinkAndComments(scrollCommentId: Long? = null) {
         linksApi.getLink(linkId)
             .subscribeOn(schedulers.backgroundThread())
             .observeOn(schedulers.mainThread())
@@ -89,7 +89,7 @@ class LinkDetailsPresenter(
 
     fun sendReply(body: String, typedInputStream: WykopImageFile, containsAdultContent: Boolean) {
         val replyCommentId = view!!.getReplyCommentId()
-        if (replyCommentId != -1) {
+        if (replyCommentId != -1L) {
             linksApi.commentAdd(body, containsAdultContent, typedInputStream, linkId, replyCommentId)
                 .subscribeOn(schedulers.backgroundThread())
                 .observeOn(schedulers.mainThread())
@@ -126,7 +126,7 @@ class LinkDetailsPresenter(
 
     fun sendReply(body: String, embed: String?, containsAdultContent: Boolean) {
         val replyCommentId = view!!.getReplyCommentId()
-        if (replyCommentId != -1) {
+        if (replyCommentId != -1L) {
             linksApi.commentAdd(body, embed, containsAdultContent, linkId, replyCommentId)
                 .subscribeOn(schedulers.backgroundThread())
                 .observeOn(schedulers.mainThread())

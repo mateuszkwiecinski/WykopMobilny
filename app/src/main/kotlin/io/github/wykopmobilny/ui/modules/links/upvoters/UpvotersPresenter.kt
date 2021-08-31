@@ -10,7 +10,7 @@ class UpvotersPresenter(
     val linksApi: LinksApi
 ) : BasePresenter<UpvotersView>() {
 
-    var linkId = -1
+    var linkId = -1L
 
     fun getUpvoters() {
         linksApi.getUpvoters(linkId)

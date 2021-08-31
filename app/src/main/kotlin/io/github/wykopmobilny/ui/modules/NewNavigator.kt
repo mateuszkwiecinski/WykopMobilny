@@ -42,15 +42,15 @@ interface NewNavigatorApi {
     fun openLoginScreen()
     fun openAddEntryActivity(receiver: String? = null, extraBody: String? = null)
     fun openEditEntryActivity(body: String, entryId: Int)
-    fun openEditLinkCommentActivity(commentId: Int, body: String, linkId: Int)
+    fun openEditLinkCommentActivity(commentId: Long, body: String, linkId: Long)
     fun openEditEntryCommentActivity(body: String, entryId: Int, commentId: Int)
     fun openBrowser(settingsPreferences: SettingsPreferencesApi, url: String)
     fun openReportScreen(violationUrl: String)
     fun openLinkDetailsActivity(link: Link)
-    fun openLinkDetailsActivity(linkId: Int, commentId: Int = -1)
-    fun openLinkUpvotersActivity(linkId: Int)
-    fun openLinkDownvotersActivity(linkId: Int)
-    fun openLinkRelatedActivity(linkId: Int)
+    fun openLinkDetailsActivity(linkId: Long, commentId: Long = -1L)
+    fun openLinkUpvotersActivity(linkId: Long)
+    fun openLinkDownvotersActivity(linkId: Long)
+    fun openLinkRelatedActivity(linkId: Long)
     fun openProfileActivity(username: String)
     fun openNotificationsListActivity(preselectIndex: Int = NotificationsListActivity.PRESELECT_NOTIFICATIONS)
     fun openEmbedActivity(url: String)
@@ -96,7 +96,7 @@ class NewNavigator(private val context: Activity) : NewNavigatorApi {
     override fun openEditEntryActivity(body: String, entryId: Int) =
         context.startActivityForResult(EditEntryActivity.createIntent(context, body, entryId), BaseInputActivity.EDIT_ENTRY)
 
-    override fun openEditLinkCommentActivity(commentId: Int, body: String, linkId: Int) =
+    override fun openEditLinkCommentActivity(commentId: Long, body: String, linkId: Long) =
         context.startActivityForResult(
             LinkCommentEditActivity.createIntent(context, commentId, body, linkId),
             BaseInputActivity.EDIT_LINK_COMMENT,
@@ -128,16 +128,16 @@ class NewNavigator(private val context: Activity) : NewNavigatorApi {
     override fun openLinkDetailsActivity(link: Link) =
         context.startActivity(LinkDetailsActivity.createIntent(context, link))
 
-    override fun openLinkUpvotersActivity(linkId: Int) =
+    override fun openLinkUpvotersActivity(linkId: Long) =
         context.startActivity(UpvotersActivity.createIntent(linkId, context))
 
-    override fun openLinkDetailsActivity(linkId: Int, commentId: Int) =
+    override fun openLinkDetailsActivity(linkId: Long, commentId: Long) =
         context.startActivity(LinkDetailsActivity.createIntent(context, linkId, commentId))
 
-    override fun openLinkDownvotersActivity(linkId: Int) =
+    override fun openLinkDownvotersActivity(linkId: Long) =
         context.startActivity(DownvotersActivity.createIntent(linkId, context))
 
-    override fun openLinkRelatedActivity(linkId: Int) =
+    override fun openLinkRelatedActivity(linkId: Long) =
         context.startActivity(RelatedActivity.createIntent(linkId, context))
 
     override fun openProfileActivity(username: String) =
