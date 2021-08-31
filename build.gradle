@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.tasks.databinding.DataBindingMergeDependencyArtifactsTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -30,6 +31,9 @@ allprojects {
     }
     ["com.android.library", "com.android.application"].forEach {
         pluginManager.withPlugin(it) {
+            tasks.withType(DataBindingMergeDependencyArtifactsTask).configureEach {
+                outputs.cacheIf { false }
+            }
             android.packagingOptions {
                 exclude 'META-INF/*.kotlin_module'
             }
