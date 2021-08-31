@@ -39,7 +39,6 @@ import io.github.wykopmobilny.utils.usermanager.SimpleUserManagerApi
 import io.github.wykopmobilny.utils.usermanager.UserCredentials
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.cancel
@@ -65,7 +64,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
     @Inject
     lateinit var settingsPreferencesApi: Lazy<SettingsPreferencesApi>
 
-    override val applicationScope = CoroutineScope(Job() + Dispatchers.Default)
+    override val applicationScope by lazy { CoroutineScope(Job() + AppDispatchers.Default) }
 
     private val okHttpClient = OkHttpClient()
 
@@ -193,7 +192,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             else -> error("Unknown dependency type $clazz")
         }.dependencyContainer.also { Napier.i("Create component clazz=${clazz.java.simpleName}, scopeId=$scopeId") } as T
 
-    private fun newScope() = CoroutineScope(Job(applicationScope.coroutineContext[Job]) + Dispatchers.Default)
+    private fun newScope() = CoroutineScope(Job(applicationScope.coroutineContext[Job]) + AppDispatchers.Default)
 
     override fun <T : Any> destroyDependency(clazz: KClass<T>, scopeId: String?) {
         Napier.i("Destroy component clazz=${clazz.java.simpleName}, scopeId=$scopeId")

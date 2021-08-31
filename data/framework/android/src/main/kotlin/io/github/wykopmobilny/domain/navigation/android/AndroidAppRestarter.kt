@@ -3,7 +3,7 @@ package io.github.wykopmobilny.domain.navigation.android
 import android.app.Application
 import android.content.Intent
 import io.github.wykopmobilny.domain.navigation.AppRestarter
-import kotlinx.coroutines.Dispatchers
+import io.github.wykopmobilny.ui.base.AppDispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -11,7 +11,7 @@ internal class AndroidAppRestarter @Inject constructor(
     private val application: Application,
 ) : AppRestarter {
 
-    override suspend fun restart(): Unit = withContext(Dispatchers.Main) {
+    override suspend fun restart(): Unit = withContext(AppDispatchers.Main) {
         application.startActivity(
             Intent(
                 application,

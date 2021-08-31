@@ -6,7 +6,7 @@ import io.github.wykopmobilny.storage.api.LoggedUserInfo
 import io.github.wykopmobilny.storage.api.SessionStorage
 import io.github.wykopmobilny.storage.api.UserInfoStorage
 import io.github.wykopmobilny.storage.api.UserSession
-import kotlinx.coroutines.Dispatchers
+import io.github.wykopmobilny.ui.base.AppDispatchers
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -59,7 +59,7 @@ internal class CredentialsPreferences @Inject constructor(
             .onStart { emit("") }
             .map { userSession }
 
-    override suspend fun updateSession(value: UserSession?) = withContext(Dispatchers.IO) {
+    override suspend fun updateSession(value: UserSession?) = withContext(AppDispatchers.IO) {
         userSession = value
     }
 
@@ -67,7 +67,7 @@ internal class CredentialsPreferences @Inject constructor(
         .onStart { emit("") }
         .map { userInfo }
 
-    override suspend fun updateLoggedUser(value: LoggedUserInfo?) = withContext(Dispatchers.IO) {
+    override suspend fun updateLoggedUser(value: LoggedUserInfo?) = withContext(AppDispatchers.IO) {
         userInfo = value
     }
 

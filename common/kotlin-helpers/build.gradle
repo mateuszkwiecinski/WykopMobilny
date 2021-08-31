@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.common.kotlinHelpers)
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+    api("io.github.aakira:napier:2.0.0")
+    api("androidx.annotation:annotation:1.2.0")
 }

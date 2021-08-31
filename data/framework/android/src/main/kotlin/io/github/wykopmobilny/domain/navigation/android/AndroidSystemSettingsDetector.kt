@@ -6,7 +6,7 @@ import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.domain.navigation.NavigationMode
 import io.github.wykopmobilny.domain.navigation.NightModeState
 import io.github.wykopmobilny.domain.navigation.SystemSettingsDetector
-import kotlinx.coroutines.Dispatchers
+import io.github.wykopmobilny.ui.base.AppDispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -14,7 +14,7 @@ internal class AndroidSystemSettingsDetector @Inject constructor(
     private val application: Application,
 ) : SystemSettingsDetector {
 
-    override suspend fun getNightModeState() = withContext(Dispatchers.Default) {
+    override suspend fun getNightModeState() = withContext(AppDispatchers.Default) {
         when (application.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> NightModeState.Enabled
             Configuration.UI_MODE_NIGHT_NO -> NightModeState.Disabled
@@ -23,7 +23,7 @@ internal class AndroidSystemSettingsDetector @Inject constructor(
         }
     }
 
-    override suspend fun getNavigationMode(): NavigationMode = withContext(Dispatchers.Default) {
+    override suspend fun getNavigationMode(): NavigationMode = withContext(AppDispatchers.Default) {
         runCatching {
             val resourceId = application.resources.getIdentifier("config_navBarInteractionMode", "integer", "android")
                 .takeIf { it > 0 }
