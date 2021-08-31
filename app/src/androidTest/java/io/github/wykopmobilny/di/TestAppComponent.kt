@@ -4,13 +4,13 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 import io.github.wykopmobilny.TestApp
-import io.github.wykopmobilny.blacklist.remote.ScraperComponent
+import io.github.wykopmobilny.api.WykopApi
+import io.github.wykopmobilny.blacklist.api.Scraper
 import io.github.wykopmobilny.di.modules.NetworkModule
 import io.github.wykopmobilny.di.modules.RepositoryModule
 import io.github.wykopmobilny.patrons.remote.PatronsComponent
-import io.github.wykopmobilny.storage.android.StoragesComponent
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.wykop.remote.WykopComponent
+import io.github.wykopmobilny.storage.api.Storages
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -24,10 +24,10 @@ import javax.inject.Singleton
         RepositoryModule::class,
     ],
     dependencies = [
-        WykopComponent::class,
+        WykopApi::class,
         PatronsComponent::class,
-        ScraperComponent::class,
-        StoragesComponent::class,
+        Scraper::class,
+        Storages::class,
     ],
 )
 internal interface TestAppComponent : AppComponent {
@@ -38,10 +38,10 @@ internal interface TestAppComponent : AppComponent {
         fun create(
             @BindsInstance instance: TestApp,
             @BindsInstance okHttpClient: OkHttpClient,
-            wykop: WykopComponent,
+            wykop: WykopApi,
             patrons: PatronsComponent,
-            scraper: ScraperComponent,
-            storages: StoragesComponent,
+            scraper: Scraper,
+            storages: Storages,
             @BindsInstance settingsInterop: SettingsPreferencesApi,
         ): TestAppComponent
     }

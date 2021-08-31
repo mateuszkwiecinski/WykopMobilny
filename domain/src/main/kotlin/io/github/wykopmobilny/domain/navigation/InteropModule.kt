@@ -2,6 +2,7 @@ package io.github.wykopmobilny.domain.navigation
 
 import dagger.Binds
 import dagger.Module
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.settings.FontSize
 import io.github.wykopmobilny.domain.settings.LinkImagePosition
 import io.github.wykopmobilny.domain.settings.UserSetting
@@ -12,7 +13,6 @@ import io.github.wykopmobilny.domain.settings.prefs.MainScreen
 import io.github.wykopmobilny.domain.settings.prefs.MikroblogScreen
 import io.github.wykopmobilny.domain.settings.update
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.storage.api.UserPreferenceApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -33,7 +33,7 @@ internal abstract class InteropModule {
 
 @Singleton
 internal class InteropSettingPreferencesApi @Inject constructor(
-    private val userPreferenceApi: UserPreferenceApi,
+    private val appStorage: AppStorage,
     private val getMediaPreferences: GetMediaPreferences,
 ) : SettingsPreferencesApi {
 
@@ -107,25 +107,25 @@ internal class InteropSettingPreferencesApi @Inject constructor(
     override var groupNotifications: Boolean
         get() = interop(UserSettings.groupNotifications) ?: true
         set(value) {
-            runBlocking { userPreferenceApi.update(UserSettings.groupNotifications, value) }
+            runBlocking { appStorage.update(UserSettings.groupNotifications, value) }
         }
     override val disableExitConfirmation: Boolean
         get() = interop(UserSettings.exitConfirmation) ?: true
 
     private fun <T : Enum<T>> interop(setting: UserSetting<T>): T? =
         runBlocking {
-            userPreferenceApi.get(setting).first()
+            appStorage.get(setting).first()
         }
 
     @JvmName("interopBoolean")
     private fun interop(setting: UserSetting<Boolean>): Boolean? =
         runBlocking {
-            userPreferenceApi.get(setting).first()
+            appStorage.get(setting).first()
         }
 
     @JvmName("interopLong")
     private fun interop(setting: UserSetting<Long>): Long? =
         runBlocking {
-            userPreferenceApi.get(setting).first()
+            appStorage.get(setting).first()
         }
 }

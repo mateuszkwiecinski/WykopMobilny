@@ -12,7 +12,7 @@ class LinkCommentEditPresenter(
     val linksApi: LinksApi
 ) : InputPresenter<BaseInputView>() {
 
-    var linkCommentId: Int = -1
+    var linkCommentId: Long = -1
 
     private fun editLinkComment() {
         view?.showProgressBar = true

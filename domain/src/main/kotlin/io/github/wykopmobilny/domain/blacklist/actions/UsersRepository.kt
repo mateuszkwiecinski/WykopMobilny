@@ -3,17 +3,18 @@ package io.github.wykopmobilny.domain.blacklist.actions
 import io.github.wykopmobilny.api.endpoints.ProfileRetrofitApi
 import io.github.wykopmobilny.api.responses.ObserveStateResponse
 import io.github.wykopmobilny.data.cache.api.AppCache
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.api.ApiClient
-import io.github.wykopmobilny.storage.api.BlacklistPreferencesApi
-import kotlinx.coroutines.coroutineScope
+import io.github.wykopmobilny.ui.base.AppDispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class UsersRepository @Inject constructor(
     private val api: ApiClient,
     private val usersApi: ProfileRetrofitApi,
     private val appCache: AppCache,
-    private val blacklistPreferencesApi: BlacklistPreferencesApi,
+    private val appStorage: AppStorage,
 ) {
 
     suspend fun blockUser(profileId: String): ObserveStateResponse {
@@ -44,13 +45,13 @@ internal class UsersRepository @Inject constructor(
         return response
     }
 
-    private suspend fun update(profileId: String, response: ObserveStateResponse) = coroutineScope {
+    private suspend fun update(profileId: String, response: ObserveStateResponse) = withContext(AppDispatchers.IO) {
         launch {
-            blacklistPreferencesApi.update {
+            appStorage.blacklistQueries.run {
                 if (response.isBlocked) {
-                    it.copy(users = it.users + profileId)
+                    insertOrReplaceProfile(profileId)
                 } else {
-                    it.copy(users = it.users - profileId)
+                    deleteProfile(profileId)
                 }
             }
         }

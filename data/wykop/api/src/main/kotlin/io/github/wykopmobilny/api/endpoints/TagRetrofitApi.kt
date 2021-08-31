@@ -17,7 +17,7 @@ interface TagRetrofitApi {
     @GET("/tags/links/{tag}/appkey/$APP_KEY/page/{page}")
     suspend fun getTagLinks(@Path("tag") tag: String, @Path("page") page: Int): TagLinksResponse
 
-    @GET("/tags/observe/{tag}/appkey/$")
+    @GET("/tags/observe/{tag}/appkey/$APP_KEY")
     suspend fun observe(@Path("tag") tag: String): WykopApiResponse<ObserveStateResponse>
 
     @GET("/tags/unobserve/{tag}/appkey/$APP_KEY")

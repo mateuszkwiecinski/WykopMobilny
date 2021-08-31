@@ -74,4 +74,21 @@ internal object UserSettings {
     val cutImagesProportion = longMapping("settings.images.cut_images_proportion")
 
     val groupNotifications = booleanMapping("settings.in_app_notifications.enabled_grouping")
+    val upcomingSort = enumMapping(
+        preferencesKey = "settings.links.upcoming_sort",
+        enumMapping = mapOf(
+            UpcomingSort.Comments to "comments",
+            UpcomingSort.Votes to "votes",
+            UpcomingSort.Date to "date",
+            UpcomingSort.Active to "active",
+        ),
+    )
+    val commentsSort = enumMapping(
+        preferencesKey = "settings.links.comments_sort",
+        enumMapping = mapOf(
+            CommentsDefaultSort.Best to "best",
+            CommentsDefaultSort.New to "new",
+            CommentsDefaultSort.Old to "old",
+        ),
+    )
 }

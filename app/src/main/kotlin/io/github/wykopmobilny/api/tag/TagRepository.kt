@@ -8,9 +8,9 @@ import io.github.wykopmobilny.api.filters.OWMContentFilter
 import io.github.wykopmobilny.api.responses.ObservedTagResponse
 import io.github.wykopmobilny.api.responses.TagEntriesResponse
 import io.github.wykopmobilny.api.responses.TagLinksResponse
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.models.mapper.apiv2.TagEntriesMapper
 import io.github.wykopmobilny.models.mapper.apiv2.TagLinksMapper
-import io.github.wykopmobilny.storage.api.BlacklistPreferencesApi
 import io.reactivex.Single
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.rx2.rxSingle
@@ -20,7 +20,7 @@ class TagRepository @Inject constructor(
     private val tagApi: TagRetrofitApi,
     private val userTokenRefresher: UserTokenRefresher,
     private val owmContentFilter: OWMContentFilter,
-    private val blacklistPreferencesApi: BlacklistPreferencesApi,
+    private val appStorage: AppStorage,
 ) : TagApi {
 
     override fun getTagEntries(tag: String, page: Int) = rxSingle { tagApi.getTagEntries(tag, page) }
@@ -49,10 +49,10 @@ class TagRepository @Inject constructor(
     override fun block(tag: String) = rxSingle { tagApi.block(tag) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
-        .doOnSuccess { runBlocking { blacklistPreferencesApi.update { it.copy(tags = it.tags + tag.removePrefix("#")) } } }
+        .doOnSuccess { runBlocking { appStorage.blacklistQueries.insertOrReplaceTag(tag.removePrefix("#")) } }
 
     override fun unblock(tag: String) = rxSingle { tagApi.unblock(tag) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
-        .doOnSuccess { runBlocking { blacklistPreferencesApi.update { it.copy(tags = it.tags - tag.removePrefix("#")) } } }
+        .doOnSuccess { runBlocking { appStorage.blacklistQueries.deleteTag(tag.removePrefix("#")) } }
 }

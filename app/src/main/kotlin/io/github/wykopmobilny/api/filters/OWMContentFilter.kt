@@ -2,21 +2,19 @@ package io.github.wykopmobilny.api.filters
 
 import io.github.wykopmobilny.api.patrons.PatronsApi
 import io.github.wykopmobilny.api.patrons.getBadgeFor
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.models.dataclass.Entry
 import io.github.wykopmobilny.models.dataclass.EntryComment
 import io.github.wykopmobilny.models.dataclass.Link
 import io.github.wykopmobilny.models.dataclass.LinkComment
-import io.github.wykopmobilny.storage.api.BlacklistPreferencesApi
-import io.github.wykopmobilny.storage.api.LinksPreferencesApi
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.utils.textview.removeHtml
 import java.util.Collections
 import javax.inject.Inject
 
 class OWMContentFilter @Inject constructor(
-    private val blacklistPreferences: BlacklistPreferencesApi,
+    private val appStorage: AppStorage,
     private val settingsPreferencesApi: SettingsPreferencesApi,
-    private val linksPreferencesApi: LinksPreferencesApi,
     private val patronsApi: PatronsApi
 ) {
 
@@ -53,7 +51,7 @@ class OWMContentFilter @Inject constructor(
 
     fun filterLink(link: Link) =
         link.apply {
-            gotSelected = linksPreferencesApi.readLinksIds.orEmpty().contains("link_$id")
+            gotSelected = appStorage.linksQueries.contains(linkId = id).executeAsOne() > 0
             isBlocked =
                 isBlocked ||
                 tags.bodyContainsBlockedTags() ||
@@ -67,10 +65,10 @@ class OWMContentFilter @Inject constructor(
 
     private fun String.bodyContainsBlockedTags(): Boolean {
         return !Collections.disjoint(
-            blacklistPreferences.blockedTags.orEmpty(),
-            tagsRegex.matchEntire(this)?.groupValues?.map { it.removePrefix("#") } ?: emptyList<String>()
+            appStorage.blacklistQueries.allTags().executeAsList(),
+            tagsRegex.matchEntire(this)?.groupValues?.map { it.removePrefix("#") }.orEmpty()
         )
     }
 
-    private fun String.isUserBlocked() = blacklistPreferences.blockedUsers.orEmpty().contains(this.removePrefix("@"))
+    private fun String.isUserBlocked() = appStorage.blacklistQueries.allProfiles().executeAsList().contains(this.removePrefix("@"))
 }

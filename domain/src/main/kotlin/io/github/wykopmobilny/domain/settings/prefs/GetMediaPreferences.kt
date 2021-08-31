@@ -1,21 +1,21 @@
 package io.github.wykopmobilny.domain.settings.prefs
 
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.navigation.YoutubeApp
 import io.github.wykopmobilny.domain.navigation.YoutubeAppDetector
 import io.github.wykopmobilny.domain.settings.UserSettings
 import io.github.wykopmobilny.domain.settings.get
-import io.github.wykopmobilny.storage.api.UserPreferenceApi
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 internal class GetMediaPreferences @Inject constructor(
-    private val userPreferences: UserPreferenceApi,
+    private val appStorage: AppStorage,
     private val youtubeAppDetector: YoutubeAppDetector,
 ) {
 
     operator fun invoke() = combine(
-        userPreferences.get(UserSettings.useYoutubePlayer),
-        userPreferences.get(UserSettings.useEmbeddedPlayer),
+        appStorage.get(UserSettings.useYoutubePlayer),
+        appStorage.get(UserSettings.useEmbeddedPlayer),
     ) { useYoutubePlayer, useEmbeddedPlayer ->
         MediaPlayerPreferences(
             useYoutubePlayer = useYoutubePlayer ?: canUseYoutubePlayer(),

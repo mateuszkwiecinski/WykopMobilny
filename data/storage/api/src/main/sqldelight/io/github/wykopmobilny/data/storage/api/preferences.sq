@@ -1,0 +1,19 @@
+CREATE TABLE preferenceEntity (
+  key TEXT NOT NULL PRIMARY KEY,
+  value TEXT NOT NULL
+);
+
+getPreference:
+SELECT value FROM preferenceEntity
+WHERE ? = key;
+
+insertOrReplace:
+INSERT OR REPLACE INTO preferenceEntity
+VALUES ?;
+
+delete:
+DELETE FROM preferenceEntity
+WHERE ? = key;
+
+deleteAll:
+DELETE FROM preferenceEntity;

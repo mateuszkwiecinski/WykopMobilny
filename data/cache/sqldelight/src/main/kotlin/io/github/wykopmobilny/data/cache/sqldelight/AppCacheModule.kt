@@ -16,8 +16,7 @@ internal class AppCacheModule {
         driver = AndroidSqliteDriver(
             schema = AppCache.Schema,
             context = context,
-            name = "app-caches.db",
-            useNoBackupDirectory = true,
+            name = null,
         ),
     )
 }

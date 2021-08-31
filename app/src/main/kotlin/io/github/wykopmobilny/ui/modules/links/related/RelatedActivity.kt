@@ -28,7 +28,7 @@ class RelatedActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener, Re
         private const val DATA_FRAGMENT_TAG = "RELATED_LIST"
         private const val EXTRA_LINKID = "LINK_ID_EXTRA"
 
-        fun createIntent(linkId: Int, activity: Activity) =
+        fun createIntent(linkId: Long, activity: Activity) =
             Intent(activity, RelatedActivity::class.java).apply {
                 putExtra(EXTRA_LINKID, linkId)
             }
@@ -59,7 +59,7 @@ class RelatedActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener, Re
             adapter = relatedAdapter
         }
         binding.swiperefresh.isRefreshing = false
-        presenter.linkId = intent.getIntExtra(EXTRA_LINKID, -1)
+        presenter.linkId = intent.getLongExtra(EXTRA_LINKID, -1)
         presenter.subscribe(this)
 
         if (relatedDataFragment.data == null) {

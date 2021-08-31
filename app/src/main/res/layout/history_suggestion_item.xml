@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/historySuggestion"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="?attr/itemBackgroundColor"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:ellipsize="start"
+    android:foreground="?selectableItemBackground"
+    android:maxLines="2"
     android:padding="@dimen/_8dp"
-    >
-
-
-    <TextView
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/historySuggestion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:textSize="18sp"
+    tools:text="@tools:sample/lorem/random"
+    />

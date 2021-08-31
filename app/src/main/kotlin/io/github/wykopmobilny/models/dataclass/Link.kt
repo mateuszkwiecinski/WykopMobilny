@@ -5,7 +5,7 @@ import android.os.Parcelable
 import io.github.wykopmobilny.utils.toPrettyDate
 
 class Link(
-    val id: Int,
+    val id: Long,
     val title: String,
     val description: String,
     val tags: String,
@@ -32,7 +32,7 @@ class Link(
     val url = "https://www.wykop.pl/link/$id"
 
     constructor(parcel: Parcel) : this(
-        parcel.readInt(),
+        parcel.readLong(),
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
@@ -57,7 +57,7 @@ class Link(
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
+        parcel.writeLong(id)
         parcel.writeString(title)
         parcel.writeString(description)
         parcel.writeString(tags)

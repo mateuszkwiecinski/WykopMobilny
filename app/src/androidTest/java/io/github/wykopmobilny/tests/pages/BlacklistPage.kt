@@ -12,7 +12,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import io.github.wykopmobilny.R
 import org.hamcrest.CoreMatchers.allOf
-import org.hamcrest.CoreMatchers.not
 
 object BlacklistPage {
 
@@ -38,6 +37,10 @@ object BlacklistPage {
 
     fun tapUnblockUser(user: String) {
         onView(lockIcon(user)).perform(click())
+    }
+
+    fun tapImportButton() {
+        onView(withText("Zaimportuj")).perform(click())
     }
 
     fun assertVisible() {

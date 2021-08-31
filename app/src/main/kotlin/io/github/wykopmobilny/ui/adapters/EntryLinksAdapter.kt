@@ -3,10 +3,11 @@ package io.github.wykopmobilny.ui.adapters
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import io.github.wykopmobilny.base.adapter.EndlessProgressAdapter
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.models.dataclass.Entry
 import io.github.wykopmobilny.models.dataclass.EntryLink
 import io.github.wykopmobilny.models.dataclass.Link
-import io.github.wykopmobilny.storage.api.LinksPreferencesApi
+import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.adapters.viewholders.BlockedViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.EntryViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.LinkViewHolder
@@ -14,9 +15,8 @@ import io.github.wykopmobilny.ui.adapters.viewholders.SimpleLinkViewHolder
 import io.github.wykopmobilny.ui.fragments.entries.EntryActionListener
 import io.github.wykopmobilny.ui.fragments.links.LinkActionListener
 import io.github.wykopmobilny.ui.modules.NewNavigatorApi
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import javax.inject.Inject
 
 class EntryLinksAdapter @Inject constructor(
@@ -24,7 +24,7 @@ class EntryLinksAdapter @Inject constructor(
     private val settingsPreferencesApi: SettingsPreferencesApi,
     private val navigatorApi: NewNavigatorApi,
     private val linkHandlerApi: WykopLinkHandlerApi,
-    private val linksPreferences: LinksPreferencesApi,
+    private val appStorage: AppStorage,
 ) : EndlessProgressAdapter<ViewHolder, EntryLink>() {
     // Required field, interacts with presenter. Otherwise will throw exception
     lateinit var entryActionListener: EntryActionListener
@@ -41,12 +41,10 @@ class EntryLinksAdapter @Inject constructor(
 
     override fun addData(items: List<EntryLink>, shouldClearAdapter: Boolean) {
         super.addData(
-            items.asSequence()
-                .filterNot {
-                    val isBlocked = if (it.entry != null) it.entry!!.isBlocked else it.link!!.isBlocked
-                    settingsPreferencesApi.hideBlacklistedViews && isBlocked
-                }
-                .toList(),
+            items.filterNot {
+                val isBlocked = it.entry?.isBlocked == true || it.link?.isBlocked == true
+                settingsPreferencesApi.hideBlacklistedViews && isBlocked
+            },
             shouldClearAdapter,
         )
     }
@@ -61,7 +59,7 @@ class EntryLinksAdapter @Inject constructor(
                     settingsPreferencesApi = settingsPreferencesApi,
                     navigatorApi = navigatorApi,
                     linkActionListener = linkActionListener,
-                    linksPreferences = linksPreferences,
+                    appStorage = appStorage,
                 )
             EntryViewHolder.TYPE_BLOCKED, LinkViewHolder.TYPE_BLOCKED -> BlockedViewHolder.inflateView(parent, ::notifyItemChanged)
             else -> EntryViewHolder.inflateView(

@@ -10,7 +10,7 @@ class DownvotersPresenter(
     val linksApi: LinksApi
 ) : BasePresenter<DownvotersView>() {
 
-    var linkId = -1
+    var linkId = -1L
 
     fun getDownvoters() {
         linksApi.getDownvoters(linkId)

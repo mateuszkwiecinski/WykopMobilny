@@ -49,7 +49,7 @@ class LinksRepository @Inject constructor(
             .compose(ErrorHandlerTransformer())
             .map { it.map { response -> LinkMapper.map(response, owmContentFilter) } }
 
-    override fun getLinkComments(linkId: Int, sortBy: String) =
+    override fun getLinkComments(linkId: Long, sortBy: String) =
         rxSingle { linksApi.getLinkComments(linkId, sortBy) }
             .retryWhen(userTokenRefresher)
             .flatMap { patronsApi.ensurePatrons(it) }
@@ -57,27 +57,29 @@ class LinksRepository @Inject constructor(
             .map { it.map { response -> LinkCommentMapper.map(response, owmContentFilter) } }
             .map { list ->
                 list.forEach { comment ->
-                    if (comment.id == comment.parentId) {
+                    if (
+                        comment.id == comment.parentId
+                    ) {
                         comment.childCommentCount = list.filter { item -> comment.id == item.parentId }.size - 1
                     }
                 }
                 list
             }
 
-    override fun getLink(linkId: Int) =
+    override fun getLink(linkId: Long) =
         rxSingle { linksApi.getLink(linkId) }
             .retryWhen(userTokenRefresher)
             .flatMap { patronsApi.ensurePatrons(it) }
             .compose(ErrorHandlerTransformer())
             .map { LinkMapper.map(it, owmContentFilter) }
 
-    override fun commentVoteUp(linkId: Int) =
+    override fun commentVoteUp(linkId: Long) =
         rxSingle { linksApi.commentVoteUp(linkId) }
             .flatMap { patronsApi.ensurePatrons(it) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
 
-    override fun commentVoteDown(linkId: Int) =
+    override fun commentVoteDown(linkId: Long) =
         rxSingle { linksApi.commentVoteDown(linkId) }
             .flatMap { patronsApi.ensurePatrons(it) }
             .retryWhen(userTokenRefresher)
@@ -94,13 +96,13 @@ class LinksRepository @Inject constructor(
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
 
-    override fun commentVoteCancel(linkId: Int) =
+    override fun commentVoteCancel(linkId: Long) =
         rxSingle { linksApi.commentVoteCancel(linkId) }
             .flatMap { patronsApi.ensurePatrons(it) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
 
-    override fun voteUp(linkId: Int, notifyPublisher: Boolean) =
+    override fun voteUp(linkId: Long, notifyPublisher: Boolean) =
         rxSingle { linksApi.voteUp(linkId) }
             .flatMap { patronsApi.ensurePatrons(it) }
             .retryWhen(userTokenRefresher)
@@ -112,9 +114,9 @@ class LinksRepository @Inject constructor(
             }
 
     override fun voteDown(
-        linkId: Int,
+        linkId: Long,
         reason: Int,
-        notifyPublisher: Boolean
+        notifyPublisher: Boolean,
     ) =
         rxSingle { linksApi.voteDown(linkId, reason) }
             .retryWhen(userTokenRefresher)
@@ -126,7 +128,7 @@ class LinksRepository @Inject constructor(
                 }
             }
 
-    override fun voteRemove(linkId: Int, notifyPublisher: Boolean) =
+    override fun voteRemove(linkId: Long, notifyPublisher: Boolean) =
         rxSingle { linksApi.voteRemove(linkId) }
             .retryWhen(userTokenRefresher)
             .flatMap { patronsApi.ensurePatrons(it) }
@@ -141,7 +143,7 @@ class LinksRepository @Inject constructor(
         body: String,
         embed: String?,
         plus18: Boolean,
-        linkId: Int
+        linkId: Long,
     ) =
         rxSingle { linksApi.addComment(body, linkId, embed, plus18) }
             .retryWhen(userTokenRefresher)
@@ -152,7 +154,7 @@ class LinksRepository @Inject constructor(
         title: String,
         url: String,
         plus18: Boolean,
-        linkId: Int
+        linkId: Long,
     ) =
         rxSingle { linksApi.addRelated(title, linkId, url, plus18) }
             .retryWhen(userTokenRefresher)
@@ -163,7 +165,7 @@ class LinksRepository @Inject constructor(
         body: String,
         plus18: Boolean,
         inputStream: WykopImageFile,
-        linkId: Int
+        linkId: Long,
     ) =
         rxSingle { linksApi.addComment(body.toRequestBody(), plus18.toRequestBody(), linkId, inputStream.getFileMultipart()) }
             .retryWhen(userTokenRefresher)
@@ -174,8 +176,8 @@ class LinksRepository @Inject constructor(
         body: String,
         embed: String?,
         plus18: Boolean,
-        linkId: Int,
-        linkComment: Int
+        linkId: Long,
+        linkComment: Long,
     ) =
         rxSingle { linksApi.addComment(body, linkId, linkComment, embed, plus18) }
             .retryWhen(userTokenRefresher)
@@ -186,45 +188,45 @@ class LinksRepository @Inject constructor(
         body: String,
         plus18: Boolean,
         inputStream: WykopImageFile,
-        linkId: Int,
-        linkComment: Int
+        linkId: Long,
+        linkComment: Long,
     ) =
         rxSingle { linksApi.addComment(body.toRequestBody(), plus18.toRequestBody(), linkId, linkComment, inputStream.getFileMultipart()) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
             .map { LinkCommentMapper.map(it, owmContentFilter) }
 
-    override fun commentEdit(body: String, linkId: Int) =
+    override fun commentEdit(body: String, linkId: Long) =
         rxSingle { linksApi.editComment(body, linkId) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
             .map { LinkCommentMapper.map(it, owmContentFilter) }
 
-    override fun commentDelete(commentId: Int) =
+    override fun commentDelete(commentId: Long) =
         rxSingle { linksApi.deleteComment(commentId) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
             .map { LinkCommentMapper.map(it, owmContentFilter) }
 
-    override fun getDownvoters(linkId: Int) =
+    override fun getDownvoters(linkId: Long) =
         rxSingle { linksApi.getDownvoters(linkId) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
             .map { it.map { response -> DownvoterMapper.map(response) } }
 
-    override fun getUpvoters(linkId: Int) =
+    override fun getUpvoters(linkId: Long) =
         rxSingle { linksApi.getUpvoters(linkId) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
             .map { it.map { response -> UpvoterMapper.map(response) } }
 
-    override fun getRelated(linkId: Int) =
+    override fun getRelated(linkId: Long) =
         rxSingle { linksApi.getRelated(linkId) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
             .map { it.map { response -> RelatedMapper.map(response) } }
 
-    override fun markFavorite(linkId: Int) =
+    override fun markFavorite(linkId: Long) =
         rxSingle { linksApi.markFavorite(linkId) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())

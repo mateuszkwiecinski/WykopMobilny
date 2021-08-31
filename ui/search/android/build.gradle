@@ -1,0 +1,15 @@
+plugins {
+    id("com.starter.library.android")
+    id("org.jetbrains.kotlin.kapt")
+}
+
+android {
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    api(projects.ui.search.api)
+    implementation(projects.ui.base.android)
+}

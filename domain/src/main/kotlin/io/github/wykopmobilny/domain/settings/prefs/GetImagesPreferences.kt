@@ -1,19 +1,19 @@
 package io.github.wykopmobilny.domain.settings.prefs
 
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.settings.UserSettings
 import io.github.wykopmobilny.domain.settings.get
-import io.github.wykopmobilny.storage.api.UserPreferenceApi
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 internal class GetImagesPreferences @Inject constructor(
-    private val userPreferences: UserPreferenceApi,
+    private val appStorage: AppStorage,
 ) {
 
     operator fun invoke() = combine(
-        userPreferences.get(UserSettings.showMinifiedImages),
-        userPreferences.get(UserSettings.cutImages),
-        userPreferences.get(UserSettings.cutImagesProportion),
+        appStorage.get(UserSettings.showMinifiedImages),
+        appStorage.get(UserSettings.cutImages),
+        appStorage.get(UserSettings.cutImagesProportion),
     ) { showMinifiedImages, cutImages, cutImagesProportion ->
         ImagePreferences(
             showMinifiedImages = showMinifiedImages ?: false,

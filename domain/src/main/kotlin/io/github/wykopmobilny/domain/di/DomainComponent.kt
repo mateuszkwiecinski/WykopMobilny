@@ -13,6 +13,7 @@ import io.github.wykopmobilny.domain.navigation.InteropModule
 import io.github.wykopmobilny.domain.navigation.InteropRequestService
 import io.github.wykopmobilny.domain.profile.di.ProfileDomainComponent
 import io.github.wykopmobilny.domain.promoted.PromotedModule
+import io.github.wykopmobilny.domain.search.di.SearchDomainComponent
 import io.github.wykopmobilny.domain.settings.di.SettingsDomainComponent
 import io.github.wykopmobilny.domain.styles.di.StylesDomainComponent
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
@@ -60,6 +61,8 @@ interface DomainComponent {
     fun blacklist(): BlacklistDomainComponent
 
     fun profile(): ProfileDomainComponent.Factory
+
+    fun search(): SearchDomainComponent
 
     fun navigation(): InteropRequestService
 

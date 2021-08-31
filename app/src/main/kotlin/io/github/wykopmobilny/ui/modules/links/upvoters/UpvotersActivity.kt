@@ -23,7 +23,7 @@ class UpvotersActivity : BaseActivity(), androidx.swiperefreshlayout.widget.Swip
         const val DATA_FRAGMENT_TAG = "UPVOTERS_LIST"
         const val EXTRA_LINK_ID = "LINK_ID_EXTRA"
 
-        fun createIntent(linkId: Int, activity: Activity) =
+        fun createIntent(linkId: Long, activity: Activity) =
             Intent(activity, UpvotersActivity::class.java).apply {
                 putExtra(EXTRA_LINK_ID, linkId)
             }
@@ -51,7 +51,7 @@ class UpvotersActivity : BaseActivity(), androidx.swiperefreshlayout.widget.Swip
             adapter = upvotersAdapter
         }
         binding.swiperefresh.isRefreshing = false
-        presenter.linkId = intent.getIntExtra(EXTRA_LINK_ID, -1)
+        presenter.linkId = intent.getLongExtra(EXTRA_LINK_ID, -1)
         presenter.subscribe(this)
 
         if (upvotersDataFragment.data == null) {

@@ -3,8 +3,8 @@ package io.github.wykopmobilny.ui.adapters
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.github.wykopmobilny.base.adapter.EndlessProgressAdapter
+import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.models.dataclass.Link
-import io.github.wykopmobilny.storage.api.LinksPreferencesApi
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.adapters.viewholders.BlockedViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.LinkViewHolder
@@ -18,7 +18,7 @@ class LinksAdapter @Inject constructor(
     private val userManagerApi: UserManagerApi,
     private val settingsPreferencesApi: SettingsPreferencesApi,
     private val navigatorApi: NewNavigatorApi,
-    private val linksPreferences: LinksPreferencesApi,
+    private val appStorage: AppStorage,
 ) : EndlessProgressAdapter<RecyclerView.ViewHolder, Link>() {
 
     // Required field, interacts with presenter. Otherwise will throw exception
@@ -41,7 +41,7 @@ class LinksAdapter @Inject constructor(
                     settingsPreferencesApi = settingsPreferencesApi,
                     navigatorApi = navigatorApi,
                     linkActionListener = linksActionListener,
-                    linksPreferences = linksPreferences,
+                    appStorage = appStorage,
                 )
             SimpleLinkViewHolder.TYPE_BLOCKED, LinkViewHolder.TYPE_BLOCKED ->
                 BlockedViewHolder.inflateView(parent) { notifyItemChanged(it) }
@@ -52,7 +52,7 @@ class LinksAdapter @Inject constructor(
                 settingsPreferencesApi = settingsPreferencesApi,
                 navigatorApi = navigatorApi,
                 linkActionListener = linksActionListener,
-                linksPreferences = linksPreferences,
+                appStorage = appStorage,
             )
         }
     }

@@ -14,18 +14,20 @@ import io.github.wykopmobilny.R
 import io.github.wykopmobilny.api.WykopImageFile
 import io.github.wykopmobilny.api.suggest.SuggestApi
 import io.github.wykopmobilny.base.BaseActivity
+import io.github.wykopmobilny.data.storage.api.AppStorage
+import io.github.wykopmobilny.data.storage.api.PreferenceEntity
 import io.github.wykopmobilny.databinding.ActivityLinkDetailsBinding
 import io.github.wykopmobilny.models.dataclass.Link
 import io.github.wykopmobilny.models.dataclass.LinkComment
+import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.adapters.LinkDetailsAdapter
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentViewListener
 import io.github.wykopmobilny.ui.modules.input.BaseInputActivity
 import io.github.wykopmobilny.ui.widgets.InputToolbarListener
-import io.github.wykopmobilny.storage.api.LinksPreferencesApi
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.utils.prepare
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.utils.viewBinding
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class LinkDetailsActivity :
@@ -45,7 +47,7 @@ class LinkDetailsActivity :
                 putExtra(EXTRA_LINK, link)
             }
 
-        fun createIntent(context: Context, linkId: Int, commentId: Int? = null) =
+        fun createIntent(context: Context, linkId: Long, commentId: Long? = null) =
             Intent(context, LinkDetailsActivity::class.java).apply {
                 putExtra(EXTRA_LINK_ID, linkId)
                 putExtra(EXTRA_COMMENT_ID, commentId)
@@ -62,7 +64,7 @@ class LinkDetailsActivity :
     lateinit var suggestionsApi: SuggestApi
 
     @Inject
-    lateinit var linkPreferences: LinksPreferencesApi
+    lateinit var appStorage: AppStorage
 
     @Inject
     lateinit var adapter: LinkDetailsAdapter
@@ -76,13 +78,13 @@ class LinkDetailsActivity :
     override val enableSwipeBackLayout: Boolean = true
     val linkId by lazy {
         if (intent.hasExtra(EXTRA_LINK)) link.id else {
-            intent.getIntExtra(EXTRA_LINK_ID, -1)
+            intent.getLongExtra(EXTRA_LINK_ID, -1L)
         }
     }
     private val link by lazy { intent.getParcelableExtra<Link>(EXTRA_LINK)!! }
-    private var replyLinkId: Int = 0
+    private var replyLinkId: Long = 0
     private val linkCommentId by lazy {
-        intent.getIntExtra(EXTRA_COMMENT_ID, -1)
+        intent.getLongExtra(EXTRA_COMMENT_ID, -1)
     }
 
     override fun updateLinkComment(comment: LinkComment) {
@@ -107,8 +109,8 @@ class LinkDetailsActivity :
         adapter.notifyDataSetChanged()
     }
 
-    override fun getReplyCommentId(): Int {
-        return if (replyLinkId != 0 && binding.inputToolbar.textBody.contains("@")) replyLinkId
+    override fun getReplyCommentId(): Long {
+        return if (replyLinkId != 0L && binding.inputToolbar.textBody.contains("@")) replyLinkId
         else -1
     }
 
@@ -145,7 +147,9 @@ class LinkDetailsActivity :
 
         binding.swiperefresh.setOnRefreshListener(this)
 
-        presenter.sortBy = linkPreferences.linkCommentsDefaultSort ?: "best"
+        presenter.sortBy =
+            runBlocking { appStorage.preferencesQueries.getPreference("settings.links.comments_sort").executeAsOneOrNull() }
+                ?: "best"
         adapter.notifyDataSetChanged()
         binding.loadingView.isVisible = true
         hideInputToolbar()
@@ -170,7 +174,7 @@ class LinkDetailsActivity :
                 "new" -> R.string.sortby_newest
                 "old" -> R.string.sortby_oldest
                 else -> R.string.sortby_best
-            }
+            },
         )
     }
 
@@ -179,14 +183,14 @@ class LinkDetailsActivity :
             R.id.refresh -> onRefresh()
             R.id.sortbyBest -> {
                 presenter.sortBy = "best"
-                linkPreferences.linkCommentsDefaultSort = "best"
+                appStorage.preferencesQueries.insertOrReplace(PreferenceEntity(key = "settings.links.comments_sort", value = "best"))
                 setSubtitle()
                 presenter.loadComments()
                 binding.swiperefresh.isRefreshing = true
             }
             R.id.sortbyNewest -> {
                 presenter.sortBy = "new"
-                linkPreferences.linkCommentsDefaultSort = "new"
+                appStorage.preferencesQueries.insertOrReplace(PreferenceEntity(key = "settings.links.comments_sort", value = "new"))
                 setSubtitle()
                 presenter.loadComments()
                 binding.swiperefresh.isRefreshing = true
@@ -194,7 +198,7 @@ class LinkDetailsActivity :
 
             R.id.sortbyOldest -> {
                 presenter.sortBy = "old"
-                linkPreferences.linkCommentsDefaultSort = "old"
+                appStorage.preferencesQueries.insertOrReplace(PreferenceEntity(key = "settings.links.comments_sort", value = "old"))
                 setSubtitle()
                 presenter.loadComments()
                 binding.swiperefresh.isRefreshing = true
@@ -227,7 +231,7 @@ class LinkDetailsActivity :
         binding.swiperefresh.isRefreshing = false
         adapter.notifyDataSetChanged()
         binding.inputToolbar.show()
-        if (linkCommentId != -1 && adapter.link != null) {
+        if (linkCommentId != -1L && adapter.link != null) {
             if (settingsApi.hideLinkCommentsByDefault) {
                 expandAndScrollToComment(linkCommentId)
             } else {
@@ -236,7 +240,7 @@ class LinkDetailsActivity :
         }
     }
 
-    private fun expandAndScrollToComment(linkCommentId: Int) {
+    private fun expandAndScrollToComment(linkCommentId: Long) {
         adapter.link?.comments?.let { allComments ->
             val parentId = allComments.find { it.id == linkCommentId }?.parentId
             allComments.forEach {
@@ -258,7 +262,7 @@ class LinkDetailsActivity :
         binding.recyclerView.scrollToPosition(index + 1)
     }
 
-    override fun scrollToComment(id: Int) {
+    override fun scrollToComment(id: Long) {
         val index = adapter.link!!.comments.indexOfFirst { it.id == id }
         binding.recyclerView.scrollToPosition(index + 1)
     }
@@ -321,9 +325,9 @@ class LinkDetailsActivity :
                 }
 
                 BaseInputActivity.EDIT_LINK_COMMENT -> {
-                    val commentId = data?.getIntExtra("commentId", -1)
+                    val commentId = data?.getLongExtra("commentId", -1)
                     onRefresh()
-                    scrollToComment(commentId ?: -1)
+                    scrollToComment(commentId ?: -1L)
                 }
             }
         }

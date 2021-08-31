@@ -5,7 +5,7 @@ import android.os.Parcelable
 import io.github.wykopmobilny.utils.toPrettyDate
 
 class LinkComment(
-    val id: Int,
+    val id: Long,
     val author: Author,
     val fullDate: String,
     var body: String?,
@@ -15,9 +15,9 @@ class LinkComment(
     var voteCountPlus: Int,
     var voteCountMinus: Int,
     var userVote: Int,
-    var parentId: Int,
+    var parentId: Long,
     val canVote: Boolean,
-    val linkId: Int,
+    val linkId: Long,
     var embed: Embed?,
     val app: String?,
     var isCollapsed: Boolean,
@@ -31,7 +31,7 @@ class LinkComment(
     val url = "https://www.wykop.pl/link/$linkId/#comment-$id"
 
     constructor(parcel: Parcel) : this(
-        parcel.readInt(),
+        parcel.readLong(),
         parcel.readParcelable(Author::class.java.classLoader)!!,
         parcel.readString()!!,
         parcel.readString(),
@@ -41,9 +41,9 @@ class LinkComment(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
-        parcel.readInt(),
+        parcel.readLong(),
         parcel.readByte() != 0.toByte(),
-        parcel.readInt(),
+        parcel.readLong(),
         parcel.readParcelable(Embed::class.java.classLoader),
         parcel.readString(),
         parcel.readByte() != 0.toByte(),
@@ -55,7 +55,7 @@ class LinkComment(
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
+        parcel.writeLong(id)
         parcel.writeParcelable(author, flags)
         parcel.writeString(date)
         parcel.writeString(body)
@@ -65,9 +65,9 @@ class LinkComment(
         parcel.writeInt(voteCountPlus)
         parcel.writeInt(voteCountMinus)
         parcel.writeInt(userVote)
-        parcel.writeInt(parentId)
+        parcel.writeLong(parentId)
         parcel.writeByte(if (canVote) 1 else 0)
-        parcel.writeInt(linkId)
+        parcel.writeLong(linkId)
         parcel.writeParcelable(embed, flags)
         parcel.writeString(app)
         parcel.writeByte(if (isCollapsed) 1 else 0)

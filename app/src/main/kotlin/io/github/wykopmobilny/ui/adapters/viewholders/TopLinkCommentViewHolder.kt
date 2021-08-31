@@ -85,7 +85,7 @@ class TopLinkCommentViewHolder(
         }
     }
 
-    override fun bindView(linkComment: LinkComment, isAuthorComment: Boolean, commentId: Int) {
+    override fun bindView(linkComment: LinkComment, isAuthorComment: Boolean, commentId: Long) {
         super.bindView(linkComment, isAuthorComment, commentId)
 
         binding.authorHeaderView.setAuthorData(linkComment.author, linkComment.date, linkComment.app)
