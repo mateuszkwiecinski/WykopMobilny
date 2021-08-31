@@ -1,6 +1,8 @@
 package io.github.wykopmobilny.data.cache.sqldelight
 
 import android.content.Context
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.sqlite.db.SupportSQLiteOpenHelper
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import dagger.Module
 import dagger.Provides
@@ -16,8 +18,7 @@ internal class AppCacheModule {
         driver = AndroidSqliteDriver(
             schema = AppCache.Schema,
             context = context,
-            name = "app-caches.db",
-            useNoBackupDirectory = true,
+            name = null,
         ),
     )
 }

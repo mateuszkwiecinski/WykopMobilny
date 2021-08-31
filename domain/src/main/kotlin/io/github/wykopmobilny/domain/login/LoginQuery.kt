@@ -37,7 +37,7 @@ class LoginQuery @Inject constructor(
                 visibleError = viewState.visibleError?.let {
                     InfoMessageUi(
                         title = "Oops...",
-                        message = it.message ?: it.toString(),
+                        message = it.localizedMessage ?: it.toString(),
                         confirmAction = ::dismissError,
                         dismissAction = ::dismissError,
                     )
