@@ -23,7 +23,7 @@ class LinkComment(
     var isCollapsed: Boolean,
     var isParentCollapsed: Boolean,
     var childCommentCount: Int,
-    val violationUrl: String,
+    val violationUrl: String?,
     var isNsfw: Boolean = false,
     var isBlocked: Boolean = false
 ) : Parcelable {

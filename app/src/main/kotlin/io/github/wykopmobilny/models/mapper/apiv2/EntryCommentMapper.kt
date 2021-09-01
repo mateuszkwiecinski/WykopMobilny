@@ -18,7 +18,7 @@ object EntryCommentMapper {
                 embed = value.embed?.let(EmbedMapper::map),
                 voteCount = value.voteCount,
                 app = value.app,
-                violationUrl = value.violationUrl ?: "",
+                violationUrl = value.violationUrl,
                 isNsfw = value.body?.lowercase()?.contains("#nsfw") ?: false,
                 isBlocked = value.blocked,
             )

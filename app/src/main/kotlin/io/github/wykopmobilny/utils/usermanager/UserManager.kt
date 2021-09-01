@@ -5,10 +5,16 @@ import io.github.wykopmobilny.api.responses.LoginResponse
 import io.github.wykopmobilny.storage.api.LoggedUserInfo
 import io.github.wykopmobilny.storage.api.SessionStorage
 import io.github.wykopmobilny.storage.api.UserInfoStorage
+import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.dialogs.userNotLoggedInDialog
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
 data class UserCredentials(
     val login: String,
@@ -22,24 +28,30 @@ interface SimpleUserManagerApi {
 }
 
 interface UserManagerApi : SimpleUserManagerApi {
-    fun logoutUser()
-    fun saveCredentials(credentials: LoginResponse)
+    suspend fun logoutUser()
+    suspend fun saveCredentials(credentials: LoginResponse)
     fun runIfLoggedIn(context: Context, callback: () -> Unit)
 }
 
 fun UserManagerApi.isUserAuthorized() = getUserCredentials() != null
 
+@Singleton
 class UserManager @Inject constructor(
     private val sessionStorage: SessionStorage,
     private val userInfoStorage: UserInfoStorage,
+    private val appScopes: AppScopes,
 ) : UserManagerApi {
 
-    override fun logoutUser() = runBlocking {
+    private val userInfo = userInfoStorage.loggedUser
+        .stateIn(appScopes.applicationScope, SharingStarted.Eagerly, null)
+
+    override suspend fun logoutUser() {
         sessionStorage.updateSession(null)
         userInfoStorage.updateLoggedUser(null)
+        userInfo.first { it == null }
     }
 
-    override fun saveCredentials(credentials: LoginResponse) = runBlocking {
+    override suspend fun saveCredentials(credentials: LoginResponse) {
         userInfoStorage.updateLoggedUser(
             value = LoggedUserInfo(
                 id = credentials.profile.id,
@@ -50,25 +62,26 @@ class UserManager @Inject constructor(
         )
     }
 
-    private fun isUserAuthorized(): Boolean = runBlocking { sessionStorage.session.first() } != null
-
     override fun getUserCredentials(): UserCredentials? =
-        runBlocking {
-            userInfoStorage.loggedUser.first()?.let {
-                UserCredentials(
-                    login = it.id,
-                    avatarUrl = it.avatarUrl,
-                    backgroundUrl = it.backgroundUrl,
-                    userKey = it.userToken,
-                )
-            }
+        userInfo.value?.let {
+            UserCredentials(
+                login = it.id,
+                avatarUrl = it.avatarUrl,
+                backgroundUrl = it.backgroundUrl,
+                userKey = it.userToken,
+            )
         }
 
     override fun runIfLoggedIn(context: Context, callback: () -> Unit) {
-        if (isUserAuthorized()) {
-            callback.invoke()
-        } else {
-            userNotLoggedInDialog(context)?.show()
+        appScopes.applicationScope.launch {
+            val isLoggedIn = sessionStorage.session.first()
+            if (isLoggedIn != null) {
+                callback.invoke()
+            } else {
+                withContext(AppDispatchers.Main) {
+                    userNotLoggedInDialog(context)?.show()
+                }
+            }
         }
     }
 }
