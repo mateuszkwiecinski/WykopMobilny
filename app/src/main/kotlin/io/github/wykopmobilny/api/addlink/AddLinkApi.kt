@@ -15,6 +15,6 @@ interface AddLinkApi {
         tags: String,
         photo: String,
         url: String,
-        plus18: Boolean
+        plus18: Boolean,
     ): Single<Link>
 }

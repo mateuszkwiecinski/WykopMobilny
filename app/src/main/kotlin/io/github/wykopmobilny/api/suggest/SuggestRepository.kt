@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class SuggestRepository @Inject constructor(
     private val suggestApi: SuggestRetrofitApi,
-    private val userTokenRefresher: UserTokenRefresher
+    private val userTokenRefresher: UserTokenRefresher,
 ) : SuggestApi {
 
     override fun getTagSuggestions(suggestionString: String) =

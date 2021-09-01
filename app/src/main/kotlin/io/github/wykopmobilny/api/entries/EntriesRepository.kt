@@ -19,7 +19,7 @@ class EntriesRepository @Inject constructor(
     private val entriesApi: EntriesRetrofitApi,
     private val userTokenRefresher: UserTokenRefresher,
     private val owmContentFilter: OWMContentFilter,
-    private val patronsApi: PatronsApi
+    private val patronsApi: PatronsApi,
 ) : EntriesApi {
 
     override val entryVoteSubject = PublishSubject.create<EntryVotePublishModel>()
@@ -62,7 +62,7 @@ class EntriesRepository @Inject constructor(
                 body = body.toRequestBody(),
                 plus18 = plus18.toRequestBody(),
                 entryId = entryId,
-                file = wykopImageFile.getFileMultipart()
+                file = wykopImageFile.getFileMultipart(),
             )
         }
             .retryWhen(userTokenRefresher)

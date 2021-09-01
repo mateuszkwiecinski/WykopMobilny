@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class NotificationsRepository @Inject constructor(
     private val notificationsApi: NotificationsRetrofitApi,
-    private val userTokenRefresher: UserTokenRefresher
+    private val userTokenRefresher: UserTokenRefresher,
 ) : NotificationsApi {
 
     override fun readNotifications() = rxSingle { notificationsApi.readNotifications() }

@@ -8,7 +8,7 @@ object SurveyMapper : Mapper<SurveyResponse, Survey> {
     override fun map(value: SurveyResponse) =
         Survey(
             value.question ?: "",
-            value.answers.map { AnswerMapper.map(it) },
+            value.answers.orEmpty().map { AnswerMapper.map(it) },
             value.userAnswer
         )
 }

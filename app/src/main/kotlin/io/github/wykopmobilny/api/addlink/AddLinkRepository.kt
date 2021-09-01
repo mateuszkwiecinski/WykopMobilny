@@ -15,7 +15,7 @@ import javax.inject.Inject
 class AddLinkRepository @Inject constructor(
     private val addlinkApi: AddLinkRetrofitApi,
     private val userTokenRefresher: UserTokenRefresher,
-    private val owmContentFilter: OWMContentFilter
+    private val owmContentFilter: OWMContentFilter,
 ) : AddLinkApi {
 
     override fun getDraft(url: String) =
@@ -35,7 +35,7 @@ class AddLinkRepository @Inject constructor(
         tags: String,
         photo: String,
         url: String,
-        plus18: Boolean
+        plus18: Boolean,
     ): Single<Link> =
         rxSingle {
             addlinkApi.publishLink(
