@@ -47,9 +47,9 @@ internal class GetAppearanceSectionPreferences @Inject constructor(
         when (systemSettingsDetector.getNavigationMode()) {
             NavigationMode.ThreeButtons,
             NavigationMode.TwoButtons,
+            NavigationMode.Unknown,
             -> false
             NavigationMode.FullScreenGesture,
-            NavigationMode.Unknown,
             -> true
         }
 }
