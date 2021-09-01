@@ -15,7 +15,7 @@ import javax.inject.Inject
 class OWMContentFilter @Inject constructor(
     private val appStorage: AppStorage,
     private val settingsPreferencesApi: SettingsPreferencesApi,
-    private val patronsApi: PatronsApi
+    private val patronsApi: PatronsApi,
 ) {
 
     fun filterEntry(entry: Entry) =
@@ -66,7 +66,7 @@ class OWMContentFilter @Inject constructor(
     private fun String.bodyContainsBlockedTags(): Boolean {
         return !Collections.disjoint(
             appStorage.blacklistQueries.allTags().executeAsList(),
-            tagsRegex.matchEntire(this)?.groupValues?.map { it.removePrefix("#") }.orEmpty()
+            tagsRegex.matchEntire(this)?.groupValues?.map { it.removePrefix("#") }.orEmpty(),
         )
     }
 

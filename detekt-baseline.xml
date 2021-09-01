@@ -3,66 +3,8 @@
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>ComplexCondition:WykopEmbedView.kt$WykopEmbedView$!embed.isRevealed &amp;&amp; (plus18 &amp;&amp; !settingsPreferencesApi.showAdultContent || isNsfw &amp;&amp; settingsPreferencesApi.hideNsfw)</ID>
-    <ID>ComplexMethod:Extensions.kt$fun String.toDurationPrettyDate(): String</ID>
-    <ID>ComplexMethod:MainNavigationActivity.kt$MainNavigationActivity$override fun onNavigationItemSelected(item: MenuItem): Boolean</ID>
-    <ID>ComplexMethod:WykopEmbedView.kt$WykopEmbedView$private fun setEmbedIcon(embed: Embed)</ID>
     <ID>ConstructorParameterNaming:InputToolbar.kt$InputToolbar.SavedState$`in`: Parcel</ID>
     <ID>EqualsWithHashCodeExist:Link.kt$Link : Parcelable</ID>
-    <ID>MagicNumber:ApiSignInterceptor.kt$ApiSignInterceptor$401</ID>
-    <ID>MagicNumber:ApiUtils.kt$1001</ID>
-    <ID>MagicNumber:ApiUtils.kt$1002</ID>
-    <ID>MagicNumber:ApiUtils.kt$2001</ID>
-    <ID>MagicNumber:ApiUtils.kt$5</ID>
-    <ID>MagicNumber:ApiUtils.kt$999</ID>
-    <ID>MagicNumber:Author.kt$30f</ID>
-    <ID>MagicNumber:BaseInputActivity.kt$BaseInputActivity$3</ID>
-    <ID>MagicNumber:BlacklistBlockViewHolder.kt$BlacklistBlockViewHolder$3</ID>
-    <ID>MagicNumber:EmbedLinkPresenter.kt$EmbedLinkPresenter$4</ID>
-    <ID>MagicNumber:Extensions.kt$20</ID>
-    <ID>MagicNumber:GlideModule.kt$GlideModule$30</ID>
-    <ID>MagicNumber:HashTagsNotificationsListPresenter.kt$HashTagsNotificationsListPresenter$325</ID>
-    <ID>MagicNumber:HitsFragment.kt$HitsFragment$12</ID>
-    <ID>MagicNumber:HitsFragment.kt$HitsFragment$2005</ID>
-    <ID>MagicNumber:InputToolbar.kt$InputToolbar$0.3f</ID>
-    <ID>MagicNumber:InputToolbar.kt$InputToolbar$3</ID>
-    <ID>MagicNumber:LinkCommentMapper.kt$LinkCommentMapper$9999</ID>
-    <ID>MagicNumber:LinkViewHolder.kt$LinkViewHolder$3</ID>
-    <ID>MagicNumber:LinkViewHolder.kt$LinkViewHolder$8</ID>
-    <ID>MagicNumber:LinksPagerAdapter.kt$LinksPagerAdapter$3</ID>
-    <ID>MagicNumber:LinksPagerAdapter.kt$LinksPagerAdapter$4</ID>
-    <ID>MagicNumber:MainNavigationActivity.kt$MainNavigationActivity$2000L</ID>
-    <ID>MagicNumber:MainNavigationActivity.kt$MainNavigationActivity$333</ID>
-    <ID>MagicNumber:MainNavigationPresenter.kt$MainNavigationPresenter$300000L</ID>
-    <ID>MagicNumber:MonthYearPickerDialog.kt$MonthYearPickerDialog$10</ID>
-    <ID>MagicNumber:MonthYearPickerDialog.kt$MonthYearPickerDialog$11</ID>
-    <ID>MagicNumber:MonthYearPickerDialog.kt$MonthYearPickerDialog$12</ID>
-    <ID>MagicNumber:MonthYearPickerDialog.kt$MonthYearPickerDialog$2005</ID>
-    <ID>MagicNumber:MonthYearPickerDialog.kt$MonthYearPickerDialog$3</ID>
-    <ID>MagicNumber:MonthYearPickerDialog.kt$MonthYearPickerDialog$4</ID>
-    <ID>MagicNumber:MonthYearPickerDialog.kt$MonthYearPickerDialog$5</ID>
-    <ID>MagicNumber:MonthYearPickerDialog.kt$MonthYearPickerDialog$6</ID>
-    <ID>MagicNumber:MonthYearPickerDialog.kt$MonthYearPickerDialog$7</ID>
-    <ID>MagicNumber:MonthYearPickerDialog.kt$MonthYearPickerDialog$8</ID>
-    <ID>MagicNumber:MonthYearPickerDialog.kt$MonthYearPickerDialog$9</ID>
-    <ID>MagicNumber:MyWykopFragment.kt$MyWykopFragment$4</ID>
-    <ID>MagicNumber:PhotoViewActivity.kt$PhotoViewActivity$240</ID>
-    <ID>MagicNumber:PhotoViewActivity.kt$PhotoViewActivity$70</ID>
-    <ID>MagicNumber:RetryInterceptor.kt$RetryInterceptor$401</ID>
-    <ID>MagicNumber:SearchFragment.kt$SearchFragment$3</ID>
-    <ID>MagicNumber:TextViewExtensions.kt$15</ID>
-    <ID>MagicNumber:UserTokenRefresher.kt$UserTokenRefresher$11</ID>
-    <ID>MagicNumber:UserTokenRefresher.kt$UserTokenRefresher$12</ID>
-    <ID>MagicNumber:UserTokenRefresher.kt$UserTokenRefresher$401</ID>
-    <ID>MagicNumber:WykopApp.kt$WykopApp$1024</ID>
-    <ID>MagicNumber:WykopApp.kt$WykopApp$1024L</ID>
-    <ID>MagicNumber:WykopApp.kt$WykopApp$5</ID>
-    <ID>MagicNumber:WykopEmbedView.kt$WykopEmbedView$6</ID>
-    <ID>MagicNumber:WykopImageFile.kt$WykopImageFile$1024</ID>
-    <ID>MagicNumber:WykopImageFile.kt$WykopImageFile$180</ID>
-    <ID>MagicNumber:WykopImageFile.kt$WykopImageFile$270</ID>
-    <ID>MagicNumber:WykopImageFile.kt$WykopImageFile$4</ID>
-    <ID>MagicNumber:WykopImageFile.kt$WykopImageFile$90</ID>
-    <ID>MagicNumber:WykopNotificationsJob.kt$WykopNotificationsJob.Companion$5</ID>
     <ID>TooGenericExceptionCaught:AuthorHeaderView.kt$AuthorHeaderView$exception: Throwable</ID>
     <ID>TooGenericExceptionCaught:EntryCommentViewHolder.kt$EntryCommentViewHolder$exception: Throwable</ID>
     <ID>TooGenericExceptionCaught:LinkCommentViewHolder.kt$LinkCommentViewHolder$exception: Throwable</ID>

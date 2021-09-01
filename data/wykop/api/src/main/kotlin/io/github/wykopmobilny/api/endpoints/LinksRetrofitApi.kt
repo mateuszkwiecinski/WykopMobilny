@@ -1,7 +1,6 @@
 package io.github.wykopmobilny.api.endpoints
 
 import io.github.wykopmobilny.APP_KEY
-import io.github.wykopmobilny.api.responses.WykopApiResponse
 import io.github.wykopmobilny.api.responses.DigResponse
 import io.github.wykopmobilny.api.responses.DownvoterResponse
 import io.github.wykopmobilny.api.responses.LinkCommentResponse
@@ -10,6 +9,7 @@ import io.github.wykopmobilny.api.responses.LinkVoteResponse
 import io.github.wykopmobilny.api.responses.RelatedResponse
 import io.github.wykopmobilny.api.responses.UpvoterResponse
 import io.github.wykopmobilny.api.responses.VoteResponse
+import io.github.wykopmobilny.api.responses.WykopApiResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Field
@@ -25,7 +25,7 @@ interface LinksRetrofitApi {
     @GET("/links/upcoming/page/{page}/sort/{sortBy}/appkey/$APP_KEY")
     suspend fun getUpcoming(
         @Path("page") page: Int,
-        @Path("sortBy") sortBy: String
+        @Path("sortBy") sortBy: String,
     ): WykopApiResponse<List<LinkResponse>>
 
     @GET("/links/promoted/page/{page}/appkey/$APP_KEY")
@@ -64,7 +64,7 @@ interface LinksRetrofitApi {
     @GET("/links/votedown/{linkId}/{voteType}/appkey/$APP_KEY")
     suspend fun voteDown(
         @Path("linkId") linkId: Long,
-        @Path("voteType") reason: Int
+        @Path("voteType") reason: Int,
     ): WykopApiResponse<DigResponse>
 
     @GET("/links/relatedvoteup/0/{relatedId}/appkey/$APP_KEY")
@@ -83,7 +83,7 @@ interface LinksRetrofitApi {
         @Part("adultmedia") plus18: RequestBody,
         @Path("linkId") linkId: Long,
         @Path("commentId") commentId: Long,
-        @Part file: MultipartBody.Part
+        @Part file: MultipartBody.Part,
     ): WykopApiResponse<LinkCommentResponse>
 
     @FormUrlEncoded
@@ -93,7 +93,7 @@ interface LinksRetrofitApi {
         @Path("linkId") linkId: Long,
         @Path("commentId") commentId: Long,
         @Field("embed") embed: String?,
-        @Field("adultmedia") plus18: Boolean
+        @Field("adultmedia") plus18: Boolean,
     ): WykopApiResponse<LinkCommentResponse>
 
     @POST("/links/commentdelete/{linkCommentId}/appkey/$APP_KEY")
@@ -105,7 +105,7 @@ interface LinksRetrofitApi {
         @Part("body") body: RequestBody,
         @Part("adultmedia") plus18: RequestBody,
         @Path("linkId") linkId: Long,
-        @Part file: MultipartBody.Part
+        @Part file: MultipartBody.Part,
     ): WykopApiResponse<LinkCommentResponse>
 
     @FormUrlEncoded
@@ -114,7 +114,7 @@ interface LinksRetrofitApi {
         @Field("body") body: String,
         @Path("linkId") linkId: Long,
         @Field("embed") embed: String?,
-        @Field("adultmedia") plus18: Boolean
+        @Field("adultmedia") plus18: Boolean,
     ): WykopApiResponse<LinkCommentResponse>
 
     @FormUrlEncoded
@@ -123,14 +123,14 @@ interface LinksRetrofitApi {
         @Field("title") body: String,
         @Path("linkId") linkId: Long,
         @Field("url") url: String,
-        @Field("plus18") plus18: Boolean
+        @Field("plus18") plus18: Boolean,
     ): WykopApiResponse<RelatedResponse>
 
     @FormUrlEncoded
     @POST("/links/commentedit/{linkId}/appkey/$APP_KEY")
     suspend fun editComment(
         @Field("body") body: String,
-        @Path("linkId") linkId: Long
+        @Path("linkId") linkId: Long,
     ): WykopApiResponse<LinkCommentResponse>
 
     @GET("/links/favorite/{linkId}/appkey/$APP_KEY")

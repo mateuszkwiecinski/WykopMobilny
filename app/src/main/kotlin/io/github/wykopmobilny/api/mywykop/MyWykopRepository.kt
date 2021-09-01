@@ -15,7 +15,7 @@ class MyWykopRepository @Inject constructor(
     private val myWykopApi: MyWykopRetrofitApi,
     private val userTokenRefresher: UserTokenRefresher,
     private val owmContentFilter: OWMContentFilter,
-    private val patronsApi: PatronsApi
+    private val patronsApi: PatronsApi,
 ) : MyWykopApi {
 
     override fun getIndex(page: Int): Single<List<EntryLink>> =
