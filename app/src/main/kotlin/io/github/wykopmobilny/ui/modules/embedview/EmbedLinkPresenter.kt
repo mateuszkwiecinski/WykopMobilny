@@ -1,8 +1,10 @@
 package io.github.wykopmobilny.ui.modules.embedview
 
+import android.net.Uri
 import io.github.wykopmobilny.api.embed.ExternalApi
 import io.github.wykopmobilny.base.BasePresenter
 import io.github.wykopmobilny.base.Schedulers
+import io.reactivex.Maybe
 import java.net.URI
 
 class EmbedLinkPresenter(
@@ -58,8 +60,8 @@ class EmbedLinkPresenter(
             }
 
             STREAMABLE_MATCHER -> {
-                val id = url.removeSuffix("/").substringAfterLast("/")
-                embedApi.getStreamableUrl(id)
+                Maybe.fromCallable { Uri.parse(url).lastPathSegment }
+                    .flatMapSingleElement { embedApi.getStreamableUrl(it) }
                     .subscribeOn(schedulers.backgroundThread())
                     .observeOn(schedulers.mainThread())
                     .subscribe(
@@ -68,6 +70,7 @@ class EmbedLinkPresenter(
                             view?.playUrl(mp4Url)
                         },
                         { view?.showErrorDialog(it) },
+                        { view?.showErrorDialog(IllegalStateException("Couldn't parse url: $url")) },
                     )
             }
 
