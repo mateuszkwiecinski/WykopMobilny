@@ -4,7 +4,6 @@ import android.content.Context
 import dagger.Binds
 import dagger.Module
 import io.github.wykopmobilny.TestApp
-import io.github.wykopmobilny.WykopApp
 import io.github.wykopmobilny.ui.base.AppScopes
 
 @Module

@@ -12,7 +12,7 @@ class EntryComment(
     var embed: Embed?,
     var voteCount: Int,
     val app: String?,
-    val violationUrl: String,
+    val violationUrl: String?,
     var isNsfw: Boolean = false,
     var isBlocked: Boolean = false
 ) {

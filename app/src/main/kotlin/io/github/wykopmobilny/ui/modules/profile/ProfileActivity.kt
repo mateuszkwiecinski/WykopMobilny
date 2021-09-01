@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.BuildConfig
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.api.patrons.PatronsApi
@@ -187,7 +188,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
                 showBadgesDialog()
             }
             R.id.report -> {
-                navigator.openReportScreen(dataFragment.data!!.violationUrl!!)
+                dataFragment.data?.violationUrl?.let(navigator::openReportScreen) ?: Napier.e("Invalid report button state")
             }
             android.R.id.home -> finish()
             else -> return super.onOptionsItemSelected(item)

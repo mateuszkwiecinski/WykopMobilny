@@ -28,7 +28,7 @@ object LinkCommentMapper {
                 isCollapsed = false,
                 isParentCollapsed = false,
                 childCommentCount = 0,
-                violationUrl = value.violationUrl ?: "",
+                violationUrl = value.violationUrl,
                 isNsfw = value.body?.lowercase()?.contains("#nsfw") ?: false,
                 isBlocked = value.blocked
             )

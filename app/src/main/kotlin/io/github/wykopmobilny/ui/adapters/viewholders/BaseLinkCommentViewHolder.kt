@@ -226,8 +226,9 @@ abstract class BaseLinkCommentViewHolder(
                 dialog.dismiss()
             }
 
+            commentMenuReport.isVisible = userManagerApi.isUserAuthorized() && comment.violationUrl != null
             commentMenuReport.setOnClickListener {
-                navigatorApi.openReportScreen(comment.violationUrl)
+                navigatorApi.openReportScreen(comment.violationUrl.let(::checkNotNull))
                 dialog.dismiss()
             }
 
@@ -235,8 +236,6 @@ abstract class BaseLinkCommentViewHolder(
                 navigatorApi.openEditLinkCommentActivity(comment.linkId, comment.body!!, comment.id)
                 dialog.dismiss()
             }
-
-            commentMenuReport.isVisible = userManagerApi.isUserAuthorized()
 
             val canUserEdit =
                 userManagerApi.isUserAuthorized() && comment.author.nick == userManagerApi.getUserCredentials()!!.login

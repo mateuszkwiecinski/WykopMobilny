@@ -228,12 +228,11 @@ class EntryCommentViewHolder(
                 dialog.dismiss()
             }
 
+            entryCommentMenuReport.isVisible = isUserAuthorized && comment.violationUrl != null
             entryCommentMenuReport.setOnClickListener {
-                navigatorApi.openReportScreen(comment.violationUrl)
+                navigatorApi.openReportScreen(comment.violationUrl.let(::checkNotNull))
                 dialog.dismiss()
             }
-
-            entryCommentMenuReport.isVisible = isUserAuthorized
 
             val canUserEdit = isUserAuthorized &&
                 comment.author.nick == userCredentials?.login

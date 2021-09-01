@@ -11,6 +11,7 @@ import io.github.wykopmobilny.R
 import io.github.wykopmobilny.databinding.EntryListItemBinding
 import io.github.wykopmobilny.databinding.EntryMenuBottomsheetBinding
 import io.github.wykopmobilny.models.dataclass.Entry
+import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.dialogs.confirmationDialog
 import io.github.wykopmobilny.ui.fragments.entries.EntryActionListener
 import io.github.wykopmobilny.ui.modules.NewNavigatorApi
@@ -19,12 +20,11 @@ import io.github.wykopmobilny.ui.widgets.survey.SurveyWidget
 import io.github.wykopmobilny.utils.copyText
 import io.github.wykopmobilny.utils.getActivityContext
 import io.github.wykopmobilny.utils.layoutInflater
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
 import io.github.wykopmobilny.utils.textview.EllipsizingTextView
 import io.github.wykopmobilny.utils.textview.prepareBody
 import io.github.wykopmobilny.utils.textview.stripWykopFormatting
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
 import io.github.wykopmobilny.utils.usermanager.isUserAuthorized
 
 typealias EntryListener = (Entry) -> Unit
@@ -36,7 +36,7 @@ class EntryViewHolder(
     private val navigatorApi: NewNavigatorApi,
     private val linkHandlerApi: WykopLinkHandlerApi,
     private val entryActionListener: EntryActionListener,
-    private val replyListener: EntryListener?
+    private val replyListener: EntryListener?,
 ) : RecyclableViewHolder(binding.root) {
 
     companion object {
@@ -57,7 +57,7 @@ class EntryViewHolder(
             navigatorApi: NewNavigatorApi,
             linkHandlerApi: WykopLinkHandlerApi,
             entryActionListener: EntryActionListener,
-            replyListener: EntryListener?
+            replyListener: EntryListener?,
         ): EntryViewHolder {
             val view = EntryViewHolder(
                 EntryListItemBinding.inflate(parent.layoutInflater, parent, false),
@@ -186,7 +186,7 @@ class EntryViewHolder(
                             ellipsize = null
                         }
                     },
-                    settingsPreferencesApi.openSpoilersDialog
+                    settingsPreferencesApi.openSpoilersDialog,
                 )
             }
         } else {
@@ -216,6 +216,7 @@ class EntryViewHolder(
         val bottomSheetView = EntryMenuBottomsheetBinding.inflate(activityContext.layoutInflater)
         dialog.setContentView(bottomSheetView.root)
         (bottomSheetView.root.parent as View).setBackgroundColor(Color.TRANSPARENT)
+        val isAuthorized = userManagerApi.isUserAuthorized()
         bottomSheetView.apply {
             author.text = entry.author.nick
             date.text = entry.fullDate
@@ -223,7 +224,7 @@ class EntryViewHolder(
                 date.text = activityContext.getString(
                     R.string.date_with_user_app,
                     entry.fullDate,
-                    entry.app
+                    entry.app,
                 )
             }
 
@@ -249,8 +250,9 @@ class EntryViewHolder(
                 dialog.dismiss()
             }
 
+            entryMenuReport.isVisible = isAuthorized && entry.violationUrl != null
             entryMenuReport.setOnClickListener {
-                navigatorApi.openReportScreen(entry.violationUrl)
+                navigatorApi.openReportScreen(entry.violationUrl.let(::checkNotNull))
                 dialog.dismiss()
             }
 
@@ -259,10 +261,7 @@ class EntryViewHolder(
                 dialog.dismiss()
             }
 
-            entryMenuReport.isVisible = userManagerApi.isUserAuthorized()
-
-            val canUserEdit =
-                userManagerApi.isUserAuthorized() && entry.author.nick == userManagerApi.getUserCredentials()!!.login
+            val canUserEdit = isAuthorized && entry.author.nick == userManagerApi.getUserCredentials()?.login
             entryMenuDelete.isVisible = canUserEdit
             entryMenuEdit.isVisible = canUserEdit
         }
