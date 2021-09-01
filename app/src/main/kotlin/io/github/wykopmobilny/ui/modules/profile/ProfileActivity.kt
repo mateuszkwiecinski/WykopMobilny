@@ -172,7 +172,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.pw -> dataFragment.data?.let { navigator.openConversationListActivity(dataFragment.data!!.id) }
+            R.id.pw -> dataFragment.data?.let { navigator.openConversationListActivity(it.id) }
             R.id.unblock -> {
                 presenter.markUnblocked()
             }
