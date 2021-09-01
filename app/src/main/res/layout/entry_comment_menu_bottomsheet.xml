@@ -141,8 +141,6 @@
                 android:layout_marginStart="@dimen/bottomsheet_item_textview_margin_left"
                 android:text="@string/delete"
                 />
-
         </LinearLayout>
-
     </LinearLayout>
 </LinearLayout>

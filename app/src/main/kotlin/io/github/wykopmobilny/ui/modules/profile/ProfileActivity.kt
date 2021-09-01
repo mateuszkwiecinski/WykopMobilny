@@ -152,6 +152,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
         menuInflater.inflate(R.menu.profile_menu, menu)
         if (userManagerApi.isUserAuthorized() && userManagerApi.getUserCredentials()!!.login != username) {
             menu.findItem(R.id.pw).isVisible = true
+            menu.findItem(R.id.report).isVisible = true
             observeStateResponse?.apply {
                 menu.apply {
                     findItem(R.id.unobserve_profile).isVisible = isObserved
