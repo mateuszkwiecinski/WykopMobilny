@@ -10,7 +10,6 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.Lazy
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
-import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.api.ApiSignInterceptor
 import io.github.wykopmobilny.data.cache.sqldelight.DaggerApplicationCacheComponent
@@ -24,6 +23,7 @@ import io.github.wykopmobilny.domain.navigation.android.DaggerFrameworkComponent
 import io.github.wykopmobilny.domain.search.di.SearchScope
 import io.github.wykopmobilny.domain.settings.di.SettingsScope
 import io.github.wykopmobilny.domain.styles.di.StylesScope
+import io.github.wykopmobilny.domain.work.di.WorkScope
 import io.github.wykopmobilny.storage.android.DaggerStoragesComponent
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.styles.StylesDependencies
@@ -39,6 +39,7 @@ import io.github.wykopmobilny.utils.ApplicationInjector
 import io.github.wykopmobilny.utils.usermanager.SimpleUserManagerApi
 import io.github.wykopmobilny.utils.usermanager.UserCredentials
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
+import io.github.wykopmobilny.work.WorkDependencies
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asExecutor
@@ -72,20 +73,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
     override fun onCreate() {
         super.onCreate()
         AndroidThreeTen.init(this)
-        if (BuildConfig.DEBUG) {
-            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
-            Napier.base(DebugAntilog())
-        } else {
-            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
-            Napier.base(CrashlyticsAntilog())
-        }
 
-        FirebaseRemoteConfig.getInstance().setDefaultsAsync(
-            mapOf(
-                "wykop_app_key" to BuildConfig.APP_KEY,
-                "wykop_app_secret" to BuildConfig.APP_SECRET,
-            ),
-        )
         doInterop()
         applicationScope.launch {
             storages.userInfoStorage().loggedUser
@@ -188,6 +176,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             SettingsDependencies::class -> scopes.getOrPut(SettingsScope::class) { SubScope(domainComponent.settings(), newScope()) }
             BlacklistDependencies::class -> scopes.getOrPut(BlacklistScope::class) { SubScope(domainComponent.blacklist(), newScope()) }
             SearchDependencies::class -> scopes.getOrPut(SearchScope::class) { SubScope(domainComponent.search(), newScope()) }
+            WorkDependencies::class -> scopes.getOrPut(WorkScope::class) { SubScope(domainComponent.work(), newScope()) }
             ProfileDependencies::class -> {
                 checkNotNull(scopeId)
                 scopes.getOrPut(scopeId) { SubScope(domainComponent.profile().create(scopeId), newScope()) }
@@ -205,12 +194,13 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             SettingsDependencies::class -> scopes.remove(SettingsScope::class)
             BlacklistDependencies::class -> scopes.remove(BlacklistScope::class)
             SearchDependencies::class -> scopes.remove(SearchScope::class)
+            WorkDependencies::class -> scopes.remove(WorkScope::class)
             ProfileDependencies::class -> scopes.remove(checkNotNull(scopeId))
             else -> error("Unknown dependency type $clazz")
         }?.coroutineScope?.cancel()
     }
 
-    override fun <T : Any> launchScoped(clazz: KClass<T>, id: String?, block: suspend CoroutineScope.() -> Unit) =
+    override fun <T : Any> launchScoped(clazz: KClass<T>, id: String?, block: suspend CoroutineScope.() -> Unit): Job =
         scopes.getValue(id ?: clazz).coroutineScope.launch(block = block)
 
     private fun doInterop() {

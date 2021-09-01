@@ -193,22 +193,39 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
             error("Could not download the file, http code ${result.code}")
         }
 
+        val fileName = Uri.parse(url).lastPathSegment ?: "video.mp4"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val values = ContentValues().apply {
-                put(MediaStore.Images.Media.DISPLAY_NAME, Uri.parse(url).lastPathSegment)
+                put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
                 put(MediaStore.Images.Media.MIME_TYPE, getMimeType(url))
                 put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + PhotoViewActions.SAVED_FOLDER)
                 put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
             }
 
-            val uri = contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values).let(::checkNotNull)
+            val uri = runCatching { contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values) }
+                .recoverCatching {
+                    values.put(
+                        MediaStore.Images.Media.RELATIVE_PATH,
+                        Environment.DIRECTORY_MOVIES + File.separator + PhotoViewActions.SAVED_FOLDER,
+                    )
+                    contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values)
+                }
+                .onFailure {
+                    values.put(
+                        MediaStore.Images.Media.RELATIVE_PATH,
+                        Environment.DIRECTORY_DOWNLOADS + File.separator + PhotoViewActions.SAVED_FOLDER,
+                    )
+                    contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values)
+                }
+                .getOrThrow()
+                .let(::checkNotNull)
             contentResolver.openOutputStream(uri)?.use { Files.copy(source.toPath(), it) }
         } else {
             val directory = File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                 PhotoViewActions.SAVED_FOLDER,
             )
-            val targetFile = File(directory, Uri.parse(url).lastPathSegment ?: "video.mp4")
+            val targetFile = File(directory, fileName)
             source.copyTo(targetFile, true)
             addVideoToGallery(targetFile.path, this)
         }

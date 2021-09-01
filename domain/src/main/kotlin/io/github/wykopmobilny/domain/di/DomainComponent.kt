@@ -16,6 +16,7 @@ import io.github.wykopmobilny.domain.promoted.PromotedModule
 import io.github.wykopmobilny.domain.search.di.SearchDomainComponent
 import io.github.wykopmobilny.domain.settings.di.SettingsDomainComponent
 import io.github.wykopmobilny.domain.styles.di.StylesDomainComponent
+import io.github.wykopmobilny.domain.work.di.WorkDomainComponent
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.storage.api.Storages
 import io.github.wykopmobilny.ui.base.AppScopes
@@ -67,4 +68,6 @@ interface DomainComponent {
     fun navigation(): InteropRequestService
 
     fun settingsApiInterop(): SettingsPreferencesApi
+
+    fun work(): WorkDomainComponent
 }

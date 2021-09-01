@@ -311,6 +311,41 @@
             />
 
         <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge"
+            >
+
+            <!-- We do manual initialization https://developer.android.com/topic/libraries/architecture/workmanager/advanced/custom-configuration -->
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"
+                />
+
+            <meta-data
+                android:name="io.github.wykopmobilny.initializers.WorkManagerInitializer"
+                android:value="androidx.startup"
+                />
+
+            <meta-data
+                android:name="io.github.wykopmobilny.initializers.RemoteConfigInitializer"
+                android:value="androidx.startup"
+                />
+
+            <meta-data
+                android:name="io.github.wykopmobilny.initializers.CrashlyticsInitializer"
+                android:value="androidx.startup"
+                />
+
+            <meta-data
+                android:name="io.github.wykopmobilny.initializers.LoggingInitializer"
+                android:value="androidx.startup"
+                />
+        </provider>
+
+        <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
