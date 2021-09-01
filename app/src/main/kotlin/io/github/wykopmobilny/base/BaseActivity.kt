@@ -112,12 +112,10 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
     }
 
     private fun updateTheme(newTheme: AppThemeUi) {
-        val (appTheme, navColor) = runBlocking {
-            when (newTheme) {
-                AppThemeUi.Light -> R.style.WykopAppTheme to R.color.colorPrimaryDark
-                AppThemeUi.Dark -> R.style.WykopAppTheme_Dark to R.color.colorPrimaryDark_Dark
-                AppThemeUi.DarkAmoled -> R.style.WykopAppTheme_Amoled to R.color.colorPrimaryDark_Amoled
-            }
+        val (appTheme, navColor) = when (newTheme) {
+            AppThemeUi.Light -> R.style.WykopAppTheme to R.color.colorPrimaryDark
+            AppThemeUi.Dark -> R.style.WykopAppTheme_Dark to R.color.colorPrimaryDark_Dark
+            AppThemeUi.DarkAmoled -> R.style.WykopAppTheme_Amoled to R.color.colorPrimaryDark_Amoled
         }
         setTheme(appTheme)
         window.navigationBarColor = ContextCompat.getColor(this@BaseActivity, navColor)

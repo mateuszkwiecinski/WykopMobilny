@@ -20,7 +20,6 @@ import io.github.wykopmobilny.models.mapper.apiv2.LinkCommentMapper
 import io.github.wykopmobilny.models.mapper.apiv2.LinkMapper
 import io.github.wykopmobilny.models.mapper.apiv2.RelatedMapper
 import io.reactivex.Single
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.rx2.rxSingle
 import javax.inject.Inject
 
@@ -106,10 +105,20 @@ class ProfileRepository @Inject constructor(
     override fun block(tag: String) = rxSingle { profileApi.block(tag) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
-        .doOnSuccess { runBlocking { appStorage.blacklistQueries.insertOrReplaceProfile(tag.removePrefix("@")) } }
+        .flatMap { response ->
+            rxSingle {
+                appStorage.blacklistQueries.insertOrReplaceProfile(tag.removePrefix("@"))
+                response
+            }
+        }
 
     override fun unblock(tag: String) = rxSingle { profileApi.unblock(tag) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
-        .doOnSuccess { runBlocking { appStorage.blacklistQueries.deleteProfile(tag.removePrefix("@")) } }
+        .flatMap { response ->
+            rxSingle {
+                appStorage.blacklistQueries.deleteProfile(tag.removePrefix("@"))
+                response
+            }
+        }
 }

@@ -15,6 +15,7 @@ import androidx.core.os.postDelayed
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.internal.NavigationMenuView
@@ -30,6 +31,7 @@ import io.github.wykopmobilny.databinding.DrawerHeaderViewLayoutBinding
 import io.github.wykopmobilny.databinding.PatronListItemBinding
 import io.github.wykopmobilny.databinding.PatronsBottomsheetBinding
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
+import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.dialogs.confirmationDialog
 import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.modules.NewNavigatorApi
@@ -52,7 +54,8 @@ import io.github.wykopmobilny.utils.shortcuts.ShortcutsDispatcher
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.utils.usermanager.isUserAuthorized
 import io.github.wykopmobilny.utils.viewBinding
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface MainNavigationInterface {
@@ -145,13 +148,15 @@ class MainNavigationActivity :
             R.id.about -> openAboutSheet()
             R.id.logout -> {
                 confirmationDialog(this) {
-                    runBlocking {
-                        appStorage.blacklistQueries.transaction {
-                            appStorage.blacklistQueries.deleteAll()
+                    lifecycleScope.launch {
+                        withContext(AppDispatchers.IO) {
+                            appStorage.blacklistQueries.transaction {
+                                appStorage.blacklistQueries.deleteAll()
+                            }
+                            userManagerApi.logoutUser()
                         }
+                        restartActivity()
                     }
-                    userManagerApi.logoutUser()
-                    restartActivity()
                 }.show()
             }
             else -> showNotImplementedToast()

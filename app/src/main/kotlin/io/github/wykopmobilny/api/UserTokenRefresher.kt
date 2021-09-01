@@ -5,12 +5,13 @@ import io.github.wykopmobilny.api.user.LoginApi
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.reactivex.Flowable
 import io.reactivex.functions.Function
+import kotlinx.coroutines.rx2.rxSingle
 import org.reactivestreams.Publisher
 import retrofit2.HttpException
 
 class UserTokenRefresher(
     private val userApi: LoginApi,
-    private val userManagerApi: UserManagerApi
+    private val userManagerApi: UserManagerApi,
 ) : Function<Flowable<Throwable>, Publisher<*>> {
 
     override fun apply(t: Flowable<Throwable>): Publisher<*> =
@@ -34,6 +35,7 @@ class UserTokenRefresher(
         }
 
     private fun getSaveUserSessionFlowable() =
-        userApi.getUserSessionToken().map { userManagerApi.saveCredentials(it) }
+        userApi.getUserSessionToken()
+            .flatMap { rxSingle { userManagerApi.saveCredentials(it) } }
             .toFlowable()
 }

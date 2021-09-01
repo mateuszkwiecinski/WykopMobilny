@@ -106,8 +106,9 @@ class UpcomingFragment : BaseLinksFragment(), UpcomingView {
         super.onViewCreated(view, savedInstanceState)
         (activity as BaseActivity).supportActionBar?.setTitle(R.string.wykopalisko)
         presenter.subscribe(this)
-        presenter.sortBy = runBlocking { appStorage.preferencesQueries.getPreference("settings.links.upcoming_sort").executeAsOneOrNull() }
-            ?: UpcomingPresenter.SORTBY_COMMENTS
+        presenter.sortBy = runBlocking {
+            appStorage.preferencesQueries.getPreference("settings.links.upcoming_sort").executeAsOneOrNull()
+        } ?: UpcomingPresenter.SORTBY_COMMENTS
         linksAdapter.linksActionListener = presenter
         linksAdapter.loadNewDataListener = { loadDataListener(false) }
         setSubtitle()

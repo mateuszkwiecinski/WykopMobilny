@@ -12,7 +12,6 @@ import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.models.mapper.apiv2.TagEntriesMapper
 import io.github.wykopmobilny.models.mapper.apiv2.TagLinksMapper
 import io.reactivex.Single
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.rx2.rxSingle
 import javax.inject.Inject
 
@@ -49,10 +48,20 @@ class TagRepository @Inject constructor(
     override fun block(tag: String) = rxSingle { tagApi.block(tag) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
-        .doOnSuccess { runBlocking { appStorage.blacklistQueries.insertOrReplaceTag(tag.removePrefix("#")) } }
+        .flatMap { response ->
+            rxSingle {
+                appStorage.blacklistQueries.insertOrReplaceTag(tag.removePrefix("#"))
+                response
+            }
+        }
 
     override fun unblock(tag: String) = rxSingle { tagApi.unblock(tag) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
-        .doOnSuccess { runBlocking { appStorage.blacklistQueries.deleteTag(tag.removePrefix("#")) } }
+        .flatMap { response ->
+            rxSingle {
+                appStorage.blacklistQueries.deleteTag(tag.removePrefix("#"))
+                response
+            }
+        }
 }

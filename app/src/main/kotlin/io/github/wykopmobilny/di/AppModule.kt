@@ -4,10 +4,14 @@ import android.content.Context
 import dagger.Binds
 import dagger.Module
 import io.github.wykopmobilny.WykopApp
+import io.github.wykopmobilny.ui.base.AppScopes
 
 @Module
-abstract class AppModule {
+internal abstract class AppModule {
 
     @Binds
-    abstract fun provideContext(application: WykopApp): Context
+    abstract fun WykopApp.provideContext(): Context
+
+    @Binds
+    abstract fun WykopApp.appScopes(): AppScopes
 }

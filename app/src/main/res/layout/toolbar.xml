@@ -8,9 +8,9 @@
     android:fitsSystemWindows="true"
     android:focusableInTouchMode="true"
     android:minHeight="?attr/actionBarSize"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:contentInsetStartWithNavigation="0dp"
     app:elevation="0dp"
     app:subtitleTextAppearance="@style/Toolbar.Subtitle"
-    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:titleTextAppearance="@style/Toolbar.TitleText"
     />

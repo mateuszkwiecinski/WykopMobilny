@@ -147,9 +147,10 @@ class LinkDetailsActivity :
 
         binding.swiperefresh.setOnRefreshListener(this)
 
-        presenter.sortBy =
-            runBlocking { appStorage.preferencesQueries.getPreference("settings.links.comments_sort").executeAsOneOrNull() }
-                ?: "best"
+        presenter.sortBy = runBlocking {
+            appStorage.preferencesQueries.getPreference("settings.links.comments_sort")
+                .executeAsOneOrNull()
+        } ?: "best"
         adapter.notifyDataSetChanged()
         binding.loadingView.isVisible = true
         hideInputToolbar()
