@@ -26,4 +26,3 @@ internal class RefreshBlacklistRequest(
         const val VERSION = 1
     }
 }
-
