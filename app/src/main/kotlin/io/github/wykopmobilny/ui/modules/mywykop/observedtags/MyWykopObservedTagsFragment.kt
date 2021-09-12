@@ -58,6 +58,11 @@ class MyWykopObservedTagsFragment :
         }
     }
 
+    override fun onDestroyView() {
+        presenter.unsubscribe()
+        super.onDestroyView()
+    }
+
     override fun onRefresh() {
         if (!binding.swiperefresh.isRefreshing) {
             binding.swiperefresh.isRefreshing = true
@@ -76,11 +81,6 @@ class MyWykopObservedTagsFragment :
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         dataFragment.data = adapter.items
-    }
-
-    override fun onDetach() {
-        presenter.unsubscribe()
-        super.onDetach()
     }
 
     override fun onPause() {

@@ -27,8 +27,8 @@ class MicroblogCommentsFragment : BaseEntryCommentFragment(), MicroblogCommentsV
         presenter.loadData(true)
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         presenter.unsubscribe()
-        super.onDestroy()
+        super.onDestroyView()
     }
 }

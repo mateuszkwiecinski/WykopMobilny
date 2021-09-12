@@ -40,9 +40,9 @@ class LinkSearchFragment : BaseLinksFragment(), LinkSearchView {
         binding.loadingView.isVisible = false
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         presenter.unsubscribe()
         querySubscribe.dispose()
-        super.onDestroy()
+        super.onDestroyView()
     }
 }

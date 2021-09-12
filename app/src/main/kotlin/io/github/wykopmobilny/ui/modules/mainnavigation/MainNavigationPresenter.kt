@@ -20,8 +20,6 @@ class MainNavigationPresenter(
 
     fun startListeningForNotifications() {
         compositeObservable.clear()
-        compositeObservable.dispose()
-        compositeObservable = CompositeDisposable()
         compositeObservable.apply {
             if (userManagerApi.isUserAuthorized()) {
                 add(

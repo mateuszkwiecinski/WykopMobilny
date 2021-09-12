@@ -96,9 +96,9 @@ class HitsFragment : BaseLinksFragment(), HitsView {
         loadDataListener(true)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
         presenter.unsubscribe()
+        super.onDestroyView()
     }
 
     fun setTitle() {

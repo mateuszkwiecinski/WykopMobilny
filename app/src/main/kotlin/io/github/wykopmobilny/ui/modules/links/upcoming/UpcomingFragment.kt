@@ -115,6 +115,11 @@ class UpcomingFragment : BaseLinksFragment(), UpcomingView {
         loadDataListener(true)
     }
 
+    override fun onDestroyView() {
+        presenter.unsubscribe()
+        super.onDestroyView()
+    }
+
     private fun setSubtitle() {
         navigation.activityToolbar.setSubtitle(
             when (presenter.sortBy) {

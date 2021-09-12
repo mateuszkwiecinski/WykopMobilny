@@ -56,4 +56,9 @@ class AddEntryActivity : BaseInputActivity<AddEntryPresenter>(), AddEntryActivit
             }
         }
     }
+
+    override fun onDestroy() {
+        presenter.unsubscribe()
+        super.onDestroy()
+    }
 }

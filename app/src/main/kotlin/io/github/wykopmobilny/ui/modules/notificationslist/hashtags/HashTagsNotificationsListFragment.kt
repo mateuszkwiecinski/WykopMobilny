@@ -60,6 +60,11 @@ class HashTagsNotificationsListFragment : BaseNotificationsListFragment() {
         }
     }
 
+    override fun onDestroyView() {
+        presenter.unsubscribe()
+        super.onDestroyView()
+    }
+
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.collapseAll)?.isVisible = expanded && settingsApi.groupNotifications

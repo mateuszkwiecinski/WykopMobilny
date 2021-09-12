@@ -50,6 +50,12 @@ class UsersSearchFragment : BaseFragment(R.layout.feed_fragment), UsersSearchVie
         binding.loadingView.isVisible = false
     }
 
+    override fun onDestroyView() {
+        presenter.unsubscribe()
+        querySubscribe.dispose()
+        super.onDestroyView()
+    }
+
     override fun onRefresh() {
         if (queryString.length > 2) {
             binding.loadingView.isVisible = true
@@ -57,12 +63,6 @@ class UsersSearchFragment : BaseFragment(R.layout.feed_fragment), UsersSearchVie
         } else {
             binding.loadingView.isVisible = false
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.unsubscribe()
-        querySubscribe.dispose()
     }
 
     override fun showUsers(entryList: List<Author>) {

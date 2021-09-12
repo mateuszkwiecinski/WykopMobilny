@@ -32,8 +32,8 @@ class ActionsFragment : BaseEntryLinkFragment(), ActionsView {
         loadDataListener(true)
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         presenter.unsubscribe()
-        super.onDestroy()
+        super.onDestroyView()
     }
 }

@@ -69,6 +69,11 @@ class TagActivity : BaseActivity(), TagActivityView {
         binding.tabLayout.setupWithViewPager(binding.pager)
     }
 
+    override fun onDestroy() {
+        presenter.unsubscribe()
+        super.onDestroy()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.tag_menu, menu)
         if (userManagerApi.isUserAuthorized()) {

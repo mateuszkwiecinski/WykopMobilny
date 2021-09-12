@@ -39,9 +39,9 @@ class EntrySearchFragment : BaseEntriesFragment(), EntrySearchView {
         showSearchEmptyView = true
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         presenter.unsubscribe()
         querySubscribe.dispose()
-        super.onDestroy()
+        super.onDestroyView()
     }
 }

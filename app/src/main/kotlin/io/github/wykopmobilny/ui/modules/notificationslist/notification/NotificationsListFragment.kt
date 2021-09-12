@@ -51,12 +51,12 @@ class NotificationsListFragment : BaseNotificationsListFragment() {
         }
     }
 
-    override fun markAsRead() = presenter.readNotifications()
-
-    override fun onDestroy() {
+    override fun onDestroyView() {
         presenter.unsubscribe()
-        super.onDestroy()
+        super.onDestroyView()
     }
+
+    override fun markAsRead() = presenter.readNotifications()
 
     override fun onPause() {
         super.onPause()

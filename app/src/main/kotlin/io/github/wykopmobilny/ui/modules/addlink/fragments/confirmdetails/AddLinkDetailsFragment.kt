@@ -45,6 +45,11 @@ class AddLinkDetailsFragment : BaseFragment(R.layout.addlink_details_fragment), 
         binding.submit.setOnClickListener { validate() }
     }
 
+    override fun onDestroyView() {
+        presenter.unsubscribe()
+        super.onDestroyView()
+    }
+
     override fun openLinkScreen(link: Link) {
         navigator.openLinkDetailsActivity(requireActivity(), link)
         requireActivity().finish()
@@ -63,11 +68,6 @@ class AddLinkDetailsFragment : BaseFragment(R.layout.addlink_details_fragment), 
                 view.tick.isVisible = true
             }
         }
-    }
-
-    override fun onDestroy() {
-        presenter.unsubscribe()
-        super.onDestroy()
     }
 
     private fun validate() {

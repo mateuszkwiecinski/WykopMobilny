@@ -59,12 +59,12 @@ class HotFragment : BaseFragment(R.layout.hot_fragment), BaseNavigationView, Hot
         presenter.loadData(true)
     }
 
-    override fun disableLoading() = entriesFragment.disableLoading()
-
-    override fun onDestroy() {
+    override fun onDestroyView() {
         presenter.unsubscribe()
-        super.onDestroy()
+        super.onDestroyView()
     }
+
+    override fun disableLoading() = entriesFragment.disableLoading()
 
     override fun showHotEntries(entries: List<Entry>, isRefreshing: Boolean) =
         entriesFragment.addItems(entries, isRefreshing)
