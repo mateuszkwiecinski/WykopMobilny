@@ -6,8 +6,8 @@ plugins {
 dependencies {
     api(projects.data.cache.api)
     implementation("com.squareup.sqldelight:android-driver:1.5.0")
-    implementation("com.google.dagger:dagger:2.38")
-    kapt("com.google.dagger:dagger-compiler:2.38")
+    implementation("com.google.dagger:dagger:2.38.1")
+    kapt("com.google.dagger:dagger-compiler:2.38.1")
 }
 
 
