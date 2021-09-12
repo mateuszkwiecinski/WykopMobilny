@@ -143,6 +143,7 @@ dependencies {
     implementation("com.google.firebase:firebase-config-ktx")
     implementation("org.jetbrains:markdown:0.2.4")
     implementation(files('libs/YouTubeAndroidPlayerApi.jar'))
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
 
     //noinspection GradleDependency
     implementation("org.ocpsoft.prettytime:prettytime:4.0.4.Final")
