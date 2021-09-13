@@ -32,7 +32,7 @@ jobs:
       - name: Code style check
         uses: gradle/gradle-build-action@v1
         with:
-          arguments: projectCodestyle -x checkstyle
+          arguments: projectCodestyle
           dependencies-cache-enabled: true
 
       - name: Assemble
