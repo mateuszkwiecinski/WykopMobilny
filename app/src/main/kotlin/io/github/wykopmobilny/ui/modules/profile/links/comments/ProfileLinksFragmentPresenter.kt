@@ -10,9 +10,9 @@ import io.github.wykopmobilny.utils.intoComposite
 import io.reactivex.Single
 
 class ProfileLinksFragmentPresenter(
-    val schedulers: Schedulers,
-    val profileApi: ProfileApi,
-    val linksInteractor: LinkCommentInteractor
+    private val schedulers: Schedulers,
+    private val profileApi: ProfileApi,
+    private val linksInteractor: LinkCommentInteractor
 ) : BasePresenter<ProfileLinkCommentsView>(), LinkCommentActionListener {
 
     var page = 1

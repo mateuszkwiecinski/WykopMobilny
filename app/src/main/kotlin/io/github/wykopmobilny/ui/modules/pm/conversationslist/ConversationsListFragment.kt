@@ -48,6 +48,11 @@ class ConversationsListFragment :
         onRefresh()
     }
 
+    override fun onDestroyView() {
+        presenter.unsubscribe()
+        super.onDestroyView()
+    }
+
     override fun showConversations(conversations: List<Conversation>) {
         binding.loadingView.isVisible = false
         binding.swiperefresh.isRefreshing = false
@@ -59,9 +64,4 @@ class ConversationsListFragment :
     }
 
     override fun onRefresh() = presenter.loadConversations()
-
-    override fun onDestroy() {
-        presenter.unsubscribe()
-        super.onDestroy()
-    }
 }

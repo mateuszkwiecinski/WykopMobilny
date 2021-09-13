@@ -63,6 +63,11 @@ class UpvotersActivity : BaseActivity(), androidx.swiperefreshlayout.widget.Swip
         }
     }
 
+    override fun onDestroy() {
+        presenter.unsubscribe()
+        super.onDestroy()
+    }
+
     override fun showUpvoters(upvoter: List<Upvoter>) {
         binding.loadingView.isVisible = false
         binding.swiperefresh.isRefreshing = false
@@ -85,11 +90,6 @@ class UpvotersActivity : BaseActivity(), androidx.swiperefreshlayout.widget.Swip
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         upvotersDataFragment.data = upvotersAdapter.items
-    }
-
-    override fun onDestroy() {
-        presenter.unsubscribe()
-        super.onDestroy()
     }
 
     override fun onPause() {

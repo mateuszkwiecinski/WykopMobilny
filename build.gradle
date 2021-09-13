@@ -5,8 +5,8 @@ plugins {
     id("com.starter.config")
     id("com.starter.versioning")
     id("com.gradleup.auto.manifest")
-    id("com.osacky.doctor") version("0.7.0")
-    id("com.starter.easylauncher") version("4.1.0") apply(false)
+    id("com.osacky.doctor") version("0.7.1")
+    id("com.starter.easylauncher") version("4.1.1") apply(false)
 }
 
 autoManifest {
@@ -24,7 +24,6 @@ allprojects {
             freeCompilerArgs = freeCompilerArgs +
                 "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi" +
                 "-Xopt-in=kotlin.RequiresOptIn" +
-                "-Xopt-in=kotlin.contracts.ExperimentalContracts" +
                 "-Xopt-in=kotlin.time.ExperimentalTime" +
                 "-Xopt-in=kotlinx.coroutines.FlowPreview"
         }

@@ -18,8 +18,8 @@ class EntriesFragment : BaseEntriesFragment() {
         entriesAdapter.loadNewDataListener = { loadDataListener(false) }
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         presenter.unsubscribe()
-        super.onDestroy()
+        super.onDestroyView()
     }
 }

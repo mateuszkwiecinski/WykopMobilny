@@ -42,9 +42,9 @@ class TagLinksFragment : BaseLinksFragment(), TagLinksView {
         presenter.loadData(true)
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         presenter.unsubscribe()
-        super.onDestroy()
+        super.onDestroyView()
     }
 
     override fun setParentMeta(tagMetaResponse: TagMetaResponse) {

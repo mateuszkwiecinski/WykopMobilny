@@ -26,8 +26,8 @@ class MicroblogEntriesFragment : BaseEntriesFragment(), MicroblogEntriesView {
         presenter.loadData(true)
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         presenter.unsubscribe()
-        super.onDestroy()
+        super.onDestroyView()
     }
 }

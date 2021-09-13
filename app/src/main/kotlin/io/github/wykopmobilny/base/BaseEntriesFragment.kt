@@ -66,9 +66,9 @@ open class BaseEntriesFragment : BaseFragment(R.layout.entries_fragment), Entrie
         )
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         subjectDisposable.dispose()
-        super.onDestroy()
+        super.onDestroyView()
     }
 
     private fun updateEntryVoteState(entryId: Int, voteCount: Int, isVoted: Boolean) {

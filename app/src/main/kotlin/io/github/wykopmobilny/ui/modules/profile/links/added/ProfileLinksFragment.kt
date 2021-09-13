@@ -56,8 +56,8 @@ class ProfileLinksFragment : BaseLinksFragment(), ProfileLinksView {
         loadDataListener(true)
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         presenter.unsubscribe()
-        super.onDestroy()
+        super.onDestroyView()
     }
 }

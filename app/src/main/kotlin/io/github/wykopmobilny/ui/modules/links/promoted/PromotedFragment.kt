@@ -63,8 +63,8 @@ class PromotedFragment : BaseLinksFragment(), PromotedView, BaseNavigationView {
         presenter.getPromotedLinks(true)
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         presenter.unsubscribe()
-        super.onDestroy()
+        super.onDestroyView()
     }
 }

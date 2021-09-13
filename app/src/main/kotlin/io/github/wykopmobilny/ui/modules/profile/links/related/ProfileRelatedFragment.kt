@@ -38,6 +38,11 @@ class ProfileRelatedFragment : BaseFragment(R.layout.feed_fragment), ProfileRela
         presenter.loadData(true)
     }
 
+    override fun onDestroyView() {
+        presenter.unsubscribe()
+        super.onDestroyView()
+    }
+
     override fun addDataToAdapter(entryList: List<Related>, shouldClearAdapter: Boolean) =
         feedAdapter.addData(entryList, shouldClearAdapter)
 

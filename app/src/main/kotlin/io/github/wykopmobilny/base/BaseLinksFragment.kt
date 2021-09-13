@@ -34,7 +34,7 @@ open class BaseLinksFragment : BaseFragment(R.layout.entries_fragment), LinksFra
 
     open var loadDataListener: (Boolean) -> Unit = {}
 
-    private val subjectDisposable by lazy { CompositeDisposable() }
+    private val subjectDisposable = CompositeDisposable()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,8 +62,13 @@ open class BaseLinksFragment : BaseFragment(R.layout.entries_fragment), LinksFra
             linksApi.voteRemoveSubject
                 .subscribeOn(schedulers.backgroundThread())
                 .observeOn(schedulers.mainThread())
-                .subscribe { updateLinkVoteState(it.linkId, it.voteResponse.buries, it.voteResponse.diggs, null) }
+                .subscribe { updateLinkVoteState(it.linkId, it.voteResponse.buries, it.voteResponse.diggs, null) },
         )
+    }
+
+    override fun onDestroyView() {
+        subjectDisposable.clear()
+        super.onDestroyView()
     }
 
     private fun updateLinkVoteState(linkId: Long, buryCount: Int, voteCount: Int, userVote: String?) {
@@ -99,9 +104,4 @@ open class BaseLinksFragment : BaseFragment(R.layout.entries_fragment), LinksFra
     override fun updateLink(link: Link) = linksAdapter.updateLink(link)
 
     override fun onRefresh() = loadDataListener(true)
-
-    override fun onDestroy() {
-        subjectDisposable.dispose()
-        super.onDestroy()
-    }
 }

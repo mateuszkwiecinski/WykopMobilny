@@ -44,6 +44,11 @@ class AddlinkUrlInputFragment : BaseFragment(R.layout.addlink_fragment), AddLink
         binding.linkUrl.setText(requireArguments().getString(EXTRA_URL, ""))
     }
 
+    override fun onDestroyView() {
+        presenter.unsubscribe()
+        super.onDestroyView()
+    }
+
     override fun setLinkDraft(draft: NewLinkResponse) =
         (activity as AddlinkActivity).openDuplicatesActivity(draft)
 
@@ -55,10 +60,5 @@ class AddlinkUrlInputFragment : BaseFragment(R.layout.addlink_fragment), AddLink
         binding.addLink.isVisible = !visibility
         binding.progressBar.isVisible = visibility
         binding.progressBarTitle.isVisible = visibility
-    }
-
-    override fun onDestroy() {
-        presenter.unsubscribe()
-        super.onDestroy()
     }
 }

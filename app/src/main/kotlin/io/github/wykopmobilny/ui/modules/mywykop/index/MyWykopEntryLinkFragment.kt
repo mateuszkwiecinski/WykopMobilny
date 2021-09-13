@@ -52,8 +52,8 @@ class MyWykopEntryLinkFragment : BaseEntryLinkFragment() {
         loadDataListener(true)
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         presenter.unsubscribe()
-        super.onDestroy()
+        super.onDestroyView()
     }
 }

@@ -23,8 +23,8 @@ class EntryFavoriteFragment : BaseEntriesFragment(), EntryFavoriteView {
         presenter.loadData(true)
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         presenter.unsubscribe()
-        super.onDestroy()
+        super.onDestroyView()
     }
 }

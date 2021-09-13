@@ -76,9 +76,9 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
         binding.toolbar.toolbar.setBackgroundResource(R.drawable.gradient_toolbar_up)
         supportActionBar?.title = null
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        presenter.subscribe(this)
 
         if (savedInstanceState == null) {
-            presenter.subscribe(this)
             presenter.playUrl(extraUrl)
         }
         binding.videoView.player = SimpleExoPlayer.Builder(this).build().apply {
@@ -106,6 +106,7 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
 
     override fun onDestroy() {
         super.onDestroy()
+        presenter.unsubscribe()
         binding.videoView.player?.release()
     }
 

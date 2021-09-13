@@ -20,11 +20,11 @@ dependencies {
     implementation projects.ui.profile.api
     implementation projects.ui.search.api
     implementation projects.ui.work.api
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("androidx.paging:paging-common-ktx:3.0.1")
     implementation("com.dropbox.mobile.store:store4:4.0.2-KT15")
-    implementation("com.google.dagger:dagger:2.38")
-    kapt "com.google.dagger:dagger-compiler:2.38"
+    implementation("com.google.dagger:dagger:2.38.1")
+    kapt "com.google.dagger:dagger-compiler:2.38.1"
 }
 
 tasks.withType(KotlinCompile).configureEach {
