@@ -26,19 +26,17 @@ jobs:
           distribution: 'adopt'
           java-version: 11
 
-      - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          job-id: default-jdk11
-          gradle-distribution-sha-256-sum-warning: false
-
       - name: Gradle Wrapper Validation
         uses: gradle/wrapper-validation-action@v1
 
       - name: Code style check
-        run: ./gradlew projectCodestyle -x checkstyle
+        uses: gradle/gradle-build-action@v1
+        with:
+          arguments: projectCodestyle
+          dependencies-cache-enabled: true
 
       - name: Assemble
+        uses: gradle/gradle-build-action@v1
         env:
           WYKOP_KEYSTORE_KEY_PASSWORD: ${{ secrets.WYKOP_KEYSTORE_KEY_PASSWORD }}
           WYKOP_KEYSTORE_KEY_NAME: ${{ secrets.WYKOP_KEYSTORE_KEY_NAME }}
@@ -46,10 +44,15 @@ jobs:
           WYKOP_APPKEY: ${{ secrets.WYKOP_APPKEY }}
           WYKOP_SECRETKEY: ${{ secrets.WYKOP_SECRETKEY }}
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
-        run: ./gradlew assembleRelease
+        with:
+          arguments: assembleRelease
+          dependencies-cache-enabled: true
 
       - name: Unit tests
-        run: ./gradlew projectCoverage
+        uses: gradle/gradle-build-action@v1
+        with:
+          arguments: projectCoverage
+          dependencies-cache-enabled: true
 
       - uses: codecov/codecov-action@v2
         with:
@@ -89,14 +92,11 @@ jobs:
           distribution: 'adopt'
           java-version: 11
 
-      - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          job-id: default-jdk11
-          gradle-distribution-sha-256-sum-warning: false
-
       - name: compile ui tests
-        run: ./gradlew app:assembleReleaseTestAndroidTest -PtestBuildType=releaseTest
+        uses: gradle/gradle-build-action@v1
+        with:
+          arguments: app:assembleReleaseTestAndroidTest -PtestBuildType=releaseTest
+          dependencies-cache-enabled: true
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -128,11 +128,11 @@ jobs:
           distribution: 'adopt'
           java-version: 11
 
-      - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
+      - name: compile screenshot tests
+        uses: gradle/gradle-build-action@v1
         with:
-          job-id: default-jdk11
-          gradle-distribution-sha-256-sum-warning: false
+          arguments: assembleDebugAndroidTest
+          dependencies-cache-enabled: true
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2

@@ -21,13 +21,8 @@ jobs:
           distribution: 'adopt'
           java-version: 11
 
-      - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          job-id: jdk11
-          gradle-distribution-sha-256-sum-warning: false
-
       - name: Assemble
+        uses: gradle/gradle-build-action@v1
         env:
           WYKOP_KEYSTORE_KEY_PASSWORD: ${{ secrets.WYKOP_KEYSTORE_KEY_PASSWORD }}
           WYKOP_KEYSTORE_KEY_NAME: ${{ secrets.WYKOP_KEYSTORE_KEY_NAME }}
@@ -35,7 +30,9 @@ jobs:
           WYKOP_APPKEY: ${{ secrets.WYKOP_APPKEY }}
           WYKOP_SECRETKEY: ${{ secrets.WYKOP_SECRETKEY }}
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
-        run: ./gradlew bundleRelease -PuploadMapping=true
+        with:
+          arguments: bundleRelease -PuploadMapping=true
+          dependencies-cache-enabled: true
 
       - uses: r0adkll/upload-google-play@v1
         with:

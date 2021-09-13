@@ -1,4 +1,5 @@
 package io.github.wykopmobilny.utils;
+
 /*
  * Copyright (C) 2007-2008 OpenIntents.org
  *
@@ -167,8 +168,7 @@ public class FileUtils {
             } else if (isDownloadsDocument(uri)) { // DownloadsProvider
 
                 final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                    Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
+                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
 
                 return getDataColumn(context, contentUri, null, null);
             } else if (isMediaDocument(uri)) { // MediaProvider

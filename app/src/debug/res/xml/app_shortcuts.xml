@@ -29,7 +29,6 @@
             android:targetClass="io.github.wykopmobilny.ui.modules.mainnavigation.MainNavigationActivity"
             android:targetPackage="io.github.wykopmobilny.debug"
             />
-
     </shortcut>
     <shortcut
         android:enabled="true"

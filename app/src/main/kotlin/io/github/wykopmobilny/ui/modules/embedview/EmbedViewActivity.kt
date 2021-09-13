@@ -38,6 +38,7 @@ import okhttp3.Request
 import okio.buffer
 import okio.sink
 import java.io.File
+import java.io.IOException
 import java.nio.file.Files
 import javax.inject.Inject
 
@@ -256,7 +257,11 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
                     Toast.makeText(this, R.string.save_file_ok, Toast.LENGTH_SHORT).show()
                 },
                 {
-                    Napier.e("Exception when trying to save file", it)
+                    if (it is IOException) {
+                        Napier.i("IOException when trying to save file", it)
+                    } else {
+                        Napier.e("Exception when trying to save file", it)
+                    }
                     Toast.makeText(this, R.string.save_file_failed, Toast.LENGTH_SHORT).show()
                 },
             )

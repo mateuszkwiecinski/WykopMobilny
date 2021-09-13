@@ -6,6 +6,10 @@ android {
     lintOptions {
         disable("FragmentGradleConfiguration")
     }
+
+    packagingOptions {
+        excludes += "META-INF/*"
+    }
 }
 
 dependencies {

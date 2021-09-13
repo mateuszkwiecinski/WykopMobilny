@@ -26,17 +26,16 @@ jobs:
           distribution: 'adopt'
           java-version: 16
 
-      - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
+      - uses: gradle/gradle-build-action@v1
         with:
-          job-id: generate-diff-jdk16
-          gradle-distribution-sha-256-sum-warning: false
+          arguments: help
+          dependencies-cache-enabled: true
 
       - id: dependency-diff
         name: Generate dependency diff
         uses: usefulness/dependency-tree-diff-action@v1
         with:
-          configuration: debugRuntimeClasspath
+          configuration: releaseRuntimeClasspath
 
       - uses: peter-evans/find-comment@v1
         id: find_comment

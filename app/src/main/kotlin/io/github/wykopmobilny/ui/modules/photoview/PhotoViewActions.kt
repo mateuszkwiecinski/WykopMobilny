@@ -17,11 +17,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.util.MimeTypes
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.base.WykopSchedulers
 import io.reactivex.Completable
 import io.reactivex.Single
-import io.reactivex.SingleOnSubscribe
 import java.io.File
+import java.io.IOException
 import java.nio.file.Files
 
 interface PhotoViewCallbacks {
@@ -44,27 +45,40 @@ class PhotoViewActions(val context: Context) : PhotoViewCallbacks {
             return
         }
 
-        Single.create(
-            SingleOnSubscribe<File> {
-                val file = Glide.with(context).downloadOnly().load(url).submit().get()
-                val newFile = File(
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                    "$SAVED_FOLDER/$SHARED_FOLDER/" + url.substringAfterLast("/"),
-                )
-                file.copyTo(newFile, true)
-                it.onSuccess(newFile)
-            },
-        ).subscribeOn(WykopSchedulers().backgroundThread()).observeOn(WykopSchedulers().mainThread()).subscribe { file: File ->
-            addImageToGallery(file.path, context)
-
-            val url = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".fileprovider", file)
-            val share = Intent(Intent.ACTION_SEND)
-            share.type = getMimeType(url.path!!)
-            share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            share.putExtra(Intent.EXTRA_STREAM, url)
-            share.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            photoView.startActivityForResult(Intent.createChooser(share, "Udostępnij obrazek"), PhotoViewActivity.SHARE_REQUEST_CODE)
+        Single.fromCallable {
+            val file = Glide.with(context).downloadOnly().load(url).submit().get()
+            val newFile = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                "$SAVED_FOLDER/$SHARED_FOLDER/" + url.substringAfterLast("/"),
+            )
+            file.copyTo(newFile, true)
+            newFile
         }
+            .subscribeOn(WykopSchedulers().backgroundThread())
+            .observeOn(WykopSchedulers().mainThread())
+            .subscribe(
+                { file ->
+                    addImageToGallery(file.path, context)
+
+                    val url = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".fileprovider", file)
+                    val share = Intent(Intent.ACTION_SEND)
+                    share.type = getMimeType(url.path!!)
+                    share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    share.putExtra(Intent.EXTRA_STREAM, url)
+                    share.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    photoView.startActivityForResult(
+                        Intent.createChooser(share, "Udostępnij obrazek"),
+                        PhotoViewActivity.SHARE_REQUEST_CODE,
+                    )
+                },
+                {
+                    if (it is IOException) {
+                        Napier.i("Failed to share image $url", throwable = it)
+                    } else {
+                        Napier.e("Failed to share image $url", throwable = it)
+                    }
+                },
+            )
     }
 
     override fun getDrawable(): Drawable? {

@@ -15,6 +15,8 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.widget.TextView;
 
+import io.github.aakira.napier.Napier;
+
 /**
  * Handles URL clicks on TextViews. Unlike the default implementation, this:
  * <p>
@@ -112,8 +114,9 @@ public class BetterLinkMovementMethod extends LinkMovementMethod {
      */
     public BetterLinkMovementMethod setOnLinkClickListener(OnLinkClickListener clickListener) {
         if (this == singleInstance) {
-            throw new UnsupportedOperationException("Setting a click listener on the instance returned by getInstance() is not supported to avoid memory " +
-                "leaks. Please use newInstance() or any of the linkify() methods instead.");
+            throw new UnsupportedOperationException(
+                "Setting a click listener on the instance returned by getInstance() is not supported to avoid memory "
+                    + "leaks. Please use newInstance() or any of the linkify() methods instead.");
         }
 
         this.onLinkClickListener = clickListener;
@@ -122,8 +125,9 @@ public class BetterLinkMovementMethod extends LinkMovementMethod {
 
     public BetterLinkMovementMethod setOnTextClickListener(OnTextClickListener clickListener) {
         if (this == singleInstance) {
-            throw new UnsupportedOperationException("Setting a click listener on the instance returned by getInstance() is not supported to avoid memory " +
-                "leaks. Please use newInstance() or any of the linkify() methods instead.");
+            throw new UnsupportedOperationException(
+                "Setting a click listener on the instance returned by getInstance() is not supported to avoid memory "
+                    + "leaks. Please use newInstance() or any of the linkify() methods instead.");
         }
 
         this.onTextClickListener = clickListener;
@@ -131,7 +135,7 @@ public class BetterLinkMovementMethod extends LinkMovementMethod {
     }
 
 
-// ======== PUBLIC APIs END ======== //
+    // ======== PUBLIC APIs END ======== //
 
     private static void addLinks(int linkifyMask, BetterLinkMovementMethod movementMethod, TextView textView) {
         textView.setMovementMethod(movementMethod);
@@ -158,20 +162,17 @@ public class BetterLinkMovementMethod extends LinkMovementMethod {
                 if (clickableSpanUnderTouch != null) {
                     try {
                         highlightUrl(textView, clickableSpanUnderTouch, text);
-                    } catch (Exception e) {
-
+                    } catch (Exception ex) {
+                        Napier.INSTANCE.i("highlighting url failed", ex, null);
                     }
                 }
 
                 if (touchStartedOverALink && onLinkLongClickListener != null) {
-                    LongPressTimer.OnTimerReachedListener longClickListener = new LongPressTimer.OnTimerReachedListener() {
-                        @Override
-                        public void onTimerReached() {
-                            wasLongPressRegistered = true;
-                            textView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                            removeUrlHighlightColor(textView);
-                            dispatchUrlLongClick(textView, clickableSpanUnderTouch);
-                        }
+                    LongPressTimer.OnTimerReachedListener longClickListener = () -> {
+                        wasLongPressRegistered = true;
+                        textView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                        removeUrlHighlightColor(textView);
+                        dispatchUrlLongClick(textView, clickableSpanUnderTouch);
                     };
                     startTimerForRegisteringLongClick(textView, longClickListener);
                 }
@@ -185,7 +186,9 @@ public class BetterLinkMovementMethod extends LinkMovementMethod {
                     if (touchStartedOverALink && clickableSpanUnderTouch == clickableSpanUnderTouchOnActionDown) {
                         dispatchUrlClick(textView, clickableSpanUnderTouch);
                     } else {
-                        if (onTextClickListener != null) onTextClickListener.onClick();
+                        if (onTextClickListener != null) {
+                            onTextClickListener.onClick();
+                        }
                     }
                 }
                 cleanupOnTouchUp(textView);
