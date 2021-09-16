@@ -14,7 +14,9 @@ import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.rx2.rxSingle
 import toRequestBody
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class EntriesRepository @Inject constructor(
     private val entriesApi: EntriesRetrofitApi,
     private val userTokenRefresher: UserTokenRefresher,
