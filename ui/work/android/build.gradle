@@ -6,7 +6,7 @@ plugins {
 dependencies {
     api(projects.ui.work.api)
     implementation(projects.common.kotlinHelpers)
-    implementation("androidx.work:work-runtime-ktx:2.6.0")
-    implementation("com.google.dagger:dagger:2.38.1")
-    kapt("com.google.dagger:dagger-compiler:2.38.1")
+    implementation(libs.work.runtime)
+    implementation(libs.dagger.core)
+    kapt(libs.dagger.compiler)
 }

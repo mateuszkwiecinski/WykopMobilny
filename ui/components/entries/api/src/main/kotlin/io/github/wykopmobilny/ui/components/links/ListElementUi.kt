@@ -19,9 +19,7 @@ sealed class ListElementUi {
         val shareAction: () -> Unit,
         val favoriteAction: () -> Unit,
         val voteAction: () -> Unit,
-        val moreAction: (() -> Unit)?,
     ) : ListElementUi()
-
 
     data class Link(
         val id: Long,
@@ -35,7 +33,6 @@ sealed class ListElementUi {
         val shareAction: () -> Unit,
         val favoriteAction: () -> Unit,
         val voteAction: () -> Unit,
-        val moreAction: (() -> Unit)?,
     ) : ListElementUi() {
 
         enum class Thumbnail {

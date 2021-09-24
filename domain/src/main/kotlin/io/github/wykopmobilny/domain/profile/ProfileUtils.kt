@@ -66,6 +66,7 @@ internal fun DateTimePeriod.toPrettyString(
         days == 1 -> "1 dzień"
         else -> "$days dni"
     }
+
     @Suppress("ComplexCondition")
     val hoursPart = if (hours == 0 || years != 0 || months != 0 || days != 0) {
         ""

@@ -181,7 +181,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             else -> error("Unknown dependency type $clazz")
         }.dependencyContainer as T
 
-    private inline fun <reified T : Any> scopeKey(id: String?) = "${T::class.simpleName}=$id"
+    private inline fun <reified T : Any> scopeKey(id: String?) = "${T::class.qualifiedName}=$id"
 
     private inline fun <reified T : Any> getOrPutScope(id: String?, container: () -> Any) =
         scopes.getOrPut(scopeKey<T>(id)) { initScope(container()) }

@@ -11,7 +11,6 @@ import io.github.wykopmobilny.api.endpoints.LoginRetrofitApi
 import io.github.wykopmobilny.api.responses.LoginResponse
 import io.github.wykopmobilny.blacklist.api.ScraperRetrofitApi
 import io.github.wykopmobilny.data.storage.api.AppStorage
-import io.github.wykopmobilny.domain.api.apiCall
 import io.github.wykopmobilny.domain.api.apiFetcher
 import io.github.wykopmobilny.storage.api.Blacklist
 import io.github.wykopmobilny.storage.api.LoggedUserInfo

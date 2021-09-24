@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     api(projects.ui.base.api)
-    api("androidx.paging:paging-common-ktx:3.0.0")
+    api(libs.paging.common)
 }

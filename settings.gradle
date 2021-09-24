@@ -3,6 +3,7 @@ plugins {
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+enableFeaturePreview("VERSION_CATALOGS")
 
 Closure discoverSubprojects = {
     fileTree(rootDir) { include("**/build.gradle") }

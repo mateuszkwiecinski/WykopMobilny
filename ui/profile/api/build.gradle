@@ -6,5 +6,5 @@ dependencies {
     api(projects.ui.base.api)
     api(projects.ui.components.entries.api)
     api(projects.ui.components.users.api)
-    api("androidx.paging:paging-common-ktx:3.0.1")
+    api(libs.paging.common)
 }

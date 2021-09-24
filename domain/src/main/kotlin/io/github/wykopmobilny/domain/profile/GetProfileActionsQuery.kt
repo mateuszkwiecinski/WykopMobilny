@@ -51,7 +51,6 @@ internal class GetProfileActionsQuery @Inject constructor(
         shareAction = { },
         favoriteAction = { },
         voteAction = { },
-        moreAction = null,
     )
 
     private fun ProfileAction.Link.toUi(linksPreference: LinksPreference) =
@@ -66,7 +65,6 @@ internal class GetProfileActionsQuery @Inject constructor(
             shareAction = { },
             favoriteAction = { },
             voteAction = { },
-            moreAction = null,
             thumbnail = if (linksPreference.showLinkThumbnail || linksPreference.useSimpleList) {
                 ListElementUi.Link.Thumbnail.None
             } else {

@@ -1,6 +1,5 @@
 package io.github.wykopmobilny.wykop.remote
 
-import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable

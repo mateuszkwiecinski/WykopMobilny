@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    api(libs.coroutines.core)
 }
