@@ -9,15 +9,20 @@ import io.github.wykopmobilny.ui.link_details.android.databinding.FragmentLinkDe
 import io.github.wykopmobilny.utils.destroyKeyedDependency
 import io.github.wykopmobilny.utils.requireKeyedDependency
 import io.github.wykopmobilny.utils.stringArgument
+import io.github.wykopmobilny.utils.stringArgumentNullable
 import io.github.wykopmobilny.utils.viewBinding
 
-fun linkDetailsFragment(linkId: String): Fragment =
+fun linkDetailsFragment(linkId: String, commentId: String?): Fragment =
     LinkDetailsMainFragment()
-        .apply { this.linkId = linkId }
+        .apply {
+            this.linkId = linkId
+            this.commentId = commentId
+        }
 
 internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details) {
 
     var linkId by stringArgument("userId")
+    var commentId by stringArgumentNullable("commenetID")
 
     private lateinit var getLinkDetails: GetLinkDetails
 
