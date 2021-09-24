@@ -181,7 +181,9 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             else -> error("Unknown dependency type $clazz")
         }.dependencyContainer as T
 
-    private inline fun <reified T : Any> scopeKey(id: String?) = "${T::class.qualifiedName}=$id"
+    private inline fun <reified T : Any> scopeKey(id: String?) = scopeKey(T::class, id)
+
+    private fun <T : Any> scopeKey(clazz: KClass<T>, id: String?) = "${clazz.qualifiedName}=$id"
 
     private inline fun <reified T : Any> getOrPutScope(id: String?, container: () -> Any) =
         scopes.getOrPut(scopeKey<T>(id)) { initScope(container()) }
@@ -210,7 +212,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
     }
 
     override fun <T : Any> launchScoped(clazz: KClass<T>, id: String?, block: suspend CoroutineScope.() -> Unit) =
-        scopes.getValue("${clazz.simpleName}=$id").coroutineScope.launch(block = block)
+        scopes.getValue(scopeKey(clazz, id)).coroutineScope.launch(block = block)
 
     private fun doInterop() {
         applicationScope.launch {
