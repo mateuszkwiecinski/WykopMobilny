@@ -19,7 +19,6 @@ internal class GetFilteringPreferences @Inject constructor(
         appStorage.get(UserSettings.hideBlacklistedContent),
         appStorage.get(UserSettings.useEmbeddedBrowser),
     ) { items ->
-        @Suppress("MagicNumber")
         FilteringPreferences(
             hidePlus18Content = items[0] ?: true,
             hideNsfwContent = items[1] ?: true,

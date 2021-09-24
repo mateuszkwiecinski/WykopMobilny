@@ -19,7 +19,7 @@ interface ProfileRetrofitApi {
     suspend fun getIndex(@Path("username") username: String): WykopApiResponse<ProfileResponse>
 
     // APIV2 WTF PAGINATION IS BROKEN HERE
-    @GET("/profiles/actions/{username}/appkey/$APP_KEY/page/1")
+    @GET("/profiles/actions/{username}/appkey/$APP_KEY")
     suspend fun getActions(@Path("username") username: String): WykopApiResponse<List<EntryLinkResponse>>
 
     @GET("/profiles/added/{username}/page/{page}/appkey/$APP_KEY")

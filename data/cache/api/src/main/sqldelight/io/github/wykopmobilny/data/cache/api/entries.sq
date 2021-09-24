@@ -1,0 +1,23 @@
+import io.github.wykopmobilny.data.cache.api.UserVote;
+import kotlinx.datetime.Instant;
+
+CREATE TABLE entryEntity (
+    id INTEGER NOT NULL UNIQUE PRIMARY KEY,
+    postedAt INTEGER AS Instant NOT NULL,
+    body TEXT NOT NULL,
+    isBlocked INTEGER AS Boolean NOT NULL,
+    isFavorite INTEGER AS Boolean NOT NULL,
+    voteCount INTEGER AS Int NOT NULL,
+    commentsCount INTEGER AS Int NOT NULL,
+    embedId TEXT,
+    violationUrl TEXT,
+    canComment INTEGER AS Boolean NOT NULL,
+    app TEXT,
+    userVote INTEGER AS UserVote,
+    FOREIGN KEY (embedId) REFERENCES embed(id)
+);
+
+insertOrReplace:
+INSERT OR REPLACE INTO entryEntity
+VALUES ?;
+

@@ -15,15 +15,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.signature.ObjectKey
 import io.github.wykopmobilny.glide.GlideApp
 import io.github.wykopmobilny.utils.api.parseDate
-import io.github.wykopmobilny.utils.api.parseDateJavaTime
 import io.github.wykopmobilny.utils.recyclerview.ViewHolderDependentItemDecorator
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.periodUntil
 import org.ocpsoft.prettytime.PrettyTime
 import org.threeten.bp.Duration
-import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalTime
-import org.threeten.bp.Period
-import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.DateTimeParseException
+import java.util.Date
 import java.util.Locale
 
 fun SpannableStringBuilder.appendNewSpan(text: CharSequence, what: Any, flags: Int): SpannableStringBuilder {
@@ -75,9 +75,12 @@ fun ImageView.loadImage(url: String, signature: Int? = null) {
 fun String.toPrettyDate(): String {
     return PrettyTime(Locale("pl")).format(parseDate(this))
 }
+fun Instant.toPrettyDate(): String {
+    return PrettyTime(Locale("pl")).format(Date(toEpochMilliseconds()))
+}
 
-fun String.toDurationPrettyDate(): String {
-    val period = Period.between(parseDateJavaTime(this), LocalDate.now())
+fun Instant.toDurationPrettyDate(): String {
+    val period = this.periodUntil(Clock.System.now(), TimeZone.currentSystemDefault())
 
     if (period.years > 1 && period.months > 0) {
         return "${period.years} lata ${period.months} mies."
@@ -92,15 +95,13 @@ fun String.toDurationPrettyDate(): String {
     } else if (period.months == 0 && period.days > 0) {
         return "${period.days} dni"
     } else {
-        val durationTime = LocalTime.parse(this, DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm:ss", Locale.GERMAN))
-        val duration = Duration.between(durationTime, LocalTime.now())
-        if (period.days == 0 && duration.toHours().toInt() > 0) {
-            return "${duration.toHours().toInt()} godz."
-        } else if (duration.toHours().toInt() == 0) {
-            return "${duration.toMinutes().toInt()} min."
+        if (period.days == 0 && period.hours > 0) {
+            return "${period.hours} godz."
+        } else if (period.hours == 0) {
+            return "${period.minutes} min."
         }
     }
-    return PrettyTime(Locale("pl")).formatDurationUnrounded(parseDate(this))
+    return PrettyTime(Locale("pl")).formatDurationUnrounded(Date(toEpochMilliseconds()))
 }
 
 fun Uri.queryFileName(contentResolver: ContentResolver): String {

@@ -8,9 +8,11 @@ import com.squareup.sqldelight.runtime.coroutines.mapToList
 import dagger.Module
 import dagger.Provides
 import io.github.wykopmobilny.api.endpoints.LoginRetrofitApi
+import io.github.wykopmobilny.api.responses.LoginResponse
 import io.github.wykopmobilny.blacklist.api.ScraperRetrofitApi
 import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.api.apiCall
+import io.github.wykopmobilny.domain.api.apiFetcher
 import io.github.wykopmobilny.storage.api.Blacklist
 import io.github.wykopmobilny.storage.api.LoggedUserInfo
 import io.github.wykopmobilny.storage.api.UserInfoStorage
@@ -20,7 +22,7 @@ import io.github.wykopmobilny.ui.base.AppScopes
 import kotlinx.coroutines.flow.combine
 import javax.inject.Singleton
 
-@Module(includes = [ProfileStores::class])
+@Module
 internal class StoresModule {
 
     @Singleton
@@ -74,22 +76,10 @@ internal class StoresModule {
         storage: UserInfoStorage,
         appScopes: AppScopes,
     ) = StoreBuilder.from(
-        fetcher = Fetcher.ofResult { request: UserSession ->
-            apiCall(
-                rawCall = { retrofitApi.getUserSessionToken(request.login, request.token) },
-                mapping = {
-                    LoggedUserInfo(
-                        id = profile.id,
-                        userToken = userkey,
-                        avatarUrl = profile.avatar,
-                        backgroundUrl = profile.background,
-                    )
-                },
-            )
-        },
+        fetcher = apiFetcher<UserSession, LoginResponse> { request -> retrofitApi.getUserSessionToken(request.login, request.token) },
         sourceOfTruth = SourceOfTruth.of(
             reader = { storage.loggedUser },
-            writer = { _, newValue -> storage.updateLoggedUser(newValue) },
+            writer = { _, newValue -> storage.updateLoggedUser(newValue.toLoggedUserInfo()) },
             delete = { storage.updateLoggedUser(null) },
             deleteAll = { storage.updateLoggedUser(null) },
         ),
@@ -97,3 +87,10 @@ internal class StoresModule {
         .scope(appScopes.applicationScope)
         .build()
 }
+
+fun LoginResponse.toLoggedUserInfo() = LoggedUserInfo(
+    id = profile.id,
+    userToken = userkey,
+    avatarUrl = profile.avatar,
+    backgroundUrl = profile.background,
+)

@@ -21,6 +21,7 @@ dependencies {
     implementation projects.ui.search.api
     implementation projects.ui.work.api
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
     implementation("androidx.paging:paging-common-ktx:3.0.1")
     implementation("com.dropbox.mobile.store:store4:4.0.2-KT15")
     implementation("com.google.dagger:dagger:2.38.1")
@@ -29,6 +30,8 @@ dependencies {
 
 tasks.withType(KotlinCompile).configureEach {
     kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=com.dropbox.android.external.store4.ExperimentalStoreApi"
+        freeCompilerArgs = freeCompilerArgs +
+            "-Xopt-in=com.dropbox.android.external.store4.ExperimentalStoreApi" +
+            "-Xopt-in=androidx.paging.ExperimentalPagingApi"
     }
 }

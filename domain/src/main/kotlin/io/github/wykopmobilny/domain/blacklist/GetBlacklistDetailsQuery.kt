@@ -5,7 +5,7 @@ import com.dropbox.android.external.store4.StoreRequest
 import com.dropbox.android.external.store4.fresh
 import io.github.wykopmobilny.domain.blacklist.BlacklistViewState.ItemState
 import io.github.wykopmobilny.domain.blacklist.actions.TagsRepository
-import io.github.wykopmobilny.domain.blacklist.actions.UsersRepository
+import io.github.wykopmobilny.domain.blacklist.actions.ProfilesRepository
 import io.github.wykopmobilny.domain.blacklist.di.BlacklistScope
 import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.storage.api.Blacklist
@@ -21,7 +21,7 @@ internal class GetBlacklistDetailsQuery @Inject constructor(
     private val store: Store<Unit, Blacklist>,
     private val viewState: BlacklistViewStateStorage,
     private val tagsRepository: TagsRepository,
-    private val usersRepository: UsersRepository,
+    private val profilesRepository: ProfilesRepository,
     private val appScopes: AppScopes,
 ) : GetBlacklistDetails {
 
@@ -132,7 +132,7 @@ internal class GetBlacklistDetailsQuery @Inject constructor(
 
     private fun unblockUser(user: String) = appScopes.safe<BlacklistScope> {
         viewState.update { it.copy(usersState = it.usersState + (user to ItemState.InProgress)) }
-        runCatching { runCatching { usersRepository.unblockUser(user) } }
+        runCatching { runCatching { profilesRepository.unblockUser(user) } }
             .onFailure { error -> viewState.update { it.copy(usersState = it.usersState + (user to ItemState.Error(error))) } }
             .onSuccess { viewState.update { it.copy(usersState = it.usersState - user) } }
     }

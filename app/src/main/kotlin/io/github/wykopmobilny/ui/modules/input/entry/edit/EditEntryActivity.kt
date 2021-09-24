@@ -14,7 +14,7 @@ class EditEntryActivity : BaseInputActivity<EditEntryPresenter>(), EditEntryView
     companion object {
         const val EXTRA_ENTRY_ID = "ENTRY_ID"
 
-        fun createIntent(context: Context, body: String, entryId: Int) =
+        fun createIntent(context: Context, body: String, entryId: Long) =
             Intent(context, EditEntryActivity::class.java).apply {
                 putExtra(EXTRA_BODY, body)
                 putExtra(EXTRA_ENTRY_ID, entryId)
@@ -27,7 +27,7 @@ class EditEntryActivity : BaseInputActivity<EditEntryPresenter>(), EditEntryView
     @Inject
     override lateinit var suggestionApi: SuggestApi
 
-    override val entryId by lazy { intent.getIntExtra(EXTRA_ENTRY_ID, 0) }
+    override val entryId by lazy { intent.getLongExtra(EXTRA_ENTRY_ID, 0) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

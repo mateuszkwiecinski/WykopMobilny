@@ -36,7 +36,7 @@ class BlacklistTagsFragment : Fragment(R.layout.fragment_page) {
         binding.list.addItemDecoration(DividerItemDecoration(view.context, LinearLayoutManager.VERTICAL))
         val adapter = BlacklistPageAdapter()
         binding.list.adapter = adapter
-        lifecycleScope.launchWhenResumed {
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             getBlacklistDetails()
                 .mapNotNull { it.content }
                 .filterIsInstance<BlacklistedDetailsUi.Content.WithData>()

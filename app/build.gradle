@@ -133,6 +133,7 @@ dependencies {
     implementation("com.google.android.exoplayer:exoplayer:$exoplayerVersion")
     implementation("com.google.android.exoplayer:extension-okhttp:$exoplayerVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
     implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")

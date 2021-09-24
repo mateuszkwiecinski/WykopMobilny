@@ -39,7 +39,7 @@ internal class BlacklistMainFragment : Fragment(R.layout.fragment_blacklist_main
         super.onViewCreated(view, savedInstanceState)
         binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
-        lifecycleScope.launchWhenResumed {
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             val shared = getBlacklistDetails().stateIn(this)
 
             val blacklistAdapter = BlacklistAdapter(this@BlacklistMainFragment)

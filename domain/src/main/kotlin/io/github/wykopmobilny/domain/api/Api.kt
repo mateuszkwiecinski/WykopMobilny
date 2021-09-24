@@ -1,5 +1,6 @@
 package io.github.wykopmobilny.domain.api
 
+import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.FetcherResult
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.fresh
@@ -10,17 +11,18 @@ import io.github.wykopmobilny.storage.api.UserSession
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-suspend fun <T : Any, R : Any> apiCall(
-    rawCall: suspend () -> ApiResponse<T>,
-    mapping: T.() -> R,
-): FetcherResult<R> {
-    val response = rawCall()
+fun <TInput : Any, TOutput : Any> apiFetcher(rawCall: suspend (TInput) -> ApiResponse<TOutput>) =
+    Fetcher.ofResult<TInput, TOutput> { arg -> apiCall { rawCall(arg) } }
+
+suspend fun <T : Any> apiCall(rawCall: suspend () -> ApiResponse<T>): FetcherResult<T> {
+    val response = runCatching { rawCall() }
+        .getOrElse { return FetcherResult.Error.Exception(it) }
     val error = response.error
 
     return if (error != null) {
         FetcherResult.Error.Message(error.messagePl)
     } else {
-        runCatching { response.data?.mapping() }
+        runCatching { response.data }
             .fold(
                 onSuccess = { it?.let { FetcherResult.Data(it) } ?: FetcherResult.Error.Message("Invalid response. App's fault") },
                 onFailure = FetcherResult.Error::Exception,

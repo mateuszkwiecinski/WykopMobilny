@@ -2,6 +2,7 @@ package io.github.wykopmobilny.api.responses
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.datetime.Instant
 
 @JsonClass(generateAdapter = true)
 data class LinkResponse(
@@ -14,14 +15,14 @@ data class LinkResponse(
     @field:Json(name = "bury_count") val buryCount: Int,
     @field:Json(name = "comments_count") val commentsCount: Int,
     @field:Json(name = "related_count") val relatedCount: Int,
-    @field:Json(name = "author") val author: AuthorResponse?,
-    @field:Json(name = "date") val date: String,
+    @field:Json(name = "author") val author: AuthorResponse,
+    @field:Json(name = "date") val date: Instant,
     @field:Json(name = "preview") val preview: String?,
     @field:Json(name = "plus18") val plus18: Boolean,
     @field:Json(name = "can_vote") val canVote: Boolean,
     @field:Json(name = "is_hot") val isHot: Boolean,
-    @field:Json(name = "status") val status: String,
     @field:Json(name = "user_vote") val userVote: String?,
+    @field:Json(name = "user_observe") val userObserve: Boolean?,
     @field:Json(name = "user_favorite") val userFavorite: Boolean?,
     @field:Json(name = "app") val app: String?,
 )

@@ -4,22 +4,22 @@ import android.app.Activity
 import android.os.Bundle
 import android.webkit.CookieManager
 import android.widget.Toast
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.Lazy
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
-import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.api.ApiSignInterceptor
 import io.github.wykopmobilny.data.cache.sqldelight.DaggerApplicationCacheComponent
 import io.github.wykopmobilny.di.DaggerAppComponent
 import io.github.wykopmobilny.domain.blacklist.di.BlacklistScope
 import io.github.wykopmobilny.domain.di.DomainComponent
+import io.github.wykopmobilny.domain.di.HasScopeInitializer
 import io.github.wykopmobilny.domain.login.ConnectConfig
 import io.github.wykopmobilny.domain.login.di.LoginScope
 import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.android.DaggerFrameworkComponent
+import io.github.wykopmobilny.domain.profile.di.ProfileScope
 import io.github.wykopmobilny.domain.search.di.SearchScope
 import io.github.wykopmobilny.domain.settings.di.SettingsScope
 import io.github.wykopmobilny.domain.styles.di.StylesScope
@@ -32,6 +32,8 @@ import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.blacklist.BlacklistDependencies
 import io.github.wykopmobilny.ui.login.LoginDependencies
 import io.github.wykopmobilny.ui.modules.blacklist.BlacklistActivity
+import io.github.wykopmobilny.ui.modules.input.entry.add.AddEntryActivity
+import io.github.wykopmobilny.ui.modules.pm.conversation.ConversationActivity
 import io.github.wykopmobilny.ui.profile.ProfileDependencies
 import io.github.wykopmobilny.ui.search.SearchDependencies
 import io.github.wykopmobilny.ui.settings.SettingsDependencies
@@ -41,13 +43,14 @@ import io.github.wykopmobilny.utils.usermanager.UserCredentials
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.work.WorkDependencies
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import javax.inject.Inject
@@ -57,7 +60,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
 
     companion object {
 
-        private const val WYKOP_API_URL = "https://a2.wykop.pl"
+        const val WYKOP_API_URL = "https://a2.wykop.pl"
     }
 
     @Inject
@@ -66,20 +69,14 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
     @Inject
     lateinit var settingsPreferencesApi: Lazy<SettingsPreferencesApi>
 
-    override val applicationScope by lazy { CoroutineScope(Job() + AppDispatchers.Default) }
+    override val applicationScope = CoroutineScope(Job() + Dispatchers.Default)
 
     private val okHttpClient = OkHttpClient()
 
     override fun onCreate() {
         super.onCreate()
         AndroidThreeTen.init(this)
-
         doInterop()
-        applicationScope.launch {
-            storages.userInfoStorage().loggedUser
-                .mapNotNull { it?.id }
-                .collect { FirebaseCrashlytics.getInstance().setUserId(it) }
-        }
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
@@ -100,6 +97,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                 val appKey = FirebaseRemoteConfig.getInstance().getString("wykop_app_key")
                 ConnectConfig(connectUrl = "https://a2.wykop.pl/login/connect/appkey/$appKey")
             },
+            clock = Clock.System,
             storages = storages,
             scraper = scraper,
             wykop = wykopApi,
@@ -160,7 +158,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         )
     }
 
-    private val scopes = mutableMapOf<Any, SubScope<Any>>()
+    private val scopes = mutableMapOf<String, SubScope<Any>>()
 
     data class SubScope<T>(
         val dependencyContainer: T,
@@ -171,37 +169,48 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
     @Suppress("UNCHECKED_CAST")
     override fun <T : Any> getDependency(clazz: KClass<T>, scopeId: String?): T =
         when (clazz) {
-            LoginDependencies::class -> scopes.getOrPut(LoginScope::class) { SubScope(domainComponent.login(), newScope()) }
-            StylesDependencies::class -> scopes.getOrPut(StylesScope::class) { SubScope(domainComponent.styles(), newScope()) }
-            SettingsDependencies::class -> scopes.getOrPut(SettingsScope::class) { SubScope(domainComponent.settings(), newScope()) }
-            BlacklistDependencies::class -> scopes.getOrPut(BlacklistScope::class) { SubScope(domainComponent.blacklist(), newScope()) }
-            SearchDependencies::class -> scopes.getOrPut(SearchScope::class) { SubScope(domainComponent.search(), newScope()) }
-            WorkDependencies::class -> scopes.getOrPut(WorkScope::class) { SubScope(domainComponent.work(), newScope()) }
+            LoginDependencies::class -> getOrPutScope<LoginScope>(scopeId) { domainComponent.login() }
+            StylesDependencies::class -> getOrPutScope<StylesScope>(scopeId) { domainComponent.styles() }
+            SettingsDependencies::class -> getOrPutScope<SettingsScope>(scopeId) { domainComponent.settings() }
+            BlacklistDependencies::class -> getOrPutScope<BlacklistScope>(scopeId) { domainComponent.blacklist() }
+            WorkDependencies::class -> getOrPutScope<WorkScope>(scopeId) { domainComponent.work() }
+            SearchDependencies::class -> getOrPutScope<SearchScope>(scopeId) { domainComponent.search() }
             ProfileDependencies::class -> {
-                checkNotNull(scopeId)
-                scopes.getOrPut(scopeId) { SubScope(domainComponent.profile().create(scopeId), newScope()) }
+                getOrPutScope<ProfileScope>(scopeId) { domainComponent.profile().create(profileId = checkNotNull(scopeId)) }
             }
             else -> error("Unknown dependency type $clazz")
-        }.dependencyContainer.also { Napier.i("Create component clazz=${clazz.java.simpleName}, scopeId=$scopeId") } as T
+        }.dependencyContainer as T
 
-    private fun newScope() = CoroutineScope(Job(applicationScope.coroutineContext[Job]) + AppDispatchers.Default)
+    private inline fun <reified T : Any> scopeKey(id: String?) = "${T::class.simpleName}=$id"
+
+    private inline fun <reified T : Any> getOrPutScope(id: String?, container: () -> Any) =
+        scopes.getOrPut(scopeKey<T>(id)) { initScope(container()) }
+
+    private fun <T> initScope(container: T) =
+        SubScope(
+            dependencyContainer = container,
+            coroutineScope = CoroutineScope(Job(applicationScope.coroutineContext[Job]) + Dispatchers.Default),
+        ).apply {
+            if (container is HasScopeInitializer) {
+                coroutineScope.launch { container.initializer().initialize() }
+            }
+        }
 
     override fun <T : Any> destroyDependency(clazz: KClass<T>, scopeId: String?) {
-        Napier.i("Destroy component clazz=${clazz.java.simpleName}, scopeId=$scopeId")
         when (clazz) {
-            LoginDependencies::class -> scopes.remove(LoginScope::class)
-            StylesDependencies::class -> scopes.remove(StylesScope::class)
-            SettingsDependencies::class -> scopes.remove(SettingsScope::class)
-            BlacklistDependencies::class -> scopes.remove(BlacklistScope::class)
-            SearchDependencies::class -> scopes.remove(SearchScope::class)
-            WorkDependencies::class -> scopes.remove(WorkScope::class)
-            ProfileDependencies::class -> scopes.remove(checkNotNull(scopeId))
+            LoginDependencies::class -> scopes.remove(scopeKey<LoginScope>(scopeId))
+            StylesDependencies::class -> scopes.remove(scopeKey<StylesScope>(scopeId))
+            SettingsDependencies::class -> scopes.remove(scopeKey<SettingsScope>(scopeId))
+            BlacklistDependencies::class -> scopes.remove(scopeKey<BlacklistScope>(scopeId))
+            WorkDependencies::class -> scopes.remove(scopeKey<WorkScope>(scopeId))
+            SearchDependencies::class -> scopes.remove(scopeKey<SearchScope>(scopeId))
+            ProfileDependencies::class -> scopes.remove(scopeKey<ProfileScope>(scopeId))
             else -> error("Unknown dependency type $clazz")
         }?.coroutineScope?.cancel()
     }
 
-    override fun <T : Any> launchScoped(clazz: KClass<T>, id: String?, block: suspend CoroutineScope.() -> Unit): Job =
-        scopes.getValue(id ?: clazz).coroutineScope.launch(block = block)
+    override fun <T : Any> launchScoped(clazz: KClass<T>, id: String?, block: suspend CoroutineScope.() -> Unit) =
+        scopes.getValue("${clazz.simpleName}=$id").coroutineScope.launch(block = block)
 
     private fun doInterop() {
         applicationScope.launch {
@@ -236,7 +245,12 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                             Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                         }
                     }
+                    is InteropRequest.PrivateMessage ->
+                        context.startActivity(ConversationActivity.createIntent(context, it.profileId))
+                    is InteropRequest.NewEntry ->
+                        context.startActivity(AddEntryActivity.createIntent(context, null, "@${it.profileId}: "))
                 }
+                    .let { }
             }
         }
     }

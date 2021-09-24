@@ -1,5 +1,6 @@
 package io.github.wykopmobilny.wykop.remote
 
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -102,6 +103,12 @@ internal class RetrofitModule {
     @PathFixingInterceptor
     fun AppKeyReplacingInterceptor.pathFixingInterceptor(): Interceptor = this
 
+    @Provides
+    fun moshi() = Moshi.Builder().apply {
+        add(InstantAdapter())
+    }
+        .build()
+
     @Reusable
     @Provides
     fun retrofit(
@@ -109,6 +116,7 @@ internal class RetrofitModule {
         @PathFixingInterceptor pathFixing: Interceptor,
         @SigningInterceptor signing: Interceptor,
         @BaseUrl apiUrl: String,
+        moshi: Moshi,
         cacheDir: File,
     ) =
         Retrofit.Builder()
@@ -124,7 +132,7 @@ internal class RetrofitModule {
                     .build(),
             )
             .baseUrl(apiUrl)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
 
     companion object {

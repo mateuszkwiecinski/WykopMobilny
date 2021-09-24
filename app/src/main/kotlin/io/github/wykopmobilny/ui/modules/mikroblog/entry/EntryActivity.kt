@@ -48,14 +48,14 @@ class EntryActivity :
 
         fun createIntent(
             context: Context,
-            entryId: Int,
-            commentId: Int?,
+            entryId: Long,
+            commentId: Long?,
             isRevealed: Boolean
         ) =
             Intent(context, EntryActivity::class.java).apply {
                 putExtra(EXTRA_ENTRY_ID, entryId)
                 putExtra(EXTRA_IS_REVEALED, isRevealed)
-                commentId?.let<Int, Unit> { putExtra(EXTRA_COMMENT_ID, commentId) }
+                commentId?.let<Long, Unit> { putExtra(EXTRA_COMMENT_ID, commentId) }
             }
     }
 
@@ -77,9 +77,9 @@ class EntryActivity :
     private val binding by viewBinding(ActivityEntryBinding::inflate)
 
     override val enableSwipeBackLayout: Boolean = true
-    val entryId by lazy { intent.getIntExtra(EXTRA_ENTRY_ID, -1) }
+    val entryId by lazy { intent.getLongExtra(EXTRA_ENTRY_ID, -1) }
     private val isRevealed by lazy { intent.getBooleanExtra(EXTRA_IS_REVEALED, false) }
-    private val highLightCommentId by lazy { intent.getIntExtra(EXTRA_COMMENT_ID, -1) }
+    private val highLightCommentId by lazy { intent.getLongExtra(EXTRA_COMMENT_ID, -1) }
 
     override fun openVotersMenu() {
         val dialog = BottomSheetDialog(this)
@@ -177,7 +177,7 @@ class EntryActivity :
         binding.swiperefresh.isRefreshing = false
         entry.embed?.isRevealed = isRevealed
         adapter.notifyDataSetChanged()
-        if (highLightCommentId != -1) {
+        if (highLightCommentId != -1L) {
             entry.comments.forEachIndexed { index, comment ->
                 if (comment.id == highLightCommentId) {
                     binding.recyclerView.scrollToPosition(index + 1)

@@ -15,12 +15,13 @@ suspend fun Flow<ErrorDialogUi?>.collectErrorDialog(context: Context) {
         .collect { dialogUi ->
             dialog?.dismiss()
             dialog = if (dialogUi != null) {
-                MaterialAlertDialogBuilder(context)
-                    .setTitle(R.string.error_dialog_title)
-                    .setMessage(dialogUi.error.message ?: dialogUi.error.toString())
-                    .setNegativeButton(R.string.error_dialog_retry) { _, _ -> dialogUi.retryAction() }
-                    .setPositiveButton(R.string.error_dialog_confirm) { _, _ -> dialogUi.dismissAction() }
-                    .setOnCancelListener { dialogUi.dismissAction() }
+                MaterialAlertDialogBuilder(context).apply {
+                    setTitle(R.string.error_dialog_title)
+                    setMessage(dialogUi.error.message ?: dialogUi.error.toString())
+                    dialogUi.retryAction?.let { retry -> setNegativeButton(R.string.error_dialog_retry) { _, _ -> retry() } }
+                    setPositiveButton(R.string.error_dialog_confirm) { _, _ -> dialogUi.dismissAction() }
+                    setOnCancelListener { dialogUi.dismissAction() }
+                }
                     .show()
             } else {
                 null

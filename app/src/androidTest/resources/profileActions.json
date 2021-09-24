@@ -1,0 +1,57 @@
+{
+  "data": [
+    {
+      "type": "link",
+      "link": {
+        "id": 5649425,
+        "title": "Służby w akcji - Wszystko było w porządku aż LGBT cyrk włączył",
+        "description": "Brak słów . To trzeba zobaczyć",
+        "tags": "#polityka #lgbt",
+        "source_url": "https://www.facebook.com/2584768678219257/posts/3731086086920838/?app=fbl",
+        "vote_count": 58,
+        "bury_count": 14,
+        "comments_count": 13,
+        "related_count": 0,
+        "date": "2020-08-13 17:16:40",
+        "author": {
+          "login": "Cassini",
+          "color": 1,
+          "avatar": "https://www.wykop.pl/cdn/c3397992/Cassini_aNuXZ37f9w,q150.jpg"
+        },
+        "plus18": false,
+        "status": "outdated",
+        "can_vote": true,
+        "is_hot": false,
+        "app": "Android",
+        "user_favorite": false,
+        "user_observe": false,
+        "comments": [],
+        "commented": false
+      }
+    },
+    {
+      "type": "entry",
+      "entry": {
+        "id": 49921429,
+        "date": "2020-06-07 18:11:07",
+        "body": "Co za penisy mi konto usunęły",
+        "author": {
+          "login": "Cassini",
+          "color": 1,
+          "avatar": "https://www.wykop.pl/cdn/c3397992/Cassini_aNuXZ37f9w,q150.jpg"
+        },
+        "blocked": false,
+        "favorite": false,
+        "vote_count": 0,
+        "comments_count": 0,
+        "status": "visible",
+        "user_vote": 0,
+        "app": "Android",
+        "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/entry/od/49921429/ud/1sSJ/hs/b86c0513ab71cae9335c76c212f9896e655dd52b/rn/qTcTHw7Mv0/"
+      }
+    }
+  ],
+  "pagination": {
+    "next": "https://a2.wykop.pl/ranking/actions/Cassini/appkey/xIPQ0NYr9w/page/2/"
+  }
+}

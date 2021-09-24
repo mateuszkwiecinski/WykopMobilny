@@ -1,0 +1,15 @@
+import io.github.wykopmobilny.data.cache.api.EmbedType;
+
+CREATE TABLE embed (
+    id TEXT NOT NULL UNIQUE PRIMARY KEY,
+    type INTEGER AS EmbedType NOT NULL,
+    fileName TEXT,
+    preview TEXT NOT NULL,
+    size TEXT,
+    hasAdultContent INTEGER AS Boolean NOT NULL
+);
+
+insertOrReplace:
+INSERT OR REPLACE INTO embed
+VALUES ?;
+

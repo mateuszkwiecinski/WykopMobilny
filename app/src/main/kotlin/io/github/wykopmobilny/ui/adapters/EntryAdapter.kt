@@ -30,7 +30,7 @@ class EntryAdapter @Inject constructor(
     private var replyListener: EntryListener = { commentViewListener.addReply(it.author) }
 
     var entry: Entry? = null
-    var commentId: Int? = null
+    var commentId: Long? = null
     private val hideBlacklistedViews by lazy { settingsPreferencesApi.hideBlacklistedViews }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

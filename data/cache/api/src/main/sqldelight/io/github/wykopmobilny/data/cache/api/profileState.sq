@@ -1,0 +1,27 @@
+
+CREATE TABLE observedProfileEntity (
+    profileId TEXT NOT NULL,
+    FOREIGN KEY (profileId) REFERENCES profileEntity(id) ON DELETE CASCADE
+);
+
+CREATE TABLE blockedProfileEntity (
+    profileId TEXT NOT NULL,
+    FOREIGN KEY (profileId) REFERENCES profileEntity(id) ON DELETE CASCADE
+);
+
+observeProfile:
+INSERT INTO observedProfileEntity (profileId)
+VALUES (:profileId);
+
+
+unobserveProfile:
+DELETE FROM observedProfileEntity
+WHERE profileId = ?;
+
+blockProfile:
+INSERT INTO blockedProfileEntity (profileId)
+VALUES (:profileId);
+
+unblockProfile:
+DELETE FROM blockedProfileEntity
+WHERE profileId = ?;

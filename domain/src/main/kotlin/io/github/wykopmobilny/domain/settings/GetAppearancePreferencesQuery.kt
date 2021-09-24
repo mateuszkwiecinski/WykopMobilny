@@ -11,8 +11,8 @@ import io.github.wykopmobilny.domain.settings.prefs.GetMediaPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetMikroblogPreferences
 import io.github.wykopmobilny.domain.settings.prefs.MainScreen
 import io.github.wykopmobilny.domain.settings.prefs.MikroblogScreen
+import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.ui.base.AppScopes
-import io.github.wykopmobilny.ui.base.launchIn
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.AppearanceSectionUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.ImagesSectionUi
@@ -129,18 +129,19 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
                     onClicked = { updateUserSetting(UserSettings.useSimpleList, !it.useSimpleList) },
                 ),
                 showLinkThumbnail = Setting(
+                    isEnabled = !it.useSimpleList,
                     currentValue = it.showLinkThumbnail,
                     onClicked = { updateUserSetting(UserSettings.showLinkThumbnail, !it.showLinkThumbnail) },
                 ),
                 imagePosition = ListSetting(
                     values = LinkImagePositionUi.values().toList(),
-                    isEnabled = it.showLinkThumbnail && !it.useSimpleList,
+                    isEnabled = !it.useSimpleList && it.showLinkThumbnail,
                     currentValue = it.imagePosition.toUi(),
                     onSelected = { updateUserSetting(UserSettings.imagePosition, it.toDomain()) },
                 ),
                 showAuthor = Setting(
                     currentValue = it.showAuthor,
-                    isEnabled = it.showLinkThumbnail && !it.useSimpleList,
+                    isEnabled = !it.useSimpleList && it.showLinkThumbnail,
                     onClicked = { updateUserSetting(UserSettings.showAuthor, !it.showAuthor) },
                 ),
                 cutLinkComments = Setting(
@@ -171,7 +172,7 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
         }
 
     private fun <T> updateUserSetting(key: UserSetting<T>, value: T) {
-        appScopes.launchIn<SettingsScope> { appStorage.update(key, value) }
+        appScopes.safe<SettingsScope> { appStorage.update(key, value) }
     }
 }
 

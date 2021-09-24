@@ -1,10 +1,12 @@
+import io.github.wykopmobilny.data.cache.api.GenderEntity;
+import io.github.wykopmobilny.data.cache.api.UserColorEntity;
+import kotlinx.datetime.Instant;
+
 CREATE TABLE profileEntity (
     id TEXT NOT NULL UNIQUE PRIMARY KEY,
-    signupAt TEXT NOT NULL,
+    signupAt INTEGER AS Instant,
     background TEXT,
-    isVerified INTEGER AS Boolean NOT NULL,
-    isObserved INTEGER AS Boolean NOT NULL,
-    isBlocked INTEGER AS Boolean NOT NULL,
+    isVerified INTEGER AS Boolean,
     email TEXT,
     description TEXT,
     name TEXT,
@@ -28,25 +30,39 @@ CREATE TABLE profileEntity (
     violationUrl TEXT,
     banReason TEXT,
     banDate TEXT,
-    color INTEGER AS Int NOT NULL,
-    sex TEXT,
+    color INTEGER AS UserColorEntity NOT NULL,
+    gender INTEGER AS GenderEntity,
     avatar TEXT NOT NULL
 );
 
+CREATE VIEW profileDetailsView  AS
+SELECT
+  p.*,
+  (SELECT COUNT(profileId) FROM blockedProfileEntity WHERE profileId = p.id) isBlocked,
+  (SELECT COUNT(profileId) FROM observedProfileEntity WHERE profileId = p.id) isObserved
+ FROM profileEntity p
+;
+
 selectById:
 SELECT *
-FROM profileEntity
-WHERE id = ?;
-
+FROM profileDetailsView
+WHERE id = ?
+;
 
 insertOrReplace:
 INSERT OR REPLACE INTO profileEntity
 VALUES ?;
 
-updateStatus:
-UPDATE profileEntity
-SET isObserved = ?, isBlocked =?
-WHERE id = ?;
+upsert {
+  UPDATE profileEntity
+  SET avatar = :avatar,
+      color = :color,
+      gender = :gender
+  WHERE id = :id;
+
+  INSERT OR IGNORE INTO profileEntity (id, avatar, gender, color)
+  VALUES (:id, :avatar, :gender, :color);
+}
 
 deleteById:
 DELETE FROM profileEntity

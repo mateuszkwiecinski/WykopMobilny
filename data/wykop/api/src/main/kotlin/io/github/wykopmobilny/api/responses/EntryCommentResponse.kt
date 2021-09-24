@@ -5,8 +5,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class EntryCommentResponse(
-    @field:Json(name = "id") val id: Int,
-    @field:Json(name = "entry_id") val entryId: Int?,
+    @field:Json(name = "id") val id: Long,
+    @field:Json(name = "entry_id") val entryId: Long?,
     @field:Json(name = "author") val author: AuthorResponse,
     @field:Json(name = "date") val date: String,
     @field:Json(name = "body") val body: String?,

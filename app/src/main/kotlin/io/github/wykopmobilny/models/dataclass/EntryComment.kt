@@ -3,8 +3,8 @@ package io.github.wykopmobilny.models.dataclass
 import io.github.wykopmobilny.utils.toPrettyDate
 
 class EntryComment(
-    val id: Int,
-    var entryId: Int,
+    val id: Long,
+    var entryId: Long,
     val author: Author,
     var body: String,
     val fullDate: String,
@@ -22,7 +22,7 @@ class EntryComment(
     }
 
     override fun hashCode(): Int {
-        return id
+        return id.toInt()
     }
 
     val url: String
