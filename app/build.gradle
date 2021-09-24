@@ -137,7 +137,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
     implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")
-    implementation(platform("com.google.firebase:firebase-bom:28.3.0"))
+    implementation(platform("com.google.firebase:firebase-bom:28.4.1"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-perf-ktx")

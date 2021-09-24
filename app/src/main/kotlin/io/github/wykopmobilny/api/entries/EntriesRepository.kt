@@ -27,19 +27,15 @@ class EntriesRepository @Inject constructor(
     override val entryVoteSubject = PublishSubject.create<EntryVotePublishModel>()
     override val entryUnVoteSubject = PublishSubject.create<EntryVotePublishModel>()
 
-    override fun voteEntry(entryId: Long, notifySubject: Boolean) = rxSingle { entriesApi.voteEntry(entryId) }
+    override fun voteEntry(entryId: Long) = rxSingle { entriesApi.voteEntry(entryId) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
-        .doOnSuccess {
-            if (notifySubject) entryVoteSubject.onNext(EntryVotePublishModel(entryId, it))
-        }
+        .doOnSuccess { entryVoteSubject.onNext(EntryVotePublishModel(entryId, it)) }
 
-    override fun unvoteEntry(entryId: Long, notifySubject: Boolean) = rxSingle { entriesApi.unvoteEntry(entryId) }
+    override fun unvoteEntry(entryId: Long) = rxSingle { entriesApi.unvoteEntry(entryId) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
-        .doOnSuccess {
-            if (notifySubject) entryUnVoteSubject.onNext(EntryVotePublishModel(entryId, it))
-        }
+        .doOnSuccess { entryUnVoteSubject.onNext(EntryVotePublishModel(entryId, it)) }
 
     override fun voteComment(commentId: Long) = rxSingle { entriesApi.voteComment(commentId) }
         .retryWhen(userTokenRefresher)

@@ -17,8 +17,8 @@ interface EntriesApi {
     val entryVoteSubject: PublishSubject<EntryVotePublishModel>
     val entryUnVoteSubject: PublishSubject<EntryVotePublishModel>
 
-    fun voteEntry(entryId: Long, notifySubject: Boolean = true): Single<VoteResponse>
-    fun unvoteEntry(entryId: Long, notifySubject: Boolean = true): Single<VoteResponse>
+    fun voteEntry(entryId: Long): Single<VoteResponse>
+    fun unvoteEntry(entryId: Long): Single<VoteResponse>
     fun voteComment(commentId: Long): Single<VoteResponse>
     fun unvoteComment(commentId: Long): Single<VoteResponse>
     fun addEntry(body: String, wykopImageFile: WykopImageFile, plus18: Boolean): Single<EntryResponse>

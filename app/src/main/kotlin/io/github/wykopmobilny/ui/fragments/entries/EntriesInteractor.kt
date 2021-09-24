@@ -8,7 +8,7 @@ import javax.inject.Inject
 class EntriesInteractor @Inject constructor(val entriesApi: EntriesApi) {
 
     fun voteEntry(entry: Entry): Single<Entry> =
-        entriesApi.voteEntry(entry.id, true)
+        entriesApi.voteEntry(entry.id)
             .map {
                 entry.voteCount = it.voteCount
                 entry.isVoted = true
@@ -16,7 +16,7 @@ class EntriesInteractor @Inject constructor(val entriesApi: EntriesApi) {
             }
 
     fun unvoteEntry(entry: Entry): Single<Entry> =
-        entriesApi.unvoteEntry(entry.id, true)
+        entriesApi.unvoteEntry(entry.id)
             .map {
                 entry.voteCount = it.voteCount
                 entry.isVoted = false
