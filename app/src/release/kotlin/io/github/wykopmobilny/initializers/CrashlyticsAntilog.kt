@@ -1,4 +1,4 @@
-package io.github.wykopmobilny
+package io.github.wykopmobilny.initializers
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.github.aakira.napier.Antilog

@@ -12,12 +12,11 @@ private val apiTimeZone = TimeZone.of("Europe/Warsaw")
 internal class InstantAdapter {
 
     @ToJson
-    fun toJson(date: Instant) = date.toString()
+    fun toJson(date: Instant?) = date?.toString()
 
     @FromJson
-    fun fromJson(date: String): Instant? {
-        return runCatching { date.replace(' ', 'T').toLocalDateTime().toInstant(apiTimeZone) }
+    fun fromJson(date: String) =
+        runCatching { date.replace(' ', 'T').toLocalDateTime().toInstant(apiTimeZone) }
             .recoverCatching { date.toLocalDateTime().toInstant(apiTimeZone) }
             .getOrNull()
-    }
 }

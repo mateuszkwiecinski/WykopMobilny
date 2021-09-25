@@ -35,23 +35,6 @@ import javax.inject.Inject
 
 class ProfileActivity : BaseActivity(), ProfileView {
 
-    companion object {
-        const val EXTRA_USERNAME = "EXTRA_USERNAME"
-        const val DATA_FRAGMENT_TAG = "PROFILE_DATAFRAGMENT"
-
-        fun createIntent(context: Context, username: String) =
-            if (BuildConfig.DEBUG) {
-                ProfileActivityV2.createIntent(context, userId = username)
-                Intent(context, ProfileActivity::class.java).apply {
-                    putExtra(EXTRA_USERNAME, username)
-                }
-            } else {
-                Intent(context, ProfileActivity::class.java).apply {
-                    putExtra(EXTRA_USERNAME, username)
-                }
-            }
-    }
-
     @Inject
     lateinit var navigator: NewNavigatorApi
 
@@ -223,5 +206,22 @@ class ProfileActivity : BaseActivity(), ProfileView {
     override fun onDestroy() {
         presenter.unsubscribe()
         super.onDestroy()
+    }
+
+    companion object {
+        const val EXTRA_USERNAME = "EXTRA_USERNAME"
+        const val DATA_FRAGMENT_TAG = "PROFILE_DATAFRAGMENT"
+
+        fun createIntent(context: Context, username: String) =
+            if (BuildConfig.DEBUG) {
+                ProfileActivityV2.createIntent(context, userId = username)
+                Intent(context, ProfileActivity::class.java).apply {
+                    putExtra(EXTRA_USERNAME, username)
+                }
+            } else {
+                Intent(context, ProfileActivity::class.java).apply {
+                    putExtra(EXTRA_USERNAME, username)
+                }
+            }
     }
 }

@@ -10,18 +10,6 @@ import io.github.wykopmobilny.utils.viewBinding
 
 internal class LinkDetailsActivityV2 : ThemableActivity() {
 
-    companion object {
-        const val EXTRA_LINK_ID = "EXTRA_LINKID"
-        const val EXTRA_COMMENT_ID = "EXTRA_COMMENT_ID"
-
-        fun createIntent(context: Context, linkId: Long, commentId: Long? = null) =
-            Intent(context, LinkDetailsActivityV2::class.java).apply {
-                putExtra(EXTRA_LINK_ID, linkId)
-                putExtra(EXTRA_COMMENT_ID, commentId)
-            }
-    }
-
-
     private val binding by viewBinding(ActivityContainerBinding::inflate)
 
     private val linkId
@@ -37,5 +25,16 @@ internal class LinkDetailsActivityV2 : ThemableActivity() {
                 .replace(binding.fragmentContainer.id, linkDetailsFragment(linkId = linkId, commentId = commentId))
                 .commit()
         }
+    }
+
+    companion object {
+        const val EXTRA_LINK_ID = "EXTRA_LINKID"
+        const val EXTRA_COMMENT_ID = "EXTRA_COMMENT_ID"
+
+        fun createIntent(context: Context, linkId: Long, commentId: Long? = null) =
+            Intent(context, LinkDetailsActivityV2::class.java).apply {
+                putExtra(EXTRA_LINK_ID, linkId)
+                putExtra(EXTRA_COMMENT_ID, commentId)
+            }
     }
 }

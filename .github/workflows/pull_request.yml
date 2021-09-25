@@ -106,14 +106,26 @@ jobs:
           target: google_apis
           arch: x86_64
           disable-spellchecker: true
-          script: ./gradlew app:connectedReleaseTestAndroidTest -PtestBuildType=releaseTest
+          script: |
+            adb logcat -c
+            touch app/build/emulator.log
+            chmod 777 app/build/emulator.log
+            adb logcat >> app/build/emulator.log &
+            ./gradlew app:connectedReleaseTestAndroidTest -PtestBuildType=releaseTest
 
       - name: Upload ui tests result
         uses: actions/upload-artifact@v2
-        if: ${{ always() }}
+        if: always()
         with:
-          name: uitests-report
+          name: uitests-report${{ matrix.apiVersion }}
           path: "${{ github.workspace }}/**/build/**/connected/"
+
+      - name: Save logcat output
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: logcat${{ matrix.apiVersion }}
+          path: app/build/emulator.log
 
   screenshot_test:
     runs-on: macos-latest

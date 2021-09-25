@@ -37,6 +37,7 @@ mavencentral-jsoup = "1.14.1"
 mavencentral-slidr = "3.0.0"
 mavencentral-leakcanary = "2.7"
 mavencentral-markdown = "0.2.4"
+mavencentral-junit = "5.8.1"
 jitpack-photoview = "2.3.0"
 jitpack-subsampling-scale-image-view = "3.10.0"
 
@@ -113,6 +114,8 @@ espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version
 espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "google-espresso" }
 espresso-accessibility = { module = "androidx.test.espresso:espresso-accessibility", version.ref = "google-espresso" }
 espresso-idlingresource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "google-espresso" }
+junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "mavencentral-junit" }
+junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "mavencentral-junit" }
 
 [bundles]
 espresso = [

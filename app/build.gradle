@@ -164,8 +164,8 @@ dependencies {
     kapt(libs.glide.compiler)
     kaptAndroidTest(libs.glide.compiler)
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.0")
+    testImplementation(libs.junit.api)
+    testRuntimeOnly(libs.junit.engine)
 
     androidTestImplementation(libs.bundles.espresso) {
         exclude(group: "com.google.protobuf", module: "protobuf-lite")

@@ -14,9 +14,9 @@ fun Context.showExceptionDialog(ex: Throwable) {
         exceptionDialog(this, ex)?.show()
     }
     when (ex) {
-        is SSLException -> Napier.e("Ssl exception", ex)
-        is IOException -> Napier.w("Io exception", ex)
-        else -> Napier.e("Unknown", ex)
+        is SSLException -> Napier.e("SSL error", ex)
+        is IOException -> Napier.w("IO error", ex)
+        else -> Napier.e("Unknown error", ex)
     }
 }
 
