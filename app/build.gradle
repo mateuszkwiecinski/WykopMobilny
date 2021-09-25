@@ -41,6 +41,10 @@ android {
     }
     testBuildType findProperty("testBuildType") ?: "debug"
 
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+    }
+
     signingConfigs {
         named("debug") {
             storeFile rootProject.file("keys/debug.keystore")
@@ -144,6 +148,7 @@ dependencies {
     implementation("com.google.firebase:firebase-perf-ktx")
     implementation("com.google.firebase:firebase-config-ktx")
     implementation(files('libs/YouTubeAndroidPlayerApi.jar'))
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     //noinspection GradleDependency
     implementation("org.ocpsoft.prettytime:prettytime:4.0.4.Final")
