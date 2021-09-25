@@ -12,7 +12,8 @@ sqldelight {
 }
 
 dependencies {
-    api("com.squareup.sqldelight:coroutines-extensions-jvm:1.5.0")
+    api(libs.kotlinx.datetime)
+    api(libs.sqldelight.extensions)
 }
 
 tasks.named("lintKotlinMain") {

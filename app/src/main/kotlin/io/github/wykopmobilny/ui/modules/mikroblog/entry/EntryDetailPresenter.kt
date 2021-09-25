@@ -20,7 +20,7 @@ class EntryDetailPresenter(
     private val entryCommentInteractor: EntryCommentInteractor
 ) : BasePresenter<EntryDetailView>(), EntryActionListener, EntryCommentActionListener {
 
-    var entryId = 0
+    var entryId = 0L
 
     override fun voteEntry(entry: Entry) =
         entriesInteractor.voteEntry(entry).processEntrySingle(entry)

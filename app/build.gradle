@@ -41,6 +41,10 @@ android {
     }
     testBuildType findProperty("testBuildType") ?: "debug"
 
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+    }
+
     signingConfigs {
         named("debug") {
             storeFile rootProject.file("keys/debug.keystore")
@@ -110,74 +114,68 @@ dependencies {
     implementation(projects.data.framework.android)
     implementation(projects.data.cache.sqldelight)
     implementation(projects.ui.base.android)
-    implementation(projects.ui.login.android)
-    implementation(projects.ui.settings.android)
     implementation(projects.ui.blacklist.android)
+    implementation(projects.ui.linkDetails.android)
+    implementation(projects.ui.login.android)
     implementation(projects.ui.styles.android)
     implementation(projects.ui.profile.android)
     implementation(projects.ui.search.android)
+    implementation(projects.ui.settings.android)
     implementation(projects.ui.work.android)
     implementation(projects.domain)
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("androidx.appcompat:appcompat:1.4.0-alpha03")
-    implementation("androidx.exifinterface:exifinterface:1.3.3")
-    implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.preference:preference-ktx:1.1.1")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.browser:browser:1.3.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
-    implementation("androidx.work:work-runtime-ktx:2.6.0")
-    implementation("androidx.startup:startup-runtime:1.1.0")
-    implementation("com.github.usefulness:slidr:3.0.0")
-    def exoplayerVersion = "2.15.0"
-    implementation("com.google.android.exoplayer:exoplayer:$exoplayerVersion")
-    implementation("com.google.android.exoplayer:extension-okhttp:$exoplayerVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.5.1")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.github.chrisbanes:PhotoView:2.3.0")
-    implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")
-    implementation(platform("com.google.firebase:firebase-bom:28.3.0"))
+    implementation(libs.recyclerview.core)
+    implementation(libs.appcompat.core)
+    implementation(libs.exifinterface.core)
+    implementation(libs.exifinterface.core)
+    implementation(libs.cardview.core)
+    implementation(libs.browser.core)
+    implementation(libs.swiperefreshlayout.core)
+    implementation(libs.constraintlayout.core)
+    implementation(libs.work.runtime)
+    implementation(libs.startup.runtime)
+    implementation(libs.usefulness.slidr)
+    implementation(libs.chrisbanes.photoview)
+    implementation(libs.davemorrissey.subsamplingimageview)
+    implementation(libs.exoplayer.core)
+    implementation(libs.exoplayer.okhttp)
+    implementation(libs.coroutines.rxjava)
+    implementation(libs.retrofit.core)
+    implementation(libs.jetbrains.markdown)
+    debugImplementation(libs.leakcanary.core)
+    implementation(platform("com.google.firebase:firebase-bom:28.4.1"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-perf-ktx")
     implementation("com.google.firebase:firebase-config-ktx")
-    implementation("org.jetbrains:markdown:0.2.4")
     implementation(files('libs/YouTubeAndroidPlayerApi.jar'))
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     //noinspection GradleDependency
     implementation("org.ocpsoft.prettytime:prettytime:4.0.4.Final")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
     implementation("io.reactivex.rxjava2:rxjava:2.2.21")
     implementation("com.jakewharton.threetenabp:threetenabp:1.3.1")
+    implementation(libs.retrofit.core)
 
-    // Dagger 2
-    def daggerVersion = "2.38.1"
-    implementation("com.google.dagger:dagger-android-support:$daggerVersion")
-    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
-    kapt("com.google.dagger:dagger-android-processor:$daggerVersion")
-    kaptAndroidTest("com.google.dagger:dagger-compiler:$daggerVersion")
-    kaptAndroidTest("com.google.dagger:dagger-android-processor:$daggerVersion")
+    implementation(libs.dagger.core)
+    implementation(libs.dagger.android)
+    kapt(libs.dagger.compiler)
+    kapt(libs.dagger.compiler.android)
+    kaptAndroidTest(libs.dagger.compiler)
+    kaptAndroidTest(libs.dagger.compiler.android)
 
-    // Glide
-    def glide = "4.12.0"
-    implementation "com.github.bumptech.glide:glide:$glide"
-    kapt "com.github.bumptech.glide:compiler:$glide"
-    kaptAndroidTest "com.github.bumptech.glide:compiler:$glide"
-    implementation "com.github.bumptech.glide:okhttp3-integration:$glide"
+    implementation(libs.glide.core)
+    implementation(libs.glide.okhttp)
+    kapt(libs.glide.compiler)
+    kaptAndroidTest(libs.glide.compiler)
 
-    // Unit tests
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(libs.junit.api)
+    testRuntimeOnly(libs.junit.engine)
 
-    androidTestImplementation("androidx.test:core-ktx:1.4.0")
-    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
-    def espressoVersion = "3.4.0"
-    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:$espressoVersion")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
+    androidTestImplementation(libs.bundles.espresso) {
         exclude(group: "com.google.protobuf", module: "protobuf-lite")
     }
-    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
+    androidTestImplementation(libs.okhttp.mockwebserver)
 }
 
 tasks.named("detekt") {

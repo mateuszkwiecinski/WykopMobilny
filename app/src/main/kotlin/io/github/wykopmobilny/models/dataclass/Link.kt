@@ -3,6 +3,7 @@ package io.github.wykopmobilny.models.dataclass
 import android.os.Parcel
 import android.os.Parcelable
 import io.github.wykopmobilny.utils.toPrettyDate
+import kotlinx.datetime.Instant
 
 class Link(
     val id: Long,
@@ -16,12 +17,11 @@ class Link(
     val commentsCount: Int,
     val relatedCount: Int,
     val author: Author?,
-    val fullDate: String,
+    val fullDate: Instant,
     val preview: String?,
     val plus18: Boolean,
     val canVote: Boolean,
     val isHot: Boolean,
-    val status: String,
     var userVote: String?,
     var userFavorite: Boolean,
     val app: String?,
@@ -43,12 +43,11 @@ class Link(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readParcelable(Author::class.java.classLoader),
-        parcel.readString()!!,
+        parcel.readLong().let(Instant::fromEpochMilliseconds),
         parcel.readString(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
-        parcel.readString()!!,
         parcel.readString(),
         parcel.readByte() != 0.toByte(),
         parcel.readString(),
@@ -68,12 +67,11 @@ class Link(
         parcel.writeInt(commentsCount)
         parcel.writeInt(relatedCount)
         parcel.writeParcelable(author, flags)
-        parcel.writeString(fullDate)
+        parcel.writeLong(fullDate.toEpochMilliseconds())
         parcel.writeString(preview)
         parcel.writeByte(if (plus18) 1 else 0)
         parcel.writeByte(if (canVote) 1 else 0)
         parcel.writeByte(if (isHot) 1 else 0)
-        parcel.writeString(status)
         parcel.writeString(userVote)
         parcel.writeByte(if (userFavorite) 1 else 0)
         parcel.writeString(app)

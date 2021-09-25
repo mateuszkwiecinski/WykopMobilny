@@ -11,6 +11,6 @@ android {
 
 dependencies {
     implementation(projects.ui.base.android)
-    implementation("androidx.preference:preference-ktx:1.1.1")
+    implementation(libs.preference.core)
     api(projects.ui.settings.api)
 }

@@ -17,7 +17,7 @@
         <item name="colorControlHighlightOnPrimary">#33ffffff</item>
         <item name="android:navigationBarColor">?colorPrimaryDark</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
-        <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
+        <item name="tabStyle">@style/Widget.App.Tab</item>
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColor">?android:textColorPrimary</item>
     </style>

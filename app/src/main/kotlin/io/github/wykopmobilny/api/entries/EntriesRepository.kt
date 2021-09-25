@@ -27,25 +27,21 @@ class EntriesRepository @Inject constructor(
     override val entryVoteSubject = PublishSubject.create<EntryVotePublishModel>()
     override val entryUnVoteSubject = PublishSubject.create<EntryVotePublishModel>()
 
-    override fun voteEntry(entryId: Int, notifySubject: Boolean) = rxSingle { entriesApi.voteEntry(entryId) }
+    override fun voteEntry(entryId: Long) = rxSingle { entriesApi.voteEntry(entryId) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
-        .doOnSuccess {
-            if (notifySubject) entryVoteSubject.onNext(EntryVotePublishModel(entryId, it))
-        }
+        .doOnSuccess { entryVoteSubject.onNext(EntryVotePublishModel(entryId, it)) }
 
-    override fun unvoteEntry(entryId: Int, notifySubject: Boolean) = rxSingle { entriesApi.unvoteEntry(entryId) }
+    override fun unvoteEntry(entryId: Long) = rxSingle { entriesApi.unvoteEntry(entryId) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
-        .doOnSuccess {
-            if (notifySubject) entryUnVoteSubject.onNext(EntryVotePublishModel(entryId, it))
-        }
+        .doOnSuccess { entryUnVoteSubject.onNext(EntryVotePublishModel(entryId, it)) }
 
-    override fun voteComment(commentId: Int) = rxSingle { entriesApi.voteComment(commentId) }
+    override fun voteComment(commentId: Long) = rxSingle { entriesApi.voteComment(commentId) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
 
-    override fun unvoteComment(commentId: Int) = rxSingle { entriesApi.unvoteComment(commentId) }
+    override fun unvoteComment(commentId: Long) = rxSingle { entriesApi.unvoteComment(commentId) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
 
@@ -58,7 +54,7 @@ class EntriesRepository @Inject constructor(
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
 
-    override fun addEntryComment(body: String, entryId: Int, wykopImageFile: WykopImageFile, plus18: Boolean) =
+    override fun addEntryComment(body: String, entryId: Long, wykopImageFile: WykopImageFile, plus18: Boolean) =
         rxSingle {
             entriesApi.addEntryComment(
                 body = body.toRequestBody(),
@@ -70,32 +66,32 @@ class EntriesRepository @Inject constructor(
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
 
-    override fun addEntryComment(body: String, entryId: Int, embed: String?, plus18: Boolean) =
+    override fun addEntryComment(body: String, entryId: Long, embed: String?, plus18: Boolean) =
         rxSingle { entriesApi.addEntryComment(body, embed, plus18, entryId) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
 
-    override fun editEntry(body: String, entryId: Int) = rxSingle { entriesApi.editEntry(body, entryId) }
+    override fun editEntry(body: String, entryId: Long) = rxSingle { entriesApi.editEntry(body, entryId) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
 
-    override fun markFavorite(entryId: Int) = rxSingle { entriesApi.markFavorite(entryId) }
+    override fun markFavorite(entryId: Long) = rxSingle { entriesApi.markFavorite(entryId) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
 
-    override fun deleteEntry(entryId: Int) = rxSingle { entriesApi.deleteEntry(entryId) }
+    override fun deleteEntry(entryId: Long) = rxSingle { entriesApi.deleteEntry(entryId) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
 
-    override fun editEntryComment(body: String, commentId: Int) = rxSingle { entriesApi.editEntryComment(body, commentId) }
+    override fun editEntryComment(body: String, commentId: Long) = rxSingle { entriesApi.editEntryComment(body, commentId) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
 
-    override fun deleteEntryComment(commentId: Int) = rxSingle { entriesApi.deleteEntryComment(commentId) }
+    override fun deleteEntryComment(commentId: Long) = rxSingle { entriesApi.deleteEntryComment(commentId) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
 
-    override fun voteSurvey(entryId: Int, answerId: Int) = rxSingle { entriesApi.voteSurvey(entryId, answerId) }
+    override fun voteSurvey(entryId: Long, answerId: Int) = rxSingle { entriesApi.voteSurvey(entryId, answerId) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
         .map { SurveyMapper.map(it) }
@@ -124,18 +120,18 @@ class EntriesRepository @Inject constructor(
         .compose(ErrorHandlerTransformer())
         .map { it.map { response -> EntryMapper.map(response, owmContentFilter) } }
 
-    override fun getEntry(id: Int) = rxSingle { entriesApi.getEntry(id) }
+    override fun getEntry(id: Long) = rxSingle { entriesApi.getEntry(id) }
         .retryWhen(userTokenRefresher)
         .flatMap { patronsApi.ensurePatrons(it) }
         .compose(ErrorHandlerTransformer())
         .map { EntryMapper.map(it, owmContentFilter) }
 
-    override fun getEntryVoters(id: Int) = rxSingle { entriesApi.getEntryVoters(id) }
+    override fun getEntryVoters(id: Long) = rxSingle { entriesApi.getEntryVoters(id) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
         .map { it.map { response -> VoterMapper.map(response) } }
 
-    override fun getEntryCommentVoters(id: Int) = rxSingle { entriesApi.getCommentUpvoters(id) }
+    override fun getEntryCommentVoters(id: Long) = rxSingle { entriesApi.getCommentUpvoters(id) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
         .map { it.map { response -> VoterMapper.map(response) } }

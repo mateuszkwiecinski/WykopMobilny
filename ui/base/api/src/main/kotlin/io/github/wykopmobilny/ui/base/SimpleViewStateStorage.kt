@@ -15,6 +15,11 @@ class SimpleViewStateStorage {
 
     data class SimpleViewState(
         val isLoading: Boolean = false,
-        val visibleError: Throwable? = null,
+        val failedAction: FailedAction? = null,
     )
 }
+
+data class FailedAction(
+    val cause: Throwable,
+    val retryAction: (() -> Unit)? = null,
+)

@@ -2,11 +2,12 @@ package io.github.wykopmobilny.api.responses
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.datetime.Instant
 
 @JsonClass(generateAdapter = true)
 data class EntryResponse(
-    @field:Json(name = "id") val id: Int,
-    @field:Json(name = "date") val date: String,
+    @field:Json(name = "id") val id: Long,
+    @field:Json(name = "date") val date: Instant,
     @field:Json(name = "body") val body: String?,
     @field:Json(name = "author") val author: AuthorResponse,
     @field:Json(name = "blocked") val blocked: Boolean,

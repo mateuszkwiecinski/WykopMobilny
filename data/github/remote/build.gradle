@@ -5,9 +5,9 @@ plugins {
 
 dependencies {
     api(projects.data.github.api)
-    api("com.squareup.okhttp3:okhttp:4.9.1")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    api(libs.okhttp.core)
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.moshi)
     implementation("com.google.dagger:dagger:2.38.1")
     kapt("com.google.dagger:dagger-compiler:2.38.1")
 }

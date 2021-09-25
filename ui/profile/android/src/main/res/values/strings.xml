@@ -12,6 +12,10 @@
     <string name="banned_date_only">Użytkownik zbanowany do %1$s</string>
     <string name="banned_no_info">Użytkownik zbanowany</string>
     <string name="foll">Użytkownik zbanowany do %1$s za %2$s</string>
+    <string name="fab_add_entry">Dodaj wpis</string>
+    <string name="profile_tab_title_actions">Akcje</string>
+    <string name="profile_tab_title_links">Znaleziska</string>
+    <string name="profile_tab_title_microblog">Mikroblog</string>
 
     <plurals name="followers_count">
         <item quantity="zero">Brak obserwujących</item>

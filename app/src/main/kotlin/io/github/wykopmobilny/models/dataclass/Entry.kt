@@ -1,12 +1,13 @@
 package io.github.wykopmobilny.models.dataclass
 
 import io.github.wykopmobilny.utils.toPrettyDate
+import kotlinx.datetime.Instant
 
 class Entry(
-    val id: Int,
+    val id: Long,
     val author: Author,
     var body: String,
-    val fullDate: String,
+    val fullDate: Instant,
     var isVoted: Boolean,
     var isFavorite: Boolean,
     var survey: Survey?,

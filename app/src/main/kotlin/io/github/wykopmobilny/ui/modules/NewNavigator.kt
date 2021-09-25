@@ -34,16 +34,16 @@ import io.github.wykopmobilny.utils.openBrowser
 
 interface NewNavigatorApi {
     fun openMainActivity(targetFragment: String? = null)
-    fun openEntryDetailsActivity(entryId: Int, isRevealed: Boolean)
+    fun openEntryDetailsActivity(entryId: Long, isRevealed: Boolean)
     fun openTagActivity(tag: String)
     fun openConversationListActivity(user: String)
     fun openPhotoViewActivity(url: String)
     fun openSettingsActivity()
     fun openLoginScreen()
     fun openAddEntryActivity(receiver: String? = null, extraBody: String? = null)
-    fun openEditEntryActivity(body: String, entryId: Int)
+    fun openEditEntryActivity(body: String, entryId: Long)
     fun openEditLinkCommentActivity(commentId: Long, body: String, linkId: Long)
-    fun openEditEntryCommentActivity(body: String, entryId: Int, commentId: Int)
+    fun openEditEntryCommentActivity(body: String, entryId: Long, commentId: Long)
     fun openBrowser(settingsPreferences: SettingsPreferencesApi, url: String)
     fun openReportScreen(violationUrl: String)
     fun openLinkDetailsActivity(link: Link)
@@ -72,7 +72,7 @@ class NewNavigator(private val context: Activity) : NewNavigatorApi {
         )
     }
 
-    override fun openEntryDetailsActivity(entryId: Int, isRevealed: Boolean) =
+    override fun openEntryDetailsActivity(entryId: Long, isRevealed: Boolean) =
         context.startActivity(EntryActivity.createIntent(context, entryId, null, isRevealed))
 
     override fun openTagActivity(tag: String) =
@@ -93,7 +93,7 @@ class NewNavigator(private val context: Activity) : NewNavigatorApi {
     override fun openAddEntryActivity(receiver: String?, extraBody: String?) =
         context.startActivity(AddEntryActivity.createIntent(context, receiver, extraBody))
 
-    override fun openEditEntryActivity(body: String, entryId: Int) =
+    override fun openEditEntryActivity(body: String, entryId: Long) =
         context.startActivityForResult(EditEntryActivity.createIntent(context, body, entryId), BaseInputActivity.EDIT_ENTRY)
 
     override fun openEditLinkCommentActivity(commentId: Long, body: String, linkId: Long) =
@@ -102,7 +102,7 @@ class NewNavigator(private val context: Activity) : NewNavigatorApi {
             BaseInputActivity.EDIT_LINK_COMMENT,
         )
 
-    override fun openEditEntryCommentActivity(body: String, entryId: Int, commentId: Int) =
+    override fun openEditEntryCommentActivity(body: String, entryId: Long, commentId: Long) =
         context.startActivityForResult(
             EditEntryCommentActivity.createIntent(context, body, entryId, commentId),
             BaseInputActivity.EDIT_ENTRY_COMMENT,

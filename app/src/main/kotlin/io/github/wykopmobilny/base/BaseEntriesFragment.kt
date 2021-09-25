@@ -71,7 +71,7 @@ open class BaseEntriesFragment : BaseFragment(R.layout.entries_fragment), Entrie
         super.onDestroyView()
     }
 
-    private fun updateEntryVoteState(entryId: Int, voteCount: Int, isVoted: Boolean) {
+    private fun updateEntryVoteState(entryId: Long, voteCount: Int, isVoted: Boolean) {
         entriesAdapter.data.firstOrNull { it.id == entryId }?.apply {
             this.voteCount = voteCount
             this.isVoted = isVoted

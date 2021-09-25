@@ -2,10 +2,11 @@ package io.github.wykopmobilny.api.responses
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.datetime.Instant
 
 @JsonClass(generateAdapter = true)
 data class ProfileResponse(
-    @field:Json(name = "signup_at") val signupAt: String,
+    @field:Json(name = "signup_at") val signupAt: Instant,
     @field:Json(name = "background") val background: String?,
     @field:Json(name = "is_verified") val isVerified: Boolean?,
     @field:Json(name = "is_observed") val isObserved: Boolean?,

@@ -22,11 +22,20 @@
         <item name="colorPrimary">#00000000</item>
     </style>
 
+    <style name="Widget.App.Tab" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabTextAppearance">@style/TextAppearance.App.TabButton</item>
+    </style>
+
     <style name="Widget.App.Tab.Dark" parent="Widget.MaterialComponents.TabLayout">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Tab.Dark</item>
+        <item name="tabTextAppearance">@style/TextAppearance.App.TabButton</item>
     </style>
 
     <style name="ThemeOverlay.App.Tab.Dark" parent="">
         <item name="colorPrimary">?colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.App.TabButton" parent="TextAppearance.MaterialComponents.Button">
+        <item name="textAllCaps">false</item>
     </style>
 </resources>

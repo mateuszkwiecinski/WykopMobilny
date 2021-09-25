@@ -1,0 +1,132 @@
+[versions]
+google-lifecycle = "2.3.1"
+google-appcompat = "1.4.0-alpha03"
+google-swiperefreshlayout = "1.1.0"
+google-recyclerView = "1.2.1"
+google-constraintlayout = "2.1.0"
+google-androidtest = "1.4.0"
+google-androidtestext = "1.1.3"
+google-androidArchCore = "2.1.0"
+google-material = "1.4.0"
+google-work = "2.6.0"
+google-preference = "1.1.1"
+google-paging = "3.0.1"
+google-browser = "1.3.0"
+google-viewpager2 = "1.0.0"
+google-androidxcore = "1.6.0"
+google-activity = "1.3.1"
+google-fragment = "1.3.6"
+google-datastore = "1.0.0"
+google-cardview = "1.0.0"
+google-exifinterface = "1.3.3"
+google-startup = "1.1.0"
+google-exoplayer = "2.15.1"
+google-espresso = "3.4.0"
+mavencentral-coroutines = "1.5.2"
+mavencentral-okhttp = "4.9.1"
+mavencentral-dagger = "2.38.1"
+mavencentral-glide = "4.12.0"
+mavencentral-shimmer = "0.5.0"
+mavencentral-datetime = "0.2.1"
+mavencentral-store = "4.0.2-KT15"
+mavencentral-retrofit = "2.9.0"
+mavencentral-moshi = "1.12.0"
+mavencentral-sqldelight = "1.5.0"
+mavencentral-jspoon = "1.3.2"
+mavencentral-jsoup = "1.14.1"
+mavencentral-slidr = "3.0.0"
+mavencentral-leakcanary = "2.7"
+mavencentral-markdown = "0.2.4"
+mavencentral-junit = "5.8.1"
+jitpack-photoview = "2.3.0"
+jitpack-subsampling-scale-image-view = "3.10.0"
+
+[libraries]
+appcompat-core = { module = "androidx.appcompat:appcompat", version.ref = "google-appcompat" }
+constraintlayout-core = { module = "androidx.constraintlayout:constraintlayout", version.ref = "google-constraintlayout" }
+material-core = { module = "com.google.android.material:material", version.ref = "google-material" }
+swiperefreshlayout-core = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "google-swiperefreshlayout" }
+recyclerview-core = { module = "androidx.recyclerview:recyclerview", version.ref = "google-recyclerView" }
+preference-core = { module = "androidx.preference:preference-ktx", version.ref = "google-preference" }
+work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "google-work" }
+okhttp-core = { module = "com.squareup.okhttp3:okhttp", version.ref = "mavencentral-okhttp" }
+okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mavencentral-okhttp" }
+browser-core = { module = "androidx.browser:browser", version.ref = "google-browser" }
+shimmer-core = { module = "com.facebook.shimmer:shimmer", version.ref = "mavencentral-shimmer" }
+viewpager2-core = { module = "androidx.viewpager2:viewpager2", version.ref = "google-viewpager2" }
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "google-androidxcore" }
+activity-core = { module = "androidx.activity:activity-ktx", version.ref = "google-activity" }
+fragment-core = { module = "androidx.fragment:fragment-ktx", version.ref = "google-fragment" }
+cardview-core = { module = "androidx.cardview:cardview", version.ref = "google-cardview" }
+exifinterface-core = { module = "androidx.exifinterface:exifinterface", version.ref = "google-exifinterface" }
+startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "google-startup" }
+store-core = { module = "com.dropbox.mobile.store:store4", version.ref = "mavencentral-store" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "google-datastore" }
+jsoup-core = { module = "org.jsoup:jsoup", version.ref = "mavencentral-jsoup" }
+usefulness-slidr = { module = "com.github.usefulness:slidr", version.ref = "mavencentral-slidr" }
+chrisbanes-photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "jitpack-photoview" }
+davemorrissey-subsamplingimageview = { module = "com.davemorrissey.labs:subsampling-scale-image-view-androidx", version.ref = "jitpack-subsampling-scale-image-view" }
+leakcanary-core = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "mavencentral.leakcanary" }
+jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "mavencentral.markdown" }
+
+exoplayer-core = { module = "com.google.android.exoplayer:exoplayer", version.ref = "google-exoplayer" }
+exoplayer-okhttp = { module = "com.google.android.exoplayer:extension-okhttp", version.ref = "google-exoplayer" }
+
+lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "google-lifecycle" }
+lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "google-lifecycle" }
+lifecycle-common = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "google-lifecycle" }
+
+paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "google-paging" }
+paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "google-paging" }
+
+dagger-core = { module = "com.google.dagger:dagger", version.ref = "mavencentral-dagger" }
+dagger-android = { module = "com.google.dagger:dagger-android-support", version.ref = "mavencentral-dagger" }
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "mavencentral-dagger" }
+dagger-compiler-android = { module = "com.google.dagger:dagger-android-processor", version.ref = "mavencentral-dagger" }
+
+moshi-core = { module = "com.squareup.moshi:moshi", version.ref = "mavencentral-moshi" }
+moshi-compiler = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "mavencentral-moshi" }
+
+sqldelight-android = { module = "com.squareup.sqldelight:android-driver", version.ref = "mavencentral-sqldelight" }
+sqldelight-extensions = { module = "com.squareup.sqldelight:coroutines-extensions-jvm", version.ref = "mavencentral-sqldelight" }
+
+retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "mavencentral-retrofit" }
+retrofit-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "mavencentral-retrofit" }
+retrofit-converter-jspoon = { module = "pl.droidsonroids.retrofit2:converter-jspoon", version.ref = "mavencentral-jspoon" }
+
+glide-core = { module = "com.github.bumptech.glide:glide", version.ref = "mavencentral-glide" }
+glide-okhttp = { module = "com.github.bumptech.glide:okhttp3-integration", version.ref = "mavencentral-glide" }
+glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "mavencentral-glide" }
+
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "mavencentral-coroutines" }
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "mavencentral-coroutines" }
+coroutines-rxjava = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2", version.ref = "mavencentral-coroutines" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "mavencentral-datetime" }
+
+androidtest-core = { module = "androidx.test:core-ktx", version.ref = "google-androidtest" }
+androidtest-runner = { module = "androidx.test:runner", version.ref = "google-androidtest" }
+androidtest-rules = { module = "androidx.test:rules", version.ref = "google-androidtest" }
+androidtest-junitext = { module = "androidx.test.ext:junit-ktx", version.ref = "google-androidtestext" }
+androidtest-coretesting = { module = "androidx.arch.core:core-testing", version.ref = "google-androidArchCore" }
+
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "google-espresso" }
+espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "google-espresso" }
+espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "google-espresso" }
+espresso-accessibility = { module = "androidx.test.espresso:espresso-accessibility", version.ref = "google-espresso" }
+espresso-idlingresource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "google-espresso" }
+junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "mavencentral-junit" }
+junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "mavencentral-junit" }
+
+[bundles]
+espresso = [
+    "androidtest-junitext",
+    "androidtest-core",
+    "androidtest-rules",
+    "androidtest-coretesting",
+    "espresso-core",
+    "espresso-contrib",
+    "espresso-intents",
+    "espresso-accessibility",
+    "espresso-idlingresource",
+]
+

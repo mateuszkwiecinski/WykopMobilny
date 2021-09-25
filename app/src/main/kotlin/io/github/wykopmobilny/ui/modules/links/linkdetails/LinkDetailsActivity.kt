@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import io.github.wykopmobilny.BuildConfig
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.api.WykopImageFile
 import io.github.wykopmobilny.api.suggest.SuggestApi
@@ -36,23 +37,6 @@ class LinkDetailsActivity :
     androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener,
     InputToolbarListener,
     LinkCommentViewListener {
-
-    companion object {
-        const val EXTRA_LINK = "LINK_PARCEL"
-        const val EXTRA_LINK_ID = "EXTRA_LINKID"
-        const val EXTRA_COMMENT_ID = "EXTRA_COMMENT_ID"
-
-        fun createIntent(context: Context, link: Link) =
-            Intent(context, LinkDetailsActivity::class.java).apply {
-                putExtra(EXTRA_LINK, link)
-            }
-
-        fun createIntent(context: Context, linkId: Long, commentId: Long? = null) =
-            Intent(context, LinkDetailsActivity::class.java).apply {
-                putExtra(EXTRA_LINK_ID, linkId)
-                putExtra(EXTRA_COMMENT_ID, commentId)
-            }
-    }
 
     @Inject
     lateinit var userManagerApi: UserManagerApi
@@ -344,5 +328,31 @@ class LinkDetailsActivity :
     override fun onDestroy() {
         super.onDestroy()
         presenter.unsubscribe()
+    }
+
+    companion object {
+        const val EXTRA_LINK = "LINK_PARCEL"
+        const val EXTRA_LINK_ID = "EXTRA_LINKID"
+        const val EXTRA_COMMENT_ID = "EXTRA_COMMENT_ID"
+
+        fun createIntent(context: Context, link: Link) =
+            if (BuildConfig.DEBUG) {
+                LinkDetailsActivityV2.createIntent(context, link.id)
+            } else {
+                Intent(context, LinkDetailsActivity::class.java).apply {
+                    putExtra(EXTRA_LINK, link)
+                }
+            }
+
+        fun createIntent(context: Context, linkId: Long, commentId: Long? = null) =
+            if (BuildConfig.DEBUG) {
+                LinkDetailsActivityV2.createIntent(context, linkId = linkId, commentId = commentId)
+            } else {
+                Intent(context, LinkDetailsActivity::class.java).apply {
+                    putExtra(EXTRA_LINK_ID, linkId)
+                    putExtra(EXTRA_COMMENT_ID, commentId)
+                }
+            }
+
     }
 }

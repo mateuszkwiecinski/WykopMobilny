@@ -1,0 +1,54 @@
+CREATE TABLE profileActionsEntity (
+    profileId TEXT NOT NULL,
+    linkId INTEGER,
+    entryId INTEGER,
+    page INTEGER AS Int NOT NULL,
+    orderOnPage INTEGER AS Int NOT NULL,
+    FOREIGN KEY (profileId) REFERENCES profileEntity(id),
+    FOREIGN KEY (entryId) REFERENCES entryEntity(id),
+    FOREIGN KEY (linkId) REFERENCES linkEntity(id)
+);
+
+selectEntriesPage:
+SELECT
+  profileActionsEntity.profileId,
+  profileActionsEntity.orderOnPage,
+  entryEntity.*,
+  embed.*,
+  profileEntity.rank,
+  profileEntity.color,
+  profileEntity.gender,
+  profileEntity.avatar
+FROM profileActionsEntity
+JOIN entryEntity ON profileActionsEntity.entryId = entryEntity.id
+JOIN profileEntity ON profileActionsEntity.profileId = profileEntity.id
+LEFT JOIN embed ON entryEntity.embedId = embed.id
+WHERE profileId = ? AND page = ?
+ORDER BY orderOnPage;
+
+selectLinksPage:
+SELECT
+  profileActionsEntity.profileId,
+  profileActionsEntity.orderOnPage,
+  linkEntity.*,
+  profileEntity.rank,
+  profileEntity.color,
+  profileEntity.gender,
+  profileEntity.avatar
+FROM profileActionsEntity
+JOIN linkEntity ON profileActionsEntity.linkId = linkEntity.id
+JOIN profileEntity ON profileActionsEntity.profileId = profileEntity.id
+WHERE profileId = ? AND page = ?
+ORDER BY orderOnPage;
+
+insertPage:
+INSERT INTO profileActionsEntity
+VALUES ?;
+
+deletePage:
+DELETE FROM profileActionsEntity
+WHERE profileId = ? AND page = ?;
+
+deleteByProfile:
+DELETE FROM profileActionsEntity
+WHERE profileId = ? ;

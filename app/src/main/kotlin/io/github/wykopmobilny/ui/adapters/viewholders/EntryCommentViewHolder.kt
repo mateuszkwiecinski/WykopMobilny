@@ -97,7 +97,7 @@ class EntryCommentViewHolder(
     private val isEmbedViewResized: Boolean
         get() = ::embedView.isInitialized && embedView.resized
 
-    fun bindView(comment: EntryComment, entryAuthor: Author? = null, highlightCommentId: Int = 0) {
+    fun bindView(comment: EntryComment, entryAuthor: Author? = null, highlightCommentId: Long = 0) {
         setupHeader(comment)
         setupButtons(comment)
         setupBody(comment)
@@ -257,7 +257,7 @@ class EntryCommentViewHolder(
         embedView = binding.entryImageViewStub.inflate() as WykopEmbedView
     }
 
-    private fun setStyleForComment(comment: EntryComment, commentId: Int = -1) {
+    private fun setStyleForComment(comment: EntryComment, commentId: Long = -1) {
         val credentials = userCredentials
         if (credentials != null && credentials.login == comment.author.nick) {
             binding.authorBadgeStrip.isVisible = true

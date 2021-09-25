@@ -7,10 +7,10 @@ import io.github.wykopmobilny.domain.settings.di.SettingsScope
 import io.github.wykopmobilny.domain.settings.prefs.GetFilteringPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetNotificationPreferences
 import io.github.wykopmobilny.domain.settings.prefs.NotificationsPreferences.RefreshPeriod
+import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.storage.api.UserInfoStorage
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.base.AppScopes
-import io.github.wykopmobilny.ui.base.launchIn
 import io.github.wykopmobilny.ui.settings.FilteringUi
 import io.github.wykopmobilny.ui.settings.GeneralPreferencesUi
 import io.github.wykopmobilny.ui.settings.GeneralPreferencesUi.NotificationsUi.RefreshPeriodUi
@@ -71,7 +71,7 @@ class GetGeneralPreferencesQuery @Inject internal constructor(
             val manageBlackList: (() -> Unit)? = if (loggedUser == null) {
                 null
             } else {
-                { appScopes.launchIn<SettingsScope> { interopRequests.request(InteropRequest.BlackListScreen) } }
+                { appScopes.safe<SettingsScope> { interopRequests.request(InteropRequest.BlackListScreen) } }
             }
             FilteringUi(
                 showPlus18Content = Setting(
@@ -104,11 +104,11 @@ class GetGeneralPreferencesQuery @Inject internal constructor(
         }
 
     private fun <T> updateUserSetting(key: UserSetting<T>, value: T) {
-        appScopes.launchIn<SettingsScope> { appStorage.update(key, value) }
+        appScopes.safe<SettingsScope> { appStorage.update(key, value) }
     }
 
     private fun clearSuggestions() {
-        appScopes.launchIn<SettingsScope> {
+        appScopes.safe<SettingsScope> {
             withContext(AppDispatchers.IO) {
                 appStorage.suggestionsQueries.deleteAll()
             }

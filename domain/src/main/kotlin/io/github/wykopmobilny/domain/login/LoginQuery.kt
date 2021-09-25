@@ -4,17 +4,18 @@ import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.fresh
 import io.github.wykopmobilny.domain.login.di.LoginScope
 import io.github.wykopmobilny.domain.navigation.AppRestarter
+import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.storage.api.Blacklist
 import io.github.wykopmobilny.storage.api.LoggedUserInfo
 import io.github.wykopmobilny.storage.api.SessionStorage
 import io.github.wykopmobilny.storage.api.UserSession
-import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.ui.base.FailedAction
 import io.github.wykopmobilny.ui.base.SimpleViewStateStorage
-import io.github.wykopmobilny.ui.base.launchIn
-import io.github.wykopmobilny.ui.login.InfoMessageUi
+import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
 import io.github.wykopmobilny.ui.login.Login
 import io.github.wykopmobilny.ui.login.LoginUi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -34,20 +35,19 @@ class LoginQuery @Inject constructor(
             LoginUi(
                 urlToLoad = loginConfig().connectUrl,
                 isLoading = viewState.isLoading,
-                visibleError = viewState.visibleError?.let {
-                    InfoMessageUi(
-                        title = "Oops...",
-                        message = it.localizedMessage ?: it.toString(),
-                        confirmAction = ::dismissError,
-                        dismissAction = ::dismissError,
+                errorDialog = viewState.failedAction?.let { failure ->
+                    ErrorDialogUi(
+                        error = failure.cause,
+                        retryAction = failure.retryAction,
+                        dismissAction = { appScopes.safe<LoginScope> { viewStateStorage.update { it.copy(failedAction = null) } } },
                     )
                 },
                 parseUrlAction = ::onUrlInvoked,
             )
         }
 
-    private fun onUrlInvoked(url: String) = appScopes.launchIn<LoginScope> {
-        val userSession = withContext(AppDispatchers.Default) {
+    private fun onUrlInvoked(url: String) = appScopes.safe<LoginScope> {
+        val userSession = withContext(Dispatchers.Default) {
             val match = loginPattern.find(url) ?: return@withContext null
 
             val login = match.groups[1]?.value?.takeIf { it.isNotBlank() }
@@ -58,7 +58,7 @@ class LoginQuery @Inject constructor(
             } else {
                 UserSession(login, token)
             }
-        } ?: return@launchIn
+        } ?: return@safe
         viewStateStorage.update { it.copy(isLoading = true) }
 
         runCatching {
@@ -71,13 +71,9 @@ class LoginQuery @Inject constructor(
                 sessionStorage.updateSession(null)
                 userInfoStore.clearAll()
                 blacklistStore.clearAll()
-                viewStateStorage.update { it.copy(isLoading = false, visibleError = throwable) }
+                viewStateStorage.update { it.copy(isLoading = false, failedAction = FailedAction(cause = throwable)) }
             }
-            .onSuccess { viewStateStorage.update { it.copy(isLoading = false, visibleError = null) } }
-    }
-
-    private fun dismissError() = appScopes.launchIn<LoginScope> {
-        viewStateStorage.update { it.copy(visibleError = null) }
+            .onSuccess { viewStateStorage.update { it.copy(isLoading = false, failedAction = null) } }
     }
 
     companion object {

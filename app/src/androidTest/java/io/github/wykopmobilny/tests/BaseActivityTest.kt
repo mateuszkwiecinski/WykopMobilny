@@ -1,6 +1,5 @@
 package io.github.wykopmobilny.tests
 
-import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso
 import io.github.wykopmobilny.TestApp
@@ -40,9 +39,10 @@ abstract class BaseActivityTest {
         Espresso.onIdle()
     }
 
-    protected fun launchLoggedInApp(): ActivityScenario<MainNavigationActivity> {
+    protected fun launchLoggedInApp() {
         logUserIn()
         mockWebServerRule.callsOnAppStart()
-        return launchActivity()
+        launchActivity<MainNavigationActivity>()
+        Espresso.onIdle()
     }
 }

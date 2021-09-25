@@ -16,15 +16,8 @@ import io.github.wykopmobilny.api.endpoints.ProfileRetrofitApi
 import io.github.wykopmobilny.api.endpoints.SearchRetrofitApi
 import io.github.wykopmobilny.api.endpoints.SuggestRetrofitApi
 import io.github.wykopmobilny.api.endpoints.TagRetrofitApi
-import okhttp3.Cache
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Protocol
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
-import java.io.File
-import java.util.concurrent.TimeUnit
 
 @Module(includes = [RetrofitModule::class])
 internal class WykopModule {
@@ -93,43 +86,4 @@ internal class WykopModule {
     @Provides
     fun tagRetrofitApi(retrofit: Retrofit) =
         retrofit.create<TagRetrofitApi>()
-}
-
-@Module
-internal class RetrofitModule {
-
-    @Provides
-    @PathFixingInterceptor
-    fun AppKeyReplacingInterceptor.pathFixingInterceptor(): Interceptor = this
-
-    @Reusable
-    @Provides
-    fun retrofit(
-        okHttpClient: OkHttpClient,
-        @PathFixingInterceptor pathFixing: Interceptor,
-        @SigningInterceptor signing: Interceptor,
-        @BaseUrl apiUrl: String,
-        cacheDir: File,
-    ) =
-        Retrofit.Builder()
-            .client(
-                okHttpClient.newBuilder()
-                    .cache(Cache(cacheDir, maxSize = CACHE_SIZE))
-                    .addInterceptor(pathFixing)
-                    .addInterceptor(signing)
-                    .protocols(listOf(Protocol.HTTP_1_1))
-                    .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                    .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                    .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                    .build(),
-            )
-            .baseUrl(apiUrl)
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
-
-    companion object {
-
-        private const val CACHE_SIZE = 10 * 1024 * 1024L
-        private const val DEFAULT_TIMEOUT = 30L
-    }
 }

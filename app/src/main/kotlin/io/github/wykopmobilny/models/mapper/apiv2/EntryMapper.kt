@@ -10,8 +10,10 @@ object EntryMapper {
         owmContentFilter.filterEntry(
             Entry(
                 value.id, AuthorMapper.map(value.author),
-                value.body.orEmpty(), value.date,
-                value.userVote > 0, value.favorite,
+                value.body.orEmpty(),
+                value.date,
+                value.userVote > 0,
+                value.favorite,
                 value.survey?.let(SurveyMapper::map),
                 embed = value.embed?.let(EmbedMapper::map),
                 voteCount = value.voteCount,

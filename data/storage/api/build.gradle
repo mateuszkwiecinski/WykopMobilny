@@ -4,8 +4,8 @@ plugins {
 }
 
 dependencies {
-    api("com.squareup.sqldelight:coroutines-extensions-jvm:1.5.0")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    api(libs.coroutines.core)
+    api(libs.sqldelight.extensions)
 }
 
 sqldelight {

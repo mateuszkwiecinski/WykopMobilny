@@ -1,6 +1,5 @@
 plugins {
     id("com.starter.library.android")
-    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -11,8 +10,10 @@ android {
 
 dependencies {
     api(projects.ui.profile.api)
+    implementation(projects.ui.components.entries.android)
     implementation(projects.ui.base.android)
-    implementation("com.facebook.shimmer:shimmer:0.5.0")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("com.github.bumptech.glide:glide:4.12.0")
+    implementation(libs.glide.core)
+    implementation(libs.paging.runtime)
+    implementation(libs.recyclerview.core)
+    implementation(libs.swiperefreshlayout.core)
 }

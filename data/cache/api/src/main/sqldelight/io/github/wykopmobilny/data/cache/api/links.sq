@@ -1,0 +1,27 @@
+import io.github.wykopmobilny.data.cache.api.UserVote;
+import kotlinx.datetime.Instant;
+
+CREATE TABLE linkEntity (
+    id INTEGER NOT NULL UNIQUE PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    tags TEXT NOT NULL,
+    sourceUrl TEXT NOT NULL,
+    previewImageUrl TEXT,
+    voteCount INTEGER AS Int NOT NULL,
+    buryCount INTEGER AS Int NOT NULL,
+    commentsCount INTEGER AS Int NOT NULL,
+    relatedCount INTEGER AS Int NOT NULL,
+    postedAt INTEGER AS Instant NOT NULL,
+    plus18 INTEGER AS Boolean NOT NULL,
+    canVote INTEGER AS Boolean NOT NULL,
+    isHot INTEGER AS Boolean NOT NULL,
+    userVote INTEGER AS UserVote,
+    userFavorite INTEGER AS Boolean NOT NULL,
+    userObserve INTEGER AS Boolean NOT NULL,
+    app TEXT
+);
+
+insertOrReplace:
+INSERT OR REPLACE INTO linkEntity
+VALUES ?;

@@ -30,7 +30,7 @@ class AddEntryActivity : BaseInputActivity<AddEntryPresenter>(), AddEntryActivit
 
     val navigator: NewNavigatorApi by lazy { NewNavigator(this) }
 
-    override fun openEntryActivity(id: Int) {
+    override fun openEntryActivity(id: Long) {
         navigator.openEntryDetailsActivity(id, false)
         finish()
     }

@@ -1,0 +1,9 @@
+plugins {
+    id("com.starter.library.kotlin")
+}
+
+dependencies {
+    api(projects.ui.base.api)
+    api(projects.ui.components.users.api)
+    api(libs.paging.common)
+}

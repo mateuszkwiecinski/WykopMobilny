@@ -2,13 +2,21 @@ package io.github.wykopmobilny.ui.dialogs
 
 import android.app.AlertDialog
 import android.content.Context
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.api.errorhandler.WykopExceptionParser
 import io.github.wykopmobilny.base.BaseActivity
+import okio.IOException
+import javax.net.ssl.SSLException
 
-fun Context.showExceptionDialog(e: Throwable) {
+fun Context.showExceptionDialog(ex: Throwable) {
     if (this is BaseActivity && isRunning) {
-        exceptionDialog(this, e)?.show()
+        exceptionDialog(this, ex)?.show()
+    }
+    when (ex) {
+        is SSLException -> Napier.e("SSL error", ex)
+        is IOException -> Napier.w("IO error", ex)
+        else -> Napier.e("Unknown error", ex)
     }
 }
 

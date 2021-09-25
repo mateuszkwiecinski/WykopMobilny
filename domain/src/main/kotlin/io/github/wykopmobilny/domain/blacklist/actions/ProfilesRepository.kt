@@ -10,39 +10,31 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-internal class UsersRepository @Inject constructor(
+internal class ProfilesRepository @Inject constructor(
     private val api: ApiClient,
-    private val usersApi: ProfileRetrofitApi,
+    private val profilesApi: ProfileRetrofitApi,
     private val appCache: AppCache,
     private val appStorage: AppStorage,
 ) {
 
-    suspend fun blockUser(profileId: String): ObserveStateResponse {
-        val response = api.fetch { usersApi.block(profileId) }
+    suspend fun blockUser(profileId: String) {
+        val response = api.fetch { profilesApi.block(profileId) }
         update(profileId = profileId, response = response)
-
-        return response
     }
 
-    suspend fun unblockUser(profileId: String): ObserveStateResponse {
-        val response = api.fetch { usersApi.unblock(profileId) }
+    suspend fun unblockUser(profileId: String) {
+        val response = api.fetch { profilesApi.unblock(profileId) }
         update(profileId = profileId, response = response)
-
-        return response
     }
 
-    suspend fun observeUser(profileId: String): ObserveStateResponse {
-        val response = api.fetch { usersApi.observe(profileId) }
+    suspend fun observeUser(profileId: String) {
+        val response = api.fetch { profilesApi.observe(profileId) }
         update(profileId = profileId, response = response)
-
-        return response
     }
 
-    suspend fun unobserveUser(profileId: String): ObserveStateResponse {
-        val response = api.fetch { usersApi.unobserve(profileId) }
+    suspend fun unobserveUser(profileId: String) {
+        val response = api.fetch { profilesApi.unobserve(profileId) }
         update(profileId = profileId, response = response)
-
-        return response
     }
 
     private suspend fun update(profileId: String, response: ObserveStateResponse) = withContext(AppDispatchers.IO) {
@@ -55,10 +47,17 @@ internal class UsersRepository @Inject constructor(
                 }
             }
         }
-        appCache.profilesQueries.updateStatus(
-            id = profileId,
-            isObserved = response.isObserved,
-            isBlocked = response.isBlocked,
-        )
+        appCache.profileStateQueries.transaction {
+            if (response.isBlocked) {
+                appCache.profileStateQueries.blockProfile(profileId)
+            } else {
+                appCache.profileStateQueries.unblockProfile(profileId)
+            }
+            if (response.isObserved) {
+                appCache.profileStateQueries.observeProfile(profileId)
+            } else {
+                appCache.profileStateQueries.unobserveProfile(profileId)
+            }
+        }
     }
 }

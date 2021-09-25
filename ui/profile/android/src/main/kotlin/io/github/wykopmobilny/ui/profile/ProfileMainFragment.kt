@@ -1,7 +1,6 @@
 package io.github.wykopmobilny.ui.profile
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -10,7 +9,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.tabs.TabLayoutMediator
+import io.github.wykopmobilny.ui.components.users.Color
+import io.github.wykopmobilny.ui.components.users.ColorHex
+import io.github.wykopmobilny.ui.components.users.ColorReference
 import io.github.wykopmobilny.ui.profile.android.R
 import io.github.wykopmobilny.ui.profile.android.databinding.FragmentProfileBinding
 import io.github.wykopmobilny.utils.bindings.collectErrorDialog
@@ -25,6 +30,7 @@ import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import android.graphics.Color as AndroidColor
 
 fun profileMainFragment(userId: String): Fragment =
     ProfileMainFragment()
@@ -46,52 +52,53 @@ internal class ProfileMainFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-        lifecycleScope.launchWhenResumed {
+        val adapter = ProfilePagerAdapter(this)
+        binding.viewPager.adapter = adapter
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.setText(adapter.getTitle(position))
+        }
+            .attach()
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             val shared = getProfileDetails().stateIn(this)
 
             launch { shared.map { it.errorDialog }.collectErrorDialog(view.context) }
             launch { shared.map { it.contextMenuOptions }.collectMenuOptions(binding.toolbar, ::contextMenuMapping) }
             launch { shared.map { it.onAddEntryClicked }.bindOnClick(binding.addEntry) }
-            launch {
-                shared.map { it.header }.distinctUntilChanged().collect { header ->
-                    when (header) {
-                        ProfileHeaderUi.Loading -> Unit
-                        is ProfileHeaderUi.WithData -> {
-                            binding.signup.text = header.joinedAgo
-                            binding.nickname.text = header.nick.name
-                            binding.nickname.setTextColor(header.nick.color.toColorInt())
-                            binding.description.isVisible = header.description != null
-                            binding.description.text = header.description
-                            binding.followers.text = resources.getQuantityString(
-                                R.plurals.followers_count,
-                                header.followersCount,
-                                header.followersCount,
-                            )
-                            binding.rank.isVisible = header.avatarUi.rank != null
-                            binding.rank.text = header.avatarUi.rank?.number?.let { "#$it" }
-                            binding.rank.setBackgroundColor(header.avatarUi.rank?.color.toColorInt())
-                            binding.genderStripImageView.isVisible = header.avatarUi.genderStrip != null
-                            binding.genderStripImageView.setBackgroundColor(header.avatarUi.genderStrip.toColorInt())
-                            binding.banTextView.isVisible = header.banReason != null
-                            binding.banTextView.text = header.banReason?.let { reason ->
-                                if (reason.reason == null) {
-                                    if (reason.endDate == null) {
-                                        getString(R.string.banned_no_info)
-                                    } else {
-                                        getString(R.string.banned_date_only, reason.endDate)
-                                    }
-                                } else if (reason.endDate == null) {
-                                    getString(R.string.banned_reason_only, reason.reason)
-                                } else {
-                                    getString(R.string.banned_date_and_reason, reason.endDate, reason.reason)
-                                }
-                            }
-                            Glide.with(binding.root).load(header.backgroundUrl).into(binding.backgroundImg)
-                            Glide.with(binding.root).load(header.avatarUi.avatarUrl).into(binding.profilePicture)
-                        }
+            launch { shared.map { it.header }.bindHeader(binding) }
+        }
+    }
+
+    private suspend fun Flow<ProfileHeaderUi>.bindHeader(binding: FragmentProfileBinding) {
+        distinctUntilChanged().collect { header ->
+            binding.signup.text = header.joinedAgo
+            binding.nickname.text = header.userInfo?.name
+            binding.nickname.setTextColor(header.userInfo?.color.toColorInt(requireContext()))
+            binding.description.isVisible = header.description != null
+            binding.description.text = header.description
+            binding.followers.text = header.followersCount?.let { followers ->
+                resources.getQuantityString(R.plurals.followers_count, followers, followers)
+            }
+            binding.rank.isVisible = header.userInfo?.avatar?.rank != null
+            binding.rank.text = header.userInfo?.avatar?.rank?.let { "#$it" }
+            binding.rank.setBackgroundColor(header.userInfo?.color.toColorInt(requireContext()))
+            binding.genderStripImageView.isVisible = header.userInfo?.avatar?.genderStrip != null
+            binding.genderStripImageView.setBackgroundColor(header.userInfo?.avatar?.genderStrip.toColorInt(requireContext()))
+            binding.banTextView.isVisible = header.banReason != null
+            binding.banTextView.text = header.banReason?.let { reason ->
+                if (reason.reason == null) {
+                    if (reason.endDate == null) {
+                        getString(R.string.banned_no_info)
+                    } else {
+                        getString(R.string.banned_date_only, reason.endDate)
                     }
+                } else if (reason.endDate == null) {
+                    getString(R.string.banned_reason_only, reason.reason)
+                } else {
+                    getString(R.string.banned_date_and_reason, reason.endDate, reason.reason)
                 }
             }
+            Glide.with(binding.root).load(header.backgroundUrl).transition(withCrossFade()).into(binding.backgroundImg)
+            Glide.with(binding.root).load(header.userInfo?.avatar?.avatarUrl).transition(withCrossFade()).into(binding.profilePicture)
         }
     }
 
@@ -113,7 +120,17 @@ internal class ProfileMainFragment : Fragment(R.layout.fragment_profile) {
 }
 
 @ColorInt
-private fun ColorHex?.toColorInt(): Int = this?.hexValue?.let(Color::parseColor) ?: 0
+private fun Color?.toColorInt(context: Context): Int =
+    when (this) {
+        is ColorHex -> AndroidColor.parseColor(hexValue)
+        is ColorReference -> when (this) {
+            ColorReference.Admin -> R.attr.colorOnSurface
+            ColorReference.CounterDefault -> TODO()
+            ColorReference.CounterUpvoted -> TODO()
+            ColorReference.CounterDownvoted -> TODO()
+        }.let { MaterialColors.getColor(context, it, AndroidColor.TRANSPARENT) }
+        null -> 0
+    }
 
 private suspend fun <T : Enum<T>> Flow<List<ContextMenuOptionUi<T>>>.collectMenuOptions(
     toolbar: MaterialToolbar,

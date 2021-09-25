@@ -5,17 +5,13 @@
       "color": 1,
       "sex": "male",
       "avatar": "https://fixture-avatar.png",
-      "signup_at": "",
-      "is_blocked": false,
-      "is_observed": false,
-      "background": null,
+      "signup_at": "2011-10-15 15:15:12",
+      "about": "ส็็็็็็็็็็็็็็็็็็็็็็็็็༼ ຈل͜ຈ༽ส้้้้้้้้้้้้้้้้้้้้้้้ ",
       "links_added_count": 0,
       "links_published_count": 0,
-      "rank": null,
-      "followers": 0,
-      "about": null,
-      "violation_url": null,
-      "ban": null
+      "comments_count": 23,
+      "rank": 0,
+      "followers": 17
     },
     "userkey": "fixture-user-key"
   }

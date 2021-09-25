@@ -1,7 +1,6 @@
 package io.github.wykopmobilny.ui.login.android
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -12,16 +11,14 @@ import android.webkit.WebViewClient
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.wykopmobilny.ui.login.Login
 import io.github.wykopmobilny.ui.login.LoginDependencies
 import io.github.wykopmobilny.ui.login.android.databinding.FragmentLoginBinding
+import io.github.wykopmobilny.utils.bindings.collectErrorDialog
 import io.github.wykopmobilny.utils.requireDependency
 import io.github.wykopmobilny.utils.viewBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
-
-import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -48,7 +45,7 @@ internal class LoginFragment : Fragment(R.layout.fragment_login) {
         @SuppressLint("SetJavaScriptEnabled")
         binding.webView.settings.javaScriptEnabled = true
 
-        lifecycleScope.launchWhenResumed {
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             val sharedFlow = login().stateIn(this)
 
             binding.webView.webViewClient = object : WebViewClient() {
@@ -69,24 +66,7 @@ internal class LoginFragment : Fragment(R.layout.fragment_login) {
                     .distinctUntilChanged()
                     .collect { binding.fullScreenProgress.isVisible = it }
             }
-            launch {
-                var dialog: Dialog? = null
-                sharedFlow.map { it.visibleError }
-                    .distinctUntilChangedBy { it?.title + it?.message }
-                    .collect { info ->
-                        dialog?.dismiss()
-                        dialog = if (info != null) {
-                            MaterialAlertDialogBuilder(requireContext())
-                                .setTitle(info.title)
-                                .setMessage(info.message)
-                                .setPositiveButton(android.R.string.ok) { _, _ -> info.confirmAction() }
-                                .setOnCancelListener { info.dismissAction() }
-                                .show()
-                        } else {
-                            null
-                        }
-                    }
-            }
+            launch { sharedFlow.map { it.errorDialog }.collectErrorDialog(requireContext()) }
         }
     }
 }

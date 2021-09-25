@@ -9,6 +9,7 @@ import io.github.wykopmobilny.storage.android.DaggerStoragesComponent
 import io.github.wykopmobilny.storage.android.StoragesComponent
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import kotlinx.coroutines.asExecutor
+import kotlinx.datetime.Clock
 import okhttp3.OkHttpClient
 
 internal class TestApp : WykopApp() {
@@ -69,6 +70,7 @@ internal class TestApp : WykopApp() {
         daggerDomain().create(
             appScopes = this,
             connectConfig = { ConnectConfig("http://localhost:8000/Login/Connect") },
+            clock = Clock.System,
             storages = storages,
             scraper = scraper,
             wykop = wykopApi,

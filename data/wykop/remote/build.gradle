@@ -5,14 +5,12 @@ plugins {
 
 dependencies {
     api(projects.data.wykop.api)
-    api("com.squareup.okhttp3:okhttp:4.9.1")
-
-    def retrofitVersion = "2.9.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
-
-    implementation("com.google.dagger:dagger:2.38.1")
-    kapt("com.google.dagger:dagger-compiler:2.38.1")
+    api(libs.okhttp.core)
+    implementation(projects.common.kotlinHelpers)
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.dagger.core)
+    kapt((libs.dagger.compiler))
 }
 
 

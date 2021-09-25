@@ -15,7 +15,7 @@ class EditEntryCommentActivity : BaseInputActivity<EditEntryCommentPresenter>(),
         const val EXTRA_ENTRY_ID = "ENTRY_ID"
         const val EXTRA_COMMENT_ID = "COMMENT_ID"
 
-        fun createIntent(context: Context, body: String, entryId: Int, commentId: Int) =
+        fun createIntent(context: Context, body: String, entryId: Long, commentId: Long) =
             Intent(context, EditEntryCommentActivity::class.java).apply {
                 putExtra(EXTRA_ENTRY_ID, entryId)
                 putExtra(EXTRA_COMMENT_ID, commentId)
@@ -29,8 +29,8 @@ class EditEntryCommentActivity : BaseInputActivity<EditEntryCommentPresenter>(),
     @Inject
     override lateinit var presenter: EditEntryCommentPresenter
 
-    override val entryId by lazy { intent.getIntExtra(EXTRA_ENTRY_ID, 0) }
-    override val commentId by lazy { intent.getIntExtra(EXTRA_COMMENT_ID, 0) }
+    override val entryId by lazy { intent.getLongExtra(EXTRA_ENTRY_ID, 0) }
+    override val commentId by lazy { intent.getLongExtra(EXTRA_COMMENT_ID, 0) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

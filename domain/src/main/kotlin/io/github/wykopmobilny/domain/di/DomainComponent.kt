@@ -20,6 +20,7 @@ import io.github.wykopmobilny.domain.work.di.WorkDomainComponent
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.storage.api.Storages
 import io.github.wykopmobilny.ui.base.AppScopes
+import kotlinx.datetime.Clock
 import javax.inject.Singleton
 
 @Singleton
@@ -45,6 +46,7 @@ interface DomainComponent {
         fun create(
             @BindsInstance appScopes: AppScopes,
             @BindsInstance connectConfig: () -> ConnectConfig,
+            @BindsInstance clock: Clock,
             storages: Storages,
             scraper: Scraper,
             wykop: WykopApi,

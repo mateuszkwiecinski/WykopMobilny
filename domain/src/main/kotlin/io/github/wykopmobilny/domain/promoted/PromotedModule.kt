@@ -1,6 +1,5 @@
 package io.github.wykopmobilny.domain.promoted
 
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import dagger.Binds
@@ -20,7 +19,6 @@ internal abstract class PromotedModule {
 
     companion object {
 
-        @OptIn(ExperimentalPagingApi::class)
         @Provides
         fun promotedPager(
             mediator: StoreMediator<Link>,
