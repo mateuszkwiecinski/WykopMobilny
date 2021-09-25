@@ -6,6 +6,7 @@ import io.github.wykopmobilny.api.WykopApi
 import io.github.wykopmobilny.blacklist.api.Scraper
 import io.github.wykopmobilny.data.cache.api.ApplicationCache
 import io.github.wykopmobilny.domain.blacklist.di.BlacklistDomainComponent
+import io.github.wykopmobilny.domain.linkdetails.di.LinkDetailsComponent
 import io.github.wykopmobilny.domain.login.ConnectConfig
 import io.github.wykopmobilny.domain.login.di.LoginDomainComponent
 import io.github.wykopmobilny.domain.navigation.Framework
@@ -62,6 +63,8 @@ interface DomainComponent {
     fun settings(): SettingsDomainComponent
 
     fun blacklist(): BlacklistDomainComponent
+
+    fun linkDetails(): LinkDetailsComponent.Factory
 
     fun profile(): ProfileDomainComponent.Factory
 

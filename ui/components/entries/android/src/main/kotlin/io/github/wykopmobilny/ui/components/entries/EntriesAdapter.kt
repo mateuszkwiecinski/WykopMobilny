@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.components.entries.android.databinding.ItemLinkBinding
-import io.github.wykopmobilny.ui.components.links.ListElementUi
-import io.github.wykopmobilny.ui.components.links.id
+import io.github.wykopmobilny.ui.components.widgets.ListElementUi
+import io.github.wykopmobilny.ui.components.widgets.id
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect

@@ -4,14 +4,12 @@ CREATE TABLE profileActionsEntity (
     entryId INTEGER,
     page INTEGER AS Int NOT NULL,
     orderOnPage INTEGER AS Int NOT NULL,
-    FOREIGN KEY (profileId) REFERENCES profileEntity(id),
     FOREIGN KEY (entryId) REFERENCES entryEntity(id),
     FOREIGN KEY (linkId) REFERENCES linkEntity(id)
 );
 
 selectEntriesPage:
 SELECT
-  profileActionsEntity.profileId,
   profileActionsEntity.orderOnPage,
   entryEntity.*,
   embed.*,
@@ -23,12 +21,11 @@ FROM profileActionsEntity
 JOIN entryEntity ON profileActionsEntity.entryId = entryEntity.id
 JOIN profileEntity ON profileActionsEntity.profileId = profileEntity.id
 LEFT JOIN embed ON entryEntity.embedId = embed.id
-WHERE profileId = ? AND page = ?
+WHERE entryEntity.profileId = ? AND page = ?
 ORDER BY orderOnPage;
 
 selectLinksPage:
 SELECT
-  profileActionsEntity.profileId,
   profileActionsEntity.orderOnPage,
   linkEntity.*,
   profileEntity.rank,
@@ -38,7 +35,7 @@ SELECT
 FROM profileActionsEntity
 JOIN linkEntity ON profileActionsEntity.linkId = linkEntity.id
 JOIN profileEntity ON profileActionsEntity.profileId = profileEntity.id
-WHERE profileId = ? AND page = ?
+WHERE profileActionsEntity.profileId = ? AND page = ?
 ORDER BY orderOnPage;
 
 insertPage:

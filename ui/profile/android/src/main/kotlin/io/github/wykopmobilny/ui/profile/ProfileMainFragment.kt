@@ -13,9 +13,9 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.tabs.TabLayoutMediator
-import io.github.wykopmobilny.ui.components.users.Color
-import io.github.wykopmobilny.ui.components.users.ColorHex
-import io.github.wykopmobilny.ui.components.users.ColorReference
+import io.github.wykopmobilny.ui.components.widgets.Color
+import io.github.wykopmobilny.ui.components.widgets.ColorHex
+import io.github.wykopmobilny.ui.components.widgets.ColorReference
 import io.github.wykopmobilny.ui.profile.android.R
 import io.github.wykopmobilny.ui.profile.android.databinding.FragmentProfileBinding
 import io.github.wykopmobilny.utils.bindings.collectErrorDialog

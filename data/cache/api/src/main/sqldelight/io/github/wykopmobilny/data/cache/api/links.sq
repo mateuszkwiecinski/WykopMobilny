@@ -19,9 +19,26 @@ CREATE TABLE linkEntity (
     userVote INTEGER AS UserVote,
     userFavorite INTEGER AS Boolean NOT NULL,
     userObserve INTEGER AS Boolean NOT NULL,
-    app TEXT
+    app TEXT,
+    profileId TEXT NOT NULL,
+    FOREIGN KEY (profileId) REFERENCES profileEntity(id)
 );
 
 insertOrReplace:
 INSERT OR REPLACE INTO linkEntity
 VALUES ?;
+
+selectById:
+SELECT
+  linkEntity.*,
+  profileEntity.rank,
+  profileEntity.color,
+  profileEntity.gender,
+  profileEntity.avatar
+FROM linkEntity
+JOIN profileEntity ON linkEntity.profileId = profileEntity.id
+WHERE linkEntity.id = ?;
+
+deleteById:
+DELETE FROM linkEntity
+WHERE id = ?;

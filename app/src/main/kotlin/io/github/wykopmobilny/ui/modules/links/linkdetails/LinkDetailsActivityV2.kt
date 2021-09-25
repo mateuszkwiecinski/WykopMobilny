@@ -13,9 +13,12 @@ internal class LinkDetailsActivityV2 : ThemableActivity() {
     private val binding by viewBinding(ActivityContainerBinding::inflate)
 
     private val linkId
-        get() = intent.getStringExtra(EXTRA_LINK_ID).let(::checkNotNull)
+        get() = intent.takeIf { it.hasExtra(EXTRA_LINK_ID) }
+            ?.getLongExtra(EXTRA_LINK_ID, 0L)
+            .let(::checkNotNull)
     private val commentId
-        get() = intent.getStringExtra(EXTRA_COMMENT_ID)
+        get() = intent.takeIf { it.hasExtra(EXTRA_COMMENT_ID) }
+            ?.getLongExtra(EXTRA_COMMENT_ID, 0L)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

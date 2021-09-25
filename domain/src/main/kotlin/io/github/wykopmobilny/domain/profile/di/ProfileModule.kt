@@ -152,7 +152,7 @@ private fun ProfileResponse.toProfileEntity() = ProfileEntity(
     banReason = ban?.reason,
     banDate = ban?.date,
     color = color.toColorEntity(),
-    gender = sex?.toGenderEntity(),
+    gender = sex.toGenderEntity(),
     avatar = avatar,
 )
 
@@ -169,7 +169,7 @@ internal fun Int.toColorEntity() =
         else -> UserColorEntity.Unknown
     }
 
-internal fun String.toGenderEntity() =
+internal fun String?.toGenderEntity() =
     when (this) {
         "male" -> GenderEntity.Male
         "female" -> GenderEntity.Female

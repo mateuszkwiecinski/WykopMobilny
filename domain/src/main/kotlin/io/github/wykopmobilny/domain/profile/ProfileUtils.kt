@@ -2,8 +2,8 @@ package io.github.wykopmobilny.domain.profile
 
 import io.github.wykopmobilny.data.cache.api.GenderEntity
 import io.github.wykopmobilny.data.cache.api.UserColorEntity
-import io.github.wykopmobilny.ui.components.users.ColorHex
-import io.github.wykopmobilny.ui.components.users.ColorReference
+import io.github.wykopmobilny.ui.components.widgets.ColorHex
+import io.github.wykopmobilny.ui.components.widgets.ColorReference
 import kotlinx.datetime.DateTimePeriod
 
 internal const val DEFAULT_PROFILE_BACKGROUND = "https://i.imgur.com/aSm6pSJ.jpg"
@@ -79,5 +79,5 @@ internal fun DateTimePeriod.toPrettyString(
         else -> return nowFallback
     }
 
-    return "$yearsPart $monthsPart $daysPart $hoursPart $minutesPart $suffix".trim()
+    return "$yearsPart $monthsPart $daysPart $hoursPart $minutesPart $suffix".replace("\\s+".toRegex(), " ").trim()
 }

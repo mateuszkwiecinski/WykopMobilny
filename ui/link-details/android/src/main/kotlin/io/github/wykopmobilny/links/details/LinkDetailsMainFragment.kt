@@ -4,15 +4,18 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.ui.link_details.android.R
 import io.github.wykopmobilny.ui.link_details.android.databinding.FragmentLinkDetailsBinding
 import io.github.wykopmobilny.utils.destroyKeyedDependency
+import io.github.wykopmobilny.utils.longArgument
+import io.github.wykopmobilny.utils.longArgumentNullable
 import io.github.wykopmobilny.utils.requireKeyedDependency
-import io.github.wykopmobilny.utils.stringArgument
-import io.github.wykopmobilny.utils.stringArgumentNullable
 import io.github.wykopmobilny.utils.viewBinding
+import kotlinx.coroutines.flow.collect
 
-fun linkDetailsFragment(linkId: String, commentId: String?): Fragment =
+fun linkDetailsFragment(linkId: Long, commentId: Long?): Fragment =
     LinkDetailsMainFragment()
         .apply {
             this.linkId = linkId
@@ -21,8 +24,8 @@ fun linkDetailsFragment(linkId: String, commentId: String?): Fragment =
 
 internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details) {
 
-    var linkId by stringArgument("userId")
-    var commentId by stringArgumentNullable("commenetID")
+    var linkId by longArgument("userId")
+    var commentId by longArgumentNullable("commentId")
 
     private lateinit var getLinkDetails: GetLinkDetails
 
@@ -35,7 +38,12 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            getLinkDetails().collect {
+                binding
+                Napier.i(it.toString())
+            }
+        }
     }
 
     override fun onDestroy() {

@@ -15,6 +15,7 @@ import io.github.wykopmobilny.di.DaggerAppComponent
 import io.github.wykopmobilny.domain.blacklist.di.BlacklistScope
 import io.github.wykopmobilny.domain.di.DomainComponent
 import io.github.wykopmobilny.domain.di.HasScopeInitializer
+import io.github.wykopmobilny.domain.linkdetails.di.LinkDetailsScope
 import io.github.wykopmobilny.domain.login.ConnectConfig
 import io.github.wykopmobilny.domain.login.di.LoginScope
 import io.github.wykopmobilny.domain.navigation.InteropRequest
@@ -24,6 +25,7 @@ import io.github.wykopmobilny.domain.search.di.SearchScope
 import io.github.wykopmobilny.domain.settings.di.SettingsScope
 import io.github.wykopmobilny.domain.styles.di.StylesScope
 import io.github.wykopmobilny.domain.work.di.WorkScope
+import io.github.wykopmobilny.links.details.LinkDetailsDependencies
 import io.github.wykopmobilny.storage.android.DaggerStoragesComponent
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.styles.StylesDependencies
@@ -167,7 +169,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
 
     // TODO @mk : 25/07/2021 I don't know where I'm going here yet. Will figure something out 👀 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> getDependency(clazz: KClass<T>, scopeId: String?): T =
+    override fun <T : Any> getDependency(clazz: KClass<T>, scopeId: Any?): T =
         when (clazz) {
             LoginDependencies::class -> getOrPutScope<LoginScope>(scopeId) { domainComponent.login() }
             StylesDependencies::class -> getOrPutScope<StylesScope>(scopeId) { domainComponent.styles() }
@@ -175,17 +177,22 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             BlacklistDependencies::class -> getOrPutScope<BlacklistScope>(scopeId) { domainComponent.blacklist() }
             WorkDependencies::class -> getOrPutScope<WorkScope>(scopeId) { domainComponent.work() }
             SearchDependencies::class -> getOrPutScope<SearchScope>(scopeId) { domainComponent.search() }
+            LinkDetailsDependencies::class -> {
+                scopeId as Long
+                getOrPutScope<LinkDetailsScope>(scopeId) { domainComponent.linkDetails().create(linkId = scopeId) }
+            }
             ProfileDependencies::class -> {
-                getOrPutScope<ProfileScope>(scopeId) { domainComponent.profile().create(profileId = checkNotNull(scopeId)) }
+                scopeId as String
+                getOrPutScope<ProfileScope>(scopeId) { domainComponent.profile().create(profileId = scopeId) }
             }
             else -> error("Unknown dependency type $clazz")
         }.dependencyContainer as T
 
-    private inline fun <reified T : Any> scopeKey(id: String?) = scopeKey(T::class, id)
+    private inline fun <reified T : Any> scopeKey(id: Any?) = scopeKey(T::class, id)
 
-    private fun <T : Any> scopeKey(clazz: KClass<T>, id: String?) = "${clazz.qualifiedName}=$id"
+    private fun <T : Any> scopeKey(clazz: KClass<T>, id: Any?) = "${clazz.qualifiedName}=$id"
 
-    private inline fun <reified T : Any> getOrPutScope(id: String?, container: () -> Any) =
+    private inline fun <reified T : Any> getOrPutScope(id: Any?, container: () -> Any) =
         scopes.getOrPut(scopeKey<T>(id)) { initScope(container()) }
 
     private fun <T> initScope(container: T) =
@@ -198,7 +205,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             }
         }
 
-    override fun <T : Any> destroyDependency(clazz: KClass<T>, scopeId: String?) {
+    override fun <T : Any> destroyDependency(clazz: KClass<T>, scopeId: Any?) {
         when (clazz) {
             LoginDependencies::class -> scopes.remove(scopeKey<LoginScope>(scopeId))
             StylesDependencies::class -> scopes.remove(scopeKey<StylesScope>(scopeId))
@@ -206,12 +213,13 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             BlacklistDependencies::class -> scopes.remove(scopeKey<BlacklistScope>(scopeId))
             WorkDependencies::class -> scopes.remove(scopeKey<WorkScope>(scopeId))
             SearchDependencies::class -> scopes.remove(scopeKey<SearchScope>(scopeId))
+            LinkDetailsDependencies::class -> scopes.remove(scopeKey<LinkDetailsScope>(scopeId))
             ProfileDependencies::class -> scopes.remove(scopeKey<ProfileScope>(scopeId))
             else -> error("Unknown dependency type $clazz")
         }?.coroutineScope?.cancel()
     }
 
-    override fun <T : Any> launchScoped(clazz: KClass<T>, id: String?, block: suspend CoroutineScope.() -> Unit) =
+    override fun <T : Any> launchScoped(clazz: KClass<T>, id: Any?, block: suspend CoroutineScope.() -> Unit) =
         scopes.getValue(scopeKey(clazz, id)).coroutineScope.launch(block = block)
 
     private fun doInterop() {

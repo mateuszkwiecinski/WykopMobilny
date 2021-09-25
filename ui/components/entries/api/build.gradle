@@ -3,7 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(projects.ui.base.api)
-    api(projects.ui.components.users.api)
-    api(libs.paging.common)
+    api(projects.ui.components.widgets.api)
 }

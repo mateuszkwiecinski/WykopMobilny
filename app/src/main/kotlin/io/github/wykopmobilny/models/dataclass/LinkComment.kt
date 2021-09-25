@@ -9,7 +9,6 @@ class LinkComment(
     val author: Author,
     val fullDate: String,
     var body: String?,
-    val blocked: Boolean,
     val favorite: Boolean,
     var voteCount: Int,
     var voteCountPlus: Int,
@@ -36,7 +35,6 @@ class LinkComment(
         parcel.readString()!!,
         parcel.readString(),
         parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte(),
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
@@ -59,7 +57,6 @@ class LinkComment(
         parcel.writeParcelable(author, flags)
         parcel.writeString(date)
         parcel.writeString(body)
-        parcel.writeByte(if (blocked) 1 else 0)
         parcel.writeByte(if (favorite) 1 else 0)
         parcel.writeInt(voteCount)
         parcel.writeInt(voteCountPlus)

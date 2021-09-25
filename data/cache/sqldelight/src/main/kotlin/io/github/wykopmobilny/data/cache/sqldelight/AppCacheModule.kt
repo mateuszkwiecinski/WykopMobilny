@@ -11,6 +11,7 @@ import io.github.wykopmobilny.data.cache.api.Embed
 import io.github.wykopmobilny.data.cache.api.EmbedType
 import io.github.wykopmobilny.data.cache.api.EntryEntity
 import io.github.wykopmobilny.data.cache.api.GenderEntity
+import io.github.wykopmobilny.data.cache.api.LinkCommentsEntity
 import io.github.wykopmobilny.data.cache.api.LinkEntity
 import io.github.wykopmobilny.data.cache.api.ProfileEntity
 import io.github.wykopmobilny.data.cache.api.UserColorEntity
@@ -50,6 +51,10 @@ internal class AppCacheModule {
         embedAdapter = Embed.Adapter(
             typeAdapter = EnumAdapter(EmbedType.values()),
         ),
+        linkCommentsEntityAdapter = LinkCommentsEntity.Adapter(
+            postedAtAdapter = InstantAdapter,
+            userVoteAdapter = EnumAdapter(UserVote.values()),
+        )
     )
 }
 

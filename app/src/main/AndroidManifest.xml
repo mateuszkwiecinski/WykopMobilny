@@ -104,6 +104,11 @@
             android:theme="@style/TransparentActivityTheme"
             />
         <activity
+            android:name="io.github.wykopmobilny.ui.modules.links.linkdetails.LinkDetailsActivityV2"
+            android:parentActivityName="io.github.wykopmobilny.ui.modules.mainnavigation.MainNavigationActivity"
+            android:theme="@style/Theme.App.Dark"
+            />
+        <activity
             android:name=".ui.modules.links.upvoters.UpvotersActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/TransparentActivityTheme"

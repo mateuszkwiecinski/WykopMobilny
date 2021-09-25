@@ -1,14 +1,11 @@
-package io.github.wykopmobilny.ui.components.links
-
-import io.github.wykopmobilny.ui.components.users.Color
-import io.github.wykopmobilny.ui.components.users.UserInfoUi
+package io.github.wykopmobilny.ui.components.widgets
 
 sealed class ListElementUi {
 
     data class Entry(
         val id: Long,
         val body: String,
-        val voteCount: UpvoteCounter,
+        val voteCount: ColoredCounterUi,
         val previewImageUrl: String?,
         val commentsCount: Int,
         val author: UserInfoUi,
@@ -27,7 +24,7 @@ sealed class ListElementUi {
         val body: String,
         val previewImageUrl: String?,
         val commentsCount: Int,
-        val voteCount: UpvoteCounter,
+        val voteCount: ColoredCounterUi,
         val addedAgo: String,
         val thumbnail: Thumbnail,
         val shareAction: () -> Unit,
@@ -50,8 +47,3 @@ val ListElementUi.id
         is ListElementUi.Entry -> id
         is ListElementUi.Link -> id
     }
-
-data class UpvoteCounter(
-    val count: Int,
-    val color: Color,
-)
