@@ -9,14 +9,14 @@ import io.github.wykopmobilny.models.dataclass.Notification
 import io.github.wykopmobilny.models.dataclass.NotificationHeader
 import io.github.wykopmobilny.ui.adapters.viewholders.NotificationHeaderViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.NotificationViewHolder
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.utils.layoutInflater
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import javax.inject.Inject
 
 class NotificationsListAdapter @Inject constructor(
-    val navigatorApi: NewNavigatorApi,
-    val linkHandlerApi: WykopLinkHandlerApi
+    val navigator: NewNavigator,
+    val linkHandler: WykopLinkHandler
 ) : EndlessProgressAdapter<RecyclerView.ViewHolder, Notification>() {
 
     companion object {
@@ -61,12 +61,12 @@ class NotificationsListAdapter @Inject constructor(
         when (viewType) {
             TYPE_HEADER -> NotificationHeaderViewHolder(
                 HashtagNotificationHeaderListItemBinding.inflate(parent.layoutInflater, parent, false),
-                navigatorApi,
+                navigator,
                 collapseListener,
             )
             TYPE_ITEM -> NotificationViewHolder(
                 NotificationsListItemBinding.inflate(parent.layoutInflater, parent, false),
-                linkHandlerApi,
+                linkHandler,
                 updateHeader,
             )
             else -> error("unsupported type")

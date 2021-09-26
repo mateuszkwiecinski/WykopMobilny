@@ -34,7 +34,6 @@ import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.dialogs.confirmationDialog
 import io.github.wykopmobilny.ui.modules.NewNavigator
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
 import io.github.wykopmobilny.ui.modules.favorite.FavoriteFragment
 import io.github.wykopmobilny.ui.modules.links.hits.HitsFragment
 import io.github.wykopmobilny.ui.modules.links.promoted.PromotedFragment
@@ -48,7 +47,7 @@ import io.github.wykopmobilny.ui.modules.profile.ProfileActivity
 import io.github.wykopmobilny.ui.modules.search.SearchFragment
 import io.github.wykopmobilny.ui.widgets.BadgeDrawerDrawable
 import io.github.wykopmobilny.ui.widgets.drawerheaderview.DrawerHeaderWidget
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.openBrowser
 import io.github.wykopmobilny.utils.shortcuts.ShortcutsDispatcher
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
@@ -124,13 +123,13 @@ class MainNavigationActivity :
     lateinit var shortcutsDispatcher: ShortcutsDispatcher
 
     @Inject
-    lateinit var navigator: NewNavigatorApi
+    lateinit var navigator: NewNavigator
 
     @Inject
     lateinit var userManagerApi: UserManagerApi
 
     @Inject
-    lateinit var linkHandler: WykopLinkHandlerApi
+    lateinit var linkHandler: WykopLinkHandler
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

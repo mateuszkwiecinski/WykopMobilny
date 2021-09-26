@@ -10,7 +10,7 @@ import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 abstract class VoteButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.MirkoButtonStyle
+    defStyleAttr: Int = R.attr.MirkoButtonStyle,
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     var voteCount: Int
@@ -26,17 +26,15 @@ abstract class VoteButton @JvmOverloads constructor(
             setLightThemeDrawable()
         }
 
-    lateinit var userManager: UserManagerApi
     lateinit var voteListener: () -> Unit
     lateinit var unvoteListener: () -> Unit
 
     abstract fun setLightThemeDrawable()
 
     fun setup(userManagerApi: UserManagerApi) {
-        userManager = userManagerApi
         setLightThemeDrawable()
         setOnClickListener {
-            userManager.runIfLoggedIn(context) {
+            userManagerApi.runIfLoggedIn(context) {
                 isEnabled = false
                 if (isSelected) unvoteListener()
                 else voteListener()

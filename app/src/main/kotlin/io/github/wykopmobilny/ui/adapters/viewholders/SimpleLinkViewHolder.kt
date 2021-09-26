@@ -10,7 +10,7 @@ import io.github.wykopmobilny.databinding.SimpleLinkLayoutBinding
 import io.github.wykopmobilny.models.dataclass.Link
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.fragments.links.LinkActionListener
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.utils.layoutInflater
 import io.github.wykopmobilny.utils.loadImage
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
@@ -18,7 +18,7 @@ import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 class SimpleLinkViewHolder(
     private val binding: SimpleLinkLayoutBinding,
     private val settingsApi: SettingsPreferencesApi,
-    private val navigatorApi: NewNavigatorApi,
+    private val navigator: NewNavigator,
     private val userManagerApi: UserManagerApi,
     private val linkActionListener: LinkActionListener,
     private val appStorage: AppStorage,
@@ -37,13 +37,13 @@ class SimpleLinkViewHolder(
             parent: ViewGroup,
             userManagerApi: UserManagerApi,
             settingsPreferencesApi: SettingsPreferencesApi,
-            navigatorApi: NewNavigatorApi,
+            navigator: NewNavigator,
             linkActionListener: LinkActionListener,
             appStorage: AppStorage,
         ) = SimpleLinkViewHolder(
             binding = SimpleLinkLayoutBinding.inflate(parent.layoutInflater, parent, false),
             settingsApi = settingsPreferencesApi,
-            navigatorApi = navigatorApi,
+            navigator = navigator,
             userManagerApi = userManagerApi,
             linkActionListener = linkActionListener,
             appStorage = appStorage,
@@ -90,7 +90,7 @@ class SimpleLinkViewHolder(
         }
 
         itemView.setOnClickListener {
-            navigatorApi.openLinkDetailsActivity(link)
+            navigator.openLinkDetailsActivity(link)
             if (!link.gotSelected) {
                 setWidgetAlpha(ALPHA_VISITED)
                 link.gotSelected = true

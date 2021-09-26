@@ -5,16 +5,16 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.wykopmobilny.databinding.PmmessageSentLayoutBinding
 import io.github.wykopmobilny.models.dataclass.PMMessage
 import io.github.wykopmobilny.ui.adapters.viewholders.PMMessageViewHolder
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.utils.layoutInflater
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import javax.inject.Inject
 
 class PMMessageAdapter @Inject constructor(
     private val settingsPreferencesApi: SettingsPreferencesApi,
-    private val navigatorApi: NewNavigatorApi,
-    private val linkHandlerApi: WykopLinkHandlerApi
+    private val navigator: NewNavigator,
+    private val linkHandler: WykopLinkHandler
 ) : RecyclerView.Adapter<PMMessageViewHolder>() {
 
     val messages: ArrayList<PMMessage> = arrayListOf()
@@ -23,9 +23,9 @@ class PMMessageAdapter @Inject constructor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PMMessageViewHolder = PMMessageViewHolder(
         PmmessageSentLayoutBinding.inflate(parent.layoutInflater, parent, false),
-        linkHandlerApi,
+        linkHandler,
         settingsPreferencesApi,
-        navigatorApi
+        navigator
     )
 
     override fun onBindViewHolder(holder: PMMessageViewHolder, position: Int) =

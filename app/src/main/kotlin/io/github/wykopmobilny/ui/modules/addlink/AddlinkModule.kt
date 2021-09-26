@@ -1,25 +1,12 @@
 package io.github.wykopmobilny.ui.modules.addlink
 
+import android.app.Activity
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.ui.modules.NewNavigator
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
 
 @Module
-class AddlinkModule {
+abstract class AddlinkModule {
 
-    @Provides
-    fun provideNavigator(activity: AddlinkActivity): NewNavigatorApi =
-        NewNavigator(activity)
-
-    @Provides
-    fun provideLinkHandler(
-        activity: AddlinkActivity,
-        navigator: NewNavigatorApi,
-        settingsPreferences: SettingsPreferencesApi,
-    ): WykopLinkHandlerApi =
-        WykopLinkHandler(activity, navigator, settingsPreferences)
+    @Binds
+    abstract fun AddlinkActivity.activity(): Activity
 }

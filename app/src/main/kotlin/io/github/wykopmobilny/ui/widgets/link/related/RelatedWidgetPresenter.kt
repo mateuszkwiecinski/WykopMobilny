@@ -4,17 +4,17 @@ import io.github.wykopmobilny.api.links.LinksApi
 import io.github.wykopmobilny.base.BasePresenter
 import io.github.wykopmobilny.base.Schedulers
 import io.github.wykopmobilny.utils.intoComposite
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 
 class RelatedWidgetPresenter(
     val schedulers: Schedulers,
     val linksApi: LinksApi,
-    val linkHandlerApi: WykopLinkHandlerApi
+    val linkHandler: WykopLinkHandler
 ) : BasePresenter<RelatedWidgetView>() {
 
     var relatedId = -1
 
-    fun handleLink(url: String) = linkHandlerApi.handleUrl(url)
+    fun handleLink(url: String) = linkHandler.handleUrl(url)
 
     fun voteUp() {
         linksApi.relatedVoteUp(relatedId)

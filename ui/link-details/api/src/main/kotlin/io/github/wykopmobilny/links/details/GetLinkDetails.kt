@@ -2,6 +2,7 @@ package io.github.wykopmobilny.links.details
 
 import io.github.wykopmobilny.ui.base.Query
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
+import io.github.wykopmobilny.ui.components.widgets.Color
 import io.github.wykopmobilny.ui.components.widgets.ColoredCounterUi
 import io.github.wykopmobilny.ui.components.widgets.PlainCounterUi
 import io.github.wykopmobilny.ui.components.widgets.TagUi
@@ -49,6 +50,7 @@ data class LinkCommentUi(
     val postedAgo: String,
     val app: String?,
     val body: String,
+    val badge: Color?,
     val plusCount: ColoredCounterUi,
     val minusCount: ColoredCounterUi,
     val shareAction: () -> Unit,

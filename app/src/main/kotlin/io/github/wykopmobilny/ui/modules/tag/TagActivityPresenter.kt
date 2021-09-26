@@ -4,10 +4,11 @@ import io.github.wykopmobilny.api.tag.TagApi
 import io.github.wykopmobilny.base.BasePresenter
 import io.github.wykopmobilny.base.Schedulers
 import io.github.wykopmobilny.utils.intoComposite
+import javax.inject.Inject
 
-class TagActivityPresenter(
-    val schedulers: Schedulers,
-    val tagApi: TagApi
+class TagActivityPresenter @Inject constructor(
+    private val schedulers: Schedulers,
+    private val tagApi: TagApi
 ) : BasePresenter<TagActivityView>() {
 
     lateinit var tag: String

@@ -27,7 +27,7 @@ import io.github.wykopmobilny.base.BaseActivity
 import io.github.wykopmobilny.base.WykopSchedulers
 import io.github.wykopmobilny.databinding.ActivityEmbedviewBinding
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.modules.photoview.PhotoViewActions
 import io.github.wykopmobilny.utils.ClipboardHelperApi
 import io.github.wykopmobilny.utils.openBrowser
@@ -56,7 +56,7 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
     lateinit var presenter: EmbedLinkPresenter
 
     @Inject
-    lateinit var navigatorApi: NewNavigatorApi
+    lateinit var navigator: NewNavigator
 
     @Inject
     lateinit var clipboardHelper: ClipboardHelperApi
@@ -131,7 +131,7 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
 
     override fun exitAndOpenYoutubeActivity() {
         if (settingsPreferencesApi.enableYoutubePlayer) {
-            navigatorApi.openYoutubeActivity(extraUrl)
+            navigator.openYoutubeActivity(extraUrl)
         } else {
             openBrowser(extraUrl)
         }

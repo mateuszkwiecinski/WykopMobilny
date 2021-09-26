@@ -31,85 +31,61 @@ import io.github.wykopmobilny.ui.modules.profile.ProfileActivity
 import io.github.wykopmobilny.ui.modules.settings.SettingsActivity
 import io.github.wykopmobilny.ui.modules.tag.TagActivity
 import io.github.wykopmobilny.utils.openBrowser
+import javax.inject.Inject
 
-interface NewNavigatorApi {
-    fun openMainActivity(targetFragment: String? = null)
-    fun openEntryDetailsActivity(entryId: Long, isRevealed: Boolean)
-    fun openTagActivity(tag: String)
-    fun openConversationListActivity(user: String)
-    fun openPhotoViewActivity(url: String)
-    fun openSettingsActivity()
-    fun openLoginScreen()
-    fun openAddEntryActivity(receiver: String? = null, extraBody: String? = null)
-    fun openEditEntryActivity(body: String, entryId: Long)
-    fun openEditLinkCommentActivity(commentId: Long, body: String, linkId: Long)
-    fun openEditEntryCommentActivity(body: String, entryId: Long, commentId: Long)
-    fun openBrowser(settingsPreferences: SettingsPreferencesApi, url: String)
-    fun openReportScreen(violationUrl: String)
-    fun openLinkDetailsActivity(link: Link)
-    fun openLinkDetailsActivity(linkId: Long, commentId: Long = -1L)
-    fun openLinkUpvotersActivity(linkId: Long)
-    fun openLinkDownvotersActivity(linkId: Long)
-    fun openLinkRelatedActivity(linkId: Long)
-    fun openProfileActivity(username: String)
-    fun openNotificationsListActivity(preselectIndex: Int = NotificationsListActivity.PRESELECT_NOTIFICATIONS)
-    fun openEmbedActivity(url: String)
-    fun openYoutubeActivity(url: String)
-    fun openAddLinkActivity()
-    fun shareUrl(url: String)
-}
-
-class NewNavigator(private val context: Activity) : NewNavigatorApi {
+class NewNavigator @Inject constructor(
+    private val context: Activity,
+    private val settingsPreferences: SettingsPreferencesApi,
+) {
 
     companion object {
         const val STARTED_FROM_NOTIFICATIONS_CODE = 228
     }
 
-    override fun openMainActivity(targetFragment: String?) {
+    fun openMainActivity(targetFragment: String? = null) {
         context.startActivity(
             MainNavigationActivity.getIntent(context, targetFragment)
                 .apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK) },
         )
     }
 
-    override fun openEntryDetailsActivity(entryId: Long, isRevealed: Boolean) =
+    fun openEntryDetailsActivity(entryId: Long, isRevealed: Boolean) =
         context.startActivity(EntryActivity.createIntent(context, entryId, null, isRevealed))
 
-    override fun openTagActivity(tag: String) =
+    fun openTagActivity(tag: String) =
         context.startActivity(TagActivity.createIntent(context, tag))
 
-    override fun openConversationListActivity(user: String) =
+    fun openConversationListActivity(user: String) =
         context.startActivity(ConversationActivity.createIntent(context, user))
 
-    override fun openPhotoViewActivity(url: String) =
+    fun openPhotoViewActivity(url: String) =
         context.startActivity(PhotoViewActivity.createIntent(context, url))
 
-    override fun openSettingsActivity() =
+    fun openSettingsActivity() =
         context.startActivity(SettingsActivity.createIntent(context))
 
-    override fun openLoginScreen() =
+    fun openLoginScreen() =
         context.startActivity(LoginScreenActivity.createIntent(context))
 
-    override fun openAddEntryActivity(receiver: String?, extraBody: String?) =
+    fun openAddEntryActivity(receiver: String? = null, extraBody: String? = null) =
         context.startActivity(AddEntryActivity.createIntent(context, receiver, extraBody))
 
-    override fun openEditEntryActivity(body: String, entryId: Long) =
+    fun openEditEntryActivity(body: String, entryId: Long) =
         context.startActivityForResult(EditEntryActivity.createIntent(context, body, entryId), BaseInputActivity.EDIT_ENTRY)
 
-    override fun openEditLinkCommentActivity(commentId: Long, body: String, linkId: Long) =
+    fun openEditLinkCommentActivity(commentId: Long, body: String, linkId: Long) =
         context.startActivityForResult(
             LinkCommentEditActivity.createIntent(context, commentId, body, linkId),
             BaseInputActivity.EDIT_LINK_COMMENT,
         )
 
-    override fun openEditEntryCommentActivity(body: String, entryId: Long, commentId: Long) =
+    fun openEditEntryCommentActivity(body: String, entryId: Long, commentId: Long) =
         context.startActivityForResult(
             EditEntryCommentActivity.createIntent(context, body, entryId, commentId),
             BaseInputActivity.EDIT_ENTRY_COMMENT,
         )
 
-    override fun openBrowser(
-        settingsPreferences: SettingsPreferencesApi,
+    fun openBrowser(
         url: String,
     ) {
         if (settingsPreferences.useBuiltInBrowser) {
@@ -122,40 +98,40 @@ class NewNavigator(private val context: Activity) : NewNavigatorApi {
         }
     }
 
-    override fun openReportScreen(violationUrl: String) =
+    fun openReportScreen(violationUrl: String) =
         context.openBrowser(violationUrl)
 
-    override fun openLinkDetailsActivity(link: Link) =
+    fun openLinkDetailsActivity(link: Link) =
         context.startActivity(LinkDetailsActivity.createIntent(context, link))
 
-    override fun openLinkUpvotersActivity(linkId: Long) =
+    fun openLinkUpvotersActivity(linkId: Long) =
         context.startActivity(UpvotersActivity.createIntent(linkId, context))
 
-    override fun openLinkDetailsActivity(linkId: Long, commentId: Long) =
+    fun openLinkDetailsActivity(linkId: Long, commentId: Long = -1L) =
         context.startActivity(LinkDetailsActivity.createIntent(context, linkId, commentId))
 
-    override fun openLinkDownvotersActivity(linkId: Long) =
+    fun openLinkDownvotersActivity(linkId: Long) =
         context.startActivity(DownvotersActivity.createIntent(linkId, context))
 
-    override fun openLinkRelatedActivity(linkId: Long) =
+    fun openLinkRelatedActivity(linkId: Long) =
         context.startActivity(RelatedActivity.createIntent(linkId, context))
 
-    override fun openProfileActivity(username: String) =
+    fun openProfileActivity(username: String) =
         context.startActivity(ProfileActivity.createIntent(context, username))
 
-    override fun openNotificationsListActivity(preselectIndex: Int) =
+    fun openNotificationsListActivity(preselectIndex: Int = NotificationsListActivity.PRESELECT_NOTIFICATIONS) =
         context.startActivityForResult(NotificationsListActivity.createIntent(context, preselectIndex), STARTED_FROM_NOTIFICATIONS_CODE)
 
-    override fun openEmbedActivity(url: String) =
+    fun openEmbedActivity(url: String) =
         context.startActivity(EmbedViewActivity.createIntent(context, url))
 
-    override fun openYoutubeActivity(url: String) =
+    fun openYoutubeActivity(url: String) =
         startAndReportOnError({ YoutubeActivity.createIntent(context, url) }, "YouTube")
 
-    override fun openAddLinkActivity() =
+    fun openAddLinkActivity() =
         context.startActivity(AddlinkActivity.createIntent(context))
 
-    override fun shareUrl(url: String) {
+    fun shareUrl(url: String) {
         ShareCompat.IntentBuilder(context)
             .setType("text/plain")
             .setChooserTitle(R.string.share)

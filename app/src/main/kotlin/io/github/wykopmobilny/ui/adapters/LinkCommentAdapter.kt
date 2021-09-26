@@ -7,17 +7,17 @@ import io.github.wykopmobilny.ui.adapters.viewholders.BaseLinkCommentViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.BlockedViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.TopLinkCommentViewHolder
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentActionListener
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import javax.inject.Inject
 
 class LinkCommentAdapter @Inject constructor(
     val userManagerApi: UserManagerApi,
     val settingsPreferencesApi: SettingsPreferencesApi,
-    val navigatorApi: NewNavigatorApi,
-    val linkHandlerApi: WykopLinkHandlerApi
+    val navigator: NewNavigator,
+    val linkHandler: WykopLinkHandler
 ) : EndlessProgressAdapter<androidx.recyclerview.widget.RecyclerView.ViewHolder, LinkComment>() {
 
     // Required field, interacts with presenter. Otherwise will throw exception
@@ -33,8 +33,8 @@ class LinkCommentAdapter @Inject constructor(
                     viewType,
                     userManagerApi,
                     settingsPreferencesApi,
-                    navigatorApi,
-                    linkHandlerApi,
+                    navigator,
+                    linkHandler,
                     linkCommentActionListener,
                     null
                 )

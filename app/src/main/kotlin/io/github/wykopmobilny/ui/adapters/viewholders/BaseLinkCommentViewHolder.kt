@@ -13,31 +13,39 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.databinding.LinkCommentMenuBottomsheetBinding
 import io.github.wykopmobilny.models.dataclass.LinkComment
+import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.dialogs.confirmationDialog
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentActionListener
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentViewListener
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.widgets.WykopEmbedView
 import io.github.wykopmobilny.ui.widgets.buttons.MinusVoteButton
 import io.github.wykopmobilny.ui.widgets.buttons.PlusVoteButton
 import io.github.wykopmobilny.utils.copyText
 import io.github.wykopmobilny.utils.getActivityContext
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.textview.prepareBody
 import io.github.wykopmobilny.utils.textview.stripWykopFormatting
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
 import io.github.wykopmobilny.utils.usermanager.isUserAuthorized
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaInstant
+import kotlinx.datetime.toLocalDateTime
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneId
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.FormatStyle
 import kotlin.math.absoluteValue
 
 abstract class BaseLinkCommentViewHolder(
     view: View,
     private val userManagerApi: UserManagerApi,
     private val settingsPreferencesApi: SettingsPreferencesApi,
-    protected val navigatorApi: NewNavigatorApi,
-    private val linkHandlerApi: WykopLinkHandlerApi,
+    protected val navigator: NewNavigator,
+    private val linkHandler: WykopLinkHandler,
     protected val commentViewListener: LinkCommentViewListener?,
-    private val commentActionListener: LinkCommentActionListener
+    private val commentActionListener: LinkCommentActionListener,
 ) : RecyclableViewHolder(view) {
 
     companion object {
@@ -57,6 +65,10 @@ abstract class BaseLinkCommentViewHolder(
             }
         }
     }
+
+    private val shouldOpenSpoilerDialog by lazy { settingsPreferencesApi.openSpoilersDialog }
+    private val userAuthorized by lazy { userManagerApi.isUserAuthorized() }
+    private val userCredentials by lazy { userManagerApi.getUserCredentials() }
 
     private val collapseDrawable: Drawable? by lazy {
         itemView.context.obtainStyledAttributes(arrayOf(R.attr.collapseDrawable).toIntArray())
@@ -87,17 +99,17 @@ abstract class BaseLinkCommentViewHolder(
     }
 
     private fun setupBody(comment: LinkComment) {
-        replyButton.isVisible = userManagerApi.isUserAuthorized() && commentViewListener != null
+        replyButton.isVisible = userAuthorized && commentViewListener != null
         if (type == LinkCommentViewHolder.TYPE_EMBED || type == TopLinkCommentViewHolder.TYPE_TOP_EMBED) {
-            embedView.setEmbed(comment.embed, settingsPreferencesApi, navigatorApi, comment.isNsfw)
+            embedView.setEmbed(comment.embed, settingsPreferencesApi, navigator, comment.isNsfw)
         }
 
         comment.body?.let {
             commentContent.prepareBody(
                 comment.body!!,
-                { linkHandlerApi.handleUrl(it) },
+                { linkHandler.handleUrl(it) },
                 { handleClick(comment) },
-                settingsPreferencesApi.openSpoilersDialog
+                shouldOpenSpoilerDialog,
             )
         }
 
@@ -111,13 +123,12 @@ abstract class BaseLinkCommentViewHolder(
     private fun handleClick(comment: LinkComment) {
         // Register click listener for comments list
         if (commentViewListener == null) {
-            navigatorApi.openLinkDetailsActivity(comment.linkId, comment.id)
+            navigator.openLinkDetailsActivity(comment.linkId, comment.id)
         }
     }
 
     private fun setStyleForComment(comment: LinkComment, isAuthorComment: Boolean, commentId: Long = -1) {
-        val credentials = userManagerApi.getUserCredentials()
-        if (credentials != null && credentials.login == comment.author.nick) {
+        if (userCredentials?.login == comment.author.nick) {
             authorBadgeStrip.isVisible = true
             authorBadgeStrip.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorBadgeOwn))
         } else if (isAuthorComment) {
@@ -140,7 +151,7 @@ abstract class BaseLinkCommentViewHolder(
         minusButton.text = comment.voteCountMinus.absoluteValue.toString()
         moreOptionsButton.setOnClickListener { openLinkCommentMenu(comment) }
         shareButton.setOnClickListener {
-            navigatorApi.shareUrl(comment.url)
+            navigator.shareUrl(comment.url)
         }
         plusButton.isEnabled = true
         minusButton.isEnabled = true
@@ -211,8 +222,11 @@ abstract class BaseLinkCommentViewHolder(
 
         bottomSheetView.apply {
             author.text = comment.author.nick
-            date.text = comment.app?.let { root.context.getString(R.string.date_with_user_app, comment.fullDate, comment.app) }
-                ?: comment.fullDate
+            val dateAsString = comment.fullDate.toLocalDateTime(TimeZone.currentSystemDefault()).run {
+                LocalDateTime.of(year, monthNumber, dayOfMonth, hour, minute, second, nanosecond)
+            }.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM))
+            date.text = comment.app?.let { root.context.getString(R.string.date_with_user_app, dateAsString, comment.app) }
+                ?: dateAsString
 
             commentMenuCopy.setOnClickListener {
                 it.context.copyText(comment.body?.stripWykopFormatting() ?: "", "entry-body")
@@ -228,12 +242,12 @@ abstract class BaseLinkCommentViewHolder(
 
             commentMenuReport.isVisible = userManagerApi.isUserAuthorized() && comment.violationUrl != null
             commentMenuReport.setOnClickListener {
-                navigatorApi.openReportScreen(comment.violationUrl.let(::checkNotNull))
+                navigator.openReportScreen(comment.violationUrl.let(::checkNotNull))
                 dialog.dismiss()
             }
 
             commentMenuEdit.setOnClickListener {
-                navigatorApi.openEditLinkCommentActivity(comment.linkId, comment.body!!, comment.id)
+                navigator.openEditLinkCommentActivity(comment.linkId, comment.body!!, comment.id)
                 dialog.dismiss()
             }
 

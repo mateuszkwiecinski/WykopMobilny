@@ -3,11 +3,12 @@ package io.github.wykopmobilny.models.dataclass
 import android.os.Parcel
 import android.os.Parcelable
 import io.github.wykopmobilny.utils.toPrettyDate
+import kotlinx.datetime.Instant
 
 class LinkComment(
     val id: Long,
     val author: Author,
-    val fullDate: String,
+    val fullDate: Instant,
     var body: String?,
     val favorite: Boolean,
     var voteCount: Int,
@@ -24,7 +25,7 @@ class LinkComment(
     var childCommentCount: Int,
     val violationUrl: String?,
     var isNsfw: Boolean = false,
-    var isBlocked: Boolean = false
+    var isBlocked: Boolean = false,
 ) : Parcelable {
 
     val url = "https://www.wykop.pl/link/$linkId/#comment-$id"
@@ -32,7 +33,7 @@ class LinkComment(
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readParcelable(Author::class.java.classLoader)!!,
-        parcel.readString()!!,
+        Instant.fromEpochMilliseconds(parcel.readLong()),
         parcel.readString(),
         parcel.readByte() != 0.toByte(),
         parcel.readInt(),
@@ -49,13 +50,13 @@ class LinkComment(
         parcel.readInt(),
         parcel.readString()!!,
         parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
         parcel.writeParcelable(author, flags)
-        parcel.writeString(date)
+        parcel.writeLong(fullDate.toEpochMilliseconds())
         parcel.writeString(body)
         parcel.writeByte(if (favorite) 1 else 0)
         parcel.writeInt(voteCount)

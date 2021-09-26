@@ -1,23 +1,12 @@
 package io.github.wykopmobilny.ui.modules.notificationslist
 
+import android.app.Activity
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.ui.modules.NewNavigator
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
 
 @Module
-class NotificationsListModule {
-    @Provides
-    fun provideNavigatorApi(activity: NotificationsListActivity): NewNavigatorApi = NewNavigator(activity)
+abstract class NotificationsListModule {
 
-    @Provides
-    fun provideLinkHandlerApi(
-        activity: NotificationsListActivity,
-        newNavigatorApi: NewNavigatorApi,
-        settingsPreferences: SettingsPreferencesApi,
-    ): WykopLinkHandlerApi =
-        WykopLinkHandler(activity, newNavigatorApi, settingsPreferences)
+    @Binds
+    abstract fun NotificationsListActivity.activity(): Activity
 }

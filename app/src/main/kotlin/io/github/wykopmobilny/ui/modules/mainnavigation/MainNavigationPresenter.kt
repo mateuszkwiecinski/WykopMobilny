@@ -9,8 +9,9 @@ import io.github.wykopmobilny.utils.usermanager.isUserAuthorized
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class MainNavigationPresenter(
+class MainNavigationPresenter @Inject constructor(
     private val schedulers: Schedulers,
     private val notificationsApi: NotificationsApi,
     private val userManagerApi: UserManagerApi

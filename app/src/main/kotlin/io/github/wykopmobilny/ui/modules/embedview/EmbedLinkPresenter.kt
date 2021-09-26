@@ -6,8 +6,9 @@ import io.github.wykopmobilny.base.BasePresenter
 import io.github.wykopmobilny.base.Schedulers
 import io.reactivex.Maybe
 import java.net.URI
+import javax.inject.Inject
 
-class EmbedLinkPresenter(
+class EmbedLinkPresenter @Inject constructor(
     val schedulers: Schedulers,
     private val embedApi: ExternalApi,
 ) : BasePresenter<EmbedView>() {

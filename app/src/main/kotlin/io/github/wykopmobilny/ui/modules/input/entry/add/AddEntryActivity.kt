@@ -8,7 +8,6 @@ import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.api.suggest.SuggestApi
 import io.github.wykopmobilny.ui.modules.NewNavigator
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
 import io.github.wykopmobilny.ui.modules.input.BaseInputActivity
 import javax.inject.Inject
 
@@ -28,7 +27,8 @@ class AddEntryActivity : BaseInputActivity<AddEntryPresenter>(), AddEntryActivit
     @Inject
     override lateinit var presenter: AddEntryPresenter
 
-    val navigator: NewNavigatorApi by lazy { NewNavigator(this) }
+    @Inject
+    lateinit var navigator: NewNavigator
 
     override fun openEntryActivity(id: Long) {
         navigator.openEntryDetailsActivity(id, false)

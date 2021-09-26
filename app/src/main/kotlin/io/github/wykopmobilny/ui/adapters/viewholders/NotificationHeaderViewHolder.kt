@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.databinding.HashtagNotificationHeaderListItemBinding
 import io.github.wykopmobilny.models.dataclass.NotificationHeader
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 
 class NotificationHeaderViewHolder(
     private val binding: HashtagNotificationHeaderListItemBinding,
-    private val navigatorApi: NewNavigatorApi,
+    private val navigator: NewNavigator,
     private val collapseListener: (Boolean, String) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -31,7 +31,7 @@ class NotificationHeaderViewHolder(
         binding.collapseButtonImageView.setImageDrawable(drawable)
         binding.collapseButtonImageView.setOnClickListener { collapseListener(!tag.visible, tag.tag) }
         binding.root.setOnClickListener {
-            navigatorApi.openTagActivity(tag.tag.removePrefix("#"))
+            navigator.openTagActivity(tag.tag.removePrefix("#"))
         }
     }
 }

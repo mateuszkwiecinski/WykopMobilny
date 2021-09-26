@@ -1,28 +1,12 @@
 package io.github.wykopmobilny.ui.modules.links.downvoters
 
+import android.app.Activity
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
-import io.github.wykopmobilny.api.links.LinksApi
-import io.github.wykopmobilny.base.Schedulers
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.ui.modules.NewNavigator
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
 
 @Module
-class DownvotersModule {
-    @Provides
-    fun provideDownvotersPresenter(schedulers: Schedulers, linksApi: LinksApi) = DownvotersPresenter(schedulers, linksApi)
+abstract class DownvotersModule {
 
-    @Provides
-    fun provideNavigatorApi(activity: DownvotersActivity): NewNavigatorApi = NewNavigator(activity)
-
-    @Provides
-    fun provideWykopLinkHandler(
-        activity: DownvotersActivity,
-        navigatorApi: NewNavigatorApi,
-        settingsPreferences: SettingsPreferencesApi,
-    ): WykopLinkHandlerApi =
-        WykopLinkHandler(activity, navigatorApi, settingsPreferences)
+    @Binds
+    abstract fun DownvotersActivity.activity(): Activity
 }

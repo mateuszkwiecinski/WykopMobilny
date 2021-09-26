@@ -9,14 +9,14 @@ import io.github.wykopmobilny.ui.adapters.viewholders.BlockedViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.LinkViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.SimpleLinkViewHolder
 import io.github.wykopmobilny.ui.fragments.links.LinkActionListener
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import javax.inject.Inject
 
 class NoProgressLinkAdapter @Inject constructor(
     private val userManagerApi: UserManagerApi,
     private val settingsPreferencesApi: SettingsPreferencesApi,
-    private val navigatorApi: NewNavigatorApi,
+    private val navigator: NewNavigator,
     private val appStorage: AppStorage,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -39,7 +39,7 @@ class NoProgressLinkAdapter @Inject constructor(
                     parent = parent,
                     userManagerApi = userManagerApi,
                     settingsPreferencesApi = settingsPreferencesApi,
-                    navigatorApi = navigatorApi,
+                    navigator = navigator,
                     linkActionListener = linksActionListener,
                     appStorage = appStorage,
                 )
@@ -51,7 +51,7 @@ class NoProgressLinkAdapter @Inject constructor(
                 viewType = viewType,
                 userManagerApi = userManagerApi,
                 settingsPreferencesApi = settingsPreferencesApi,
-                navigatorApi = navigatorApi,
+                navigator = navigator,
                 linkActionListener = linksActionListener,
                 appStorage = appStorage,
             )

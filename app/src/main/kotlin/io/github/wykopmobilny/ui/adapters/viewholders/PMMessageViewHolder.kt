@@ -7,16 +7,16 @@ import io.github.wykopmobilny.R
 import io.github.wykopmobilny.databinding.PmmessageSentLayoutBinding
 import io.github.wykopmobilny.glide.GlideApp
 import io.github.wykopmobilny.models.dataclass.PMMessage
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.utils.textview.prepareBody
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 
 class PMMessageViewHolder(
     private val binding: PmmessageSentLayoutBinding,
-    private val linkHandlerApi: WykopLinkHandlerApi,
+    private val linkHandler: WykopLinkHandler,
     private val settingsPreferencesApi: SettingsPreferencesApi,
-    private val navigatorApi: NewNavigatorApi
+    private val navigator: NewNavigator
 ) : RecyclableViewHolder(binding.root) {
 
     fun bindView(message: PMMessage) {
@@ -28,9 +28,9 @@ class PMMessageViewHolder(
                 date.text = message.date
             }
 
-            body.prepareBody(message.body, { linkHandlerApi.handleUrl(it) }, null, settingsPreferencesApi.openSpoilersDialog)
+            body.prepareBody(message.body, { linkHandler.handleUrl(it) }, null, settingsPreferencesApi.openSpoilersDialog)
             embedImage.forceDisableMinimizedMode = true
-            embedImage.setEmbed(message.embed, settingsPreferencesApi, navigatorApi)
+            embedImage.setEmbed(message.embed, settingsPreferencesApi, navigator)
         }
     }
 

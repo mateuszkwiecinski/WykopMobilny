@@ -6,8 +6,9 @@ import io.github.wykopmobilny.ui.modules.links.hits.HitsFragment
 import io.github.wykopmobilny.ui.modules.mikroblog.feed.hot.HotFragment
 import io.github.wykopmobilny.ui.modules.mywykop.MyWykopFragment
 import io.github.wykopmobilny.ui.modules.search.SearchFragment
+import javax.inject.Inject
 
-class ShortcutsDispatcher {
+class ShortcutsDispatcher @Inject constructor() {
 
     fun dispatchIntent(
         intent: Intent,

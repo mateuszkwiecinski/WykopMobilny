@@ -3,7 +3,10 @@ package io.github.wykopmobilny.models.mapper.apiv2
 import io.github.wykopmobilny.api.filters.OWMContentFilter
 import io.github.wykopmobilny.api.responses.LinkCommentResponse
 import io.github.wykopmobilny.models.dataclass.LinkComment
-import io.github.wykopmobilny.utils.toPrettyDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.Month
 
 object LinkCommentMapper {
 
@@ -12,7 +15,7 @@ object LinkCommentMapper {
             LinkComment(
                 id = value.id,
                 author = AuthorMapper.map(value.author),
-                fullDate = value.date.toPrettyDate(),
+                fullDate = value.date,
                 body = value.body,
                 favorite = value.favorite,
                 voteCount = value.voteCount,

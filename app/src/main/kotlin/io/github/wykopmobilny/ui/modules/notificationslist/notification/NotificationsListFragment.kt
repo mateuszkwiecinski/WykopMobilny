@@ -10,7 +10,7 @@ import io.github.wykopmobilny.models.fragments.getDataFragmentInstance
 import io.github.wykopmobilny.models.fragments.removeDataFragment
 import io.github.wykopmobilny.ui.adapters.NotificationsListAdapter
 import io.github.wykopmobilny.ui.modules.notificationslist.BaseNotificationsListFragment
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import javax.inject.Inject
 
 class NotificationsListFragment : BaseNotificationsListFragment() {
@@ -21,7 +21,7 @@ class NotificationsListFragment : BaseNotificationsListFragment() {
     }
 
     @Inject
-    override lateinit var linkHandler: WykopLinkHandlerApi
+    override lateinit var linkHandler: WykopLinkHandler
 
     @Inject
     override lateinit var notificationAdapter: NotificationsListAdapter

@@ -9,7 +9,7 @@ import io.github.wykopmobilny.R
 import io.github.wykopmobilny.databinding.WykopembedviewBinding
 import io.github.wykopmobilny.models.dataclass.Embed
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.utils.getActivityContext
 import io.github.wykopmobilny.utils.layoutInflater
 import io.github.wykopmobilny.utils.openBrowser
@@ -34,20 +34,28 @@ class WykopEmbedView(context: Context, attrs: AttributeSet) : FrameLayout(contex
     var resized = false
     private var hiddenPreview: String? = null
     lateinit var mEmbed: WeakReference<Embed>
-    lateinit var navigator: NewNavigatorApi
-    lateinit var settingsPreferences: SettingsPreferencesApi
+    lateinit var navigator: NewNavigator
+    var enableYoutubePlayer: Boolean = false
+    var enableEmbedPlayer: Boolean = false
+
     var forceDisableMinimizedMode: Boolean
         get() = binding.image.forceDisableMinimizedMode
         set(value) {
             binding.image.forceDisableMinimizedMode = value
         }
 
-    fun setEmbed(embed: Embed?, settingsPreferencesApi: SettingsPreferencesApi, navigatorApi: NewNavigatorApi, isNsfw: Boolean = false) {
+    fun setEmbed(
+        embed: Embed?,
+        settingsPreferencesApi: SettingsPreferencesApi,
+        navigator: NewNavigator,
+        isNsfw: Boolean = false,
+    ) {
         hiddenPreview = null
         binding.image.isVisible = true
         resized = false
-        settingsPreferences = settingsPreferencesApi
-        navigator = navigatorApi
+        enableYoutubePlayer = settingsPreferencesApi.enableYoutubePlayer
+        enableEmbedPlayer = settingsPreferencesApi.enableEmbedPlayer
+        this.navigator = navigator
         if (embed == null || !Patterns.WEB_URL.matcher(embed.url.replace("\\", "")).matches()) {
             isVisible = false
         } else {
@@ -126,20 +134,20 @@ class WykopEmbedView(context: Context, attrs: AttributeSet) : FrameLayout(contex
                     .substringAfterLast(".")
                 when (domain) {
                     "youtube", "youtu" -> {
-                        if (settingsPreferences.enableYoutubePlayer) {
+                        if (enableYoutubePlayer) {
                             navigator.openYoutubeActivity(image.url)
                         } else {
                             getActivityContext()!!.openBrowser(image.url)
                         }
                     }
                     "gfycat", "streamable", "coub" -> {
-                        if (settingsPreferences.enableEmbedPlayer) {
+                        if (enableEmbedPlayer) {
                             navigator.openEmbedActivity(image.url)
                         } else {
                             getActivityContext()!!.openBrowser(image.url)
                         }
                     }
-                    else -> navigator.openBrowser(settingsPreferences, image.url)
+                    else -> navigator.openBrowser(image.url)
                 }
             }
         }

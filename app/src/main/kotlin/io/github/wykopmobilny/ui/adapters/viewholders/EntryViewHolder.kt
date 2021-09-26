@@ -14,13 +14,13 @@ import io.github.wykopmobilny.models.dataclass.Entry
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.dialogs.confirmationDialog
 import io.github.wykopmobilny.ui.fragments.entries.EntryActionListener
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.widgets.WykopEmbedView
 import io.github.wykopmobilny.ui.widgets.survey.SurveyWidget
 import io.github.wykopmobilny.utils.copyText
 import io.github.wykopmobilny.utils.getActivityContext
 import io.github.wykopmobilny.utils.layoutInflater
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.textview.EllipsizingTextView
 import io.github.wykopmobilny.utils.textview.prepareBody
 import io.github.wykopmobilny.utils.textview.stripWykopFormatting
@@ -36,8 +36,8 @@ class EntryViewHolder(
     private val binding: EntryListItemBinding,
     private val userManagerApi: UserManagerApi,
     private val settingsPreferencesApi: SettingsPreferencesApi,
-    private val navigatorApi: NewNavigatorApi,
-    private val linkHandlerApi: WykopLinkHandlerApi,
+    private val navigator: NewNavigator,
+    private val linkHandler: WykopLinkHandler,
     private val entryActionListener: EntryActionListener,
     private val replyListener: EntryListener?,
 ) : RecyclableViewHolder(binding.root) {
@@ -57,8 +57,8 @@ class EntryViewHolder(
             viewType: Int,
             userManagerApi: UserManagerApi,
             settingsPreferencesApi: SettingsPreferencesApi,
-            navigatorApi: NewNavigatorApi,
-            linkHandlerApi: WykopLinkHandlerApi,
+            navigator: NewNavigator,
+            linkHandler: WykopLinkHandler,
             entryActionListener: EntryActionListener,
             replyListener: EntryListener?,
         ): EntryViewHolder {
@@ -66,8 +66,8 @@ class EntryViewHolder(
                 EntryListItemBinding.inflate(parent.layoutInflater, parent, false),
                 userManagerApi,
                 settingsPreferencesApi,
-                navigatorApi,
-                linkHandlerApi,
+                navigator,
+                linkHandler,
                 entryActionListener,
                 replyListener,
             )
@@ -163,7 +163,7 @@ class EntryViewHolder(
 
         // Setup share button
         binding.shareTextView.setOnClickListener {
-            navigatorApi.shareUrl(entry.url)
+            navigator.shareUrl(entry.url)
         }
     }
 
@@ -179,7 +179,7 @@ class EntryViewHolder(
 
                 // Setup unEllipsize listener, handle clicks
                 prepareBody(
-                    entry.body, { linkHandlerApi.handleUrl(it) },
+                    entry.body, { linkHandler.handleUrl(it) },
                     {
                         if (enableClickListener && !isEllipsized) {
                             handleClick(entry)
@@ -199,7 +199,7 @@ class EntryViewHolder(
         itemView.setOnClickListener { handleClick(entry) }
 
         if (type == TYPE_EMBED_SURVEY || type == TYPE_EMBED) {
-            embedView.setEmbed(entry.embed!!, settingsPreferencesApi, navigatorApi, entry.isNsfw)
+            embedView.setEmbed(entry.embed!!, settingsPreferencesApi, navigator, entry.isNsfw)
         }
 
         // Show survey
@@ -243,7 +243,7 @@ class EntryViewHolder(
             }
 
             entryMenuEdit.setOnClickListener {
-                navigatorApi.openEditEntryActivity(entry.body, entry.id)
+                navigator.openEditEntryActivity(entry.body, entry.id)
                 dialog.dismiss()
             }
 
@@ -256,7 +256,7 @@ class EntryViewHolder(
 
             entryMenuReport.isVisible = isAuthorized && entry.violationUrl != null
             entryMenuReport.setOnClickListener {
-                navigatorApi.openReportScreen(entry.violationUrl.let(::checkNotNull))
+                navigator.openReportScreen(entry.violationUrl.let(::checkNotNull))
                 dialog.dismiss()
             }
 
@@ -279,7 +279,7 @@ class EntryViewHolder(
 
     private fun handleClick(entry: Entry) {
         if (enableClickListener) {
-            navigatorApi.openEntryDetailsActivity(entry.id, entry.embed?.isRevealed ?: false)
+            navigator.openEntryDetailsActivity(entry.id, entry.embed?.isRevealed ?: false)
         }
     }
 

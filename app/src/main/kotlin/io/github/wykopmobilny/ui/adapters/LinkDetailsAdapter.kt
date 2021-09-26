@@ -15,15 +15,15 @@ import io.github.wykopmobilny.ui.adapters.viewholders.TopLinkCommentViewHolder
 import io.github.wykopmobilny.ui.fragments.link.LinkHeaderActionListener
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentActionListener
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentViewListener
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import javax.inject.Inject
 
 class LinkDetailsAdapter @Inject constructor(
     private val userManagerApi: UserManagerApi,
-    private val navigatorApi: NewNavigatorApi,
-    private val linkHandlerApi: WykopLinkHandlerApi,
+    private val navigator: NewNavigator,
+    private val linkHandler: WykopLinkHandler,
     private val settingsPreferencesApi: SettingsPreferencesApi,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -87,8 +87,8 @@ class LinkDetailsAdapter @Inject constructor(
             LinkHeaderViewHolder.TYPE_HEADER -> LinkHeaderViewHolder.inflateView(
                 parent,
                 userManagerApi,
-                navigatorApi,
-                linkHandlerApi,
+                navigator,
+                linkHandler,
                 linkHeaderActionListener,
             )
             TopLinkCommentViewHolder.TYPE_TOP_EMBED, TopLinkCommentViewHolder.TYPE_TOP_NORMAL -> TopLinkCommentViewHolder.inflateView(
@@ -96,8 +96,8 @@ class LinkDetailsAdapter @Inject constructor(
                 viewType,
                 userManagerApi,
                 settingsPreferencesApi,
-                navigatorApi,
-                linkHandlerApi,
+                navigator,
+                linkHandler,
                 linkCommentActionListener,
                 linkCommentViewListener,
             )
@@ -106,8 +106,8 @@ class LinkDetailsAdapter @Inject constructor(
                 viewType,
                 userManagerApi,
                 settingsPreferencesApi,
-                navigatorApi,
-                linkHandlerApi,
+                navigator,
+                linkHandler,
                 linkCommentActionListener,
                 linkCommentViewListener,
             )

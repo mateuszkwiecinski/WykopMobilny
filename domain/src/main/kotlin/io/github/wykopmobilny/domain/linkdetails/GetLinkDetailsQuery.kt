@@ -19,14 +19,18 @@ import io.github.wykopmobilny.links.details.GetLinkDetails
 import io.github.wykopmobilny.links.details.LinkCommentUi
 import io.github.wykopmobilny.links.details.LinkDetailsHeaderUi
 import io.github.wykopmobilny.links.details.LinkDetailsUi
+import io.github.wykopmobilny.storage.api.LoggedUserInfo
+import io.github.wykopmobilny.storage.api.UserInfoStorage
 import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.base.FailedAction
 import io.github.wykopmobilny.ui.base.SimpleViewStateStorage
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
+import io.github.wykopmobilny.ui.components.widgets.ColorHex
 import io.github.wykopmobilny.ui.components.widgets.TagUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -38,6 +42,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
     private val detailsStore: Store<Long, LinkInfo>,
     private val getLinksPreferences: GetLinksPreferences,
     private val getFilteringPreferences: GetFilteringPreferences,
+    private val userInfoStorage: UserInfoStorage,
     private val commentsStore: Store<Long, Map<LinkComment, List<LinkComment>>>,
     private val viewStateStorage: SimpleViewStateStorage,
     private val appScopes: AppScopes,
@@ -88,8 +93,8 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 )
             }
             val commentsSection = CommentsSectionUi(
-                comments = comments.orEmpty(),
-                isLoading = comments == null,
+                comments = comments,
+                isLoading = comments.isEmpty() && viewState.isLoading,
             )
 
             LinkDetailsUi(
@@ -108,27 +113,31 @@ internal class GetLinkDetailsQuery @Inject constructor(
     private fun commentsFlow() =
         combine(
             commentsStore.stream(StoreRequest.cached(key = linkId, refresh = false))
-                .map { it.dataOrNull() },
+                .map { it.dataOrNull() }
+                .distinctUntilChanged(),
             getLinksPreferences()
                 .map { it.commentsSort }
                 .distinctUntilChanged(),
             getFilteringPreferences(),
-        ) { comments, sortPreferences, filteringPreferences ->
+            userInfoStorage.loggedUser,
+            detailsFlow().filterNotNull(),
+        ) { comments, sortPreferences, filteringPreferences, loggedUser, link ->
             val comparator: Comparator<LinkComment> = when (sortPreferences) {
                 CommentsDefaultSort.Best -> compareBy { it.totalCount }
                 CommentsDefaultSort.New -> compareByDescending { it.postedAt }
                 CommentsDefaultSort.Old -> compareBy { it.postedAt }
             }
             comments
-                ?.toSortedMap(comparator)
-                ?.map { (key, value) ->
-                    val parent = key.toUi()
+                .orEmpty()
+                .toSortedMap(comparator)
+                .map { (key, value) ->
+                    val parent = key.toUi(loggedUser, link)
                     val replies = value
                         .sortedBy { it.postedAt }
-                        .map { it.toUi() }
+                        .map { it.toUi(loggedUser, link) }
                     parent to replies
                 }
-                ?.toMap()
+                .toMap()
         }
 
     private fun detailsFlow() =
@@ -136,8 +145,14 @@ internal class GetLinkDetailsQuery @Inject constructor(
             .map { it.dataOrNull() }
             .distinctUntilChanged()
 
-    private fun LinkComment.toUi() =
-        LinkCommentUi(
+    private fun LinkComment.toUi(loggedUser: LoggedUserInfo?, link: LinkInfo): LinkCommentUi {
+        val color = when (author.profileId) {
+            loggedUser?.id -> ColorHex("#3498db")
+            link.author.profileId -> ColorHex("#F75616")
+            else -> null
+        }
+
+        return LinkCommentUi(
             postedAgo = postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(),
             app = app,
             body = body,
@@ -152,9 +167,11 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 voteCount = minusCount,
                 onClicked = safeCallback { TODO("minus") },
             ),
+            badge = color,
             shareAction = safeCallback { },
             favoriteAction = safeCallback { },
         )
+    }
 
     private fun safeCallback(function: suspend CoroutineScope.() -> Unit): () -> Unit = {
         appScopes.safeKeyed<LinkDetailsScope>(linkId) {
