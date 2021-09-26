@@ -60,7 +60,7 @@ internal class GetProfileDetailsQuery @Inject constructor(
             val header = ProfileHeaderUi(
                 isLoading = viewState.isLoading || storeResponse is StoreResponse.Loading,
                 description = profile?.description,
-                userInfo = profile?.userInfo?.toUi(),
+                userInfo = profile?.userInfo?.toUi(onClicked = null),
                 backgroundUrl = profile?.let { it.background ?: DEFAULT_PROFILE_BACKGROUND },
                 banReason = if (profile?.banReason != null || profile?.banDate != null) {
                     BanReasonUi(

@@ -214,7 +214,7 @@ abstract class BaseLinkCommentViewHolder(
     }
 
     private fun openLinkCommentMenu(comment: LinkComment) {
-        val activityContext = itemView.getActivityContext()!!
+        val activityContext = itemView.getActivityContext() ?: return
         val dialog = BottomSheetDialog(activityContext)
         val bottomSheetView = LinkCommentMenuBottomsheetBinding.inflate(activityContext.layoutInflater)
         dialog.setContentView(bottomSheetView.root)

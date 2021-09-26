@@ -3,6 +3,8 @@ package io.github.wykopmobilny.domain.profile
 import androidx.paging.Pager
 import androidx.paging.map
 import io.github.wykopmobilny.data.cache.api.UserVote
+import io.github.wykopmobilny.domain.navigation.InteropRequest
+import io.github.wykopmobilny.domain.navigation.InteropRequestsProvider
 import io.github.wykopmobilny.domain.profile.di.ProfileScope
 import io.github.wykopmobilny.domain.settings.LinkImagePosition
 import io.github.wykopmobilny.domain.settings.prefs.GetLinksPreferences
@@ -29,6 +31,7 @@ internal class GetProfileActionsQuery @Inject constructor(
     private val clock: Clock,
     private val getLinksPreferences: GetLinksPreferences,
     private val appScopes: AppScopes,
+    private val interopRequests: InteropRequestsProvider,
 ) : GetProfileActions {
 
     override fun invoke() =
@@ -54,7 +57,7 @@ internal class GetProfileActionsQuery @Inject constructor(
         ),
         previewImageUrl = previewImageUrl,
         commentsCount = commentsCount,
-        author = author.toUi(),
+        author = author.toUi(onClicked = safeCallback { interopRequests.request(InteropRequest.Profile(profileId = profileId)) }),
         addedAgo = postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(suffix = "temu"),
         app = app,
         hasPlus18Overlay = false,
@@ -97,11 +100,14 @@ internal class GetProfileActionsQuery @Inject constructor(
     }
 }
 
-internal fun UserInfo.toUi() = UserInfoUi(
+internal fun UserInfo.toUi(
+    onClicked: (() -> Unit)?,
+) = UserInfoUi(
     avatar = AvatarUi(
         avatarUrl = avatarUrl,
         rank = rank,
         genderStrip = gender.toUi(),
+        onClicked = onClicked,
     ),
     name = profileId,
     color = color.toUi(),

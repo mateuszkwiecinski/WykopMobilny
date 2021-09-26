@@ -17,6 +17,7 @@ internal interface InteropRequestsProvider {
 sealed class InteropRequest {
     object BlackListScreen : InteropRequest()
     data class ShowToast(val message: String) : InteropRequest()
+    data class Profile(val profileId: String) : InteropRequest()
     data class PrivateMessage(val profileId: String) : InteropRequest()
     data class NewEntry(val profileId: String) : InteropRequest()
 }
