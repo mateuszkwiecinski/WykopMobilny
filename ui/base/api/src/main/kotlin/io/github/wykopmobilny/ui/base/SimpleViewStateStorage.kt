@@ -1,13 +1,13 @@
 package io.github.wykopmobilny.ui.base
 
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
 class SimpleViewStateStorage {
 
     private val _state = MutableStateFlow(SimpleViewState())
-    val state: Flow<SimpleViewState> = _state
+    val state: StateFlow<SimpleViewState> = _state
 
     fun update(updater: (old: SimpleViewState) -> SimpleViewState) {
         _state.update(updater)

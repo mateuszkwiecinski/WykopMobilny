@@ -2,7 +2,7 @@ package io.github.wykopmobilny.ui.profile
 
 import io.github.wykopmobilny.ui.base.Query
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
-import io.github.wykopmobilny.ui.components.users.UserInfoUi
+import io.github.wykopmobilny.ui.components.widgets.UserInfoUi
 
 interface GetProfileDetails : Query<ProfileDetailsUi>
 

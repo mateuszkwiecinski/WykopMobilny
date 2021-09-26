@@ -1,9 +1,12 @@
 package io.github.wykopmobilny.models.mapper.apiv2
 
 import io.github.wykopmobilny.api.filters.OWMContentFilter
-import io.github.wykopmobilny.api.responses.AuthorResponse
 import io.github.wykopmobilny.api.responses.LinkCommentResponse
 import io.github.wykopmobilny.models.dataclass.LinkComment
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.Month
 
 object LinkCommentMapper {
 
@@ -11,10 +14,9 @@ object LinkCommentMapper {
         owmContentFilter.filterLinkComment(
             LinkComment(
                 id = value.id,
-                author = AuthorMapper.map(value.author ?: AuthorResponse("", 9999, "", "")),
+                author = AuthorMapper.map(value.author),
                 fullDate = value.date,
                 body = value.body,
-                blocked = value.blocked,
                 favorite = value.favorite,
                 voteCount = value.voteCount,
                 voteCountPlus = value.voteCountPlus,
@@ -30,7 +32,7 @@ object LinkCommentMapper {
                 childCommentCount = 0,
                 violationUrl = value.violationUrl,
                 isNsfw = value.body?.lowercase()?.contains("#nsfw") ?: false,
-                isBlocked = value.blocked
-            )
+                isBlocked = value.blocked,
+            ),
         )
 }

@@ -9,7 +9,7 @@ class DeepLinkActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val url = intent.dataString!!
+        val url = intent.dataString ?: return finish()
         val activityToOpen = WykopLinkHandler.getLinkIntent(url, this)
         activityToOpen?.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(activityToOpen)

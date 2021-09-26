@@ -18,13 +18,13 @@ import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.dialogs.confirmationDialog
 import io.github.wykopmobilny.ui.fragments.entrycomments.EntryCommentActionListener
 import io.github.wykopmobilny.ui.fragments.entrycomments.EntryCommentViewListener
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.widgets.WykopEmbedView
 import io.github.wykopmobilny.utils.api.getGroupColor
 import io.github.wykopmobilny.utils.copyText
 import io.github.wykopmobilny.utils.getActivityContext
 import io.github.wykopmobilny.utils.layoutInflater
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.textview.prepareBody
 import io.github.wykopmobilny.utils.textview.stripWykopFormatting
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
@@ -33,8 +33,8 @@ class EntryCommentViewHolder(
     private val binding: CommentListItemBinding,
     private val userManagerApi: UserManagerApi,
     private val settingsPreferencesApi: SettingsPreferencesApi,
-    private val navigatorApi: NewNavigatorApi,
-    private val linkHandlerApi: WykopLinkHandlerApi,
+    private val navigator: NewNavigator,
+    private val linkHandler: WykopLinkHandler,
     private val commentActionListener: EntryCommentActionListener,
     private val commentViewListener: EntryCommentViewListener?,
     private val enableClickListener: Boolean,
@@ -53,8 +53,8 @@ class EntryCommentViewHolder(
             viewType: Int,
             userManagerApi: UserManagerApi,
             settingsPreferencesApi: SettingsPreferencesApi,
-            navigatorApi: NewNavigatorApi,
-            linkHandlerApi: WykopLinkHandlerApi,
+            navigator: NewNavigator,
+            linkHandler: WykopLinkHandler,
             commentActionListener: EntryCommentActionListener,
             commentViewListener: EntryCommentViewListener?,
             enableClickListener: Boolean,
@@ -63,8 +63,8 @@ class EntryCommentViewHolder(
                 CommentListItemBinding.inflate(parent.layoutInflater, parent, false),
                 userManagerApi,
                 settingsPreferencesApi,
-                navigatorApi,
-                linkHandlerApi,
+                navigator,
+                linkHandler,
                 commentActionListener,
                 commentViewListener,
                 enableClickListener,
@@ -109,11 +109,11 @@ class EntryCommentViewHolder(
     private fun setupHeader(comment: EntryComment) {
         comment.author.apply {
             binding.avatarView.setAuthor(this)
-            binding.avatarView.setOnClickListener { navigatorApi.openProfileActivity(nick) }
+            binding.avatarView.setOnClickListener { navigator.openProfileActivity(nick) }
             binding.authorTextView.apply {
                 text = nick
                 setTextColor(context.getGroupColor(group))
-                setOnClickListener { navigatorApi.openProfileActivity(nick) }
+                setOnClickListener { navigator.openProfileActivity(nick) }
             }
             binding.patronBadgeTextView.isVisible = badge != null
             badge?.let {
@@ -160,7 +160,7 @@ class EntryCommentViewHolder(
 
         // Setup share button
         binding.shareTextView.setOnClickListener {
-            navigatorApi.shareUrl(comment.url)
+            navigator.shareUrl(comment.url)
         }
     }
 
@@ -174,14 +174,14 @@ class EntryCommentViewHolder(
             binding.entryContentTextView.isVisible = true
             binding.entryContentTextView.prepareBody(
                 comment.body,
-                { linkHandlerApi.handleUrl(it) },
+                { linkHandler.handleUrl(it) },
                 { handleClick(comment) },
                 openSpoilersDialog,
             )
         } else binding.entryContentTextView.isVisible = false
 
         if (comment.embed != null && type == TYPE_EMBED) {
-            embedView.setEmbed(comment.embed, settingsPreferencesApi, navigatorApi, comment.isNsfw)
+            embedView.setEmbed(comment.embed, settingsPreferencesApi, navigator, comment.isNsfw)
         }
 
         if (enableClickListener) {
@@ -212,7 +212,7 @@ class EntryCommentViewHolder(
             }
 
             entryCommentMenuEdit.setOnClickListener {
-                navigatorApi.openEditEntryCommentActivity(comment.body, comment.entryId, comment.id)
+                navigator.openEditEntryCommentActivity(comment.body, comment.entryId, comment.id)
                 dialog.dismiss()
             }
 
@@ -230,7 +230,7 @@ class EntryCommentViewHolder(
 
             entryCommentMenuReport.isVisible = isUserAuthorized && comment.violationUrl != null
             entryCommentMenuReport.setOnClickListener {
-                navigatorApi.openReportScreen(comment.violationUrl.let(::checkNotNull))
+                navigator.openReportScreen(comment.violationUrl.let(::checkNotNull))
                 dialog.dismiss()
             }
 
@@ -249,7 +249,7 @@ class EntryCommentViewHolder(
 
     private fun handleClick(comment: EntryComment) {
         if (enableClickListener) {
-            navigatorApi.openEntryDetailsActivity(comment.entryId, isEmbedViewResized)
+            navigator.openEntryDetailsActivity(comment.entryId, isEmbedViewResized)
         }
     }
 

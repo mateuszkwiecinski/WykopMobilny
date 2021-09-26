@@ -4,10 +4,11 @@ import io.github.wykopmobilny.api.links.LinksApi
 import io.github.wykopmobilny.base.BasePresenter
 import io.github.wykopmobilny.base.Schedulers
 import io.github.wykopmobilny.utils.intoComposite
+import javax.inject.Inject
 
-class UpvotersPresenter(
-    val schedulers: Schedulers,
-    val linksApi: LinksApi
+class UpvotersPresenter @Inject constructor(
+    private val schedulers: Schedulers,
+    private val linksApi: LinksApi
 ) : BasePresenter<UpvotersView>() {
 
     var linkId = -1L

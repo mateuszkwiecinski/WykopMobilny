@@ -12,7 +12,7 @@ import io.github.wykopmobilny.databinding.LinkMenuBottomsheetBinding
 import io.github.wykopmobilny.models.dataclass.Link
 import io.github.wykopmobilny.ui.fragments.link.LinkHeaderActionListener
 import io.github.wykopmobilny.ui.fragments.link.LinkInteractor
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.utils.api.getGroupColor
 import io.github.wykopmobilny.utils.api.stripImageCompression
 import io.github.wykopmobilny.utils.getActivityContext
@@ -21,16 +21,16 @@ import io.github.wykopmobilny.utils.loadImage
 import io.github.wykopmobilny.utils.textview.prepareBody
 import io.github.wykopmobilny.utils.textview.removeHtml
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.usermanager.isUserAuthorized
 import java.net.URL
 
 class LinkHeaderViewHolder(
     private val binding: LinkDetailsHeaderLayoutBinding,
     private val linkActionListener: LinkHeaderActionListener,
-    val navigatorApi: NewNavigatorApi,
-    val linkHandlerApi: WykopLinkHandlerApi,
-    val userManagerApi: UserManagerApi
+    private val navigator: NewNavigator,
+    private val linkHandler: WykopLinkHandler,
+    private val userManagerApi: UserManagerApi
 ) : RecyclableViewHolder(binding.root) {
 
     companion object {
@@ -42,15 +42,15 @@ class LinkHeaderViewHolder(
         fun inflateView(
             parent: ViewGroup,
             userManagerApi: UserManagerApi,
-            navigatorApi: NewNavigatorApi,
-            linkHandlerApi: WykopLinkHandlerApi,
+            navigator: NewNavigator,
+            linkHandler: WykopLinkHandler,
             linkHeaderActionListener: LinkHeaderActionListener
         ): LinkHeaderViewHolder {
             return LinkHeaderViewHolder(
                 LinkDetailsHeaderLayoutBinding.inflate(parent.layoutInflater, parent, false),
                 linkHeaderActionListener,
-                navigatorApi,
-                linkHandlerApi,
+                navigator,
+                linkHandler,
                 userManagerApi
             )
         }
@@ -74,8 +74,8 @@ class LinkHeaderViewHolder(
         if (author != null) {
             binding.avatarView.isVisible = true
             binding.userTextView.isVisible = true
-            binding.userTextView.setOnClickListener { navigatorApi.openProfileActivity(link.author.nick) }
-            binding.avatarView.setOnClickListener { navigatorApi.openProfileActivity(link.author.nick) }
+            binding.userTextView.setOnClickListener { navigator.openProfileActivity(link.author.nick) }
+            binding.avatarView.setOnClickListener { navigator.openProfileActivity(link.author.nick) }
             binding.avatarView.setAuthor(link.author)
             binding.userTextView.text = link.author.nick
             binding.userTextView.setTextColor(itemView.context.getGroupColor(link.author.group))
@@ -86,7 +86,7 @@ class LinkHeaderViewHolder(
 
         binding.urlTextView.text = URL(link.sourceUrl).host.removePrefix("www.")
         binding.blockedTextView.prepareBody(link.tags.convertToTagsHtml()) {
-            linkHandlerApi.handleUrl(
+            linkHandler.handleUrl(
                 it
             )
         }
@@ -100,7 +100,7 @@ class LinkHeaderViewHolder(
             openOptionsMenu(link)
         }
         binding.shareTextView.setOnClickListener {
-            navigatorApi.shareUrl(link.url)
+            navigator.shareUrl(link.url)
         }
         binding.commentsCountTextView.setOnClickListener {}
 
@@ -118,10 +118,10 @@ class LinkHeaderViewHolder(
         binding.description.text = link.description.removeHtml()
         binding.relatedCountTextView.text = link.relatedCount.toString()
         binding.relatedCountTextView.setOnClickListener {
-            navigatorApi.openLinkRelatedActivity(link.id)
+            navigator.openLinkRelatedActivity(link.id)
         }
         itemView.setOnClickListener {
-            linkHandlerApi.handleUrl(link.sourceUrl)
+            linkHandler.handleUrl(link.sourceUrl)
         }
     }
 
@@ -168,12 +168,12 @@ class LinkHeaderViewHolder(
             tvDiggerList.text = root.resources.getString(R.string.dig_list, link.voteCount)
             tvBuryList.text = root.resources.getString(R.string.bury_list, link.buryCount)
             linkDiggers.setOnClickListener {
-                navigatorApi.openLinkUpvotersActivity(link.id)
+                navigator.openLinkUpvotersActivity(link.id)
                 dialog.dismiss()
             }
 
             linkBuryList.setOnClickListener {
-                navigatorApi.openLinkDownvotersActivity(link.id)
+                navigator.openLinkDownvotersActivity(link.id)
                 dialog.dismiss()
             }
 
@@ -183,7 +183,7 @@ class LinkHeaderViewHolder(
             }
 
             linkRelated.setOnClickListener {
-                navigatorApi.openLinkRelatedActivity(link.id)
+                navigator.openLinkRelatedActivity(link.id)
                 dialog.dismiss()
             }
             linkBury.isVisible = userManagerApi.isUserAuthorized()

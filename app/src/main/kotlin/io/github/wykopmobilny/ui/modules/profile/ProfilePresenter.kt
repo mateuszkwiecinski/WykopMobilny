@@ -4,10 +4,11 @@ import io.github.wykopmobilny.api.profile.ProfileApi
 import io.github.wykopmobilny.base.BasePresenter
 import io.github.wykopmobilny.base.Schedulers
 import io.github.wykopmobilny.utils.intoComposite
+import javax.inject.Inject
 
-class ProfilePresenter(
-    val schedulers: Schedulers,
-    val profileApi: ProfileApi
+class ProfilePresenter @Inject constructor(
+    private val schedulers: Schedulers,
+    private val profileApi: ProfileApi
 ) : BasePresenter<ProfileView>() {
 
     var userName = "a__s"

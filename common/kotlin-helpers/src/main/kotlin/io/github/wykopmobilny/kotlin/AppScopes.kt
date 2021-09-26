@@ -13,7 +13,7 @@ interface AppScopes {
 
     fun <T : Any> launchScoped(
         clazz: KClass<T>,
-        id: String? = null,
+        id: Any? = null,
         block: suspend CoroutineScope.() -> Unit,
     ): Job
 }
@@ -40,6 +40,6 @@ inline fun <reified T : Any> AppScopes.launchIn(
 ) = launchScoped(T::class, block = block)
 
 inline fun <reified T : Any> AppScopes.launchInKeyed(
-    id: String,
+    id: Any,
     noinline block: suspend CoroutineScope.() -> Unit,
 ) = launchScoped(T::class, id, block)

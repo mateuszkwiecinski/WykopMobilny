@@ -9,11 +9,11 @@ import io.github.wykopmobilny.models.dataclass.Notification
 import io.github.wykopmobilny.utils.api.getGroupColor
 import io.github.wykopmobilny.utils.textview.removeHtml
 import io.github.wykopmobilny.utils.toPrettyDate
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 
 class NotificationViewHolder(
     private val binding: NotificationsListItemBinding,
-    private val linkHandlerApi: WykopLinkHandlerApi,
+    private val linkHandler: WykopLinkHandler,
     private val updateHeader: (String) -> Unit
 ) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
 
@@ -53,7 +53,7 @@ class NotificationViewHolder(
                 unreadLine.isVisible = false
                 unreadMark.isVisible = false
                 unreadDotMark.isVisible = false
-                linkHandlerApi.handleUrl(notification.url ?: "https://www.wykop.pl/ludzie/feelfree")
+                linkHandler.handleUrl(notification.url ?: "https://www.wykop.pl/ludzie/feelfree")
             }
         }
     }

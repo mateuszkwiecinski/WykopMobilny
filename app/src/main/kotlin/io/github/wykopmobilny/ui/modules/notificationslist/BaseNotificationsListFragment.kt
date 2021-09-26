@@ -11,7 +11,7 @@ import io.github.wykopmobilny.base.BaseFragment
 import io.github.wykopmobilny.databinding.ActivityNotificationsListBinding
 import io.github.wykopmobilny.models.dataclass.Notification
 import io.github.wykopmobilny.ui.adapters.NotificationsListAdapter
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.prepare
 import io.github.wykopmobilny.utils.viewBinding
 
@@ -22,7 +22,7 @@ abstract class BaseNotificationsListFragment :
 
     protected val binding by viewBinding(ActivityNotificationsListBinding::bind)
     abstract var notificationAdapter: NotificationsListAdapter
-    abstract var linkHandler: WykopLinkHandlerApi
+    abstract var linkHandler: WykopLinkHandler
 
     abstract fun markAsRead()
 

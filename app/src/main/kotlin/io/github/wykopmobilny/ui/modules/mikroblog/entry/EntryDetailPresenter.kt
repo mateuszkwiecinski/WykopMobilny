@@ -12,8 +12,9 @@ import io.github.wykopmobilny.ui.fragments.entrycomments.EntryCommentActionListe
 import io.github.wykopmobilny.ui.fragments.entrycomments.EntryCommentInteractor
 import io.github.wykopmobilny.utils.intoComposite
 import io.reactivex.Single
+import javax.inject.Inject
 
-class EntryDetailPresenter(
+class EntryDetailPresenter @Inject constructor(
     val schedulers: Schedulers,
     private val entriesApi: EntriesApi,
     private val entriesInteractor: EntriesInteractor,

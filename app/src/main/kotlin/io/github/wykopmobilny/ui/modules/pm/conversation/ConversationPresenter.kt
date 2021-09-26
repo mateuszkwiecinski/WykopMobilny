@@ -5,8 +5,9 @@ import io.github.wykopmobilny.api.pm.PMApi
 import io.github.wykopmobilny.base.BasePresenter
 import io.github.wykopmobilny.base.Schedulers
 import io.github.wykopmobilny.utils.intoComposite
+import javax.inject.Inject
 
-class ConversationPresenter(
+class ConversationPresenter @Inject constructor(
     val schedulers: Schedulers,
     private val pmApi: PMApi
 ) : BasePresenter<ConversationView>() {

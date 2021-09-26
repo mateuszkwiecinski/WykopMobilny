@@ -8,7 +8,7 @@ import io.github.wykopmobilny.databinding.LinkLayoutBinding
 import io.github.wykopmobilny.models.dataclass.Link
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.fragments.links.LinkActionListener
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.utils.layoutInflater
 import io.github.wykopmobilny.utils.loadImage
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
@@ -16,7 +16,7 @@ import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 class LinkViewHolder(
     private val binding: LinkLayoutBinding,
     private val settingsApi: SettingsPreferencesApi,
-    private val navigatorApi: NewNavigatorApi,
+    private val navigator: NewNavigator,
     private val userManagerApi: UserManagerApi,
     private val linkActionListener: LinkActionListener,
     private val appStorage: AppStorage,
@@ -37,14 +37,14 @@ class LinkViewHolder(
             viewType: Int,
             userManagerApi: UserManagerApi,
             settingsPreferencesApi: SettingsPreferencesApi,
-            navigatorApi: NewNavigatorApi,
+            navigator: NewNavigator,
             linkActionListener: LinkActionListener,
             appStorage: AppStorage,
         ): LinkViewHolder {
             val view = LinkViewHolder(
                 LinkLayoutBinding.inflate(parent.layoutInflater, parent, false),
                 settingsPreferencesApi,
-                navigatorApi,
+                navigator,
                 userManagerApi,
                 linkActionListener,
                 appStorage,
@@ -96,7 +96,7 @@ class LinkViewHolder(
     }
 
     private fun openLinkDetail(link: Link) {
-        navigatorApi.openLinkDetailsActivity(link)
+        navigator.openLinkDetailsActivity(link)
         if (!link.gotSelected) {
             setWidgetAlpha(ALPHA_VISITED)
             link.gotSelected = true

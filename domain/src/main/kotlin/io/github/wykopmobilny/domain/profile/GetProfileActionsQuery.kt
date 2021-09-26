@@ -3,15 +3,20 @@ package io.github.wykopmobilny.domain.profile
 import androidx.paging.Pager
 import androidx.paging.map
 import io.github.wykopmobilny.data.cache.api.UserVote
+import io.github.wykopmobilny.domain.profile.di.ProfileScope
 import io.github.wykopmobilny.domain.settings.LinkImagePosition
 import io.github.wykopmobilny.domain.settings.prefs.GetLinksPreferences
 import io.github.wykopmobilny.domain.settings.prefs.LinksPreference
-import io.github.wykopmobilny.ui.components.links.ListElementUi
-import io.github.wykopmobilny.ui.components.links.UpvoteCounter
-import io.github.wykopmobilny.ui.components.users.AvatarUi
-import io.github.wykopmobilny.ui.components.users.ColorReference
-import io.github.wykopmobilny.ui.components.users.UserInfoUi
+import io.github.wykopmobilny.domain.utils.safeKeyed
+import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.ui.components.widgets.AvatarUi
+import io.github.wykopmobilny.ui.components.widgets.ColorReference
+import io.github.wykopmobilny.ui.components.widgets.ColoredCounterUi
+import io.github.wykopmobilny.ui.components.widgets.ListElementUi
+import io.github.wykopmobilny.ui.components.widgets.PlainCounterUi
+import io.github.wykopmobilny.ui.components.widgets.UserInfoUi
 import io.github.wykopmobilny.ui.profile.GetProfileActions
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -19,9 +24,11 @@ import kotlinx.datetime.periodUntil
 import javax.inject.Inject
 
 internal class GetProfileActionsQuery @Inject constructor(
+    @ProfileId private val profileId: String,
     private val pager: Pager<Int, ProfileAction>,
     private val clock: Clock,
     private val getLinksPreferences: GetLinksPreferences,
+    private val appScopes: AppScopes,
 ) : GetProfileActions {
 
     override fun invoke() =
@@ -31,16 +38,20 @@ internal class GetProfileActionsQuery @Inject constructor(
         ) { pagingData, linksPreference ->
             pagingData.map { action ->
                 when (action) {
-                    is ProfileAction.Entry -> action.toUi()
-                    is ProfileAction.Link -> action.toUi(linksPreference)
+                    is EntryInfo -> action.toUi()
+                    is LinkInfo -> action.toUi(linksPreference)
                 }
             }
         }
 
-    private fun ProfileAction.Entry.toUi() = ListElementUi.Entry(
+    private fun EntryInfo.toUi() = ListElementUi.Entry(
         id = id,
         body = body,
-        voteCount = voteCounter(userAction, voteCount),
+        voteCount = coloredCounter(
+            userAction = userAction,
+            voteCount = voteCount,
+            onClicked = safeCallback { TODO("voteOnEntry id=$id") },
+        ),
         previewImageUrl = previewImageUrl,
         commentsCount = commentsCount,
         author = author.toUi(),
@@ -48,23 +59,27 @@ internal class GetProfileActionsQuery @Inject constructor(
         app = app,
         hasPlus18Overlay = false,
         isFavorite = isFavorite,
-        shareAction = { },
-        favoriteAction = { },
-        voteAction = { },
+        shareAction = safeCallback { },
+        favoriteAction = safeCallback { },
+        voteAction = safeCallback { },
     )
 
-    private fun ProfileAction.Link.toUi(linksPreference: LinksPreference) =
+    private fun LinkInfo.toUi(linksPreference: LinksPreference) =
         ListElementUi.Link(
             id = id,
             title = title,
             body = description,
             previewImageUrl = previewImageUrl,
             commentsCount = commentsCount,
-            voteCount = voteCounter(userAction, voteCount),
+            voteCount = coloredCounter(
+                userAction = userAction,
+                voteCount = voteCount,
+                onClicked = safeCallback { TODO("voteOnLink id=$id") },
+            ),
             addedAgo = postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(suffix = "temu"),
-            shareAction = { },
-            favoriteAction = { },
-            voteAction = { },
+            shareAction = safeCallback { },
+            favoriteAction = safeCallback { },
+            voteAction = safeCallback { },
             thumbnail = if (linksPreference.showLinkThumbnail || linksPreference.useSimpleList) {
                 ListElementUi.Link.Thumbnail.None
             } else {
@@ -76,6 +91,10 @@ internal class GetProfileActionsQuery @Inject constructor(
                 }
             },
         )
+
+    private fun safeCallback(function: suspend CoroutineScope.() -> Unit): () -> Unit = {
+        appScopes.safeKeyed<ProfileScope>(profileId, function)
+    }
 }
 
 internal fun UserInfo.toUi() = UserInfoUi(
@@ -88,15 +107,28 @@ internal fun UserInfo.toUi() = UserInfoUi(
     color = color.toUi(),
 )
 
-internal fun voteCounter(userAction: UserVote?, voteCount: Int): UpvoteCounter {
+internal fun coloredCounter(
+    userAction: UserVote?,
+    voteCount: Int,
+    onClicked: (() -> Unit)?,
+): ColoredCounterUi {
     val color = when (userAction) {
         UserVote.Up -> ColorReference.CounterUpvoted
         UserVote.Down -> ColorReference.CounterDownvoted
         null -> ColorReference.CounterDefault
     }
 
-    return UpvoteCounter(
+    return ColoredCounterUi(
         count = voteCount,
         color = color,
+        onClick = onClicked,
     )
 }
+
+internal fun plainCounter(
+    voteCount: Int,
+    onClicked: (() -> Unit)?,
+) = PlainCounterUi(
+    count = voteCount,
+    onClick = onClicked,
+)

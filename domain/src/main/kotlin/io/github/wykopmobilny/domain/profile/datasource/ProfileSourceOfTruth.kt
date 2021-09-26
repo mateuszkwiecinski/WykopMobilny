@@ -3,6 +3,8 @@ package io.github.wykopmobilny.domain.profile.datasource
 import com.dropbox.android.external.store4.SourceOfTruth
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
+import io.github.wykopmobilny.api.responses.AuthorResponse
+import io.github.wykopmobilny.api.responses.EmbedResponse
 import io.github.wykopmobilny.api.responses.EntryLinkResponse
 import io.github.wykopmobilny.data.cache.api.AppCache
 import io.github.wykopmobilny.data.cache.api.Embed
@@ -10,7 +12,10 @@ import io.github.wykopmobilny.data.cache.api.EmbedType
 import io.github.wykopmobilny.data.cache.api.EntryEntity
 import io.github.wykopmobilny.data.cache.api.LinkEntity
 import io.github.wykopmobilny.data.cache.api.ProfileActionsEntity
+import io.github.wykopmobilny.data.cache.api.ProfileQueries
 import io.github.wykopmobilny.data.cache.api.UserVote
+import io.github.wykopmobilny.domain.profile.EntryInfo
+import io.github.wykopmobilny.domain.profile.LinkInfo
 import io.github.wykopmobilny.domain.profile.ProfileAction
 import io.github.wykopmobilny.domain.profile.UserInfo
 import io.github.wykopmobilny.domain.profile.di.toColorEntity
@@ -30,26 +35,30 @@ internal fun profileSourceOfTruth(
             .asFlow()
             .mapToList(AppDispatchers.IO)
             .map { links ->
-                links.map { action ->
-                    val entry = ProfileAction.Link(
-                        id = action.id,
-                        title = action.title,
-                        description = action.description,
-                        previewImageUrl = action.previewImageUrl,
+                links.map { link ->
+                    val entry = LinkInfo(
+                        id = link.id,
+                        title = link.title,
+                        description = link.description,
+                        tags = link.tags.split(" "),
+                        sourceUrl = link.sourceUrl,
+                        previewImageUrl = link.previewImageUrl,
                         author = UserInfo(
-                            profileId = action.profileId,
-                            avatarUrl = action.avatar,
-                            rank = action.rank,
-                            gender = action.gender?.toGenderDomain(),
-                            color = action.color.toColorDomain(),
+                            profileId = link.profileId,
+                            avatarUrl = link.avatar,
+                            rank = link.rank,
+                            gender = link.gender?.toGenderDomain(),
+                            color = link.color.toColorDomain(),
                         ),
-                        commentsCount = action.commentsCount,
-                        voteCount = action.voteCount,
-                        postedAt = action.postedAt,
-                        app = action.app,
-                        userAction = action.userVote,
+                        commentsCount = link.commentsCount,
+                        voteCount = link.voteCount,
+                        relatedCount = link.relatedCount,
+                        postedAt = link.postedAt,
+                        app = link.app,
+                        userAction = link.userVote,
+                        userFavorite = link.userFavorite,
                     )
-                    entry to action.orderOnPage
+                    entry to link.orderOnPage
                 }
             }
 
@@ -58,7 +67,7 @@ internal fun profileSourceOfTruth(
             .mapToList(AppDispatchers.IO)
             .map { entities ->
                 entities.map { action ->
-                    val entry = ProfileAction.Entry(
+                    val entry = EntryInfo(
                         id = action.id,
                         postedAt = action.postedAt,
                         body = action.body,
@@ -96,7 +105,7 @@ internal fun profileSourceOfTruth(
                         id = author.login,
                         avatar = author.avatar,
                         color = author.color.toColorEntity(),
-                        gender = author.sex?.toGenderEntity(),
+                        gender = author.sex.toGenderEntity(),
                     )
                     cache.linksQueries.insertOrReplace(
                         LinkEntity(
@@ -114,47 +123,18 @@ internal fun profileSourceOfTruth(
                             plus18 = plus18,
                             canVote = canVote,
                             isHot = isHot,
-                            userVote = when (userVote) {
-                                "dig" -> UserVote.Down
-                                "bury" -> UserVote.Up
-                                else -> null
-                            },
+                            userVote = userVote.asUserVote(),
                             userFavorite = userFavorite == true,
                             userObserve = userObserve == true,
                             app = app,
+                            profileId = author.login,
                         ),
                     )
                 }
                 action.entry?.run {
-                    cache.profileQueries.upsert(
-                        id = author.login,
-                        avatar = author.avatar,
-                        color = author.color.toColorEntity(),
-                        gender = author.sex?.toGenderEntity(),
-                    )
+                    cache.profileQueries.upsert(author)
+                    embed?.toEntity()?.let(cache.embedQueries::insertOrReplace)
 
-                    val embed = embed
-                    if (embed != null) {
-                        val type = when (embed.type) {
-                            "image" -> if (embed.animated) {
-                                EmbedType.StaticImage
-                            } else {
-                                EmbedType.AnimatedImage
-                            }
-                            "video" -> EmbedType.Video
-                            else -> EmbedType.Unknown
-                        }
-                        cache.embedQueries.insertOrReplace(
-                            Embed(
-                                id = embed.url,
-                                type = type,
-                                fileName = embed.source,
-                                preview = embed.preview,
-                                size = embed.size,
-                                hasAdultContent = embed.plus18,
-                            ),
-                        )
-                    }
                     cache.entriesQueries.insertOrReplace(
                         EntryEntity(
                             id = id,
@@ -168,11 +148,8 @@ internal fun profileSourceOfTruth(
                             app = app,
                             canComment = isCommentingPossible == true,
                             violationUrl = violationUrl,
-                            userVote = when {
-                                userVote > 0 -> UserVote.Up
-                                userVote < 0 -> UserVote.Down
-                                else -> null
-                            },
+                            userVote = userVote.asUserVote(),
+                            profileId = author.login,
                         ),
                     )
                 }
@@ -191,3 +168,47 @@ internal fun profileSourceOfTruth(
     delete = { page -> cache.profileActionsQueries.deletePage(profileId, page = page) },
     deleteAll = { cache.profileActionsQueries.deleteByProfile(profileId) },
 )
+
+internal fun ProfileQueries.upsert(author: AuthorResponse) {
+    upsert(
+        id = author.login,
+        avatar = author.avatar,
+        color = author.color.toColorEntity(),
+        gender = author.sex.toGenderEntity(),
+    )
+}
+
+internal fun EmbedResponse.toEntity(): Embed {
+    val knownType = when (type) {
+        "image" -> if (animated) {
+            EmbedType.StaticImage
+        } else {
+            EmbedType.AnimatedImage
+        }
+        "video" -> EmbedType.Video
+        else -> EmbedType.Unknown
+    }
+
+    return Embed(
+        id = url,
+        type = knownType,
+        fileName = source,
+        preview = preview,
+        size = size,
+        hasAdultContent = plus18,
+    )
+}
+
+internal fun String?.asUserVote() =
+    when (this) {
+        "dig" -> UserVote.Down
+        "bury" -> UserVote.Up
+        else -> null
+    }
+
+internal fun Int.asUserVote() =
+    when {
+        this > 0 -> UserVote.Up
+        this < 0 -> UserVote.Down
+        else -> null
+    }

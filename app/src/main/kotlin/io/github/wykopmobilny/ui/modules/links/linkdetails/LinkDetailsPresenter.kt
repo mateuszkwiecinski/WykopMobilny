@@ -12,8 +12,9 @@ import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentActionListene
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentInteractor
 import io.github.wykopmobilny.utils.intoComposite
 import io.reactivex.Single
+import javax.inject.Inject
 
-class LinkDetailsPresenter(
+class LinkDetailsPresenter @Inject constructor(
     val schedulers: Schedulers,
     val linksApi: LinksApi,
     private val linkCommentInteractor: LinkCommentInteractor,

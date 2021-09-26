@@ -14,10 +14,11 @@ CREATE TABLE entryEntity (
     canComment INTEGER AS Boolean NOT NULL,
     app TEXT,
     userVote INTEGER AS UserVote,
+    profileId TEXT NOT NULL,
+    FOREIGN KEY (profileId) REFERENCES profileEntity(id),
     FOREIGN KEY (embedId) REFERENCES embed(id)
 );
 
 insertOrReplace:
 INSERT OR REPLACE INTO entryEntity
 VALUES ?;
-

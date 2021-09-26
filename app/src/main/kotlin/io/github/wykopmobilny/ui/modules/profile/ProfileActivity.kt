@@ -22,7 +22,7 @@ import io.github.wykopmobilny.databinding.BadgesBottomsheetBinding
 import io.github.wykopmobilny.models.dataclass.drawBadge
 import io.github.wykopmobilny.models.fragments.DataFragment
 import io.github.wykopmobilny.models.fragments.getDataFragmentInstance
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.utils.api.getGenderStripResource
 import io.github.wykopmobilny.utils.api.getGroupColor
 import io.github.wykopmobilny.utils.loadImage
@@ -36,7 +36,7 @@ import javax.inject.Inject
 class ProfileActivity : BaseActivity(), ProfileView {
 
     @Inject
-    lateinit var navigator: NewNavigatorApi
+    lateinit var navigator: NewNavigator
 
     @Inject
     lateinit var presenter: ProfilePresenter

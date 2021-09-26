@@ -11,7 +11,7 @@ import io.github.wykopmobilny.R
 import io.github.wykopmobilny.base.BaseActivity
 import io.github.wykopmobilny.base.BaseLinksFragment
 import io.github.wykopmobilny.base.BaseNavigationView
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.modules.mainnavigation.MainNavigationInterface
 import javax.inject.Inject
 
@@ -25,7 +25,7 @@ class PromotedFragment : BaseLinksFragment(), PromotedView, BaseNavigationView {
     lateinit var presenter: PromotedPresenter
 
     @Inject
-    lateinit var navigator: NewNavigatorApi
+    lateinit var navigator: NewNavigator
 
     private val navigation by lazy { activity as MainNavigationInterface }
     private val fab by lazy { navigation.floatingButton }

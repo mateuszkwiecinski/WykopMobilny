@@ -8,13 +8,13 @@ import io.github.wykopmobilny.domain.blacklist.actions.ProfilesRepository
 import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.InteropRequestsProvider
 import io.github.wykopmobilny.domain.profile.di.ProfileScope
+import io.github.wykopmobilny.domain.utils.safeKeyed
 import io.github.wykopmobilny.storage.api.UserInfoStorage
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.base.FailedAction
 import io.github.wykopmobilny.ui.base.SimpleViewStateStorage
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
-import io.github.wykopmobilny.ui.base.launchInKeyed
 import io.github.wykopmobilny.ui.profile.BanReasonUi
 import io.github.wykopmobilny.ui.profile.ContextMenuOptionUi
 import io.github.wykopmobilny.ui.profile.GetProfileDetails
@@ -101,11 +101,11 @@ internal class GetProfileDetailsQuery @Inject constructor(
                     ErrorDialogUi(
                         error = failure.cause,
                         retryAction = failure.retryAction,
-                        dismissAction = { launchWithErrorHandling { viewStateStorage.update { it.copy(failedAction = null) } } },
+                        dismissAction = safeCallback { viewStateStorage.update { it.copy(failedAction = null) } },
                     )
                 },
                 header = header,
-                onAddEntryClicked = { launchWithErrorHandling { interopRequests.request(InteropRequest.NewEntry(profileId)) } },
+                onAddEntryClicked = safeCallback { interopRequests.request(InteropRequest.NewEntry(profileId)) },
                 contextMenuOptions = contextMenuOptions,
             )
         }
@@ -113,45 +113,45 @@ internal class GetProfileDetailsQuery @Inject constructor(
 
     private fun badgesOption() = ContextMenuOptionUi(
         option = ProfileMenuOption.Badges,
-        onClick = { launchWithErrorHandling { TODO() } },
+        onClick = safeCallback { TODO() },
     )
 
     private fun privateMessageOption() = ContextMenuOptionUi(
         option = ProfileMenuOption.PrivateMessage,
-        onClick = { launchWithErrorHandling { interopRequests.request(InteropRequest.PrivateMessage(profileId)) } },
+        onClick = safeCallback { interopRequests.request(InteropRequest.PrivateMessage(profileId)) },
     )
 
     private fun blockOption() = ContextMenuOptionUi(
         option = ProfileMenuOption.Block,
-        onClick = { launchWithErrorHandling { profilesRepository.blockUser(profileId) } },
+        onClick = safeCallback { profilesRepository.blockUser(profileId) },
     )
-
-    private fun launchWithErrorHandling(function: suspend CoroutineScope.() -> Unit) {
-        appScopes.launchInKeyed<ProfileScope>(profileId) {
-            runCatching { function() }
-                .onFailure { failure -> viewStateStorage.update { it.copy(failedAction = FailedAction(failure)) } }
-        }
-    }
 
     private fun unblockOption() = ContextMenuOptionUi(
         option = ProfileMenuOption.Unblock,
-        onClick = { launchWithErrorHandling { profilesRepository.unblockUser(profileId) } },
+        onClick = safeCallback { profilesRepository.unblockUser(profileId) },
     )
 
     private fun observeOption() = ContextMenuOptionUi(
         option = ProfileMenuOption.ObserveProfile,
-        onClick = { launchWithErrorHandling { profilesRepository.observeUser(profileId) } },
+        onClick = safeCallback { profilesRepository.observeUser(profileId) },
     )
 
     private fun unobserveOption() = ContextMenuOptionUi(
         option = ProfileMenuOption.UnobserveProfile,
-        onClick = { launchWithErrorHandling { profilesRepository.unobserveUser(profileId) } },
+        onClick = safeCallback { profilesRepository.unobserveUser(profileId) },
     )
 
     private fun reportOption() = ContextMenuOptionUi(
         option = ProfileMenuOption.Report,
-        onClick = { launchWithErrorHandling { TODO() } },
+        onClick = safeCallback { TODO() },
     )
+
+    private fun safeCallback(function: suspend CoroutineScope.() -> Unit): () -> Unit = {
+        appScopes.safeKeyed<ProfileScope>(profileId) {
+            runCatching { function() }
+                .onFailure { failure -> viewStateStorage.update { it.copy(failedAction = FailedAction(failure)) } }
+        }
+    }
 
     private fun Instant.toJoinedAgo() =
         periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString()

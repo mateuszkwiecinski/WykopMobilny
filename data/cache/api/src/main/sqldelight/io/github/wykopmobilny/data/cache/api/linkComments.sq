@@ -1,0 +1,45 @@
+import io.github.wykopmobilny.data.cache.api.UserVote;
+import kotlinx.datetime.Instant;
+
+CREATE TABLE linkCommentsEntity (
+    id INTEGER NOT NULL UNIQUE PRIMARY KEY,
+    postedAt INTEGER AS Instant NOT NULL,
+    profileId TEXT NOT NULL,
+    voteCount INTEGER AS Int NOT NULL,
+    voteCountPlus INTEGER AS Int NOT NULL,
+    body TEXT NOT NULL,
+    parentId INTEGER NOT NULL,
+    canVote INTEGER AS Boolean NOT NULL,
+    userVote INTEGER AS UserVote,
+    isBlocked INTEGER AS Boolean NOT NULL,
+    isFavorite INTEGER AS Boolean NOT NULL,
+    linkId INTEGER NOT NULL,
+    embedId TEXT,
+    app TEXT,
+    violationUrl TEXT,
+    FOREIGN KEY (profileId) REFERENCES profileEntity(id),
+    FOREIGN KEY (parentId) REFERENCES linkCommentsEntity(id),
+    FOREIGN KEY (linkId) REFERENCES linkEntity(id),
+    FOREIGN KEY (embedId) REFERENCES embed(id)
+);
+
+insertOrReplace:
+INSERT OR REPLACE INTO linkCommentsEntity
+VALUES ?;
+
+selectByLinkId:
+SELECT
+  linkCommentsEntity.*,
+  profileEntity.rank,
+  profileEntity.color,
+  profileEntity.gender,
+  profileEntity.avatar,
+  embed.*
+FROM linkCommentsEntity
+JOIN profileEntity ON linkCommentsEntity.profileId = profileEntity.id
+LEFT JOIN embed ON linkCommentsEntity.embedId = embed.id
+WHERE linkCommentsEntity.linkId = ?;
+
+deleteByLinkId:
+DELETE FROM linkCommentsEntity
+WHERE linkId = ?;

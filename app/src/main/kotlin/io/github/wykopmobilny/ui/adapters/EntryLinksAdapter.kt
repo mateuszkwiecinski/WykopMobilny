@@ -14,16 +14,16 @@ import io.github.wykopmobilny.ui.adapters.viewholders.LinkViewHolder
 import io.github.wykopmobilny.ui.adapters.viewholders.SimpleLinkViewHolder
 import io.github.wykopmobilny.ui.fragments.entries.EntryActionListener
 import io.github.wykopmobilny.ui.fragments.links.LinkActionListener
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import javax.inject.Inject
 
 class EntryLinksAdapter @Inject constructor(
     private val userManagerApi: UserManagerApi,
     private val settingsPreferencesApi: SettingsPreferencesApi,
-    private val navigatorApi: NewNavigatorApi,
-    private val linkHandlerApi: WykopLinkHandlerApi,
+    private val navigator: NewNavigator,
+    private val linkHandler: WykopLinkHandler,
     private val appStorage: AppStorage,
 ) : EndlessProgressAdapter<ViewHolder, EntryLink>() {
     // Required field, interacts with presenter. Otherwise will throw exception
@@ -57,7 +57,7 @@ class EntryLinksAdapter @Inject constructor(
                     viewType = viewType,
                     userManagerApi = userManagerApi,
                     settingsPreferencesApi = settingsPreferencesApi,
-                    navigatorApi = navigatorApi,
+                    navigator = navigator,
                     linkActionListener = linkActionListener,
                     appStorage = appStorage,
                 )
@@ -67,8 +67,8 @@ class EntryLinksAdapter @Inject constructor(
                 viewType,
                 userManagerApi,
                 settingsPreferencesApi,
-                navigatorApi,
-                linkHandlerApi,
+                navigator,
+                linkHandler,
                 entryActionListener,
                 null,
             )

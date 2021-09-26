@@ -9,29 +9,29 @@ import io.github.wykopmobilny.databinding.TopLinkCommentLayoutBinding
 import io.github.wykopmobilny.models.dataclass.LinkComment
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentActionListener
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentViewListener
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.widgets.WykopEmbedView
 import io.github.wykopmobilny.ui.widgets.buttons.MinusVoteButton
 import io.github.wykopmobilny.ui.widgets.buttons.PlusVoteButton
 import io.github.wykopmobilny.utils.layoutInflater
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 
 class TopLinkCommentViewHolder(
     private val binding: TopLinkCommentLayoutBinding,
     userManagerApi: UserManagerApi,
     settingsPreferencesApi: SettingsPreferencesApi,
-    navigatorApi: NewNavigatorApi,
-    linkHandlerApi: WykopLinkHandlerApi,
+    navigator: NewNavigator,
+    linkHandler: WykopLinkHandler,
     commentActionListener: LinkCommentActionListener,
     commentViewListener: LinkCommentViewListener?
 ) : BaseLinkCommentViewHolder(
     binding.root,
     userManagerApi,
     settingsPreferencesApi,
-    navigatorApi,
-    linkHandlerApi,
+    navigator,
+    linkHandler,
     commentViewListener,
     commentActionListener
 ) {
@@ -61,8 +61,8 @@ class TopLinkCommentViewHolder(
             viewType: Int,
             userManagerApi: UserManagerApi,
             settingsPreferencesApi: SettingsPreferencesApi,
-            navigatorApi: NewNavigatorApi,
-            linkHandlerApi: WykopLinkHandlerApi,
+            navigator: NewNavigator,
+            linkHandler: WykopLinkHandler,
             commentActionListener: LinkCommentActionListener,
             commentViewListener: LinkCommentViewListener?
         ): TopLinkCommentViewHolder {
@@ -70,8 +70,8 @@ class TopLinkCommentViewHolder(
                 TopLinkCommentLayoutBinding.inflate(parent.layoutInflater, parent, false),
                 userManagerApi,
                 settingsPreferencesApi,
-                navigatorApi,
-                linkHandlerApi,
+                navigator,
+                linkHandler,
                 commentActionListener,
                 commentViewListener
             )

@@ -5,8 +5,9 @@ import io.github.wykopmobilny.api.entries.EntriesApi
 import io.github.wykopmobilny.base.Schedulers
 import io.github.wykopmobilny.ui.modules.input.InputPresenter
 import io.github.wykopmobilny.utils.intoComposite
+import javax.inject.Inject
 
-class AddEntryPresenter(
+class AddEntryPresenter @Inject constructor(
     private val schedulers: Schedulers,
     private val entriesApi: EntriesApi
 ) : InputPresenter<AddEntryActivityView>() {

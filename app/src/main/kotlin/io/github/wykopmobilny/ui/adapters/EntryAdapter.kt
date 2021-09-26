@@ -12,16 +12,16 @@ import io.github.wykopmobilny.ui.adapters.viewholders.EntryViewHolder
 import io.github.wykopmobilny.ui.fragments.entries.EntryActionListener
 import io.github.wykopmobilny.ui.fragments.entrycomments.EntryCommentActionListener
 import io.github.wykopmobilny.ui.fragments.entrycomments.EntryCommentViewListener
-import io.github.wykopmobilny.ui.modules.NewNavigatorApi
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandlerApi
+import io.github.wykopmobilny.ui.modules.NewNavigator
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import javax.inject.Inject
 
 class EntryAdapter @Inject constructor(
     private val userManagerApi: UserManagerApi,
     private val settingsPreferencesApi: SettingsPreferencesApi,
-    private val navigatorApi: NewNavigatorApi,
-    private val linkHandlerApi: WykopLinkHandlerApi,
+    private val navigator: NewNavigator,
+    private val linkHandler: WykopLinkHandler,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var entryActionListener: EntryActionListener
@@ -76,8 +76,8 @@ class EntryAdapter @Inject constructor(
                 viewType,
                 userManagerApi,
                 settingsPreferencesApi,
-                navigatorApi,
-                linkHandlerApi,
+                navigator,
+                linkHandler,
                 commentActionListener,
                 commentViewListener,
                 false,
@@ -87,8 +87,8 @@ class EntryAdapter @Inject constructor(
                 viewType,
                 userManagerApi,
                 settingsPreferencesApi,
-                navigatorApi,
-                linkHandlerApi,
+                navigator,
+                linkHandler,
                 entryActionListener,
                 replyListener,
             )

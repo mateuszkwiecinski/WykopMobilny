@@ -1,0 +1,723 @@
+{
+  "data": [
+    {
+      "id": 96746989,
+      "date": "2021-09-25 07:26:01",
+      "author": {
+        "login": "Legion_PL",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/Legion_PL_saAOy0caFC,q150.jpg"
+      },
+      "vote_count": -6,
+      "vote_count_plus": 1,
+      "body": "Może daltonistka z wyboru i dla niej wszystko jest czarne, białe lub szare!",
+      "parent_id": 96746989,
+      "can_vote": true,
+      "user_vote": -1,
+      "blocked": false,
+      "favorite": true,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96746989/ud/1sSJ/hs/cc217a8776a6fa3ea73b609558b326551f2b307b/rn/6dwUtB6UA0/"
+    },
+    {
+      "id": 96748877,
+      "date": "2021-09-25 09:09:13",
+      "author": {
+        "login": "4dwa",
+        "color": 1,
+        "avatar": "https://www.wykop.pl/cdn/c3397992/4dwa_8GylRvHYCn,q150.jpg"
+      },
+      "vote_count": 86,
+      "vote_count_plus": 88,
+      "parent_id": 96746989,
+      "can_vote": true,
+      "user_vote": 1,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "embed": {
+        "type": "image",
+        "url": "https://www.wykop.pl/cdn/c3201142/comment_1632553752lZdLaiNsSuRx4esq2zGNAu.jpg",
+        "source": "1.jpg",
+        "preview": "https://www.wykop.pl/cdn/c3201142/comment_1632553752lZdLaiNsSuRx4esq2zGNAu,w400.jpg",
+        "plus18": false,
+        "size": "217KB",
+        "animated": false,
+        "ratio": 1.267
+      },
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96748877/ud/1sSJ/hs/8bbe683fb4e36eb4afe59ca15c2b3ecf62eda17e/rn/1Zy5bKiL4g/"
+    },
+    {
+      "id": 96746991,
+      "date": "2021-09-25 07:26:17",
+      "author": {
+        "login": "piwomir-winoslaw",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/piwomir-winoslaw_1K7dExdr8t,q150.jpg"
+      },
+      "vote_count": 4,
+      "vote_count_plus": 6,
+      "body": "To drugie zielone!",
+      "parent_id": 96746991,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "app": "Wykop Mobilny (Android)",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96746991/ud/1sSJ/hs/e3ac1ca2597efe0dea2a00f808414aea06bd6b43/rn/q3T9S7Ef7Z/"
+    },
+    {
+      "id": 96747025,
+      "date": "2021-09-25 07:29:54",
+      "author": {
+        "login": "Tec1976",
+        "color": 1,
+        "avatar": "https://www.wykop.pl/cdn/c3397992/avatar_def,q150.png"
+      },
+      "vote_count": 148,
+      "vote_count_plus": 149,
+      "body": "Ale przecież to normalne większość kobiet nie przyznaje się do winy, znajdą 10000 powodów na uniewinnienie się¯&#92;<em>(ツ)</em>/¯",
+      "parent_id": 96747025,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "app": "Android",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96747025/ud/1sSJ/hs/5e8cf51a53cd0d09533d8d6c980d6089e23cf657/rn/sRimXFdXBQ/"
+    },
+    {
+      "id": 96767889,
+      "date": "2021-09-25 20:02:11",
+      "author": {
+        "login": "hermes-trismegistus",
+        "color": 1,
+        "avatar": "https://www.wykop.pl/cdn/c3397992/hermes-trismegistus_pr2JxWLv7j,q150.jpg"
+      },
+      "vote_count": 23,
+      "vote_count_plus": 25,
+      "body": "@<a href=\"@Tec1976\">Tec1976</a>: Tak jak np. w przypadku Dari Dipolito: zlecila zabojstwo meza przy czym byla nagrana kamera a pozniej sie wypierala ze to byl zart ;&gt;",
+      "parent_id": 96747025,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96767889/ud/1sSJ/hs/26b1c7275b832c1dc71851bed50d3e1f374ba2a8/rn/0qIobskOcl/"
+    },
+    {
+      "id": 96770791,
+      "date": "2021-09-25 21:35:58",
+      "author": {
+        "login": "corran",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/corran_jav3iSBAR2,q150.jpg"
+      },
+      "vote_count": 6,
+      "vote_count_plus": 6,
+      "body": "@<a href=\"@hermes-trismegistus\">hermes-trismegistus</a>: nie żart tylko casting do reality show :P",
+      "parent_id": 96747025,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96770791/ud/1sSJ/hs/a2ac57beefd8a6baee92e3e1aade738bac6cb9f8/rn/BMQ1Opl9DA/"
+    },
+    {
+      "id": 96771951,
+      "date": "2021-09-25 22:16:10",
+      "author": {
+        "login": "CPS86",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/avatar_def,q150.png"
+      },
+      "vote_count": 0,
+      "vote_count_plus": 0,
+      "body": "@<a href=\"@Tec1976\">Tec1976</a> no właśnie każda tak ma czy są jakieś wyjątki?",
+      "parent_id": 96747025,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "app": "Android",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96771951/ud/1sSJ/hs/2fb0c30a9a161caf7bc612d970de197c60455c18/rn/RveqblUAPA/"
+    },
+    {
+      "id": 96772161,
+      "date": "2021-09-25 22:22:11",
+      "author": {
+        "login": "Tec1976",
+        "color": 1,
+        "avatar": "https://www.wykop.pl/cdn/c3397992/avatar_def,q150.png"
+      },
+      "vote_count": 0,
+      "vote_count_plus": 0,
+      "body": "@<a href=\"@CPS86\">CPS86</a> Zawsze są wyjątki. Ale żyje na tym świecie już 45 lat i faceci w większości przypadków przyznają się do winy a w przypadku kobiet prawie zawsze jest przynajmniej umniejszanie swojej.",
+      "parent_id": 96747025,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "app": "Android",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96772161/ud/1sSJ/hs/36f00a33ec3f5a04107d2bb613bf312cfee811d6/rn/RtICMvzfmq/"
+    },
+    {
+      "id": 96747703,
+      "date": "2021-09-25 08:18:06",
+      "author": {
+        "login": "marw007",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/marw007_oSkwlnZFVz,q150.jpg"
+      },
+      "vote_count": 29,
+      "vote_count_plus": 29,
+      "body": "Posłuchała Jarka od katalizatorów i nigdy się do niczego nie przyznaje :D",
+      "parent_id": 96747703,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "app": "Android",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96747703/ud/1sSJ/hs/d3097bf6dda54d7b0b2f36455661325cbb9e7850/rn/q3JJiHqRfM/"
+    },
+    {
+      "id": 96748105,
+      "date": "2021-09-25 08:37:43",
+      "author": {
+        "login": "artysta-plastik",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/avatar_def,q150.png"
+      },
+      "vote_count": 17,
+      "vote_count_plus": 18,
+      "body": "Rozumiem, że milicja zabrała idiotce uprawnienia i skierowała sprawę do sądu? Czy im się nie chcialo eliminować idiotki z dróg i tylko mandacik?",
+      "parent_id": 96748105,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "app": "Wykop Mobilny (Android)",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96748105/ud/1sSJ/hs/e3a5ebc44afdbba0bea27f24bbc41f8eeaaeb831/rn/df7A5H0BJ5/"
+    },
+    {
+      "id": 96749537,
+      "date": "2021-09-25 09:35:23",
+      "author": {
+        "login": "ryj23",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/avatar_def,q150.png"
+      },
+      "vote_count": 31,
+      "vote_count_plus": 34,
+      "body": "no niestety z 8 na 10 bab to kompletne kretynki,mialem pare takich sytuacji.Zwroccie uwage jak np jedziecie na pasie ktory sie konczy i chcecie sie wlaczyc do ruchu i na waszym horyzoncie pojawia sie baba,w wiekszosci te debilki na slepo przyspieszaja byle tylko nie wpuscic was do ruchu przed siebie",
+      "parent_id": 96749537,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96749537/ud/1sSJ/hs/93ce95197962e3f921cc40de13d435c7e2c66ccd/rn/22D4r1t5wL/"
+    },
+    {
+      "id": 96749789,
+      "date": "2021-09-25 09:46:03",
+      "author": {
+        "login": "gomjeden",
+        "color": 1,
+        "avatar": "https://www.wykop.pl/cdn/c3397992/gomjeden_gK4OvEl1yg,q150.jpg"
+      },
+      "vote_count": 9,
+      "vote_count_plus": 11,
+      "body": "Zdarzyło mi się zatrzymać na skrzyżowaniu, bo wydawało mi się, że mam czerwone. Dopiero po obejrzeniu nagrania z kamery pokładowej wyszło, że czerwone zapaliło się tylko dla pasa do skrętu w lewo (ja jechałem prosto). Potrafię więc zrozumieć argumentowanie, że komuś się coś wydawało. Ale z nagraniem z kamery już nie dyskutowałem.",
+      "parent_id": 96749789,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96749789/ud/1sSJ/hs/ac616c5f867c89d34f7a2e9c839aabf35848ccb1/rn/M2gwBodiEf/"
+    },
+    {
+      "id": 96770793,
+      "date": "2021-09-25 21:36:03",
+      "author": {
+        "login": "Felonious_Gru",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/Felonious_Gru_5RJdriMfLR,q150.jpg"
+      },
+      "vote_count": -1,
+      "vote_count_plus": 0,
+      "body": "<cite>  Ale z nagraniem z kamery już nie dyskutowałem.</cite><br />\n<br />\n@<a href=\"@gomjeden\">gomjeden</a>: a widziałeś to nagranie? xD<br />\nskrzyżowanie jest gdzieś tamnw lewym górnym rogu.",
+      "parent_id": 96749789,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "embed": {
+        "type": "image",
+        "url": "https://www.wykop.pl/cdn/c3201142/comment_1632598559UpNSnDoxnYhWnpLHpw4NJ8.jpg",
+        "source": "Screenshot_20210925-213210_Gallery.jpg",
+        "preview": "https://www.wykop.pl/cdn/c3201142/comment_1632598559UpNSnDoxnYhWnpLHpw4NJ8,w400.jpg",
+        "plus18": false,
+        "size": "539KB",
+        "animated": false,
+        "ratio": 0.564
+      },
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96770793/ud/1sSJ/hs/9e93892a26e7f993e927fa0fafef8a528ab4a595/rn/7wavNnBBXf/"
+    },
+    {
+      "id": 96750495,
+      "date": "2021-09-25 10:12:58",
+      "author": {
+        "login": "masloabsolutne",
+        "color": 1,
+        "avatar": "https://www.wykop.pl/cdn/c3397992/avatar_def,q150.png"
+      },
+      "vote_count": 89,
+      "vote_count_plus": 91,
+      "body": "Kiedys miala miejsce w moim zyciu taka sytuacja: dzwoni do mnie ziomeczek, ktoremu pozyczylem samochod, ze mial kolizje ktorej nie mial. No to jade.... bo o co chodzi z kolizja, ktorej nie bylo... Podjechalem, stoi on i stoi baba ze zgierza, wszyscy czekaja juz na policje... Ziomek mowi, ze gwaltownie musial zahamowac, bo baba tak nagle sie postanowila zatrzymac mimo zielonego, ale napewno nie wjechal w nia. Patrze na &quot;slady zderzenia&quot; na jej samochodzie no i jest jakies wgniecenie na zderzaku, patrze tez na swoj, w podobnym miejscu ale nie pasujace do niczego to obtarcie i po przyjzeniu sie nawet nie byly na tej samej wysokosci w obu pojazdach. Przyjechali mundurowi i zaczyna sie cala gadka, ci patrza, raz z jednej, raz z drugiej i stwierdzaja to samo, co ja. Kiedy przez szczekaczke u dyzurnego probuja uzyskac info z monitoringu, krowa jeszcze zamuczala o tym, ze moj ziomek gadal przez telefon podczas jazdy i ze to jego wina i ze on w nia wjechal. Dyzurny potwierdza, ze ziomek gadal przez telefon ale rowniez, ze nie widac z ani jednego ujecia momentu kolizji i policja stwierdzila, ze nie byko wypadku. No to baba wielkie hurr durr, ze kolizja byla, ze ma swiadka w postaci jej matki i ze rzada ukarania mojego ziomeczka za telefon i kolizje. No to pan pies stwierdzil, ze ok... ukara mandatem ziomeczla za telefon w reku podczas jazdy i dadza do ekspertyzy, ale oba samochody zostana zabrane odrazu ma miesiac. Ta chwila zamarcia tej zgierskiej bzdziagwy i nagle zmiana zdania, ze juz nie wazne. Ja jeszcze jej na odchodne powiedzialem, ze i tak maz ja zajebie za uszkodzenie pojazdu, a zaraz moze miec problem w sadzie za probe wyludzenia odszkodowania. Pan mundurowy zasmial sie, odwrocil i niby poszedl wypisywac, ale jak baba pojehala, ziomek dostal pouczenie i pojechali... ( ͡° ͜ʖ ͡°)",
+      "parent_id": 96750495,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96750495/ud/1sSJ/hs/ffc046d46af72a1ebb1ab22abca367b6a50fd8d8/rn/SwiliLCPcm/"
+    },
+    {
+      "id": 96769491,
+      "date": "2021-09-25 20:55:31",
+      "author": {
+        "login": "Murasame",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/Murasame_NN5ZOPNNjM,q150.jpg"
+      },
+      "vote_count": -63,
+      "vote_count_plus": 4,
+      "body": "@<a href=\"@masloabsolutne\">masloabsolutne</a>: Mam nadzieję, że typ dostał mandat za ten telefon.",
+      "parent_id": 96750495,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96769491/ud/1sSJ/hs/4c35f08dc6385aa81b2be478c85cae7f35981a35/rn/dptRetHQQ1/"
+    },
+    {
+      "id": 96770125,
+      "date": "2021-09-25 21:15:43",
+      "author": {
+        "login": "Jarek_P",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/Jarek_P_RpLv1b2mva,q150.jpg"
+      },
+      "vote_count": 61,
+      "vote_count_plus": 62,
+      "body": "@<a href=\"@Murasame\">Murasame</a>: czytasz czasem to, co komentujesz, tak do końca? :D",
+      "parent_id": 96750495,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96770125/ud/1sSJ/hs/c6c584a7fa0afc7d9c734b135551e6688aff94f0/rn/7tCfJqsvnC/"
+    },
+    {
+      "id": 96772073,
+      "date": "2021-09-25 22:19:55",
+      "author": {
+        "login": "cation",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/cation_A4k9sCFZmz,q150.jpg"
+      },
+      "vote_count": 0,
+      "vote_count_plus": 0,
+      "body": "@<a href=\"@Murasame\">Murasame</a>: Mam nadzieję że karma wróciła i baba spadła z najblizszego wiaduktu pod pociąg towarowy zaladowany ruskim węglem.",
+      "parent_id": 96750495,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "app": "Wykop Mobilny (Android)",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96772073/ud/1sSJ/hs/49baf1e5ffc8004fe2e5ea666e48282cb12adfea/rn/xIOLHTMnhp/"
+    },
+    {
+      "id": 96758145,
+      "date": "2021-09-25 14:31:45",
+      "author": {
+        "login": "Qtasus2Wielgus",
+        "color": 1,
+        "avatar": "https://www.wykop.pl/cdn/c3397992/Qtasus2Wielgus_5uRtXG81Fp,q150.jpg"
+      },
+      "vote_count": 8,
+      "vote_count_plus": 10,
+      "body": "Seksizm świateł, świadków i kamer ;-)",
+      "parent_id": 96758145,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96758145/ud/1sSJ/hs/70545af97c622d658b5550f19a9e277ce1bdb574/rn/gS3MVQNmjm/"
+    },
+    {
+      "id": 96764229,
+      "date": "2021-09-25 17:59:22",
+      "author": {
+        "login": "dr3vil",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/dr3vil_ggp2sFmL5k,q150.jpg"
+      },
+      "vote_count": -1,
+      "vote_count_plus": 1,
+      "body": "@<a href=\"@Qtasus2Wielgus\">Qtasus2Wielgus</a>: No i oczywiście jeszcze pana, który w nią wjechał. Powinien ustąpić kobiecie.",
+      "parent_id": 96758145,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96764229/ud/1sSJ/hs/19505f3fb300778f8af2943cf288b382c25c9b49/rn/z2Ez5raIho/"
+    },
+    {
+      "id": 96759377,
+      "date": "2021-09-25 15:14:10",
+      "author": {
+        "login": "jeden_z_gapiow",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/jeden_z_gapiow_hwF6vAiKc8,q150.jpg"
+      },
+      "vote_count": 6,
+      "vote_count_plus": 6,
+      "body": "Za tak rażący brak autorefleksji powinni dożywotnio odbierać prawo jazdy.",
+      "parent_id": 96759377,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "app": "Android",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96759377/ud/1sSJ/hs/bcd84f422136a8f393cf83f380e34ad7f0ea758f/rn/Hpb45wLe2G/"
+    },
+    {
+      "id": 96770483,
+      "date": "2021-09-25 21:26:24",
+      "author": {
+        "login": "bary94pl",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/bary94pl_tvGCwUQvfW,q150.jpg"
+      },
+      "vote_count": 1,
+      "vote_count_plus": 2,
+      "body": "I co najgorsze w tym wszystkim, to jest to, że ta tępa szmula nie wyciągnie z tego wypadku żadnych wniosków. A kto wie, czy nie siedziała w tym momencie &quot;w telefonie&quot; i możliwe, że nawet nie zwróciła uwagi na sygnalizację świetlną... Wniosków zero = prędzej czy później będzie sprawcą kolejnego wypadku.",
+      "parent_id": 96770483,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96770483/ud/1sSJ/hs/dedc9bbed64a9ebf26391f2f597078f7ffabd4cd/rn/Q7we02eIK8/"
+    },
+    {
+      "id": 96770509,
+      "date": "2021-09-25 21:27:09",
+      "author": {
+        "login": "Felonious_Gru",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/Felonious_Gru_5RJdriMfLR,q150.jpg"
+      },
+      "vote_count": 8,
+      "vote_count_plus": 8,
+      "body": "śmiechy śmiechami, ale to, że nie widziala światla na nagraniu z monitoringu to jestem w stanie uwierzyć. tu już powiększony fragment kadru...",
+      "parent_id": 96770509,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "embed": {
+        "type": "image",
+        "url": "https://www.wykop.pl/cdn/c3201142/comment_16325980283skprVSyV48OtdCQTlCpen.jpg",
+        "source": "Screenshot_20210925-212611_Chrome.jpg",
+        "preview": "https://www.wykop.pl/cdn/c3201142/comment_16325980283skprVSyV48OtdCQTlCpen,w400.jpg",
+        "plus18": false,
+        "size": "795KB",
+        "animated": false,
+        "ratio": 0.45
+      },
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96770509/ud/1sSJ/hs/b88443dc46d320ef220ca68fc2ed6e1c5e0e9d5d/rn/Ap5CDBhE2Q/"
+    },
+    {
+      "id": 96770681,
+      "date": "2021-09-25 21:32:33",
+      "author": {
+        "login": "Felonious_Gru",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/Felonious_Gru_5RJdriMfLR,q150.jpg"
+      },
+      "vote_count": 0,
+      "vote_count_plus": 0,
+      "body": "pełny kadr xD",
+      "parent_id": 96770509,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "embed": {
+        "type": "image",
+        "url": "https://www.wykop.pl/cdn/c3201142/comment_1632598353dwwqGeWInKQKwafXaMdB0h.jpg",
+        "source": "Screenshot_20210925-213210_Gallery.jpg",
+        "preview": "https://www.wykop.pl/cdn/c3201142/comment_1632598353dwwqGeWInKQKwafXaMdB0h,w400.jpg",
+        "plus18": false,
+        "size": "539KB",
+        "animated": false,
+        "ratio": 0.564
+      },
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96770681/ud/1sSJ/hs/bb47d1f6eea4ab0a220f56b2ffaa679b5ee105e3/rn/4UiFzlkXsF/"
+    },
+    {
+      "id": 96770513,
+      "date": "2021-09-25 21:27:18",
+      "author": {
+        "login": "DryfWiatrowZachodnich",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/DryfWiatrowZachodnich_ExicAukaRK,q150.jpg"
+      },
+      "vote_count": 9,
+      "vote_count_plus": 9,
+      "body": "<cite>  Zdania nie zmieniła nawet pomimo obejrzenia nagrania z kamer monitoringu. Wyjaśniała, że ona nie widzi tam czerwonego światła, zaś auta na prawym pasie zatrzymały się „ot tak sobie”. Ostatecznie jednak zdecydowała się przyjąć mandat podkreślając jednak, że i tak nie jest przekonana co do swojej winy.</cite><br />\n<br />\nNo to prawo jazdy do zabrania i na badania, z tak niska zdolnoscia przyswajania faktow jest zbyt niebezpieczne pozwolic jej jezdzic",
+      "parent_id": 96770513,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96770513/ud/1sSJ/hs/204a98371a34436b89cff8ec7f85f39cd9ee36f2/rn/FIEc9wpx5B/"
+    },
+    {
+      "id": 96771785,
+      "date": "2021-09-25 22:09:59",
+      "author": {
+        "login": "Mandarex",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/avatar_def,q150.png"
+      },
+      "vote_count": 0,
+      "vote_count_plus": 0,
+      "body": "@<a href=\"@DryfWiatrowZachodnich\">DryfWiatrowZachodnich</a>: A widziałeś to czerwone światło na nagraniu?",
+      "parent_id": 96770513,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96771785/ud/1sSJ/hs/ff5982c64a52dce84f12d41dc3aff3ec81abb1d3/rn/Tb2mAh2o2D/"
+    },
+    {
+      "id": 96770541,
+      "date": "2021-09-25 21:28:02",
+      "author": {
+        "login": "kacper-gorski-12",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/kacper-gorski-12_3Dnh8rWF7z,q150.jpg"
+      },
+      "vote_count": -4,
+      "vote_count_plus": 3,
+      "body": "Pani dziala pod wplywem mechanizmu obronnego - zaprzeczenia. Nie jest to domena 'bab', a wszystkich ludzi i dotyczy niestety kazdego z nas...  mozna sie rozejsc",
+      "parent_id": 96770541,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96770541/ud/1sSJ/hs/2e3f75e10054ac6b7011bec1290669046f3a48e9/rn/9gh5AbUPeB/"
+    },
+    {
+      "id": 96770593,
+      "date": "2021-09-25 21:30:06",
+      "author": {
+        "login": "fujiyama",
+        "color": 1,
+        "avatar": "https://www.wykop.pl/cdn/c3397992/fujiyama_TjNgF0HUnA,q150.jpg"
+      },
+      "vote_count": 0,
+      "vote_count_plus": 2,
+      "body": "Jest niewinna!<br />\nTakie kobiety nadają się tylko na księżniczki albo prezesów dlatego muszą być tam parytety! ( ͡° ͜ʖ ͡° )つ──☆*:・ﾟ",
+      "parent_id": 96770593,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96770593/ud/1sSJ/hs/51f72b2340532f2c3ee57d850b2c5a8c69b78364/rn/YNmlXhrNiC/"
+    },
+    {
+      "id": 96770621,
+      "date": "2021-09-25 21:30:41",
+      "author": {
+        "login": "NeilDegrasseGolota",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/NeilDegrasseGolota_3dhSFuEYX6,q150.jpg"
+      },
+      "vote_count": 12,
+      "vote_count_plus": 14,
+      "body": "Jeśli sprawca w takich oczywistych sprawach nie widzi swojej winy, policja powinna zatrzymać prawo jazdy i sprawę skierować do sądu.",
+      "parent_id": 96770621,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96770621/ud/1sSJ/hs/bb973c30a41e2cbe59b6fa2d0863bb19bb06972e/rn/OJB9E2VGBR/"
+    },
+    {
+      "id": 96770899,
+      "date": "2021-09-25 21:40:09",
+      "author": {
+        "login": "arekb81",
+        "color": 2,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/arekb81_aIgSmoUpAw,q150.jpg"
+      },
+      "vote_count": 8,
+      "vote_count_plus": 9,
+      "body": "@<a href=\"@NeilDegrasseGolota\">NeilDegrasseGolota</a>: Powinni skierować na ponowny egzamin. Mają do tego prawo.",
+      "parent_id": 96770621,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96770899/ud/1sSJ/hs/2a2d248ec06dfffc061dd63237bc2c43d2940f0b/rn/q5Vpqsdn2u/"
+    },
+    {
+      "id": 96771805,
+      "date": "2021-09-25 22:10:23",
+      "author": {
+        "login": "Ignacy_Loyola",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/Ignacy_Loyola_voVTV9EyFU,q150.jpg"
+      },
+      "vote_count": -3,
+      "vote_count_plus": 0,
+      "body": "@<a href=\"@NeilDegrasseGolota\">NeilDegrasseGolota</a>: Na jakiej podstawie prawnej?",
+      "parent_id": 96770621,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96771805/ud/1sSJ/hs/76629d7034bb4e248ca778265dc788c390f653df/rn/Vtc4Mzdiki/"
+    },
+    {
+      "id": 96772067,
+      "date": "2021-09-25 22:19:45",
+      "author": {
+        "login": "ziomislaw-paliblant",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/ziomislaw-paliblant_qORZmiWt04,q150.jpg"
+      },
+      "vote_count": 0,
+      "vote_count_plus": 0,
+      "body": "@<a href=\"@Ignacy_Loyola\">Ignacy_Loyola</a>: 2 minuty mi zajęło znalezienie... Ręce opadają.<br />\nart. 129 ust.2 pkt 13a ustawy Prawo o ruchu drogowym",
+      "parent_id": 96770621,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96772067/ud/1sSJ/hs/216289b606ca9f1b510ce535555b09e6c096bb6b/rn/VYfpEeWonZ/"
+    },
+    {
+      "id": 96772119,
+      "date": "2021-09-25 22:21:26",
+      "author": {
+        "login": "NeilDegrasseGolota",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/NeilDegrasseGolota_3dhSFuEYX6,q150.jpg"
+      },
+      "vote_count": 0,
+      "vote_count_plus": 0,
+      "body": "@<a href=\"@Ignacy_Loyola\">Ignacy_Loyola</a>: na takiej, że sprawca ma błędne postrzeganie rzeczywistości - widzi rzeczy, których nie ma. W tym wypadku zielone światło (nawet na wideło), mimo że było czerwone. <br />\nSąd powinien ustalić, czy kobieta cynicznie próbowała wymusić czyjąś winę i przykładnie ją ukarać, czy też z powodów zdrowotnych nie powinna w ogóle zasiadać za kółkiem.",
+      "parent_id": 96770621,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96772119/ud/1sSJ/hs/07eb6e99d43c4b6d4baf3b197b228f89d926354c/rn/THhFhvKQkh/"
+    },
+    {
+      "id": 96772155,
+      "date": "2021-09-25 22:22:07",
+      "author": {
+        "login": "Ignacy_Loyola",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/Ignacy_Loyola_voVTV9EyFU,q150.jpg"
+      },
+      "vote_count": 0,
+      "vote_count_plus": 0,
+      "body": "<cite>  art. 129 ust.2 pkt 13a ustawy Prawo o ruchu drogowym</cite><br />\n<br />\n@<a href=\"@ziomislaw-paliblant\">ziomislaw-paliblant</a>: xD<br />\n<br />\n<cite>  występowania do starosty z wnioskiem o skierowanie kierowcy lub osoby posiadającej pozwolenie na kierowanie tramwajem na egzamin sprawdzający kwalifikacje, jeżeli istnieją uzasadnione i poważne zastrzeżenia co do kwalifikacji tej osoby;</cite><br />\n<br />\nBabka kierowała tramwajem?",
+      "parent_id": 96770621,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96772155/ud/1sSJ/hs/47b44cb87f33f1c524b60a61592da318adf300d2/rn/beQ95AtUZH/"
+    },
+    {
+      "id": 96771875,
+      "date": "2021-09-25 22:13:23",
+      "author": {
+        "login": "Project_Yi",
+        "color": 1,
+        "sex": "male",
+        "avatar": "https://www.wykop.pl/cdn/c3397992/Project_Yi_gQO0UMjllF,q150.jpg"
+      },
+      "vote_count": 0,
+      "vote_count_plus": 0,
+      "body": "Nie przypominam sobie kolizji drogowej gdzie kobieta przyznała że to jej wina, zawsze tłumaczenie (czasem bzdurne), a w sytuacjach podbramkowych ściąga swojego miśka żeby wyjaśnił bo nie zarucha przez miesiąc.",
+      "parent_id": 96771875,
+      "can_vote": true,
+      "user_vote": 0,
+      "blocked": false,
+      "favorite": false,
+      "link_id": "6288823",
+      "violation_url": "https://a2.wykop.pl/naruszenia/form/ot/comment/od/96771875/ud/1sSJ/hs/bf13302fdcf0a51881c505898d8a051df8afff08/rn/oKM9ccNSrv/"
+    }
+  ]
+}
