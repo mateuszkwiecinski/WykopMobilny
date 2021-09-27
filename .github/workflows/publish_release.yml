@@ -34,7 +34,7 @@ jobs:
           arguments: bundleRelease -PuploadMapping=true
           dependencies-cache-enabled: true
 
-      - uses: r0adkll/upload-google-play@v1
+      - uses: r0adkll/upload-google-play@v1.0.15
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICES_JSON }}
           packageName: io.github.wykopmobilny
