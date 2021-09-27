@@ -52,14 +52,17 @@ internal class LinkDetailsAdapter : ListAdapter<ListItem, LinkDetailsAdapter.Bin
 
 private fun ViewBinding.bindRelated(related: List<RelatedLinkUi>) {
     this as LinkDetailsRelatedBinding
+    related
 }
 
 private fun ViewBinding.bindReplyComment(comment: LinkCommentUi) {
     this as LinkDetailsReplyCommentBinding
+    comment
 }
 
 private fun ViewBinding.bindParentComment(comment: LinkCommentUi) {
     this as LinkDetailsParentCommentBinding
+    comment
 }
 
 private fun ViewBinding.bindHeader(header: LinkDetailsHeaderUi) {

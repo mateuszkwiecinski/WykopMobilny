@@ -338,9 +338,9 @@ class LinkDetailsActivity :
         fun createIntent(context: Context, link: Link) =
             if (BuildConfig.DEBUG) {
                 LinkDetailsActivityV2.createIntent(context, link.id)
-//                Intent(context, LinkDetailsActivity::class.java).apply {
-//                    putExtra(EXTRA_LINK, link)
-//                }
+                Intent(context, LinkDetailsActivity::class.java).apply {
+                    putExtra(EXTRA_LINK, link)
+                }
             } else {
                 Intent(context, LinkDetailsActivity::class.java).apply {
                     putExtra(EXTRA_LINK, link)
