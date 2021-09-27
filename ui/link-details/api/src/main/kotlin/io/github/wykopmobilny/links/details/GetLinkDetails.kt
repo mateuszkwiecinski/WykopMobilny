@@ -6,12 +6,14 @@ import io.github.wykopmobilny.ui.components.widgets.Color
 import io.github.wykopmobilny.ui.components.widgets.ColoredCounterUi
 import io.github.wykopmobilny.ui.components.widgets.PlainCounterUi
 import io.github.wykopmobilny.ui.components.widgets.TagUi
+import io.github.wykopmobilny.ui.components.widgets.TwoActionsCounterUi
 import io.github.wykopmobilny.ui.components.widgets.UserInfoUi
 
 interface GetLinkDetails : Query<LinkDetailsUi>
 
 class LinkDetailsUi(
     val header: LinkDetailsHeaderUi,
+    val relatedSection: List<RelatedLinkUi>?,
     val commentsSection: CommentsSectionUi,
     val errorDialog: ErrorDialogUi?,
 )
@@ -27,7 +29,6 @@ sealed class LinkDetailsHeaderUi {
         val voteCount: ColoredCounterUi,
         val previewImageUrl: String?,
         val commentsCount: PlainCounterUi,
-        val relatedLinksCount: PlainCounterUi,
         val isFavorite: Boolean,
         val author: UserInfoUi,
         val sourceUrl: String?,
@@ -39,6 +40,14 @@ sealed class LinkDetailsHeaderUi {
         val favoriteAction: () -> Unit,
     ) : LinkDetailsHeaderUi()
 }
+
+data class RelatedLinkUi(
+    val author: UserInfoUi,
+    val upvotesCount: TwoActionsCounterUi,
+    val title: String,
+    val domainUrl: String,
+    val shareAction: () -> Unit,
+)
 
 data class CommentsSectionUi(
     val comments: Map<LinkCommentUi, List<LinkCommentUi>>,

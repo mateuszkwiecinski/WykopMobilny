@@ -29,11 +29,8 @@ import io.github.wykopmobilny.utils.textview.stripWykopFormatting
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.utils.usermanager.isUserAuthorized
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toLocalDateTime
-import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
-import org.threeten.bp.ZoneId
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
 import kotlin.math.absoluteValue
@@ -104,10 +101,10 @@ abstract class BaseLinkCommentViewHolder(
             embedView.setEmbed(comment.embed, settingsPreferencesApi, navigator, comment.isNsfw)
         }
 
-        comment.body?.let {
+        comment.body?.let { body ->
             commentContent.prepareBody(
-                comment.body!!,
-                { linkHandler.handleUrl(it) },
+                body,
+                linkHandler::handleUrl,
                 { handleClick(comment) },
                 shouldOpenSpoilerDialog,
             )
@@ -214,7 +211,7 @@ abstract class BaseLinkCommentViewHolder(
     }
 
     private fun openLinkCommentMenu(comment: LinkComment) {
-        val activityContext = itemView.getActivityContext()!!
+        val activityContext = itemView.getActivityContext() ?: return
         val dialog = BottomSheetDialog(activityContext)
         val bottomSheetView = LinkCommentMenuBottomsheetBinding.inflate(activityContext.layoutInflater)
         dialog.setContentView(bottomSheetView.root)
@@ -235,7 +232,8 @@ abstract class BaseLinkCommentViewHolder(
             }
 
             commentMenuDelete.setOnClickListener {
-                confirmationDialog(it.getActivityContext()!!) { commentActionListener.deleteComment(comment) }
+                val context = it.getActivityContext() ?: return@setOnClickListener
+                confirmationDialog(context) { commentActionListener.deleteComment(comment) }
                     .show()
                 dialog.dismiss()
             }
@@ -247,12 +245,11 @@ abstract class BaseLinkCommentViewHolder(
             }
 
             commentMenuEdit.setOnClickListener {
-                navigator.openEditLinkCommentActivity(comment.linkId, comment.body!!, comment.id)
+                navigator.openEditLinkCommentActivity(comment.linkId, comment.body.orEmpty(), comment.id)
                 dialog.dismiss()
             }
 
-            val canUserEdit =
-                userManagerApi.isUserAuthorized() && comment.author.nick == userManagerApi.getUserCredentials()!!.login
+            val canUserEdit = comment.author.nick == userManagerApi.getUserCredentials()?.login
             commentMenuDelete.isVisible = canUserEdit
             commentMenuEdit.isVisible = canUserEdit
         }

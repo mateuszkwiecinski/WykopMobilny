@@ -5,6 +5,8 @@ import com.dropbox.android.external.store4.StoreRequest
 import io.github.wykopmobilny.data.cache.api.UserVote
 import io.github.wykopmobilny.domain.linkdetails.di.LinkDetailsScope
 import io.github.wykopmobilny.domain.linkdetails.di.LinkId
+import io.github.wykopmobilny.domain.navigation.InteropRequest
+import io.github.wykopmobilny.domain.navigation.InteropRequestsProvider
 import io.github.wykopmobilny.domain.profile.LinkInfo
 import io.github.wykopmobilny.domain.profile.coloredCounter
 import io.github.wykopmobilny.domain.profile.plainCounter
@@ -19,6 +21,7 @@ import io.github.wykopmobilny.links.details.GetLinkDetails
 import io.github.wykopmobilny.links.details.LinkCommentUi
 import io.github.wykopmobilny.links.details.LinkDetailsHeaderUi
 import io.github.wykopmobilny.links.details.LinkDetailsUi
+import io.github.wykopmobilny.links.details.RelatedLinkUi
 import io.github.wykopmobilny.storage.api.LoggedUserInfo
 import io.github.wykopmobilny.storage.api.UserInfoStorage
 import io.github.wykopmobilny.ui.base.AppScopes
@@ -27,6 +30,7 @@ import io.github.wykopmobilny.ui.base.SimpleViewStateStorage
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
 import io.github.wykopmobilny.ui.components.widgets.ColorHex
 import io.github.wykopmobilny.ui.components.widgets.TagUi
+import io.github.wykopmobilny.ui.components.widgets.TwoActionsCounterUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -47,6 +51,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
     private val viewStateStorage: SimpleViewStateStorage,
     private val appScopes: AppScopes,
     private val clock: Clock,
+    private val interopRequests: InteropRequestsProvider,
 ) : GetLinkDetails {
 
     override fun invoke() =
@@ -73,11 +78,9 @@ internal class GetLinkDetailsQuery @Inject constructor(
                     ),
                     isFavorite = link.userFavorite,
                     postedAgo = link.postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(suffix = "temu"),
-                    relatedLinksCount = plainCounter(
-                        voteCount = link.relatedCount,
-                        onClicked = safeCallback { TODO("Related! $linkId") },
+                    author = link.author.toUi(
+                        onClicked = safeCallback { interopRequests.request(InteropRequest.Profile(link.author.profileId)) },
                     ),
-                    author = link.author.toUi(),
                     sourceUrl = link.sourceUrl,
                     tags = link.tags.map { tag ->
                         TagUi(
@@ -96,9 +99,29 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 comments = comments,
                 isLoading = comments.isEmpty() && viewState.isLoading,
             )
+            val relatedSection = if (link == null) {
+                null
+            } else if (link.relatedCount > 0) {
+                listOf(
+                    RelatedLinkUi(
+                        author = link.author.toUi(onClicked = null),
+                        upvotesCount = TwoActionsCounterUi(
+                            count = 10,
+                            onUpvote = {},
+                            onDownvote = {},
+                        ),
+                        domainUrl = "random.url",
+                        title = "Random title",
+                        shareAction = safeCallback { TODO("Share") },
+                    ),
+                )
+            } else {
+                null
+            }
 
             LinkDetailsUi(
                 header = header,
+                relatedSection = relatedSection,
                 commentsSection = commentsSection,
                 errorDialog = viewState.failedAction?.let { error ->
                     ErrorDialogUi(
@@ -156,7 +179,9 @@ internal class GetLinkDetailsQuery @Inject constructor(
             postedAgo = postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(),
             app = app,
             body = body,
-            author = author.toUi(),
+            author = author.toUi(
+                onClicked = safeCallback { interopRequests.request(InteropRequest.Profile(profileId = author.profileId)) },
+            ),
             plusCount = coloredCounter(
                 userAction = userAction.takeIf { it == UserVote.Up },
                 voteCount = plusCount,

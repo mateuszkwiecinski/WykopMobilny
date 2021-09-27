@@ -36,6 +36,7 @@ import io.github.wykopmobilny.ui.login.LoginDependencies
 import io.github.wykopmobilny.ui.modules.blacklist.BlacklistActivity
 import io.github.wykopmobilny.ui.modules.input.entry.add.AddEntryActivity
 import io.github.wykopmobilny.ui.modules.pm.conversation.ConversationActivity
+import io.github.wykopmobilny.ui.modules.profile.ProfileActivity
 import io.github.wykopmobilny.ui.profile.ProfileDependencies
 import io.github.wykopmobilny.ui.search.SearchDependencies
 import io.github.wykopmobilny.ui.settings.SettingsDependencies
@@ -259,6 +260,8 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                         context.startActivity(ConversationActivity.createIntent(context, it.profileId))
                     is InteropRequest.NewEntry ->
                         context.startActivity(AddEntryActivity.createIntent(context, null, "@${it.profileId}: "))
+                    is InteropRequest.Profile ->
+                        context.startActivity(ProfileActivity.createIntent(context, it.profileId))
                 }
                     .let { }
             }

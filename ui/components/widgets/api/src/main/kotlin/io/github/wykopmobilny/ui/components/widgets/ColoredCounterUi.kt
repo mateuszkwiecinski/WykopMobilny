@@ -10,3 +10,9 @@ data class PlainCounterUi(
     val count: Int,
     val onClick: (() -> Unit)?,
 )
+
+data class TwoActionsCounterUi(
+    val count: Int,
+    val onUpvote: () -> Unit,
+    val onDownvote: () -> Unit,
+)

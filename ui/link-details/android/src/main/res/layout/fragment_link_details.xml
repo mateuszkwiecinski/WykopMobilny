@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -21,7 +22,17 @@
             android:background="@drawable/gradient_toolbar_up"
             android:elevation="0dp"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll"
             app:navigationIcon="?homeAsUpIndicator"
             />
     </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/link_details_parent_comment"
+        />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
