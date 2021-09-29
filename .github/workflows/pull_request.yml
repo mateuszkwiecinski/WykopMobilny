@@ -30,13 +30,12 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Code style check
-        uses: gradle/gradle-build-action@v1
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: projectCodestyle
-          dependencies-cache-enabled: true
 
       - name: Assemble
-        uses: gradle/gradle-build-action@v1
+        uses: gradle/gradle-build-action@v2
         env:
           WYKOP_KEYSTORE_KEY_PASSWORD: ${{ secrets.WYKOP_KEYSTORE_KEY_PASSWORD }}
           WYKOP_KEYSTORE_KEY_NAME: ${{ secrets.WYKOP_KEYSTORE_KEY_NAME }}
@@ -46,13 +45,11 @@ jobs:
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
         with:
           arguments: assembleRelease
-          dependencies-cache-enabled: true
 
       - name: Unit tests
-        uses: gradle/gradle-build-action@v1
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: projectCoverage
-          dependencies-cache-enabled: true
 
       - uses: codecov/codecov-action@v2
         with:
@@ -93,10 +90,9 @@ jobs:
           java-version: 11
 
       - name: compile ui tests
-        uses: gradle/gradle-build-action@v1
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: app:assembleReleaseTestAndroidTest -PtestBuildType=releaseTest
-          dependencies-cache-enabled: true
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -141,10 +137,9 @@ jobs:
           java-version: 11
 
       - name: compile screenshot tests
-        uses: gradle/gradle-build-action@v1
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: assembleDebugAndroidTest
-          dependencies-cache-enabled: true
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
