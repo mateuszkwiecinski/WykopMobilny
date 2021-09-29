@@ -37,7 +37,7 @@ jobs:
           restore-keys: diffuse-${{ github.event.pull_request.base.sha }}
 
       - name: Assemble
-        uses: gradle/gradle-build-action@v1
+        uses: gradle/gradle-build-action@v2
         env:
           WYKOP_KEYSTORE_KEY_PASSWORD: ${{ secrets.WYKOP_KEYSTORE_KEY_PASSWORD }}
           WYKOP_KEYSTORE_KEY_NAME: ${{ secrets.WYKOP_KEYSTORE_KEY_NAME }}
