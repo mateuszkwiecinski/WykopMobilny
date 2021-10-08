@@ -76,6 +76,9 @@ internal class TestApp : WykopApp() {
             wykop = wykopApi,
             framework = framework,
             applicationCache = applicationCache,
+            appConfig = appConfig,
+            work = work,
+            notifications = notifications,
         )
     }
 
