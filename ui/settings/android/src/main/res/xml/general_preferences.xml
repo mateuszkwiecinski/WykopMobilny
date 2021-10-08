@@ -20,7 +20,6 @@
             android:persistent="false"
             android:title="@string/pref_notifications_enable"
             app:iconSpaceReserved="false"
-            app:isPreferenceVisible="false"
             />
 
         <androidx.preference.CheckBoxPreference
@@ -37,7 +36,6 @@
             android:persistent="false"
             android:title="@string/pref_notifications_frequency"
             app:iconSpaceReserved="false"
-            app:isPreferenceVisible="false"
             />
 
         <androidx.preference.CheckBoxPreference

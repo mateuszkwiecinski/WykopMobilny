@@ -1,7 +1,0 @@
-plugins {
-    id("com.starter.library.kotlin")
-}
-
-dependencies {
-    api(projects.ui.base.api)
-}

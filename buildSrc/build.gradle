@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("java-gradle-plugin")
-    id("org.jetbrains.kotlin.jvm") version "1.5.30"
+    id("org.jetbrains.kotlin.jvm") version "1.5.31"
 }
 
 repositories {
@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     implementation(gradleApi())
-    implementation("com.project.starter:android:0.37.0")
+    implementation("com.project.starter:android:0.38.0")
     implementation("com.gradleup:auto-manifest-plugin:1.0.4")
     implementation("com.google.gms:google-services:4.3.10")
     implementation("com.google.firebase:firebase-crashlytics-gradle:2.7.1")

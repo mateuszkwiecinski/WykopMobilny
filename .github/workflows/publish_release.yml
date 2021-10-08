@@ -22,7 +22,7 @@ jobs:
           java-version: 11
 
       - name: Assemble
-        uses: gradle/gradle-build-action@v1
+        uses: gradle/gradle-build-action@v2
         env:
           WYKOP_KEYSTORE_KEY_PASSWORD: ${{ secrets.WYKOP_KEYSTORE_KEY_PASSWORD }}
           WYKOP_KEYSTORE_KEY_NAME: ${{ secrets.WYKOP_KEYSTORE_KEY_NAME }}
@@ -32,7 +32,6 @@ jobs:
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
         with:
           arguments: bundleRelease -PuploadMapping=true
-          dependencies-cache-enabled: true
 
       - uses: r0adkll/upload-google-play@v1.0.15
         with:

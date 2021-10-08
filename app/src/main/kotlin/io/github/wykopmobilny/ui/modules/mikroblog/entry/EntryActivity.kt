@@ -1,6 +1,7 @@
 package io.github.wykopmobilny.ui.modules.mikroblog.entry
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -50,7 +52,7 @@ class EntryActivity :
             context: Context,
             entryId: Long,
             commentId: Long?,
-            isRevealed: Boolean
+            isRevealed: Boolean,
         ) =
             Intent(context, EntryActivity::class.java).apply {
                 putExtra(EXTRA_ENTRY_ID, entryId)
@@ -199,17 +201,12 @@ class EntryActivity :
         binding.inputToolbar.resetState()
     }
 
+    private val contract = registerForActivityResult(ActivityResultContracts.GetContent()) {
+        binding.inputToolbar.setPhoto(it)
+    }
+
     override fun openGalleryImageChooser() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(
-            Intent.createChooser(
-                intent,
-                getString(R.string.insert_photo_galery)
-            ),
-            BaseInputActivity.USER_ACTION_INSERT_PHOTO
-        )
+        contract.launch( "image/*")
     }
 
     override fun onBackPressed() {

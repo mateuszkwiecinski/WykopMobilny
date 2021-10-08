@@ -1,6 +1,7 @@
 package io.github.wykopmobilny
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.webkit.CookieManager
 import android.widget.Toast
@@ -23,9 +24,12 @@ import io.github.wykopmobilny.domain.navigation.android.DaggerFrameworkComponent
 import io.github.wykopmobilny.domain.profile.di.ProfileScope
 import io.github.wykopmobilny.domain.search.di.SearchScope
 import io.github.wykopmobilny.domain.settings.di.SettingsScope
+import io.github.wykopmobilny.domain.startup.AppConfig
 import io.github.wykopmobilny.domain.styles.di.StylesScope
 import io.github.wykopmobilny.domain.work.di.WorkScope
 import io.github.wykopmobilny.links.details.LinkDetailsDependencies
+import io.github.wykopmobilny.notification.AppNotification.Type.Notifications
+import io.github.wykopmobilny.notification.di.DaggerNotificationsComponent
 import io.github.wykopmobilny.storage.android.DaggerStoragesComponent
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.styles.StylesDependencies
@@ -35,16 +39,19 @@ import io.github.wykopmobilny.ui.blacklist.BlacklistDependencies
 import io.github.wykopmobilny.ui.login.LoginDependencies
 import io.github.wykopmobilny.ui.modules.blacklist.BlacklistActivity
 import io.github.wykopmobilny.ui.modules.input.entry.add.AddEntryActivity
+import io.github.wykopmobilny.ui.modules.notificationslist.NotificationsListActivity
 import io.github.wykopmobilny.ui.modules.pm.conversation.ConversationActivity
 import io.github.wykopmobilny.ui.modules.profile.ProfileActivity
 import io.github.wykopmobilny.ui.profile.ProfileDependencies
 import io.github.wykopmobilny.ui.search.SearchDependencies
 import io.github.wykopmobilny.ui.settings.SettingsDependencies
 import io.github.wykopmobilny.utils.ApplicationInjector
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.usermanager.SimpleUserManagerApi
 import io.github.wykopmobilny.utils.usermanager.UserCredentials
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.work.WorkDependencies
+import io.github.wykopmobilny.work.di.DaggerWorkManagerComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -58,6 +65,7 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import javax.inject.Inject
 import kotlin.reflect.KClass
+import kotlin.time.Duration
 
 open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
 
@@ -80,6 +88,8 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         super.onCreate()
         AndroidThreeTen.init(this)
         doInterop()
+
+        applicationScope.launch { domainComponent.initializeApp().invoke() }
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
@@ -106,6 +116,34 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             wykop = wykopApi,
             framework = framework,
             applicationCache = applicationCache,
+            work = work,
+            appConfig = appConfig,
+            notifications = notifications,
+        )
+    }
+
+    protected val appConfig = object : AppConfig {
+        override val blacklistRefreshInterval: Duration
+            get() = Duration.milliseconds(FirebaseRemoteConfig.getInstance().getLong(""))
+        override val blacklistFlexInterval: Duration
+            get() = Duration.milliseconds(FirebaseRemoteConfig.getInstance().getLong(""))
+    }
+
+    protected open val notifications by lazy {
+        DaggerNotificationsComponent.factory().create(
+            context = this,
+            interopIntentHandler = { type ->
+                when (type) {
+                    is Notifications.SingleMessage -> WykopLinkHandler.getLinkIntent(type.interopUrl, this)
+                    Notifications.MultipleNotifications -> Intent(applicationContext, NotificationsListActivity::class.java)
+                }
+            },
+        )
+    }
+
+    protected open val work by lazy {
+        DaggerWorkManagerComponent.factory().create(
+            context = this,
         )
     }
 
@@ -143,7 +181,8 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             signingInterceptor = ApiSignInterceptor(
                 object : SimpleUserManagerApi {
 
-                    override fun getUserCredentials(): UserCredentials? = userManagerApi.get().getUserCredentials()
+                    override fun getUserCredentials(): UserCredentials? =
+                        userManagerApi.get().getUserCredentials()
                 },
             ),
         )
@@ -180,11 +219,15 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             SearchDependencies::class -> getOrPutScope<SearchScope>(scopeId) { domainComponent.search() }
             LinkDetailsDependencies::class -> {
                 scopeId as Long
-                getOrPutScope<LinkDetailsScope>(scopeId) { domainComponent.linkDetails().create(linkId = scopeId) }
+                getOrPutScope<LinkDetailsScope>(scopeId) {
+                    domainComponent.linkDetails().create(linkId = scopeId)
+                }
             }
             ProfileDependencies::class -> {
                 scopeId as String
-                getOrPutScope<ProfileScope>(scopeId) { domainComponent.profile().create(profileId = scopeId) }
+                getOrPutScope<ProfileScope>(scopeId) {
+                    domainComponent.profile().create(profileId = scopeId)
+                }
             }
             else -> error("Unknown dependency type $clazz")
         }.dependencyContainer as T
@@ -220,7 +263,11 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         }?.coroutineScope?.cancel()
     }
 
-    override fun <T : Any> launchScoped(clazz: KClass<T>, id: Any?, block: suspend CoroutineScope.() -> Unit) =
+    override fun <T : Any> launchScoped(
+        clazz: KClass<T>,
+        id: Any?,
+        block: suspend CoroutineScope.() -> Unit,
+    ) =
         scopes.getValue(scopeKey(clazz, id)).coroutineScope.launch(block = block)
 
     private fun doInterop() {
@@ -228,7 +275,10 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             var currentActivity: Activity? = null
             registerActivityLifecycleCallbacks(
                 object : ActivityLifecycleCallbacks {
-                    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
+                    override fun onActivityCreated(
+                        activity: Activity,
+                        savedInstanceState: Bundle?,
+                    ) = Unit
 
                     override fun onActivityStarted(activity: Activity) = Unit
 
@@ -242,7 +292,8 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
 
                     override fun onActivityStopped(activity: Activity) = Unit
 
-                    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+                    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) =
+                        Unit
 
                     override fun onActivityDestroyed(activity: Activity) = Unit
                 },
@@ -250,16 +301,31 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             domainComponent.navigation().request.collect {
                 val context = currentActivity ?: return@collect
                 when (it) {
-                    InteropRequest.BlackListScreen -> context.startActivity(BlacklistActivity.createIntent(context))
+                    InteropRequest.BlackListScreen -> context.startActivity(
+                        BlacklistActivity.createIntent(
+                            context,
+                        ),
+                    )
                     is InteropRequest.ShowToast -> {
                         withContext(AppDispatchers.Main) {
                             Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                         }
                     }
                     is InteropRequest.PrivateMessage ->
-                        context.startActivity(ConversationActivity.createIntent(context, it.profileId))
+                        context.startActivity(
+                            ConversationActivity.createIntent(
+                                context,
+                                it.profileId,
+                            ),
+                        )
                     is InteropRequest.NewEntry ->
-                        context.startActivity(AddEntryActivity.createIntent(context, null, "@${it.profileId}: "))
+                        context.startActivity(
+                            AddEntryActivity.createIntent(
+                                context,
+                                null,
+                                "@${it.profileId}: ",
+                            ),
+                        )
                     is InteropRequest.Profile ->
                         context.startActivity(ProfileActivity.createIntent(context, it.profileId))
                 }

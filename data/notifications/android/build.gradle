@@ -1,0 +1,13 @@
+plugins {
+    id("com.starter.library.android")
+    id("org.jetbrains.kotlin.kapt")
+}
+
+dependencies {
+    api(projects.data.notifications.api)
+
+    implementation(libs.androidx.core)
+    implementation(projects.common.kotlinHelpers)
+    implementation(libs.dagger.core)
+    kapt(libs.dagger.compiler)
+}

@@ -12,15 +12,20 @@ import io.github.wykopmobilny.domain.login.di.LoginDomainComponent
 import io.github.wykopmobilny.domain.navigation.Framework
 import io.github.wykopmobilny.domain.navigation.InteropModule
 import io.github.wykopmobilny.domain.navigation.InteropRequestService
+import io.github.wykopmobilny.domain.notifications.di.NotificationsModule
 import io.github.wykopmobilny.domain.profile.di.ProfileDomainComponent
 import io.github.wykopmobilny.domain.promoted.PromotedModule
 import io.github.wykopmobilny.domain.search.di.SearchDomainComponent
 import io.github.wykopmobilny.domain.settings.di.SettingsDomainComponent
+import io.github.wykopmobilny.domain.startup.AppConfig
+import io.github.wykopmobilny.domain.startup.InitializeApp
 import io.github.wykopmobilny.domain.styles.di.StylesDomainComponent
 import io.github.wykopmobilny.domain.work.di.WorkDomainComponent
+import io.github.wykopmobilny.notification.NotificationsApi
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.storage.api.Storages
 import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.work.WorkApi
 import kotlinx.datetime.Clock
 import javax.inject.Singleton
 
@@ -30,6 +35,7 @@ import javax.inject.Singleton
         InteropModule::class,
         StoresModule::class,
         PromotedModule::class,
+        NotificationsModule::class,
     ],
     dependencies = [
         Storages::class,
@@ -37,6 +43,8 @@ import javax.inject.Singleton
         WykopApi::class,
         Framework::class,
         ApplicationCache::class,
+        WorkApi::class,
+        NotificationsApi::class,
     ],
 )
 interface DomainComponent {
@@ -48,11 +56,14 @@ interface DomainComponent {
             @BindsInstance appScopes: AppScopes,
             @BindsInstance connectConfig: () -> ConnectConfig,
             @BindsInstance clock: Clock,
+            @BindsInstance appConfig: AppConfig,
             storages: Storages,
             scraper: Scraper,
             wykop: WykopApi,
             framework: Framework,
             applicationCache: ApplicationCache,
+            work: WorkApi,
+            notifications: NotificationsApi
         ): DomainComponent
     }
 
@@ -75,4 +86,6 @@ interface DomainComponent {
     fun settingsApiInterop(): SettingsPreferencesApi
 
     fun work(): WorkDomainComponent
+
+    fun initializeApp(): InitializeApp
 }

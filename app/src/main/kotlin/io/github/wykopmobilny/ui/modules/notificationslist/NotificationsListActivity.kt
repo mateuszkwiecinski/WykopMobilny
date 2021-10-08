@@ -35,7 +35,7 @@ class NotificationsListActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.pager.offscreenPageLimit = 1
         binding.pager.adapter = pagerAdapter
-        binding.pager.setCurrentItem(intent.getIntExtra(EXTRA_PRESELECT_INDEX, 0), false)
+        binding.pager.setCurrentItem(intent.getIntExtra(EXTRA_PRESELECT_INDEX, PRESELECT_NOTIFICATIONS), false)
         binding.tabLayout.setupWithViewPager(binding.pager)
     }
 
