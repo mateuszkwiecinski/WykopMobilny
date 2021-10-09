@@ -61,11 +61,13 @@ class LinkDetailsActivity :
     lateinit var contentUri: Uri
     override val enableSwipeBackLayout: Boolean = true
     val linkId by lazy {
-        if (intent.hasExtra(EXTRA_LINK)) link.id else {
+        if (intent.hasExtra(EXTRA_LINK)) {
+            link.id
+        } else {
             intent.getLongExtra(EXTRA_LINK_ID, -1L)
         }
     }
-    private val link by lazy { intent.getParcelableExtra<Link>(EXTRA_LINK)!! }
+    private val link by lazy { intent.getParcelableExtra<Link>(EXTRA_LINK).let(::checkNotNull) }
     private var replyLinkId: Long = 0
     private val linkCommentId by lazy {
         intent.getLongExtra(EXTRA_COMMENT_ID, -1)
@@ -248,7 +250,7 @@ class LinkDetailsActivity :
     }
 
     override fun scrollToComment(id: Long) {
-        val index = adapter.link!!.comments.indexOfFirst { it.id == id }
+        val index = adapter.link?.comments?.indexOfFirst { it.id == id }?.takeIf { it >= 0 } ?: return
         binding.recyclerView.scrollToPosition(index + 1)
     }
 
@@ -360,6 +362,5 @@ class LinkDetailsActivity :
                     putExtra(EXTRA_COMMENT_ID, commentId)
                 }
             }
-
     }
 }
