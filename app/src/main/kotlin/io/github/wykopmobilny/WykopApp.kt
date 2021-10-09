@@ -10,6 +10,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.Lazy
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.api.ApiSignInterceptor
 import io.github.wykopmobilny.data.cache.sqldelight.DaggerApplicationCacheComponent
 import io.github.wykopmobilny.di.DaggerAppComponent
@@ -39,6 +40,7 @@ import io.github.wykopmobilny.ui.blacklist.BlacklistDependencies
 import io.github.wykopmobilny.ui.login.LoginDependencies
 import io.github.wykopmobilny.ui.modules.blacklist.BlacklistActivity
 import io.github.wykopmobilny.ui.modules.input.entry.add.AddEntryActivity
+import io.github.wykopmobilny.ui.modules.mainnavigation.MainNavigationActivity
 import io.github.wykopmobilny.ui.modules.notificationslist.NotificationsListActivity
 import io.github.wykopmobilny.ui.modules.pm.conversation.ConversationActivity
 import io.github.wykopmobilny.ui.modules.profile.ProfileActivity
@@ -135,6 +137,8 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             interopIntentHandler = { type ->
                 when (type) {
                     is Notifications.SingleMessage -> WykopLinkHandler.getLinkIntent(type.interopUrl, this)
+                        ?: MainNavigationActivity.getIntent(this)
+                            .also { Napier.e("Invalid deeplink for url=${type.interopUrl}") }
                     Notifications.MultipleNotifications -> Intent(applicationContext, NotificationsListActivity::class.java)
                 }
             },
