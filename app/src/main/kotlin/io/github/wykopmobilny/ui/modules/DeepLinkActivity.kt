@@ -17,6 +17,7 @@ class DeepLinkActivity : AppCompatActivity() {
                 .also { Napier.e("Invalid deeplink for url=$url") }
         activityToOpen.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(activityToOpen)
+        overridePendingTransition(0, 0)
         finish()
     }
 }
