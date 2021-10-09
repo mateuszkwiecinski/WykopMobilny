@@ -7,6 +7,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.api.entries.EntriesApi
+import io.github.wykopmobilny.api.responses.VoteResponse
 import io.github.wykopmobilny.databinding.DialogVotersBinding
 import io.github.wykopmobilny.databinding.EntriesFragmentBinding
 import io.github.wykopmobilny.models.dataclass.Entry
@@ -58,11 +59,11 @@ open class BaseEntriesFragment : BaseFragment(R.layout.entries_fragment), Entrie
             entriesApi.entryVoteSubject
                 .subscribeOn(schedulers.backgroundThread())
                 .observeOn(schedulers.mainThread())
-                .subscribe { updateEntryVoteState(it.entryId, it.voteResponse.voteCount, true) },
+                .subscribe { updateEntryVoteState(it.entryId, it.voteResponse, true) },
             entriesApi.entryUnVoteSubject
                 .subscribeOn(schedulers.backgroundThread())
                 .observeOn(schedulers.mainThread())
-                .subscribe { updateEntryVoteState(it.entryId, it.voteResponse.voteCount, false) }
+                .subscribe { updateEntryVoteState(it.entryId, it.voteResponse, false) }
         )
     }
 
@@ -71,9 +72,9 @@ open class BaseEntriesFragment : BaseFragment(R.layout.entries_fragment), Entrie
         super.onDestroyView()
     }
 
-    private fun updateEntryVoteState(entryId: Long, voteCount: Int, isVoted: Boolean) {
+    private fun updateEntryVoteState(entryId: Long, response: VoteResponse, isVoted: Boolean) {
         entriesAdapter.data.firstOrNull { it.id == entryId }?.apply {
-            this.voteCount = voteCount
+            response.voteCount?.let { this.voteCount = it }
             this.isVoted = isVoted
             entriesAdapter.updateEntry(this)
         }

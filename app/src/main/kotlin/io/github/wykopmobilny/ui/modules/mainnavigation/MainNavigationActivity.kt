@@ -308,12 +308,15 @@ class MainNavigationActivity :
     }
 
     override fun onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) closeDrawer()
-        else {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            closeDrawer()
+        } else {
             if (settingsApi.disableExitConfirmation || tapDoubleClickedMillis + 2000L > System.currentTimeMillis()) {
                 super.onBackPressed()
                 return
-            } else Toast.makeText(this, R.string.doubleback_to_exit, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, R.string.doubleback_to_exit, Toast.LENGTH_SHORT).show()
+            }
             tapDoubleClickedMillis = System.currentTimeMillis()
         }
     }
