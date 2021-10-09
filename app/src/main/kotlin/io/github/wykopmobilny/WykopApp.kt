@@ -10,6 +10,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.Lazy
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.api.ApiSignInterceptor
 import io.github.wykopmobilny.data.cache.sqldelight.DaggerApplicationCacheComponent
 import io.github.wykopmobilny.di.DaggerAppComponent
@@ -39,6 +40,7 @@ import io.github.wykopmobilny.ui.blacklist.BlacklistDependencies
 import io.github.wykopmobilny.ui.login.LoginDependencies
 import io.github.wykopmobilny.ui.modules.blacklist.BlacklistActivity
 import io.github.wykopmobilny.ui.modules.input.entry.add.AddEntryActivity
+import io.github.wykopmobilny.ui.modules.mainnavigation.MainNavigationActivity
 import io.github.wykopmobilny.ui.modules.notificationslist.NotificationsListActivity
 import io.github.wykopmobilny.ui.modules.pm.conversation.ConversationActivity
 import io.github.wykopmobilny.ui.modules.profile.ProfileActivity
@@ -135,6 +137,8 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             interopIntentHandler = { type ->
                 when (type) {
                     is Notifications.SingleMessage -> WykopLinkHandler.getLinkIntent(type.interopUrl, this)
+                        ?: MainNavigationActivity.getIntent(this)
+                            .also { Napier.e("Invalid deeplink for url=${type.interopUrl}") }
                     Notifications.MultipleNotifications -> Intent(applicationContext, NotificationsListActivity::class.java)
                 }
             },
@@ -191,6 +195,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
     protected open val framework by lazy {
         DaggerFrameworkComponent.factory().create(
             application = this,
+            scope = applicationScope,
         )
     }
 
@@ -250,6 +255,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         }
 
     override fun <T : Any> destroyDependency(clazz: KClass<T>, scopeId: Any?) {
+        Napier.i("Destroying dependency name=${clazz.java.name}")
         when (clazz) {
             LoginDependencies::class -> scopes.remove(scopeKey<LoginScope>(scopeId))
             StylesDependencies::class -> scopes.remove(scopeKey<StylesScope>(scopeId))
@@ -267,8 +273,10 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         clazz: KClass<T>,
         id: Any?,
         block: suspend CoroutineScope.() -> Unit,
-    ) =
-        scopes.getValue(scopeKey(clazz, id)).coroutineScope.launch(block = block)
+    ) {
+        val key = scopeKey(clazz, id)
+        scopes[key]?.coroutineScope?.launch(block = block) ?: return Napier.w("launchScoped didn't find scope for key=$key")
+    }
 
     private fun doInterop() {
         applicationScope.launch {

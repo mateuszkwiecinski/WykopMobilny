@@ -3,10 +3,12 @@ package io.github.wykopmobilny.utils.linkhandler
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.modules.embedview.EmbedViewActivity
 import io.github.wykopmobilny.ui.modules.embedview.YouTubeUrlParser
 import io.github.wykopmobilny.ui.modules.links.linkdetails.LinkDetailsActivity
+import io.github.wykopmobilny.ui.modules.mainnavigation.MainNavigationActivity
 import io.github.wykopmobilny.ui.modules.mikroblog.entry.EntryActivity
 import io.github.wykopmobilny.ui.modules.pm.conversation.ConversationActivity
 import io.github.wykopmobilny.ui.modules.profile.ProfileActivity
@@ -57,16 +59,22 @@ class WykopLinkHandler @Inject constructor(
                         PROFILE_MATCHER -> ProfileActivity.createIntent(context, ProfileLinkParser.getProfile(url))
                         LINK_MATCHER -> {
                             val linkId = LinkParser.getLinkId(url)
-                            if (linkId != null) LinkDetailsActivity.createIntent(context, linkId, LinkParser.getLinkCommentId(url))
-                            else null
+                            if (linkId != null) {
+                                LinkDetailsActivity.createIntent(context, linkId, LinkParser.getLinkCommentId(url))
+                            } else {
+                                null
+                            }
                         }
                         else -> null
                     }
                 }
                 "gfycat", "streamable", "coub" -> EmbedViewActivity.createIntent(context, url)
                 "youtu", "youtube" -> {
-                    if (YouTubeUrlParser.isVideoUrl(url)) EmbedViewActivity.createIntent(context, url)
-                    else null
+                    if (YouTubeUrlParser.isVideoUrl(url)) {
+                        EmbedViewActivity.createIntent(context, url)
+                    } else {
+                        null
+                    }
                 }
                 else -> null
             }

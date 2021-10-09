@@ -15,7 +15,7 @@ interface NotificationsComponent : NotificationsApi {
 
         fun create(
             @BindsInstance context: Context,
-            @BindsInstance interopIntentHandler: @JvmSuppressWildcards (AppNotification.Type.Notifications) -> Intent?,
+            @BindsInstance interopIntentHandler: @JvmSuppressWildcards (AppNotification.Type.Notifications) -> Intent,
         ): NotificationsComponent
     }
 }

@@ -229,13 +229,12 @@ class YTPlayer :
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         when (orientation) {
-            Orientation.AUTO, Orientation.AUTO_START_WITH_LANDSCAPE -> if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                if (player != null) {
-                    player!!.setFullscreen(true)
+            Orientation.AUTO, Orientation.AUTO_START_WITH_LANDSCAPE ->
+                if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    player?.setFullscreen(true)
+                } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    player?.setFullscreen(false)
                 }
-            } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT && player != null) {
-                player!!.setFullscreen(false)
-            }
             Orientation.ONLY_LANDSCAPE, Orientation.ONLY_PORTRAIT -> Unit
         }
     }

@@ -128,7 +128,7 @@
             android:name=".ui.modules.DeepLinkActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:launchMode="singleTask"
+            android:taskAffinity=""
             android:windowSoftInputMode="stateUnchanged|adjustResize"
             >
             <intent-filter>

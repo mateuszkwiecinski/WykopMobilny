@@ -18,7 +18,7 @@ import kotlin.reflect.KClass
 @Reusable
 internal class AndroidNotificationManager @Inject constructor(
     private val context: Context,
-    private val interopIntentHandler: @JvmSuppressWildcards (AppNotification.Type.Notifications) -> Intent?,
+    private val interopIntentHandler: @JvmSuppressWildcards (AppNotification.Type.Notifications) -> Intent,
 ) : NotificationsManager {
 
     private val manager = context.getSystemService<NotificationManager>().let(::checkNotNull)
