@@ -195,6 +195,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
     protected open val framework by lazy {
         DaggerFrameworkComponent.factory().create(
             application = this,
+            scope = applicationScope,
         )
     }
 
@@ -254,6 +255,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         }
 
     override fun <T : Any> destroyDependency(clazz: KClass<T>, scopeId: Any?) {
+        Napier.i("Destroying dependency name=${clazz.java.name}")
         when (clazz) {
             LoginDependencies::class -> scopes.remove(scopeKey<LoginScope>(scopeId))
             StylesDependencies::class -> scopes.remove(scopeKey<StylesScope>(scopeId))
@@ -271,8 +273,10 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         clazz: KClass<T>,
         id: Any?,
         block: suspend CoroutineScope.() -> Unit,
-    ) =
-        scopes.getValue(scopeKey(clazz, id)).coroutineScope.launch(block = block)
+    ) {
+        val key = scopeKey(clazz, id)
+        scopes[key]?.coroutineScope?.launch(block = block) ?: return Napier.w("launchScoped didn't find scope for key=$key")
+    }
 
     private fun doInterop() {
         applicationScope.launch {

@@ -4,7 +4,6 @@ import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlin.reflect.KClass
 
 interface AppScopes {
@@ -15,7 +14,7 @@ interface AppScopes {
         clazz: KClass<T>,
         id: Any? = null,
         block: suspend CoroutineScope.() -> Unit,
-    ): Job
+    )
 }
 
 object AppDispatchers {
