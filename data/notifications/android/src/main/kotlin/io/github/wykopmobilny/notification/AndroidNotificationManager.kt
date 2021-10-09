@@ -36,7 +36,7 @@ internal class AndroidNotificationManager @Inject constructor(
                         PendingIntent.getActivity(
                             context,
                             0,
-                            interopIntentHandler(type)?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                            interopIntentHandler(type).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                         ),
                     )

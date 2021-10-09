@@ -10,7 +10,7 @@ class EntryCommentInteractor @Inject constructor(val entriesApi: EntriesApi) {
     fun voteComment(comment: EntryComment): Single<EntryComment> =
         entriesApi.voteComment(comment.id)
             .map {
-                comment.voteCount = it.voteCount
+                it.voteCount?.let { comment.voteCount = it }
                 comment.isVoted = true
                 comment
             }
@@ -18,7 +18,7 @@ class EntryCommentInteractor @Inject constructor(val entriesApi: EntriesApi) {
     fun unvoteComment(comment: EntryComment): Single<EntryComment> =
         entriesApi.unvoteComment(comment.id)
             .map {
-                comment.voteCount = it.voteCount
+                it.voteCount?.let { comment.voteCount = it }
                 comment.isVoted = false
                 comment
             }

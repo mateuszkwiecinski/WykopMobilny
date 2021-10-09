@@ -32,19 +32,19 @@ class LinkDetailsAdapter @Inject constructor(
     lateinit var linkCommentViewListener: LinkCommentViewListener
     lateinit var linkCommentActionListener: LinkCommentActionListener
     lateinit var linkHeaderActionListener: LinkHeaderActionListener
-    private val commentsList: List<LinkComment>?
-        get() = link?.comments?.filterNot {
-            it.isParentCollapsed || (it.isBlocked && settingsPreferencesApi.hideBlacklistedViews)
-        }
+    private val commentsList: List<LinkComment>
+        get() = link?.comments
+            ?.filterNot { it.isParentCollapsed || (it.isBlocked && settingsPreferencesApi.hideBlacklistedViews) }
+            .orEmpty()
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         try { // Suppresing, need more information to reproduce this crash.
             if (holder.itemViewType == LinkHeaderViewHolder.TYPE_HEADER) {
-                link?.let { (holder as LinkHeaderViewHolder).bindView(link!!) }
+                link?.let { (holder as LinkHeaderViewHolder).bindView(it) }
             } else if (holder is BlockedViewHolder) {
-                holder.bindView(commentsList!![position - 1])
+                holder.bindView(commentsList[position - 1])
             } else {
-                val comment = commentsList!![position - 1]
+                val comment = commentsList[position - 1]
                 if (holder is TopLinkCommentViewHolder) {
                     holder.bindView(comment, link!!.author?.nick == comment.author.nick, highlightCommentId)
                     holder.itemView.tag =
@@ -54,8 +54,8 @@ class LinkDetailsAdapter @Inject constructor(
                             RecyclableViewHolder.SEPARATOR_NORMAL
                         }
                 } else if (holder is LinkCommentViewHolder) {
-                    val parent = commentsList!!.first { it.id == comment.parentId }
-                    val index = commentsList!!.subList(commentsList!!.indexOf(parent), position - 1).size
+                    val parent = commentsList.first { it.id == comment.parentId }
+                    val index = commentsList.subList(commentsList.indexOf(parent), position - 1).size
                     holder.bindView(comment, link!!.author?.nick == comment.author.nick, highlightCommentId)
                     holder.itemView.tag =
                         if (parent.childCommentCount == index) {
@@ -72,15 +72,10 @@ class LinkDetailsAdapter @Inject constructor(
 
     override fun getItemViewType(position: Int): Int {
         return if (position == 0) LinkHeaderViewHolder.TYPE_HEADER
-        else BaseLinkCommentViewHolder.getViewTypeForComment(commentsList!![position - 1])
+        else BaseLinkCommentViewHolder.getViewTypeForComment(commentsList[position - 1])
     }
 
-    override fun getItemCount(): Int {
-        commentsList?.let {
-            return it.size + 1
-        }
-        return 1
-    }
+    override fun getItemCount() = commentsList.size + 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -118,7 +113,7 @@ class LinkDetailsAdapter @Inject constructor(
     fun updateLinkComment(comment: LinkComment) {
         val position = link!!.comments.indexOf(comment)
         link!!.comments[position] = comment
-        notifyItemChanged(commentsList!!.indexOf(comment) + 1)
+        notifyItemChanged(commentsList.indexOf(comment) + 1)
     }
 
     fun updateLinkHeader(link: Link) {

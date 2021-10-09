@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.webkit.CookieManager
 import android.widget.Toast
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.Lazy
@@ -61,6 +62,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
@@ -93,6 +95,11 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         doInterop()
 
         applicationScope.launch { domainComponent.initializeApp().invoke() }
+        applicationScope.launch {
+            storages.userInfoStorage().loggedUser
+                .mapNotNull { it?.id }
+                .collect { FirebaseCrashlytics.getInstance().setUserId(it) }
+        }
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
