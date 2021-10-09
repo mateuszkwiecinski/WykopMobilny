@@ -48,6 +48,7 @@ internal class WorkManagerScheduler @Inject constructor(
             repeatInterval = repeatInterval.inWholeMilliseconds,
             repeatIntervalTimeUnit = TimeUnit.MILLISECONDS,
         )
+            .setInitialDelay(repeatInterval.inWholeMilliseconds, TimeUnit.MILLISECONDS)
             .setConstraints(
                 Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)

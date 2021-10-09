@@ -28,6 +28,7 @@ import io.github.wykopmobilny.domain.settings.di.SettingsScope
 import io.github.wykopmobilny.domain.startup.AppConfig
 import io.github.wykopmobilny.domain.styles.di.StylesScope
 import io.github.wykopmobilny.domain.work.di.WorkScope
+import io.github.wykopmobilny.initializers.RemoteConfigKeys
 import io.github.wykopmobilny.links.details.LinkDetailsDependencies
 import io.github.wykopmobilny.notification.AppNotification.Type.Notifications
 import io.github.wykopmobilny.notification.di.DaggerNotificationsComponent
@@ -109,7 +110,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         daggerDomain().create(
             appScopes = this,
             connectConfig = {
-                val appKey = FirebaseRemoteConfig.getInstance().getString("wykop_app_key")
+                val appKey = FirebaseRemoteConfig.getInstance().getString(RemoteConfigKeys.API_APP_KEY)
                 ConnectConfig(connectUrl = "https://a2.wykop.pl/login/connect/appkey/$appKey")
             },
             clock = Clock.System,
@@ -125,10 +126,15 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
     }
 
     protected val appConfig = object : AppConfig {
+
+        private val firebase
+            get() = FirebaseRemoteConfig.getInstance()
         override val blacklistRefreshInterval: Duration
-            get() = Duration.milliseconds(FirebaseRemoteConfig.getInstance().getLong(""))
+            get() = Duration.milliseconds(firebase.getLong(RemoteConfigKeys.BLACKLIST_REFRESH_INTERVAL))
         override val blacklistFlexInterval: Duration
-            get() = Duration.milliseconds(FirebaseRemoteConfig.getInstance().getLong(""))
+            get() = Duration.milliseconds(firebase.getLong(RemoteConfigKeys.BLACKLIST_FLEX_INTERVAL))
+        override val notificationsEnabled: Boolean
+            get() = firebase.getBoolean(RemoteConfigKeys.NOTIFICATIONS_ENABLED)
     }
 
     protected open val notifications by lazy {
@@ -180,7 +186,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         daggerWykop().create(
             okHttpClient = okHttpClient,
             baseUrl = WYKOP_API_URL,
-            appKey = { FirebaseRemoteConfig.getInstance().getString("wykop_app_key") },
+            appKey = { FirebaseRemoteConfig.getInstance().getString(RemoteConfigKeys.API_APP_KEY) },
             cacheDir = cacheDir.resolve("okhttp/wykop"),
             signingInterceptor = ApiSignInterceptor(
                 object : SimpleUserManagerApi {

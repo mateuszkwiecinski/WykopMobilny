@@ -1,6 +1,7 @@
 package io.github.wykopmobilny.api
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import io.github.wykopmobilny.initializers.RemoteConfigKeys
 import io.github.wykopmobilny.utils.api.encryptMD5
 import io.github.wykopmobilny.utils.usermanager.SimpleUserManagerApi
 import okhttp3.FormBody
@@ -30,7 +31,7 @@ class ApiSignInterceptor(private val userManagerApi: SimpleUserManagerApi) : Int
         if (credentials != null && !customHeaders.contains(REMOVE_USERKEY_HEADER)) {
             url += "/userkey/${credentials.userKey}"
         }
-        val appSecret = FirebaseRemoteConfig.getInstance().getString("wykop_app_secret")
+        val appSecret = FirebaseRemoteConfig.getInstance().getString(RemoteConfigKeys.API_APP_SECRET)
 
         val encodeUrl: String = when (request.body) {
             is FormBody -> {

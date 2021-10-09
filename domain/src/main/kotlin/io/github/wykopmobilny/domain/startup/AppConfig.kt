@@ -6,4 +6,5 @@ interface AppConfig {
 
     val blacklistRefreshInterval: Duration
     val blacklistFlexInterval: Duration
+    val notificationsEnabled: Boolean
 }

@@ -3,6 +3,7 @@ package io.github.wykopmobilny.domain.settings.prefs
 import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.settings.UserSettings
 import io.github.wykopmobilny.domain.settings.get
+import io.github.wykopmobilny.domain.startup.AppConfig
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
@@ -10,6 +11,7 @@ import kotlin.time.Duration
 
 internal class GetNotificationPreferences @Inject constructor(
     private val appStorage: AppStorage,
+    private val appConfig: AppConfig,
 ) {
 
     operator fun invoke() = combine(
@@ -18,7 +20,7 @@ internal class GetNotificationPreferences @Inject constructor(
         appStorage.get(UserSettings.exitConfirmation),
     ) { notificationsEnabled, notificationRefreshPeriod, exitConfirmation ->
         NotificationsPreferences(
-            notificationsEnabled = notificationsEnabled ?: true,
+            notificationsEnabled = notificationsEnabled ?: appConfig.notificationsEnabled,
             notificationRefreshPeriod = notificationRefreshPeriod?.let(::findRefreshPeriod)
                 ?: NotificationsPreferences.RefreshPeriod.FifteenMinutes,
             exitConfirmation = exitConfirmation ?: true,
