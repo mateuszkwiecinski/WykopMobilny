@@ -52,6 +52,7 @@
         <item name="colorSurface">#000000</item>
         <item name="colorOnSurface">#deffffff</item>
         <item name="colorPrimary">#000000</item>
+        <item name="toolbarStyle">@style/Widget.App.Toolbar.Amoled</item>
         <item name="colorOnPrimary">#d9ffffff</item>
         <item name="colorPrimaryDark">#000000</item>
     </style>

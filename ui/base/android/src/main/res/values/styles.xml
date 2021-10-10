@@ -8,6 +8,9 @@
     <style name="Widget.App.Toolbar.Dark">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar.Dark</item>
     </style>
+    <style name="Widget.App.Toolbar.Amoled" parent="Widget.App.Toolbar.Dark">
+        <item name="android:elevation">0dp</item>
+    </style>
 
     <style name="ThemeOverlay.App.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
         <item name="colorControlHighlight">?colorControlHighlightOnPrimary</item>
