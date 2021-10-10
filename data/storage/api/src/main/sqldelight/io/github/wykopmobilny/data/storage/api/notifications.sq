@@ -1,0 +1,14 @@
+CREATE TABLE readNotificationEntity (
+  notificationId INTEGER NOT NULL PRIMARY KEY
+);
+
+insertOrReplace:
+INSERT OR REPLACE INTO readNotificationEntity (notificationId)
+VALUES (?);
+
+all:
+SELECT * FROM readNotificationEntity;
+
+deleteAll {
+  DELETE FROM readNotificationEntity;
+}
