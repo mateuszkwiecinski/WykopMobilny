@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationChannelGroup
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -11,7 +12,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
 import dagger.Reusable
 import io.github.aakira.napier.Napier
-import io.github.wykopmobilny.data.notifications.android.R
+import io.github.wykopmobilny.ui.notifications.android.R
+import io.github.wykopmobilny.utils.requireDependency
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
@@ -32,6 +35,14 @@ internal class AndroidNotificationManager @Inject constructor(
                     .setContentTitle(notification.title)
                     .setContentText(notification.message)
                     .setAutoCancel(true)
+                    .setDeleteIntent(
+                        PendingIntent.getBroadcast(
+                            context,
+                            0,
+                            Intent(context, NotificationDismissedReceiver::class.java),
+                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_ONE_SHOT,
+                        ),
+                    )
                     .setContentIntent(
                         PendingIntent.getActivity(
                             context,
@@ -82,6 +93,14 @@ internal class AndroidNotificationManager @Inject constructor(
         private const val NOTIFICATION_CHANNEL_GROUP_ID = "io.github.wykopmobilny:notifications"
         private const val NOTIFICATION_CHANNEL_GENERAL = "$NOTIFICATION_CHANNEL_GROUP_ID:general"
         private const val NOTIFICATIONS_NOTIFICATION_ID = 123
+    }
+}
+
+internal class NotificationDismissedReceiver : BroadcastReceiver() {
+
+    override fun onReceive(context: Context, intent: Intent?) {
+        val dependencies = context.requireDependency<NotificationDependencies>()
+        runBlocking { dependencies.handleNotificationDismissed().invoke() }
     }
 }
 

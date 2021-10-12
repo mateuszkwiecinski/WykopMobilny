@@ -9,11 +9,9 @@ import io.github.wykopmobilny.notification.AppNotification
 import io.github.wykopmobilny.notification.NotificationsManager
 import io.github.wykopmobilny.notification.cancelNotification
 import io.github.wykopmobilny.storage.api.SessionStorage
-import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.work.GetNotificationsRefreshWorkDetails
 import io.github.wykopmobilny.work.WorkData
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class GetNotificationsRefreshWorkDetailsQuery @Inject constructor(
@@ -42,13 +40,13 @@ internal class GetNotificationsRefreshWorkDetailsQuery @Inject constructor(
         val readNotifications = appStorage.notificationsQueries.all().executeAsList()
         val newNotifications = unreadNotifications.filterNot { readNotifications.contains(it.id) }
 
-        Napier.i("Notification refreshed, ${newNotifications.size}($unreadNotifications) out of ${notifications.size}")
+        Napier.i("Notifications refreshed, ${newNotifications.size}(${unreadNotifications.size}) out of ${notifications.size}")
         when (newNotifications.size) {
             0 -> notificationsManager.cancelNotification<AppNotification.Type.Notifications>()
             notifications.size -> notificationsManager.upsertNotification(
                 notification = AppNotification(
                     title = "Wykop",
-                    message = "Posiadasz ${notifications.size}+ nowych powiadomień.",
+                    message = "Posiadasz ${unreadNotifications.size}+ nowych powiadomień.",
                     type = AppNotification.Type.Notifications.MultipleNotifications,
                 ),
             )
@@ -67,16 +65,10 @@ internal class GetNotificationsRefreshWorkDetailsQuery @Inject constructor(
             else -> notificationsManager.upsertNotification(
                 notification = AppNotification(
                     title = "Wykop",
-                    message = "Posiadasz ${notifications.size} nowych powiadomień.",
+                    message = "Posiadasz ${unreadNotifications.size} nowych powiadomień.",
                     type = AppNotification.Type.Notifications.MultipleNotifications,
                 ),
             )
-        }
-        withContext(AppDispatchers.IO) {
-            appStorage.notificationsQueries.transaction {
-                appStorage.notificationsQueries.deleteAll()
-                newNotifications.forEach { appStorage.notificationsQueries.insertOrReplace(notificationId = it.id) }
-            }
         }
     }
 }

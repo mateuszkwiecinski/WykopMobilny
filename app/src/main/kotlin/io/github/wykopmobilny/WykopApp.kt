@@ -23,6 +23,7 @@ import io.github.wykopmobilny.domain.login.ConnectConfig
 import io.github.wykopmobilny.domain.login.di.LoginScope
 import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.android.DaggerFrameworkComponent
+import io.github.wykopmobilny.domain.notifications.di.NotificationsScope
 import io.github.wykopmobilny.domain.profile.di.ProfileScope
 import io.github.wykopmobilny.domain.search.di.SearchScope
 import io.github.wykopmobilny.domain.settings.di.SettingsScope
@@ -32,6 +33,7 @@ import io.github.wykopmobilny.domain.work.di.WorkScope
 import io.github.wykopmobilny.initializers.RemoteConfigKeys
 import io.github.wykopmobilny.links.details.LinkDetailsDependencies
 import io.github.wykopmobilny.notification.AppNotification.Type.Notifications
+import io.github.wykopmobilny.notification.NotificationDependencies
 import io.github.wykopmobilny.notification.di.DaggerNotificationsComponent
 import io.github.wykopmobilny.storage.android.DaggerStoragesComponent
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
@@ -51,6 +53,7 @@ import io.github.wykopmobilny.ui.search.SearchDependencies
 import io.github.wykopmobilny.ui.settings.SettingsDependencies
 import io.github.wykopmobilny.utils.ApplicationInjector
 import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
+import io.github.wykopmobilny.utils.requireDependency
 import io.github.wykopmobilny.utils.usermanager.SimpleUserManagerApi
 import io.github.wykopmobilny.utils.usermanager.UserCredentials
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
@@ -155,6 +158,12 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                     Notifications.MultipleNotifications -> Intent(applicationContext, NotificationsListActivity::class.java)
                 }
             },
+            dependencies = object : NotificationDependencies {
+                val lazyDependencies by lazy { requireDependency<NotificationDependencies>() }
+
+                override fun handleNotificationDismissed() =
+                    lazyDependencies.handleNotificationDismissed()
+            },
         )
     }
 
@@ -235,6 +244,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             BlacklistDependencies::class -> getOrPutScope<BlacklistScope>(scopeId) { domainComponent.blacklist() }
             WorkDependencies::class -> getOrPutScope<WorkScope>(scopeId) { domainComponent.work() }
             SearchDependencies::class -> getOrPutScope<SearchScope>(scopeId) { domainComponent.search() }
+            NotificationDependencies::class -> getOrPutScope<NotificationsScope>(scopeId) { domainComponent.notifications() }
             LinkDetailsDependencies::class -> {
                 scopeId as Long
                 getOrPutScope<LinkDetailsScope>(scopeId) {
@@ -278,6 +288,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             SearchDependencies::class -> scopes.remove(scopeKey<SearchScope>(scopeId))
             LinkDetailsDependencies::class -> scopes.remove(scopeKey<LinkDetailsScope>(scopeId))
             ProfileDependencies::class -> scopes.remove(scopeKey<ProfileScope>(scopeId))
+            NotificationDependencies::class -> scopes.remove(scopeKey<NotificationsScope>(scopeId))
             else -> error("Unknown dependency type $clazz")
         }?.coroutineScope?.cancel()
     }

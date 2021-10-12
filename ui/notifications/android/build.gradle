@@ -4,7 +4,8 @@ plugins {
 }
 
 dependencies {
-    api(projects.data.notifications.api)
+    api(projects.ui.base.android)
+    api(projects.ui.notifications.api)
 
     implementation(libs.androidx.core)
     implementation(projects.common.kotlinHelpers)

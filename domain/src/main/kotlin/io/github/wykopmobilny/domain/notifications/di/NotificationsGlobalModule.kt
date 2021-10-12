@@ -9,7 +9,7 @@ import io.github.wykopmobilny.ui.base.AppScopes
 import javax.inject.Singleton
 
 @Module
-internal class NotificationsModule {
+internal class NotificationsGlobalModule {
 
     @Singleton
     @Provides
