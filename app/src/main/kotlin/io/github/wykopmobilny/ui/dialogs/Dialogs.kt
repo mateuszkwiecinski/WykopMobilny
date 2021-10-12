@@ -13,7 +13,7 @@ typealias AddRelatedDialogCallback = (String, String) -> Unit
 fun editTextFormatDialog(
     titleId: Int,
     context: Context,
-    callback: FormatDialogCallback
+    callback: FormatDialogCallback,
 ): AlertDialog {
     val editTextLayout = getEditTextView(context)
     AlertDialog.Builder(context).run {
@@ -26,11 +26,13 @@ fun editTextFormatDialog(
 
 fun lennyfaceDialog(
     context: Context,
-    callback: FormatDialogCallback
+    callback: FormatDialogCallback,
 ): AlertDialog {
     AlertDialog.Builder(context).run {
         setTitle(R.string.insert_emoticon)
         val lennyArray = context.resources.getStringArray(R.array.lenny_face_array)
+            .map { it.replace(" ", "\u00A0") }
+            .toTypedArray()
         setItems(lennyArray) { _, pos -> callback.invoke(lennyArray[pos]) }
         return create()
     }
@@ -38,7 +40,7 @@ fun lennyfaceDialog(
 
 fun confirmationDialog(
     context: Context,
-    callback: () -> Unit
+    callback: () -> Unit,
 ): AlertDialog {
     AlertDialog.Builder(context).run {
         setMessage(context.resources.getString(R.string.confirmation))

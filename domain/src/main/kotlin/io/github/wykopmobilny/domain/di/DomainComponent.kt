@@ -12,7 +12,8 @@ import io.github.wykopmobilny.domain.login.di.LoginDomainComponent
 import io.github.wykopmobilny.domain.navigation.Framework
 import io.github.wykopmobilny.domain.navigation.InteropModule
 import io.github.wykopmobilny.domain.navigation.InteropRequestService
-import io.github.wykopmobilny.domain.notifications.di.NotificationsModule
+import io.github.wykopmobilny.domain.notifications.di.NotificationsDomainComponent
+import io.github.wykopmobilny.domain.notifications.di.NotificationsGlobalModule
 import io.github.wykopmobilny.domain.profile.di.ProfileDomainComponent
 import io.github.wykopmobilny.domain.promoted.PromotedModule
 import io.github.wykopmobilny.domain.search.di.SearchDomainComponent
@@ -35,7 +36,7 @@ import javax.inject.Singleton
         InteropModule::class,
         StoresModule::class,
         PromotedModule::class,
-        NotificationsModule::class,
+        NotificationsGlobalModule::class,
     ],
     dependencies = [
         Storages::class,
@@ -86,6 +87,8 @@ interface DomainComponent {
     fun settingsApiInterop(): SettingsPreferencesApi
 
     fun work(): WorkDomainComponent
+
+    fun notifications(): NotificationsDomainComponent
 
     fun initializeApp(): InitializeApp
 }

@@ -5,6 +5,7 @@ import android.content.Intent
 import dagger.BindsInstance
 import dagger.Component
 import io.github.wykopmobilny.notification.AppNotification
+import io.github.wykopmobilny.notification.NotificationDependencies
 import io.github.wykopmobilny.notification.NotificationsApi
 
 @Component(modules = [NotificationsModule::class])
@@ -15,6 +16,7 @@ interface NotificationsComponent : NotificationsApi {
 
         fun create(
             @BindsInstance context: Context,
+            @BindsInstance dependencies: NotificationDependencies,
             @BindsInstance interopIntentHandler: @JvmSuppressWildcards (AppNotification.Type.Notifications) -> Intent,
         ): NotificationsComponent
     }

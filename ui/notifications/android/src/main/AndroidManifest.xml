@@ -1,0 +1,13 @@
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.github.wykopmobilny.ui.notifications.android"
+    >
+
+    <application>
+        <receiver
+            android:name="io.github.wykopmobilny.notification.NotificationDismissedReceiver"
+            android:enabled="true"
+            android:exported="true"
+            />
+    </application>
+</manifest>
