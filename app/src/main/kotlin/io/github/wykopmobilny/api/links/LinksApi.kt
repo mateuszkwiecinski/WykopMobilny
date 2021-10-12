@@ -28,8 +28,8 @@ interface LinksApi {
 
     fun commentVoteUp(linkId: Long): Single<LinkVoteResponse>
     fun commentVoteDown(linkId: Long): Single<LinkVoteResponse>
-    fun relatedVoteUp(relatedId: Int): Single<VoteResponse>
-    fun relatedVoteDown(relatedId: Int): Single<VoteResponse>
+    fun relatedVoteUp(linkId: Long, relatedId: Int): Single<VoteResponse>
+    fun relatedVoteDown(linkId: Long, relatedId: Int): Single<VoteResponse>
     fun commentVoteCancel(linkId: Long): Single<LinkVoteResponse>
     fun commentDelete(commentId: Long): Single<LinkComment>
     fun commentAdd(

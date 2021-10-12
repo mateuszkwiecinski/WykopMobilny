@@ -10,10 +10,11 @@ import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import javax.inject.Inject
 
 class RelatedListAdapter @Inject constructor(
-    val userManagerApi: UserManagerApi,
+    private val userManagerApi: UserManagerApi,
     private val relatedWidgetPresenterFactory: RelatedWidgetPresenterFactory
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<RelatedViewHolder>() {
 
+    var linkId: Long? = null
     val items = ArrayList<Related>()
 
     override fun onBindViewHolder(holder: RelatedViewHolder, position: Int) =
@@ -23,6 +24,7 @@ class RelatedListAdapter @Inject constructor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RelatedViewHolder =
         RelatedViewHolder(
+            linkId,
             LinkRelatedListItemBinding.inflate(parent.layoutInflater, parent, false),
             userManagerApi,
             relatedWidgetPresenterFactory.create()

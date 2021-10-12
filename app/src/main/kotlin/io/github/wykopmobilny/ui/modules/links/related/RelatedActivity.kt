@@ -74,6 +74,7 @@ class RelatedActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener, Re
     override fun showRelated(related: List<Related>) {
         binding.loadingView.isVisible = false
         binding.swiperefresh.isRefreshing = false
+        relatedAdapter.linkId = presenter.linkId
         relatedAdapter.apply {
             items.clear()
             items.addAll(related)
