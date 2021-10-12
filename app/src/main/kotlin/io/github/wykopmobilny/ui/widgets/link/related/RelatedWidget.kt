@@ -36,6 +36,7 @@ class RelatedWidget(context: Context, attrs: AttributeSet) : CardView(context, a
     private lateinit var relatedItem: Related
 
     fun setRelatedData(
+        linkId: Long?,
         related: Related,
         userManagerApi: UserManagerApi,
         relatedWidgetPresenter: RelatedWidgetPresenter,
@@ -46,6 +47,7 @@ class RelatedWidget(context: Context, attrs: AttributeSet) : CardView(context, a
         binding.urlTextView.text = related.url
         presenter.subscribe(this)
         presenter.relatedId = relatedItem.id
+        presenter.linkId = linkId
         setOnClickListener {
             presenter.handleLink(related.url)
         }

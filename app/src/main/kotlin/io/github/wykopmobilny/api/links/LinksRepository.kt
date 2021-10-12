@@ -87,13 +87,13 @@ class LinksRepository @Inject constructor(
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
 
-    override fun relatedVoteUp(relatedId: Int) =
-        rxSingle { linksApi.relatedVoteUp(relatedId) }
+    override fun relatedVoteUp(linkId: Long, relatedId: Int) =
+        rxSingle { linksApi.relatedVoteUp(linkId, relatedId) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
 
-    override fun relatedVoteDown(relatedId: Int) =
-        rxSingle { linksApi.relatedVoteDown(relatedId) }
+    override fun relatedVoteDown(linkId: Long, relatedId: Int) =
+        rxSingle { linksApi.relatedVoteDown(linkId, relatedId) }
             .flatMap { patronsApi.ensurePatrons(it) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())

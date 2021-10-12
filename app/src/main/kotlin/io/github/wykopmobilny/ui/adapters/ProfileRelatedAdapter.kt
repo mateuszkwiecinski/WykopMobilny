@@ -11,7 +11,7 @@ import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import javax.inject.Inject
 
 class ProfileRelatedAdapter @Inject constructor(
-    val userManagerApi: UserManagerApi,
+    private val userManagerApi: UserManagerApi,
     private val relatedWidgetPresenterFactory: RelatedWidgetPresenterFactory
 ) : EndlessProgressAdapter<RelatedViewHolder, Related>() {
 
@@ -22,6 +22,7 @@ class ProfileRelatedAdapter @Inject constructor(
 
     override fun constructViewHolder(parent: ViewGroup, viewType: Int): RelatedViewHolder =
         RelatedViewHolder(
+            null,
             LinkRelatedListItemBinding.inflate(parent.layoutInflater, parent, false),
             userManagerApi,
             relatedWidgetPresenterFactory.create()

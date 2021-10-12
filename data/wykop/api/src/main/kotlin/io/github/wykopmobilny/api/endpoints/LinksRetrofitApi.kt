@@ -67,11 +67,11 @@ interface LinksRetrofitApi {
         @Path("voteType") reason: Int,
     ): WykopApiResponse<DigResponse>
 
-    @GET("/links/relatedvoteup/0/{relatedId}/appkey/$APP_KEY")
-    suspend fun relatedVoteUp(@Path("relatedId") relatedId: Int): WykopApiResponse<VoteResponse>
+    @GET("/links/relatedvoteup/{linkId}/{relatedId}/appkey/$APP_KEY")
+    suspend fun relatedVoteUp(@Path("linkId") linkId: Long, @Path("relatedId") relatedId: Int): WykopApiResponse<VoteResponse>
 
-    @GET("/links/relatedvotedown/1/{relatedId}/appkey/$APP_KEY")
-    suspend fun relatedVoteDown(@Path("relatedId") relatedId: Int): WykopApiResponse<VoteResponse>
+    @GET("/links/relatedvotedown/{linkId}/{relatedId}/appkey/$APP_KEY")
+    suspend fun relatedVoteDown(@Path("linkId") linkId: Long, @Path("relatedId") relatedId: Int): WykopApiResponse<VoteResponse>
 
     @GET("/links/voteremove/{linkId}/appkey/$APP_KEY")
     suspend fun voteRemove(@Path("linkId") linkId: Long): WykopApiResponse<DigResponse>
