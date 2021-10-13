@@ -1,0 +1,3 @@
+import kotlinx.datetime.Instant;
+
+ALTER TABLE readNotificationEntity ADD COLUMN dismissedAt INTEGER AS Instant NOT NULL DEFAULT 0;

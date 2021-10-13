@@ -72,12 +72,11 @@ fun ImageView.loadImage(url: String, signature: Int? = null) {
     }
 }
 
-fun String.toPrettyDate(): String {
-    return PrettyTime(Locale("pl")).format(parseDate(this))
-}
-fun Instant.toPrettyDate(): String {
-    return PrettyTime(Locale("pl")).format(Date(toEpochMilliseconds()))
-}
+fun String.toPrettyDate(): String =
+    PrettyTime(Locale("pl")).format(parseDate(this))
+
+fun Instant.toPrettyDate(): String =
+    PrettyTime(Locale("pl")).format(Date(toEpochMilliseconds()))
 
 fun Instant.toDurationPrettyDate(): String {
     val period = this.periodUntil(Clock.System.now(), TimeZone.currentSystemDefault())

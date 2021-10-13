@@ -9,9 +9,11 @@ import io.github.wykopmobilny.notification.AppNotification
 import io.github.wykopmobilny.notification.NotificationsManager
 import io.github.wykopmobilny.notification.cancelNotification
 import io.github.wykopmobilny.storage.api.SessionStorage
+import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.work.GetNotificationsRefreshWorkDetails
 import io.github.wykopmobilny.work.WorkData
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class GetNotificationsRefreshWorkDetailsQuery @Inject constructor(
@@ -36,9 +38,14 @@ internal class GetNotificationsRefreshWorkDetailsQuery @Inject constructor(
 
     private suspend fun doRefresh() {
         val notifications = store.fresh(key = 0)
-        val unreadNotifications = notifications.filter { it.new }
-        val readNotifications = appStorage.notificationsQueries.all().executeAsList()
-        val newNotifications = unreadNotifications.filterNot { readNotifications.contains(it.id) }
+        val unreadNotifications = notifications.filter(NotificationResponse::new)
+        val newNotifications = unreadNotifications.filter {
+            withContext(AppDispatchers.IO) {
+                val dismissedEntry = appStorage.notificationsQueries.getById(it.id).executeAsOneOrNull()
+                    ?: return@withContext false
+                dismissedEntry.dismissedAt > it.date
+            }
+        }
 
         Napier.i("Notifications refreshed, ${newNotifications.size}(${unreadNotifications.size}) out of ${notifications.size}")
         when (newNotifications.size) {

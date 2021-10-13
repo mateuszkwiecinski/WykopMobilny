@@ -1,13 +1,17 @@
+import kotlinx.datetime.Instant;
+
 CREATE TABLE readNotificationEntity (
-  notificationId INTEGER NOT NULL PRIMARY KEY
+  notificationId INTEGER NOT NULL PRIMARY KEY,
+  dismissedAt INTEGER AS Instant NOT NULL
 );
 
 insertOrReplace:
-INSERT OR REPLACE INTO readNotificationEntity (notificationId)
-VALUES (?);
+INSERT OR REPLACE INTO readNotificationEntity
+VALUES ?;
 
-all:
-SELECT * FROM readNotificationEntity;
+getById:
+SELECT * FROM readNotificationEntity
+WHERE ? = notificationId;
 
 deleteAll {
   DELETE FROM readNotificationEntity;

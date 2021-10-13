@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Subcomponent
 import io.github.wykopmobilny.api.responses.NotificationResponse
 import io.github.wykopmobilny.data.storage.api.AppStorage
+import io.github.wykopmobilny.data.storage.api.ReadNotificationEntity
 import io.github.wykopmobilny.notification.HandleNotificationDismissed
 import io.github.wykopmobilny.notification.NotificationDependencies
 import io.github.wykopmobilny.ui.base.AppDispatchers
@@ -39,7 +40,12 @@ internal class HandleNotificationDismissedImpl @Inject constructor(
 
         appStorage.notificationsQueries.transaction {
             currentNotifications.forEach { notification ->
-                appStorage.notificationsQueries.insertOrReplace(notificationId = notification.id)
+                appStorage.notificationsQueries.insertOrReplace(
+                    ReadNotificationEntity(
+                        notificationId = notification.id,
+                        dismissedAt = notification.date,
+                    ),
+                )
             }
         }
     }
