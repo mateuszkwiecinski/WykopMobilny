@@ -21,7 +21,7 @@ class NotificationViewHolder(
         binding.apply {
             // Setup widgets
             body.setText(notification.body.removeHtml(), TextView.BufferType.SPANNABLE)
-            date.text = notification.date.toPrettyDate()
+            date.text = notification.date?.toPrettyDate()
             unreadLine.isVisible = notification.new
             unreadMark.isVisible = notification.new
             unreadDotMark.isVisible = notification.new

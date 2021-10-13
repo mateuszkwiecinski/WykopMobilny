@@ -1,10 +1,12 @@
 package io.github.wykopmobilny.models.dataclass
 
+import kotlinx.datetime.Instant
+
 open class Notification(
     val id: Long,
     val author: Author?,
     val body: String,
-    val date: String,
+    val date: Instant?,
     val type: String,
     val url: String?,
     var new: Boolean
