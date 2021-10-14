@@ -42,7 +42,7 @@ internal class GetNotificationsRefreshWorkDetailsQuery @Inject constructor(
         val newNotifications = unreadNotifications.filter {
             withContext(AppDispatchers.IO) {
                 val dismissedEntry = appStorage.notificationsQueries.getById(it.id).executeAsOneOrNull()
-                    ?: return@withContext false
+                    ?: return@withContext true
                 dismissedEntry.dismissedAt > it.date
             }
         }
