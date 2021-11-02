@@ -61,9 +61,9 @@ internal class PhotoViewActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.photoview_menu, menu)
-        menu?.findItem(R.id.action_save_mp4)?.isVisible = false
+        menu.findItem(R.id.action_save_mp4)?.isVisible = false
         return super.onCreateOptionsMenu(menu)
     }
 

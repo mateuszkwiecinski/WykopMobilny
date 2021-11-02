@@ -146,7 +146,7 @@ class EntryActivity :
         presenter.loadData()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.entry_fragment_menu, menu)
         return true
     }

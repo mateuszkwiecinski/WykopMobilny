@@ -119,7 +119,7 @@ abstract class BaseInputActivity<T : BaseInputPresenter> : BaseActivity(), BaseI
 
     override fun setSelection(start: Int, end: Int) = binding.body.setSelection(start, end)
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_add_comment, menu)
         return true
     }
