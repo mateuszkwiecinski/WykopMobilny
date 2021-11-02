@@ -228,15 +228,21 @@ class YTPlayer :
     // YouTubePlayer.OnFullscreenListener
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        when (orientation) {
-            Orientation.AUTO, Orientation.AUTO_START_WITH_LANDSCAPE ->
-                if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    player?.setFullscreen(true)
-                } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    player?.setFullscreen(false)
-                }
-            Orientation.ONLY_LANDSCAPE, Orientation.ONLY_PORTRAIT -> Unit
+        runCatching {
+            when (orientation) {
+                Orientation.AUTO, Orientation.AUTO_START_WITH_LANDSCAPE ->
+                    when (newConfig.orientation) {
+                        Configuration.ORIENTATION_LANDSCAPE -> player?.setFullscreen(true)
+                        Configuration.ORIENTATION_PORTRAIT -> player?.setFullscreen(true)
+                        else -> Unit
+                    }
+                Orientation.ONLY_LANDSCAPE,
+                Orientation.ONLY_PORTRAIT,
+                null,
+                -> Unit
+            }
         }
+            .onFailure { Napier.i("onConfigurationChanged failed", it) }
     }
 
     override fun onFullscreen(fullScreen: Boolean) {
@@ -278,6 +284,12 @@ class YTPlayer :
 
     override fun onVideoStarted() {
         StatusBarUtil.hide(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        player?.release()
+        player = null
     }
 
     // Audio Managing

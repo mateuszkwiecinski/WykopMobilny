@@ -22,7 +22,7 @@ import io.github.wykopmobilny.utils.viewBinding
 import java.io.File
 import javax.inject.Inject
 
-class PhotoViewActivity : BaseActivity() {
+internal class PhotoViewActivity : BaseActivity() {
 
     companion object {
         const val URL_EXTRA = "URL"
@@ -42,7 +42,7 @@ class PhotoViewActivity : BaseActivity() {
     override val enableSwipeBackLayout: Boolean = true // We manually attach it here
     override val isActivityTransfluent: Boolean = true
 
-    val url: String by lazy { intent.getStringExtra(URL_EXTRA)!! }
+    lateinit var url: String
     private val photoViewActions: PhotoViewCallbacks by lazy { PhotoViewActions(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +51,7 @@ class PhotoViewActivity : BaseActivity() {
         binding.toolbar.toolbar.setBackgroundResource(R.drawable.gradient_toolbar_up)
         binding.loadingView.isIndeterminate = true
         title = null
+        url = intent.getStringExtra(URL_EXTRA) ?: return finish()
         if (url.endsWith(".gif")) {
             loadGif()
         } else {
@@ -84,14 +85,16 @@ class PhotoViewActivity : BaseActivity() {
         binding.image.setMinimumTileDpi(240)
         binding.gif.isVisible = false
         GlideApp.with(this).downloadOnly().load(url)
-            .into(object : CustomTarget<File>() {
-                override fun onResourceReady(resource: File, transition: Transition<in File>?) {
-                    binding.loadingView.isVisible = false
-                    binding.image.setImage(ImageSource.uri(resource.absolutePath))
-                }
+            .into(
+                object : CustomTarget<File>() {
+                    override fun onResourceReady(resource: File, transition: Transition<in File>?) {
+                        binding.loadingView.isVisible = false
+                        binding.image.setImage(ImageSource.uri(resource.absolutePath))
+                    }
 
-                override fun onLoadCleared(placeholder: Drawable?) = Unit
-            })
+                    override fun onLoadCleared(placeholder: Drawable?) = Unit
+                },
+            )
     }
 
     private fun loadGif() {
