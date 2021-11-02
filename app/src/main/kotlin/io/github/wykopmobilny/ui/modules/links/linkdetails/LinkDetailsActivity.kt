@@ -150,7 +150,7 @@ class LinkDetailsActivity :
         setSubtitle()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.link_details_menu, menu)
         return true
     }

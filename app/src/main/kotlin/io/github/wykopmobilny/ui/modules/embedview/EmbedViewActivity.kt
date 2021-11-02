@@ -138,7 +138,7 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
         finish()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.photoview_menu, menu)
         menu?.findItem(R.id.action_save_image)?.isVisible = false
         return super.onCreateOptionsMenu(menu)

@@ -91,7 +91,7 @@ class RelatedActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener, Re
         relatedDataFragment.data = relatedAdapter.items
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.add_related_menu, menu)
         menu?.findItem(R.id.add_related)?.isVisible = userManager.isUserAuthorized()
         return true

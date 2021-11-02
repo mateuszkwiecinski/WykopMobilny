@@ -8,6 +8,8 @@ import io.github.wykopmobilny.storage.api.UserInfoStorage
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.dialogs.userNotLoggedInDialog
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
@@ -73,7 +75,7 @@ class UserManager @Inject constructor(
         }
 
     override fun runIfLoggedIn(context: Context, callback: () -> Unit) {
-        appScopes.applicationScope.launch {
+        appScopes.applicationScope.launch(Dispatchers.Main, start = CoroutineStart.UNDISPATCHED) {
             val isLoggedIn = sessionStorage.session.first()
             if (isLoggedIn != null) {
                 callback.invoke()

@@ -36,8 +36,11 @@ abstract class VoteButton @JvmOverloads constructor(
         setOnClickListener {
             userManagerApi.runIfLoggedIn(context) {
                 isEnabled = false
-                if (isSelected) unvoteListener()
-                else voteListener()
+                if (isSelected) {
+                    unvoteListener()
+                } else {
+                    voteListener()
+                }
             }
         }
     }
