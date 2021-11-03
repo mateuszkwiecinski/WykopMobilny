@@ -22,6 +22,6 @@ internal class CheckNotificationsRequest(
 
     companion object {
         const val WORK_NAME = "refresh_notifications"
-        const val VERSION = 1
+        const val VERSION = 2
     }
 }

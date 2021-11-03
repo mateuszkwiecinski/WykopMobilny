@@ -5,6 +5,7 @@ import com.dropbox.android.external.store4.fresh
 import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.api.responses.NotificationResponse
 import io.github.wykopmobilny.data.storage.api.AppStorage
+import io.github.wykopmobilny.domain.strings.Strings
 import io.github.wykopmobilny.notification.AppNotification
 import io.github.wykopmobilny.notification.NotificationsManager
 import io.github.wykopmobilny.notification.cancelNotification
@@ -23,7 +24,7 @@ internal class GetNotificationsRefreshWorkDetailsQuery @Inject constructor(
     private val appStorage: AppStorage,
 ) : GetNotificationsRefreshWorkDetails {
 
-    override fun invoke() = run {
+    override fun invoke() =
         WorkData(
             onWorkRequested = {
                 if (sessionStorage.session.first() != null) {
@@ -34,7 +35,6 @@ internal class GetNotificationsRefreshWorkDetailsQuery @Inject constructor(
                 }
             },
         )
-    }
 
     private suspend fun doRefresh() {
         val notifications = store.fresh(key = 0)
@@ -52,8 +52,8 @@ internal class GetNotificationsRefreshWorkDetailsQuery @Inject constructor(
             0 -> notificationsManager.cancelNotification<AppNotification.Type.Notifications>()
             notifications.size -> notificationsManager.upsertNotification(
                 notification = AppNotification(
-                    title = "Wykop",
-                    message = "Posiadasz ${unreadNotifications.size}+ nowych powiadomień.",
+                    title = Strings.Notifications.TITLE,
+                    message = Strings.Notifications.notificationContentUnbounded(unreadNotifications.size),
                     type = AppNotification.Type.Notifications.MultipleNotifications,
                 ),
             )
@@ -61,7 +61,7 @@ internal class GetNotificationsRefreshWorkDetailsQuery @Inject constructor(
                 val notification = newNotifications.first()
                 notificationsManager.upsertNotification(
                     notification = AppNotification(
-                        title = "Wykop",
+                        title = Strings.Notifications.TITLE,
                         message = notification.body,
                         type = notification.url?.let {
                             AppNotification.Type.Notifications.SingleMessage(interopUrl = it)
@@ -71,8 +71,8 @@ internal class GetNotificationsRefreshWorkDetailsQuery @Inject constructor(
             }
             else -> notificationsManager.upsertNotification(
                 notification = AppNotification(
-                    title = "Wykop",
-                    message = "Posiadasz ${unreadNotifications.size} nowych powiadomień.",
+                    title = Strings.Notifications.TITLE,
+                    message = Strings.Notifications.notificationContent(unreadNotifications.size),
                     type = AppNotification.Type.Notifications.MultipleNotifications,
                 ),
             )
