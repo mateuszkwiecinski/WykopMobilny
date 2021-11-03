@@ -103,11 +103,22 @@ interface EntriesRetrofitApi {
     @GET("/entries/delete/{entryId}/appkey/$APP_KEY")
     suspend fun deleteEntry(@Path("entryId") entryId: Long): WykopApiResponse<EntryResponse>
 
+    @Multipart
+    @POST("/entries/commentedit/{commentId}/appkey/$APP_KEY")
+    suspend fun editEntryComment(
+        @Part("body") body: RequestBody,
+        @Part("adultmedia") plus18: RequestBody,
+        @Path("commentId") commentId: Long,
+        @Part file: MultipartBody.Part
+    ): WykopApiResponse<EntryCommentResponse>
+
     @FormUrlEncoded
     @POST("/entries/commentedit/{commentId}/appkey/$APP_KEY")
     suspend fun editEntryComment(
         @Field("body") body: String,
-        @Path("commentId") commentId: Long
+        @Field("embed") embed: String?,
+        @Field("adultmedia") plus18: Boolean,
+        @Path("commentId") commentId: Long,
     ): WykopApiResponse<EntryCommentResponse>
 
     @GET("/entries/commentdelete/{commentId}/appkey/$APP_KEY")

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ShareCompat
 import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
+import io.github.wykopmobilny.models.dataclass.Embed
 import io.github.wykopmobilny.models.dataclass.Link
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.modules.addlink.AddlinkActivity
@@ -79,9 +80,9 @@ class NewNavigator @Inject constructor(
             BaseInputActivity.EDIT_LINK_COMMENT,
         )
 
-    fun openEditEntryCommentActivity(body: String, entryId: Long, commentId: Long) =
+    fun openEditEntryCommentActivity(body: String, entryId: Long, commentId: Long, embed: Embed?) =
         context.startActivityForResult(
-            EditEntryCommentActivity.createIntent(context, body, entryId, commentId),
+            EditEntryCommentActivity.createIntent(context, body, entryId, commentId, embed),
             BaseInputActivity.EDIT_ENTRY_COMMENT,
         )
 

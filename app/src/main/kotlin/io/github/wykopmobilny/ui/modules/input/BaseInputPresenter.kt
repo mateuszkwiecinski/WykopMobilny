@@ -8,8 +8,4 @@ interface BaseInputPresenter {
     fun sendWithPhotoUrl(photo: String?, containsAdultContent: Boolean)
 }
 
-abstract class InputPresenter<T : BaseInputView> : BasePresenter<T>(), BaseInputPresenter {
-    abstract override fun sendWithPhoto(photo: WykopImageFile, containsAdultContent: Boolean)
-
-    abstract override fun sendWithPhotoUrl(photo: String?, containsAdultContent: Boolean)
-}
+abstract class InputPresenter<T : BaseInputView> : BasePresenter<T>(), BaseInputPresenter

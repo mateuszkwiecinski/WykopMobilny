@@ -212,7 +212,7 @@ class EntryCommentViewHolder(
             }
 
             entryCommentMenuEdit.setOnClickListener {
-                navigator.openEditEntryCommentActivity(comment.body, comment.entryId, comment.id)
+                navigator.openEditEntryCommentActivity(comment.body, comment.entryId, comment.id, comment.embed)
                 dialog.dismiss()
             }
 
