@@ -83,9 +83,27 @@ class EntriesRepository @Inject constructor(
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
 
-    override fun editEntryComment(body: String, commentId: Long) = rxSingle { entriesApi.editEntryComment(body, commentId) }
+    override fun editEntryComment(body: String, commentId: Long, embed: String?, plus18: Boolean) =
+        rxSingle { entriesApi.editEntryComment(body, embed, plus18, commentId) }
+            .retryWhen(userTokenRefresher)
+            .compose(ErrorHandlerTransformer())
+
+    override fun editEntryComment(
+        body: String,
+        commentId: Long,
+        wykopImageFile: WykopImageFile,
+        plus18: Boolean,
+    ) = rxSingle {
+        entriesApi.editEntryComment(
+            body = body.toRequestBody(),
+            plus18 = plus18.toRequestBody(),
+            commentId = commentId,
+            file = wykopImageFile.getFileMultipart(),
+        )
+    }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
+
 
     override fun deleteEntryComment(commentId: Long) = rxSingle { entriesApi.deleteEntryComment(commentId) }
         .retryWhen(userTokenRefresher)

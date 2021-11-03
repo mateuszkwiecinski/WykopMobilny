@@ -29,6 +29,7 @@ abstract class BaseInputActivity<T : BaseInputPresenter> : BaseActivity(), BaseI
     companion object {
         const val EXTRA_RECEIVER = "EXTRA_RECEIVER"
         const val EXTRA_BODY = "EXTRA_BODY"
+        const val EXTRA_EMBED = "EXTRA_EMBED"
         const val REQUEST_CODE = 106
         const val EDIT_ENTRY_COMMENT = 107
         const val EDIT_ENTRY = 108

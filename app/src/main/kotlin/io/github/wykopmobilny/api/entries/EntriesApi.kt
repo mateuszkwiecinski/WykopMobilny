@@ -28,7 +28,9 @@ interface EntriesApi {
     fun markFavorite(entryId: Long): Single<FavoriteResponse>
     fun deleteEntry(entryId: Long): Single<EntryResponse>
     fun editEntry(body: String, entryId: Long): Single<EntryResponse>
-    fun editEntryComment(body: String, commentId: Long): Single<EntryCommentResponse>
+
+    fun editEntryComment(body: String, commentId: Long, embed: String?, plus18: Boolean): Single<EntryCommentResponse>
+    fun editEntryComment(body: String, commentId: Long, wykopImageFile: WykopImageFile, plus18: Boolean): Single<EntryCommentResponse>
     fun deleteEntryComment(commentId: Long): Single<EntryCommentResponse>
     fun voteSurvey(entryId: Long, answerId: Int): Single<Survey>
 

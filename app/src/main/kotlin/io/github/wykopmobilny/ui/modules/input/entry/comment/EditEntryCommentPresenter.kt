@@ -8,12 +8,19 @@ import io.github.wykopmobilny.utils.intoComposite
 
 class EditEntryCommentPresenter(
     private val schedulers: Schedulers,
-    private val entriesApi: EntriesApi
+    private val entriesApi: EntriesApi,
 ) : InputPresenter<EditEntryCommentView>() {
 
-    private fun editComment() {
+    override fun sendWithPhoto(photo: WykopImageFile, containsAdultContent: Boolean) {
         view?.showProgressBar = true
-        entriesApi.editEntryComment(view?.textBody!!, view?.commentId!!)
+        val body = view?.textBody ?: return
+        val commentId = view?.commentId ?: return
+        entriesApi.editEntryComment(
+            body = body,
+            commentId = commentId,
+            wykopImageFile = photo,
+            plus18 = containsAdultContent,
+        )
             .subscribeOn(schedulers.backgroundThread())
             .observeOn(schedulers.mainThread())
             .subscribe(
@@ -21,12 +28,30 @@ class EditEntryCommentPresenter(
                 {
                     view?.showProgressBar = false
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
 
-    override fun sendWithPhoto(photo: WykopImageFile, containsAdultContent: Boolean) = editComment()
-
-    override fun sendWithPhotoUrl(photo: String?, containsAdultContent: Boolean) = editComment()
+    override fun sendWithPhotoUrl(photo: String?, containsAdultContent: Boolean) {
+        view?.showProgressBar = true
+        val body = view?.textBody ?: return
+        val commentId = view?.commentId ?: return
+        entriesApi.editEntryComment(
+            body = body,
+            commentId = commentId,
+            embed = photo,
+            plus18 = containsAdultContent,
+        )
+            .subscribeOn(schedulers.backgroundThread())
+            .observeOn(schedulers.mainThread())
+            .subscribe(
+                { view?.exitActivity() },
+                {
+                    view?.showProgressBar = false
+                    view?.showErrorDialog(it)
+                },
+            )
+            .intoComposite(compositeObservable)
+    }
 }
