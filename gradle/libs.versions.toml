@@ -49,6 +49,7 @@ swiperefreshlayout-core = { module = "androidx.swiperefreshlayout:swiperefreshla
 recyclerview-core = { module = "androidx.recyclerview:recyclerview", version.ref = "google-recyclerView" }
 preference-core = { module = "androidx.preference:preference-ktx", version.ref = "google-preference" }
 work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "google-work" }
+work-testing = { module = "androidx.work:work-testing", version.ref = "google-work" }
 okhttp-core = { module = "com.squareup.okhttp3:okhttp", version.ref = "mavencentral-okhttp" }
 okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mavencentral-okhttp" }
 browser-core = { module = "androidx.browser:browser", version.ref = "google-browser" }

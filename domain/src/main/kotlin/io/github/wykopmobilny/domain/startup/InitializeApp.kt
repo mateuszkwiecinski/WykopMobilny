@@ -28,12 +28,11 @@ class InitializeApp @Inject internal constructor(
                     .map { it.notificationsEnabled to it.notificationRefreshPeriod }
                     .distinctUntilChanged()
                     .collect { (enabled, refreshPeriod) ->
+                        workScheduler.cancelNotificationsCheck()
                         if (enabled) {
                             workScheduler.setupNotificationsCheck(
                                 repeatInterval = refreshPeriod.duration,
                             )
-                        } else {
-                            workScheduler.cancelNotificationsCheck()
                         }
                     }
             }
