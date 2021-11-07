@@ -1,0 +1,15 @@
+plugins {
+    id("com.starter.library.android")
+}
+
+android {
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    api(projects.ui.components.widgets.api)
+    implementation(projects.ui.base.android)
+    implementation(libs.glide.core)
+}

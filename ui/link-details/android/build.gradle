@@ -1,5 +1,6 @@
 plugins {
     id("com.starter.library.android")
+    id("io.github.wykopmobilny.screenshots")
 }
 
 android {
@@ -11,7 +12,6 @@ android {
 dependencies {
     api(projects.ui.linkDetails.api)
     implementation(projects.ui.base.android)
+    implementation(projects.ui.components.widgets.android)
     implementation(libs.glide.core)
-    implementation(libs.swiperefreshlayout.core)
-    implementation(libs.recyclerview.core)
 }

@@ -40,14 +40,14 @@ interface LinksRetrofitApi {
     @GET("/links/link/{linkId}/appkey/$APP_KEY")
     suspend fun getLink(@Path("linkId") linkId: Long): WykopApiResponse<LinkResponse>
 
-    @GET("/links/commentVoteUp/1/{linkId}/appkey/$APP_KEY")
-    suspend fun commentVoteUp(@Path("linkId") linkId: Long): WykopApiResponse<LinkVoteResponse>
+    @GET("/links/commentVoteUp/{linkId}/{commentId}/appkey/$APP_KEY")
+    suspend fun commentVoteUp(@Path("linkId") linkId: Long, @Path("commentId") commentId: Long): WykopApiResponse<LinkVoteResponse>
 
-    @GET("/links/commentVoteDown/1/{linkId}/appkey/$APP_KEY")
-    suspend fun commentVoteDown(@Path("linkId") linkId: Long): WykopApiResponse<LinkVoteResponse>
+    @GET("/links/commentVoteDown/{linkId}/{commentId}/appkey/$APP_KEY")
+    suspend fun commentVoteDown(@Path("linkId") linkId: Long, @Path("commentId") commentId: Long): WykopApiResponse<LinkVoteResponse>
 
-    @GET("/links/commentVoteCancel/1/{linkId}/appkey/$APP_KEY")
-    suspend fun commentVoteCancel(@Path("linkId") linkId: Long): WykopApiResponse<LinkVoteResponse>
+    @GET("/links/commentVoteCancel/{linkId}/{commentId}/appkey/$APP_KEY")
+    suspend fun commentVoteCancel(@Path("linkId") linkId: Long, @Path("commentId") commentId: Long): WykopApiResponse<LinkVoteResponse>
 
     @GET("/links/upvoters/{linkId}/appkey/$APP_KEY")
     suspend fun getUpvoters(@Path("linkId") linkId: Long): WykopApiResponse<List<UpvoterResponse>>
@@ -134,5 +134,5 @@ interface LinksRetrofitApi {
     ): WykopApiResponse<LinkCommentResponse>
 
     @GET("/links/favorite/{linkId}/appkey/$APP_KEY")
-    suspend fun markFavorite(@Path("linkId") entryId: Long): WykopApiResponse<List<Boolean>>
+    suspend fun toggleFavorite(@Path("linkId") linkId: Long): WykopApiResponse<List<Boolean>>
 }

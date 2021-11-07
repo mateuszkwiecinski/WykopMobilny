@@ -5,6 +5,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.await
 import io.github.aakira.napier.Napier
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -57,7 +58,15 @@ internal class WorkManagerScheduler @Inject constructor(
             .addTag("${CheckNotificationsRequest.WORK_NAME}_v${CheckNotificationsRequest.VERSION}")
             .build()
 
-        workManager.enqueueUniquePeriodicWork(CheckNotificationsRequest.WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, request)
+        runCatching {
+            workManager.enqueueUniquePeriodicWork(
+                CheckNotificationsRequest.WORK_NAME,
+                ExistingPeriodicWorkPolicy.KEEP,
+                request,
+            )
+                .await()
+        }
+            .onFailure { Napier.e("Failed to schedule notifications", it) }
     }
 
     override suspend fun cancelNotificationsCheck() {

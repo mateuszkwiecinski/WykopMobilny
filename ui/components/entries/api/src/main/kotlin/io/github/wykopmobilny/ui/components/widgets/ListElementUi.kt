@@ -5,7 +5,7 @@ sealed class ListElementUi {
     data class Entry(
         val id: Long,
         val body: String,
-        val voteCount: ColoredCounterUi,
+        val voteCount: Button,
         val previewImageUrl: String?,
         val commentsCount: Int,
         val author: UserInfoUi,
@@ -24,7 +24,7 @@ sealed class ListElementUi {
         val body: String,
         val previewImageUrl: String?,
         val commentsCount: Int,
-        val voteCount: ColoredCounterUi,
+        val voteCount: Button,
         val addedAgo: String,
         val thumbnail: Thumbnail,
         val shareAction: () -> Unit,

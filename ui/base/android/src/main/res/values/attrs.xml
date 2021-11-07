@@ -2,4 +2,5 @@
 <resources>
 
     <attr name="colorControlHighlightOnPrimary" format="color|reference" />
+    <attr name="outlineColor" format="color|reference" />
 </resources>

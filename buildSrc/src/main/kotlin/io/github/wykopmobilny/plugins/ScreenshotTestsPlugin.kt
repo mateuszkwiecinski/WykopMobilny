@@ -13,7 +13,7 @@ class ScreenshotTestsPlugin : Plugin<Project> {
         (extensions.findByName("android") as BaseExtension).apply {
             defaultConfig {
                 it.testInstrumentationRunner = "io.github.wykopmobilny.screenshots.ScreenshotTestRunner"
-                it.testApplicationId = project.path.replaceFirstChar { "" }.replace(":", ".")
+                it.testApplicationId = project.path.replaceFirstChar { "" }.replace(":", ".").replace("-", "_")
             }
             packagingOptions {
                 it.excludes += "META-INF/*"
@@ -21,7 +21,7 @@ class ScreenshotTestsPlugin : Plugin<Project> {
         }
 
         (extensions.findByName("shot") as ShotExtension).apply {
-            applicationId = project.path.replaceFirstChar { "" }.replace(":", ".")
+            applicationId = project.path.replaceFirstChar { "" }.replace(":", ".").replace("-", "_")
         }
 
         dependencies.apply {

@@ -3,21 +3,30 @@ package io.github.wykopmobilny.links.details
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.link_details.android.R
 import io.github.wykopmobilny.ui.link_details.android.databinding.FragmentLinkDetailsBinding
 import io.github.wykopmobilny.utils.bindings.collectErrorDialog
+import io.github.wykopmobilny.utils.bindings.collectMenuOptions
+import io.github.wykopmobilny.utils.bindings.collectOptionPicker
+import io.github.wykopmobilny.utils.bindings.collectSwipeRefresh
+import io.github.wykopmobilny.utils.bindings.setOnClick
+import io.github.wykopmobilny.utils.bindings.toColorInt
 import io.github.wykopmobilny.utils.destroyKeyedDependency
 import io.github.wykopmobilny.utils.longArgument
 import io.github.wykopmobilny.utils.longArgumentNullable
 import io.github.wykopmobilny.utils.requireKeyedDependency
-import io.github.wykopmobilny.utils.viewBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 fun linkDetailsFragment(linkId: Long, commentId: Long?): Fragment =
     LinkDetailsMainFragment()
@@ -33,8 +42,6 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
 
     private lateinit var getLinkDetails: GetLinkDetails
 
-    private val binding by viewBinding(FragmentLinkDetailsBinding::bind)
-
     override fun onAttach(context: Context) {
         getLinkDetails = context.requireKeyedDependency<LinkDetailsDependencies>(linkId).getLinkDetails()
         super.onAttach(context)
@@ -42,17 +49,47 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentLinkDetailsBinding.bind(view)
         binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+
         val adapter = LinkDetailsAdapter()
         binding.list.adapter = adapter
+        binding.list.itemAnimator?.changeDuration = 0
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            val shared = getLinkDetails().stateIn(this)
-
-            shared.map { it.toAdapterList() }
+            val shared = getLinkDetails()
                 .flowOn(AppDispatchers.Default)
-                .collect { adapter.submitList(it) }
-            shared.map { it.errorDialog }
-                .collectErrorDialog(view.context)
+                .stateIn(this)
+
+            launch {
+                shared.map { it.toAdapterList() }
+                    .flowOn(AppDispatchers.Default)
+                    .collect { adapter.submitList(it) }
+            }
+            launch { shared.map { it.errorDialog }.collectErrorDialog(view.context) }
+            launch { shared.map { it.swipeRefresh }.collectSwipeRefresh(binding.swipeRefresh) }
+            launch { shared.map { it.contextMenuOptions }.collectMenuOptions(binding.toolbar) }
+            launch { shared.map { it.picker }.collectOptionPicker(view.context) }
+            launch {
+                shared.map { it.header }
+                    .collect { header ->
+                        when (header) {
+                            LinkDetailsHeaderUi.Loading -> {
+                                binding.parallaxContainer.isInvisible = true
+                            }
+                            is LinkDetailsHeaderUi.WithData -> {
+                                binding.parallaxContainer.isVisible = true
+                                Glide.with(this@LinkDetailsMainFragment)
+                                    .load(header.previewImageUrl)
+                                    .transition(withCrossFade())
+                                    .into(binding.imgPreview)
+                                binding.imgPreview.setOnClick(header.viewLinkAction)
+                                binding.txtDomain.text = header.domain
+                                binding.hotBadgeStrip.isVisible = header.badge != null
+                                binding.hotBadgeStrip.setBackgroundColor(header.badge.toColorInt(view.context).defaultColor)
+                            }
+                        }
+                    }
+            }
         }
     }
 

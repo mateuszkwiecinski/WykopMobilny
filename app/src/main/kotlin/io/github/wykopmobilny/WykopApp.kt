@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.webkit.CookieManager
 import android.widget.Toast
+import androidx.core.app.ShareCompat
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -42,15 +43,20 @@ import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.blacklist.BlacklistDependencies
 import io.github.wykopmobilny.ui.login.LoginDependencies
+import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.modules.blacklist.BlacklistActivity
 import io.github.wykopmobilny.ui.modules.input.entry.add.AddEntryActivity
+import io.github.wykopmobilny.ui.modules.links.downvoters.DownvotersActivity
+import io.github.wykopmobilny.ui.modules.links.upvoters.UpvotersActivity
 import io.github.wykopmobilny.ui.modules.mainnavigation.MainNavigationActivity
 import io.github.wykopmobilny.ui.modules.notificationslist.NotificationsListActivity
 import io.github.wykopmobilny.ui.modules.pm.conversation.ConversationActivity
 import io.github.wykopmobilny.ui.modules.profile.ProfileActivity
+import io.github.wykopmobilny.ui.modules.tag.TagActivity
 import io.github.wykopmobilny.ui.profile.ProfileDependencies
 import io.github.wykopmobilny.ui.search.SearchDependencies
 import io.github.wykopmobilny.ui.settings.SettingsDependencies
+import io.github.wykopmobilny.utils.AndroidHtmlUtils
 import io.github.wykopmobilny.utils.ApplicationInjector
 import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.requireDependency
@@ -124,6 +130,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                 ConnectConfig(connectUrl = "https://a2.wykop.pl/login/connect/appkey/$appKey")
             },
             clock = Clock.System,
+            htmlUtils = AndroidHtmlUtils,
             storages = storages,
             scraper = scraper,
             wykop = wykopApi,
@@ -360,8 +367,30 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                         )
                     is InteropRequest.Profile ->
                         context.startActivity(ProfileActivity.createIntent(context, it.profileId))
+                    is InteropRequest.Tag ->
+                        context.startActivity(TagActivity.createIntent(context, it.tagId))
+                    is InteropRequest.WebBrowser -> {
+                        val navigator = NewNavigator(context, settingsPreferencesApi.get())
+                        if (it.force) {
+                            navigator.openBrowser(it.url)
+                        } else {
+                            WykopLinkHandler(context, navigator).handleUrl(it.url)
+                        }
+                    }
+                    is InteropRequest.Share -> {
+                        val type = when (it.type) {
+                            InteropRequest.Share.Type.TextPlain -> "text/plain"
+                        }
+                        ShareCompat.IntentBuilder(context)
+                            .setType(type)
+                            .setChooserTitle(it.title)
+                            .setText(it.url)
+                            .startChooser()
+                    }
+                    is InteropRequest.DownvotersList -> context.startActivity(DownvotersActivity.createIntent(it.linkId, context))
+                    is InteropRequest.UpvotersList -> context.startActivity(UpvotersActivity.createIntent(it.linkId, context))
                 }
-                    .let { }
+                    .run { }
             }
         }
     }

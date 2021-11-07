@@ -13,7 +13,6 @@ import io.github.wykopmobilny.ui.blacklist.GetBlacklistDetails
 import io.github.wykopmobilny.ui.blacklist.android.R
 import io.github.wykopmobilny.ui.blacklist.android.databinding.FragmentPageBinding
 import io.github.wykopmobilny.utils.requireDependency
-import io.github.wykopmobilny.utils.viewBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
@@ -23,8 +22,6 @@ class BlacklistTagsFragment : Fragment(R.layout.fragment_page) {
 
     lateinit var getBlacklistDetails: GetBlacklistDetails
 
-    private val binding by viewBinding(FragmentPageBinding::bind)
-
     override fun onAttach(context: Context) {
         getBlacklistDetails = context.requireDependency<BlacklistDependencies>().blacklistDetails()
         super.onAttach(context)
@@ -32,6 +29,7 @@ class BlacklistTagsFragment : Fragment(R.layout.fragment_page) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentPageBinding.bind(view)
         binding.list.layoutManager = LinearLayoutManager(view.context)
         binding.list.addItemDecoration(DividerItemDecoration(view.context, LinearLayoutManager.VERTICAL))
         val adapter = BlacklistPageAdapter()

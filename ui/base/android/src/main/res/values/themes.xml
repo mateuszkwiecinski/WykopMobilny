@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.App.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.App.Light"
+        parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">#ffffff</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="colorAccent">#3a80ba</item>
@@ -20,9 +21,12 @@
         <item name="tabStyle">@style/Widget.App.Tab</item>
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="divider">@drawable/divider_light</item>
+        <item name="outlineColor">#BFBFBF</item>
     </style>
 
-    <style name="Theme.App.Dark" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="Theme.App.Dark"
+        parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">#2c2c2c</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="colorAccent">#3a80bc</item>
@@ -45,9 +49,12 @@
         <item name="tabStyle">@style/Widget.App.Tab.Dark</item>
         <item name="android:textColorPrimary">@color/text_color_primary_dark</item>
         <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="divider">@drawable/divider_dark</item>
+        <item name="outlineColor">#3a3a3a</item>
     </style>
 
-    <style name="Theme.App.Amoled" parent="Theme.App.Dark">
+    <style name="Theme.App.Amoled"
+        parent="Theme.App.Dark">
         <item name="android:windowBackground">#000000</item>
         <item name="colorSurface">#000000</item>
         <item name="colorOnSurface">#deffffff</item>
@@ -55,13 +62,16 @@
         <item name="toolbarStyle">@style/Widget.App.Toolbar.Amoled</item>
         <item name="colorOnPrimary">#d9ffffff</item>
         <item name="colorPrimaryDark">#000000</item>
+        <item name="divider">@drawable/divider_amoled</item>
     </style>
 
-    <style name="ThemeOverlay.App.MaterialAlertDialog.Dark" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <style name="ThemeOverlay.App.MaterialAlertDialog.Dark"
+        parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="colorPrimary">?colorOnSurface</item>
     </style>
 
-    <style name="ThemeOverlay.App.AlertDialog.Dark" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+    <style name="ThemeOverlay.App.AlertDialog.Dark"
+        parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
         <item name="colorPrimary">?colorOnSurface</item>
     </style>
 </resources>

@@ -1,5 +1,6 @@
 package io.github.wykopmobilny.domain.linkdetails.di
 
+import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
 import dagger.Binds
 import dagger.Module
@@ -10,11 +11,12 @@ import io.github.wykopmobilny.domain.api.apiFetcher
 import io.github.wykopmobilny.domain.di.ScopeInitializer
 import io.github.wykopmobilny.domain.linkdetails.GetLinkDetailsQuery
 import io.github.wykopmobilny.domain.linkdetails.InitializeLinkDetails
+import io.github.wykopmobilny.domain.linkdetails.LinkComment
 import io.github.wykopmobilny.domain.linkdetails.datasource.linkCommentsSourceOfTruth
 import io.github.wykopmobilny.domain.linkdetails.datasource.linkDetailsSourceOfTruth
+import io.github.wykopmobilny.domain.profile.LinkInfo
 import io.github.wykopmobilny.links.details.GetLinkDetails
 import io.github.wykopmobilny.ui.base.AppScopes
-import io.github.wykopmobilny.ui.base.SimpleViewStateStorage
 
 @Module
 internal abstract class LinkDetailsModule {
@@ -23,15 +25,11 @@ internal abstract class LinkDetailsModule {
 
         @LinkDetailsScope
         @Provides
-        fun viewState() = SimpleViewStateStorage()
-
-        @LinkDetailsScope
-        @Provides
         fun linkDetailsStore(
             retrofitApi: LinksRetrofitApi,
             appScopes: AppScopes,
             cache: AppCache,
-        ) = StoreBuilder.from(
+        ): Store<Long, LinkInfo> = StoreBuilder.from(
             fetcher = apiFetcher { linkId -> retrofitApi.getLink(linkId) },
             sourceOfTruth = linkDetailsSourceOfTruth(cache),
         )
@@ -44,7 +42,7 @@ internal abstract class LinkDetailsModule {
             retrofitApi: LinksRetrofitApi,
             appScopes: AppScopes,
             cache: AppCache,
-        ) = StoreBuilder.from(
+        ): Store<Long, Map<LinkComment, List<LinkComment>>> = StoreBuilder.from(
             fetcher = apiFetcher { linkId ->
                 retrofitApi.getLinkComments(
                     linkId = linkId,

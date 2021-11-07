@@ -7,34 +7,34 @@ import javax.inject.Inject
 
 class LinkCommentInteractor @Inject constructor(val linksApi: LinksApi) {
 
-    fun commentVoteUp(link: LinkComment): Single<LinkComment> =
-        linksApi.commentVoteUp(link.id)
+    fun commentVoteUp(comment: LinkComment): Single<LinkComment> =
+        linksApi.commentVoteUp(comment.linkId, comment.id)
             .map {
-                link.voteCount = it.voteCount
-                link.voteCountPlus = it.voteCountPlus
-                link.voteCountMinus = it.voteCountMinus
-                link.userVote = 1
-                link
+                comment.voteCount = it.voteCount
+                comment.voteCountPlus = it.voteCountPlus
+                comment.voteCountMinus = it.voteCountMinus
+                comment.userVote = 1
+                comment
             }
 
-    fun commentVoteDown(link: LinkComment): Single<LinkComment> =
-        linksApi.commentVoteDown(link.id)
+    fun commentVoteDown(comment: LinkComment): Single<LinkComment> =
+        linksApi.commentVoteDown(comment.linkId, comment.id)
             .map {
-                link.voteCount = it.voteCount
-                link.voteCountPlus = it.voteCountPlus
-                link.voteCountMinus = it.voteCountMinus
-                link.userVote = -1
-                link
+                comment.voteCount = it.voteCount
+                comment.voteCountPlus = it.voteCountPlus
+                comment.voteCountMinus = it.voteCountMinus
+                comment.userVote = -1
+                comment
             }
 
-    fun commentVoteCancel(link: LinkComment): Single<LinkComment> =
-        linksApi.commentVoteCancel(link.id)
+    fun commentVoteCancel(comment: LinkComment): Single<LinkComment> =
+        linksApi.commentVoteCancel(comment.linkId, comment.id)
             .map {
-                link.voteCount = it.voteCount
-                link.voteCountPlus = it.voteCountPlus
-                link.voteCountMinus = it.voteCountMinus
-                link.userVote = 0
-                link
+                comment.voteCount = it.voteCount
+                comment.voteCountPlus = it.voteCountPlus
+                comment.voteCountMinus = it.voteCountMinus
+                comment.userVote = 0
+                comment
             }
 
     fun removeComment(link: LinkComment): Single<LinkComment> =

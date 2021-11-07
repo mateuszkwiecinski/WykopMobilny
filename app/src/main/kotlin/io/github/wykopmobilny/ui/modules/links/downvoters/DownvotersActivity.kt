@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.view.isVisible
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.base.BaseActivity
 import io.github.wykopmobilny.databinding.ActivityVoterslistBinding
@@ -17,7 +18,7 @@ import io.github.wykopmobilny.utils.prepare
 import io.github.wykopmobilny.utils.viewBinding
 import javax.inject.Inject
 
-class DownvotersActivity : BaseActivity(), androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener, DownvotersView {
+class DownvotersActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener, DownvotersView {
 
     companion object {
         const val DATA_FRAGMENT_TAG = "DOWNVOTERS_LIST"
@@ -31,6 +32,8 @@ class DownvotersActivity : BaseActivity(), androidx.swiperefreshlayout.widget.Sw
 
     @Inject
     lateinit var presenter: DownvotersPresenter
+
+    override val enableSwipeBackLayout = true
 
     @Inject
     lateinit var downvotersAdapter: DownvoterListAdapter

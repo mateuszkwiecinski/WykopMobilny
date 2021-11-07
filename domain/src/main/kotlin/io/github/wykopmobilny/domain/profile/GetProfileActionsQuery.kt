@@ -11,11 +11,11 @@ import io.github.wykopmobilny.domain.settings.prefs.GetLinksPreferences
 import io.github.wykopmobilny.domain.settings.prefs.LinksPreference
 import io.github.wykopmobilny.domain.utils.safeKeyed
 import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.ui.base.components.Drawable
 import io.github.wykopmobilny.ui.components.widgets.AvatarUi
-import io.github.wykopmobilny.ui.components.widgets.ColorReference
-import io.github.wykopmobilny.ui.components.widgets.ColoredCounterUi
+import io.github.wykopmobilny.ui.components.widgets.ColorConst
 import io.github.wykopmobilny.ui.components.widgets.ListElementUi
-import io.github.wykopmobilny.ui.components.widgets.PlainCounterUi
+import io.github.wykopmobilny.ui.components.widgets.Button
 import io.github.wykopmobilny.ui.components.widgets.UserInfoUi
 import io.github.wykopmobilny.ui.profile.GetProfileActions
 import kotlinx.coroutines.CoroutineScope
@@ -116,25 +116,19 @@ internal fun UserInfo.toUi(
 internal fun coloredCounter(
     userAction: UserVote?,
     voteCount: Int,
+    icon: Drawable? = null,
     onClicked: (() -> Unit)?,
-): ColoredCounterUi {
+): Button {
     val color = when (userAction) {
-        UserVote.Up -> ColorReference.CounterUpvoted
-        UserVote.Down -> ColorReference.CounterDownvoted
-        null -> ColorReference.CounterDefault
+        UserVote.Up -> ColorConst.CounterUpvoted
+        UserVote.Down -> ColorConst.CounterDownvoted
+        null -> null
     }
 
-    return ColoredCounterUi(
-        count = voteCount,
+    return Button(
+        label = voteCount.toString(),
         color = color,
-        onClick = onClicked,
+        icon = icon,
+        clickAction = onClicked,
     )
 }
-
-internal fun plainCounter(
-    voteCount: Int,
-    onClicked: (() -> Unit)?,
-) = PlainCounterUi(
-    count = voteCount,
-    onClick = onClicked,
-)

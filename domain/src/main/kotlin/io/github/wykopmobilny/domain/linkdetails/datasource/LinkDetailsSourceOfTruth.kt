@@ -3,10 +3,11 @@ package io.github.wykopmobilny.domain.linkdetails.datasource
 import com.dropbox.android.external.store4.SourceOfTruth
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
-import com.squareup.sqldelight.runtime.coroutines.mapToOne
+import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
 import io.github.wykopmobilny.api.responses.LinkCommentResponse
 import io.github.wykopmobilny.api.responses.LinkResponse
 import io.github.wykopmobilny.data.cache.api.AppCache
+import io.github.wykopmobilny.data.cache.api.Embed
 import io.github.wykopmobilny.data.cache.api.LinkCommentsEntity
 import io.github.wykopmobilny.data.cache.api.LinkEntity
 import io.github.wykopmobilny.data.cache.api.SelectByLinkId
@@ -19,7 +20,6 @@ import io.github.wykopmobilny.domain.profile.datasource.upsert
 import io.github.wykopmobilny.domain.profile.toColorDomain
 import io.github.wykopmobilny.domain.profile.toGenderDomain
 import io.github.wykopmobilny.ui.base.AppDispatchers
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlin.math.absoluteValue
 
@@ -29,14 +29,15 @@ internal fun linkDetailsSourceOfTruth(
     reader = { linkId ->
         cache.linksQueries.selectById(id = linkId)
             .asFlow()
-            .mapToOne(AppDispatchers.IO)
-            .filterNotNull()
+            .mapToOneOrNull(AppDispatchers.IO)
             .map { link ->
+                link ?: return@map null
                 LinkInfo(
                     id = link.id,
                     title = link.title,
+                    isHot = link.isHot,
                     description = link.description,
-                    tags = link.tags.split(" "),
+                    tags = link.tags.split(" ").map { it.removePrefix("#") },
                     sourceUrl = link.sourceUrl,
                     previewImageUrl = link.previewImageUrl,
                     author = UserInfo(
@@ -48,6 +49,7 @@ internal fun linkDetailsSourceOfTruth(
                     ),
                     commentsCount = link.commentsCount,
                     voteCount = link.voteCount,
+                    buryCount = link.buryCount,
                     relatedCount = link.relatedCount,
                     postedAt = link.postedAt,
                     app = link.app,
@@ -57,7 +59,7 @@ internal fun linkDetailsSourceOfTruth(
             }
     },
     writer = { _, link ->
-        cache.linksQueries.transaction {
+        cache.transaction {
             cache.profileQueries.upsert(link.author)
             cache.linksQueries.insertOrReplace(
                 LinkEntity(
@@ -66,7 +68,7 @@ internal fun linkDetailsSourceOfTruth(
                     description = link.description.orEmpty(),
                     tags = link.tags,
                     sourceUrl = link.sourceUrl,
-                    previewImageUrl = link.preview,
+                    previewImageUrl = link.preview?.stripImageCompression(),
                     voteCount = link.voteCount,
                     buryCount = link.buryCount,
                     commentsCount = link.commentsCount,
@@ -110,7 +112,7 @@ internal fun linkCommentsSourceOfTruth(
             }
     },
     writer = { _, comments ->
-        cache.linkCommentsQueries.transaction {
+        cache.transaction {
             comments.forEach { comment ->
                 cache.profileQueries.upsert(comment.author)
                 comment.embed?.toEntity()?.let(cache.embedQueries::insertOrReplace)
@@ -155,4 +157,20 @@ private fun SelectByLinkId.toContent() =
         minusCount = (voteCount - voteCountPlus).absoluteValue,
         userAction = userVote,
         app = app,
+        embed = embedId?.let {
+            Embed(
+                id = it,
+                type = type!!,
+                fileName = fileName,
+                preview = preview!!,
+                size = size,
+                hasAdultContent = hasAdultContent!!,
+            )
+        },
     )
+
+private fun String.stripImageCompression(): String {
+    val extension = substringAfterLast(".")
+    val baseUrl = substringBeforeLast(",")
+    return baseUrl + if (!baseUrl.endsWith(extension)) ".$extension" else ""
+}

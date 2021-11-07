@@ -10,20 +10,26 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
+import io.github.wykopmobilny.ui.dialogs.showExceptionDialog
 
 fun Context.openBrowser(url: String) {
     // Start in-app browser, handled by Chrome Customs Tabs
-    val builder = CustomTabsIntent.Builder()
-    val customTabsIntent = builder.build()
     val typedValue = TypedValue()
     theme.resolveAttribute(R.attr.colorPrimaryDark, typedValue, true)
-    builder.setDefaultColorSchemeParams(
-        CustomTabColorSchemeParams.Builder()
-            .setToolbarColor(typedValue.data)
-            .build(),
-    )
-    customTabsIntent.launchUrl(this, Uri.parse(url))
+    val customTabsIntent = CustomTabsIntent.Builder()
+        .setDefaultColorSchemeParams(
+            CustomTabColorSchemeParams.Builder()
+                .setToolbarColor(typedValue.data)
+                .build(),
+        )
+        .build()
+    runCatching { customTabsIntent.launchUrl(this, Uri.parse(url)) }
+        .onFailure { failure ->
+            Napier.i("Couldn't launch url=$url")
+            showExceptionDialog(failure)
+        }
 }
 
 fun Activity.hideKeyboard() {

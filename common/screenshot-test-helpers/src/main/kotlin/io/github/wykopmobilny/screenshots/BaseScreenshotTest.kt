@@ -1,13 +1,17 @@
 package io.github.wykopmobilny.screenshots
 
 import android.Manifest
+import android.util.Log
 import android.util.Size
 import android.view.View
 import android.view.View.MeasureSpec.makeMeasureSpec
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.allViews
 import androidx.core.view.children
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
@@ -15,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.rule.GrantPermissionRule
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.resources.MaterialAttributes
 import com.karumi.shot.ScreenshotTest
 import org.junit.Rule
@@ -29,6 +34,9 @@ abstract class BaseScreenshotTest : ScreenshotTest {
 
     abstract fun createFragment(): Fragment
 
+    private val fragmentArgs
+        get() = createFragment().arguments
+
     fun record(
         beforeScreenshot: View.() -> Unit = {},
         size: Size = exactHeight(),
@@ -38,7 +46,13 @@ abstract class BaseScreenshotTest : ScreenshotTest {
         val testName = Throwable().stackTrace[2].methodName
 
         themes.forEach { theme ->
-            val container = launchFragmentInContainer(instantiate = ::createFragment, themeResId = theme.theme)
+            val container = launchFragmentInContainer(
+                instantiate = ::createFragment,
+                themeResId = theme.theme,
+                fragmentArgs = runCatching { fragmentArgs }
+                    .onFailure { Log.w("ScreenshotsTests", it) }
+                    .getOrNull(),
+            )
                 .withFragment {
                     beforeScreenshot(requireView())
                     val container = FrameLayout(requireContext()).apply {
@@ -58,7 +72,7 @@ abstract class BaseScreenshotTest : ScreenshotTest {
                 }
 
             compareScreenshot(
-                name = "$testName[$theme]",
+                name = "$testName[$theme] - $size",
                 view = container,
                 widthInPx = container.measuredWidth,
                 heightInPx = container.measuredHeight,
@@ -92,17 +106,23 @@ abstract class BaseScreenshotTest : ScreenshotTest {
 private fun View.guessUnboundedHeight(deviceWidth: Int) {
     guessConstrainedScrollViewHeight()
     guessSwipeRefreshHeight(deviceWidth)
+    guessCoordinatorLayoutHeight()
 }
 
 private fun View.guessConstrainedScrollViewHeight() {
-    allChildren()
+    allViews
         .filterIsInstance<NestedScrollView>()
         .filter { (it.layoutParams as? ConstraintLayout.LayoutParams)?.height == ConstraintLayout.LayoutParams.MATCH_CONSTRAINT }
         .forEach { it.updateLayoutParams { height = ConstraintLayout.LayoutParams.WRAP_CONTENT } }
+
+    allViews
+        .filterIsInstance<NestedScrollView>()
+        .filter { ((it.layoutParams as? LinearLayout.LayoutParams)?.weight ?: 0f) > 0 }
+        .forEach { it.updateLayoutParams { height = LinearLayout.LayoutParams.WRAP_CONTENT } }
 }
 
 private fun View.guessSwipeRefreshHeight(deviceWidth: Int) {
-    val swipeRefreshLayouts = allChildren()
+    val swipeRefreshLayouts = allViews
         .filterIsInstance<SwipeRefreshLayout>()
         .toList()
     if (swipeRefreshLayouts.size > 1) {
@@ -119,12 +139,22 @@ private fun View.guessSwipeRefreshHeight(deviceWidth: Int) {
     swipeRefresh.minimumHeight = target.measuredHeight
 }
 
-fun View.allChildren(): Sequence<View> =
-    if (this is ViewGroup) {
-        sequenceOf(this) + children.flatMap { it.allChildren() }
-    } else {
-        sequenceOf(this)
-    }
+private fun View.guessCoordinatorLayoutHeight() {
+    allViews
+        .filterIsInstance<CoordinatorLayout>()
+        .flatMap { coordinator ->
+            coordinator.children
+                .filter { child -> (child.layoutParams as CoordinatorLayout.LayoutParams).behavior is AppBarLayout.ScrollingViewBehavior }
+        }
+        .forEach { target ->
+            val appBarLayout = (target.parent as ViewGroup).children.first { it is AppBarLayout }
+            val layoutParams = target.layoutParams as CoordinatorLayout.LayoutParams
+            layoutParams.behavior = null
+            layoutParams.topMargin = appBarLayout.height
+            target.layoutParams = layoutParams
+        }
+    requestLayout()
+}
 
 enum class ScreenshotTheme(val theme: Int) {
     Light(R.style.Theme_App_Light),

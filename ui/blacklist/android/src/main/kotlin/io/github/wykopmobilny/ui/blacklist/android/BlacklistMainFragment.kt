@@ -13,9 +13,9 @@ import io.github.wykopmobilny.ui.blacklist.GetBlacklistDetails
 import io.github.wykopmobilny.ui.blacklist.android.databinding.FragmentBlacklistMainBinding
 import io.github.wykopmobilny.utils.bindings.collectErrorDialog
 import io.github.wykopmobilny.utils.bindings.collectSnackbar
+import io.github.wykopmobilny.utils.bindings.setOnClick
 import io.github.wykopmobilny.utils.destroyDependency
 import io.github.wykopmobilny.utils.requireDependency
-import io.github.wykopmobilny.utils.viewBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
@@ -26,8 +26,6 @@ fun blacklistMainFragment(): Fragment = BlacklistMainFragment()
 
 internal class BlacklistMainFragment : Fragment(R.layout.fragment_blacklist_main) {
 
-    private val binding by viewBinding(FragmentBlacklistMainBinding::bind)
-
     lateinit var getBlacklistDetails: GetBlacklistDetails
 
     override fun onAttach(context: Context) {
@@ -37,6 +35,7 @@ internal class BlacklistMainFragment : Fragment(R.layout.fragment_blacklist_main
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentBlacklistMainBinding.bind(view)
         binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
@@ -50,11 +49,11 @@ internal class BlacklistMainFragment : Fragment(R.layout.fragment_blacklist_main
                 .attach()
             launch { shared.map { it.errorDialog }.collectErrorDialog(requireContext()) }
             launch { shared.map { it.snackbar }.collectSnackbar(binding.root) }
-            launch { shared.collectState() }
+            launch { shared.bindContent(binding) }
         }
     }
 
-    private suspend fun Flow<BlacklistedDetailsUi>.collectState() {
+    private suspend fun Flow<BlacklistedDetailsUi>.bindContent(binding: FragmentBlacklistMainBinding) {
         map { it.content }
             .collect { content ->
                 when (content) {
@@ -64,11 +63,11 @@ internal class BlacklistMainFragment : Fragment(R.layout.fragment_blacklist_main
                         binding.emptyContainer.isVisible = true
                         binding.btnImport.isVisible = !content.isLoading
                         binding.btnProgress.isVisible = content.isLoading
-                        binding.btnImport.setOnClickListener { content.loadAction() }
+                        binding.btnImport.setOnClick(content.loadAction)
                     }
                     is BlacklistedDetailsUi.Content.WithData -> {
                         binding.emptyContainer.isVisible = false
-                        binding.btnImport.setOnClickListener(null)
+                        binding.btnImport.setOnClick(null)
                         binding.viewPager.isVisible = true
                         binding.tabLayout.isVisible = true
                     }

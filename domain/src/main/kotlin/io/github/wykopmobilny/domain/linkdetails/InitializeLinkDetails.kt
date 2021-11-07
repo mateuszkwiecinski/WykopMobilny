@@ -6,7 +6,6 @@ import io.github.wykopmobilny.domain.di.ScopeInitializer
 import io.github.wykopmobilny.domain.linkdetails.di.LinkId
 import io.github.wykopmobilny.domain.profile.LinkInfo
 import io.github.wykopmobilny.ui.base.FailedAction
-import io.github.wykopmobilny.ui.base.SimpleViewStateStorage
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,7 +14,7 @@ internal class InitializeLinkDetails @Inject constructor(
     @LinkId private val linkId: Long,
     private val linkStore: Store<Long, LinkInfo>,
     private val commentsStore: Store<Long, Map<LinkComment, List<LinkComment>>>,
-    private val viewStateStorage: SimpleViewStateStorage,
+    private val viewStateStorage: LinkDetailsViewStateStorage,
 ) : ScopeInitializer {
 
     override suspend fun initialize() {

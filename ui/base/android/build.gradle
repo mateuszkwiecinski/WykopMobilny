@@ -18,4 +18,8 @@ dependencies {
     api(libs.lifecycle.common)
     api(libs.activity.core)
     api(libs.fragment.core)
+    api(libs.swiperefreshlayout.core)
+    api(libs.constraintlayout.core)
+    api(libs.cardview.core)
+    api(libs.recyclerview.core)
 }

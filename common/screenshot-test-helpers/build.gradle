@@ -15,7 +15,6 @@ android {
 dependencies {
     implementation(project(":ui:base:android"))
     implementation("androidx.fragment:fragment-testing:1.3.6")
-    implementation(libs.swiperefreshlayout.core)
     implementation("com.karumi:shot-android:5.11.2")
     implementation(libs.bundles.espresso)
     api("com.thedeanda:lorem:2.1")

@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <string name="private_message">Wiadomość prywatna</string>
-    <string name="observe_user">Obserwuj</string>
-    <string name="unobserve_user">Nie obserwuj</string>
-    <string name="block_user">Zablokuj</string>
-    <string name="unblock_user">Odblokuj</string>
-    <string name="badges">Osiągnięcia</string>
-    <string name="report">Zgłoś</string>
     <string name="banned_date_and_reason">Użytkownik zbanowany do %1$s za %2$s</string>
     <string name="banned_reason_only">Użytkownik zbanowany za %1$s</string>
     <string name="banned_date_only">Użytkownik zbanowany do %1$s</string>

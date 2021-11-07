@@ -1,9 +1,12 @@
 package io.github.wykopmobilny.screenshots
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.karumi.shot.ShotTestRunner
+import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.utils.ApplicationInjector
+import kotlinx.coroutines.Dispatchers
 import kotlin.reflect.KClass
 
 class ScreenshotTestRunner : ShotTestRunner() {
@@ -15,6 +18,15 @@ class ScreenshotTestRunner : ShotTestRunner() {
 class ScreenshotTestsApplication : Application(), ApplicationInjector {
 
     private val dependencies = mutableMapOf<String, Any>()
+
+    @SuppressLint("VisibleForTests")
+    override fun onCreate() {
+        super.onCreate()
+        AppDispatchers.replaceDispatchers(
+            io = Dispatchers.Main,
+            default = Dispatchers.Main,
+        )
+    }
 
     override fun <T : Any> destroyDependency(clazz: KClass<T>, scopeId: Any?) = Unit
 

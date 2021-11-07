@@ -19,13 +19,20 @@ CREATE TABLE linkCommentsEntity (
     violationUrl TEXT,
     FOREIGN KEY (profileId) REFERENCES profileEntity(id),
     FOREIGN KEY (parentId) REFERENCES linkCommentsEntity(id),
-    FOREIGN KEY (linkId) REFERENCES linkEntity(id),
     FOREIGN KEY (embedId) REFERENCES embed(id)
 );
 
 insertOrReplace:
 INSERT OR REPLACE INTO linkCommentsEntity
 VALUES ?;
+
+vote:
+UPDATE linkCommentsEntity
+SET
+  voteCount = :voteCount,
+  voteCountPlus = :voteCountPlus,
+  userVote = :userVote
+WHERE id = :id;
 
 selectByLinkId:
 SELECT

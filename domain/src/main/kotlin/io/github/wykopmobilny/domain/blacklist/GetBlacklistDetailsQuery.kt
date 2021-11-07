@@ -3,13 +3,14 @@ package io.github.wykopmobilny.domain.blacklist
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreRequest
 import com.dropbox.android.external.store4.fresh
-import io.github.wykopmobilny.domain.blacklist.BlacklistViewState.ItemState
-import io.github.wykopmobilny.domain.blacklist.actions.TagsRepository
-import io.github.wykopmobilny.domain.blacklist.actions.ProfilesRepository
 import io.github.wykopmobilny.domain.blacklist.di.BlacklistScope
+import io.github.wykopmobilny.domain.repositories.ProfilesRepository
+import io.github.wykopmobilny.domain.repositories.TagsRepository
 import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.storage.api.Blacklist
 import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.ui.base.FailedAction
+import io.github.wykopmobilny.ui.base.ItemState
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
 import io.github.wykopmobilny.ui.blacklist.BlacklistedDetailsUi
 import io.github.wykopmobilny.ui.blacklist.BlacklistedElementUi
@@ -50,7 +51,7 @@ internal class GetBlacklistDetailsQuery @Inject constructor(
                                             showError = {
                                                 viewState.update {
                                                     it.copy(
-                                                        visibleError = BlacklistViewState.ErrorInfo(
+                                                        visibleError = FailedAction(
                                                             cause = state.error,
                                                             retryAction = { unblockUser(user) },
                                                         ),
@@ -78,7 +79,7 @@ internal class GetBlacklistDetailsQuery @Inject constructor(
                                             showError = {
                                                 viewState.update {
                                                     it.copy(
-                                                        visibleError = BlacklistViewState.ErrorInfo(
+                                                        visibleError = FailedAction(
                                                             cause = state.error,
                                                             retryAction = { unblockTag(tag) },
                                                         ),
@@ -116,7 +117,7 @@ internal class GetBlacklistDetailsQuery @Inject constructor(
                 viewState.update {
                     it.copy(
                         isLoading = false,
-                        visibleError = BlacklistViewState.ErrorInfo(cause = error, retryAction = ::refresh),
+                        visibleError = FailedAction(cause = error, retryAction = ::refresh),
                     )
                 }
             }
