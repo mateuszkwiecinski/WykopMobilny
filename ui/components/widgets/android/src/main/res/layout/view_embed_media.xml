@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
-        tools:maxHeight="50dp"
+        tools:maxHeight="100dp"
         tools:src="@drawable/ic_favorite"
         />
 </merge>

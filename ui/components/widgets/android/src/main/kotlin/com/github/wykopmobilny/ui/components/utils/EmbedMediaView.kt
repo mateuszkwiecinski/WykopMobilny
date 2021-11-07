@@ -26,8 +26,6 @@ class EmbedMediaView(context: Context, attrs: AttributeSet?) : ConstraintLayout(
 
     init {
         inflate(context, R.layout.view_embed_media, this)
-        isClickable = true
-        isFocusable = true
     }
 }
 

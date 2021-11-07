@@ -12,8 +12,10 @@ import io.github.wykopmobilny.domain.di.ScopeInitializer
 import io.github.wykopmobilny.domain.linkdetails.GetLinkDetailsQuery
 import io.github.wykopmobilny.domain.linkdetails.InitializeLinkDetails
 import io.github.wykopmobilny.domain.linkdetails.LinkComment
+import io.github.wykopmobilny.domain.linkdetails.RelatedLink
 import io.github.wykopmobilny.domain.linkdetails.datasource.linkCommentsSourceOfTruth
 import io.github.wykopmobilny.domain.linkdetails.datasource.linkDetailsSourceOfTruth
+import io.github.wykopmobilny.domain.linkdetails.datasource.relatedLinksSourceOfTruth
 import io.github.wykopmobilny.domain.profile.LinkInfo
 import io.github.wykopmobilny.links.details.GetLinkDetails
 import io.github.wykopmobilny.ui.base.AppScopes
@@ -30,7 +32,7 @@ internal abstract class LinkDetailsModule {
             appScopes: AppScopes,
             cache: AppCache,
         ): Store<Long, LinkInfo> = StoreBuilder.from(
-            fetcher = apiFetcher { linkId -> retrofitApi.getLink(linkId) },
+            fetcher = apiFetcher(retrofitApi::getLink),
             sourceOfTruth = linkDetailsSourceOfTruth(cache),
         )
             .scope(appScopes.applicationScope)
@@ -50,6 +52,19 @@ internal abstract class LinkDetailsModule {
                 )
             },
             sourceOfTruth = linkCommentsSourceOfTruth(cache),
+        )
+            .scope(appScopes.applicationScope)
+            .build()
+
+        @LinkDetailsScope
+        @Provides
+        fun relatedLinksStore(
+            retrofitApi: LinksRetrofitApi,
+            appScopes: AppScopes,
+            cache: AppCache,
+        ): Store<Long, List<RelatedLink>> = StoreBuilder.from(
+            fetcher = apiFetcher(retrofitApi::getRelated),
+            sourceOfTruth = relatedLinksSourceOfTruth(cache),
         )
             .scope(appScopes.applicationScope)
             .build()

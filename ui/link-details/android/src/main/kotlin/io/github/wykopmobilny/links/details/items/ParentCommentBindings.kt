@@ -30,6 +30,9 @@ internal fun LinkDetailsParentCommentBinding.bindParentComment(
     txtBody.text = data.body
     imgEmbed.bind(data.embed)
     imgBadge.setBackgroundColor(data.badge.toColorInt(context = root.context).defaultColor)
+    plusButton.bind(data.plusCount)
+    minusButton.bind(data.minusCount)
+    moreButton.setOnClick(data.moreAction)
 }
 
 internal fun LinkDetailsParentCommentHiddenBinding.bindHiddenParent(

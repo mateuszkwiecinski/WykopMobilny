@@ -13,4 +13,6 @@ val Drawable.drawableRes: Int
         Drawable.Downvoters -> R.drawable.ic_downvoters
         Drawable.Browser -> R.drawable.ic_open_in_browser
         Drawable.PrivateMessage -> R.drawable.ic_pw
+        Drawable.Copy -> R.drawable.ic_copy
+        Drawable.Report -> R.drawable.ic_report
     }

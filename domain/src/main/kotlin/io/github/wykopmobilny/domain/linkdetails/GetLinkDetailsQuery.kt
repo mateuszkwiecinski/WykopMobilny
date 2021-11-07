@@ -43,6 +43,7 @@ import io.github.wykopmobilny.storage.api.UserInfoStorage
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.base.FailedAction
+import io.github.wykopmobilny.ui.base.Resource
 import io.github.wykopmobilny.ui.base.components.ContextMenuOptionUi
 import io.github.wykopmobilny.ui.base.components.Drawable
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
@@ -167,7 +168,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                         viewStateStorage.update { viewState ->
                             viewState.copy(
                                 picker = OptionPickerUi(
-                                    title = Strings.Link.MORE_TITLE,
+                                    title = Strings.Link.MORE_TITLE_LINK,
                                     reasons = listOf(
                                         OptionPickerUi.Option(
                                             label = Strings.Link.MORE_OPTION_SHARE,
@@ -222,7 +223,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
             }
             val commentsSection = CommentsSectionUi(
                 comments = comments,
-                isLoading = comments.isEmpty() && viewState.isLoading,
+                isLoading = comments.isEmpty() && viewState.generalResource.isLoading,
             )
             val relatedSection = if (link == null) {
                 null
@@ -234,10 +235,10 @@ internal class GetLinkDetailsQuery @Inject constructor(
 
             LinkDetailsUi(
                 swipeRefresh = SwipeRefreshUi(
-                    isRefreshing = viewState.isLoading && link != null,
+                    isRefreshing = viewState.generalResource.isLoading && link != null,
                     refreshAction = safeCallback {
                         coroutineScope {
-                            viewStateStorage.update { viewState.copy(isLoading = true) }
+                            viewStateStorage.update { viewState.copy(generalResource = Resource.loading()) }
                             val linkRefresh = async { linkStore.fresh(linkId) }
                             val commentsRefresh = async { commentsStore.fresh(linkId) }
 
@@ -245,18 +246,18 @@ internal class GetLinkDetailsQuery @Inject constructor(
                                 .onSuccess {
                                     viewStateStorage.update {
                                         viewState.copy(
-                                            isLoading = false,
-                                            failedAction = null,
+                                            generalResource = Resource.idle(),
                                             forciblyShownBlockedComments = emptySet(),
+                                            allowedNsfwImages = emptySet(),
                                         )
                                     }
                                 }
                                 .onFailure { failure ->
                                     viewStateStorage.update {
                                         viewState.copy(
-                                            isLoading = false,
-                                            failedAction = FailedAction(cause = failure),
+                                            generalResource = Resource.error(FailedAction(cause = failure)),
                                             forciblyShownBlockedComments = emptySet(),
+                                            allowedNsfwImages = emptySet(),
                                         )
                                     }
                                 }
@@ -266,11 +267,11 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 header = header,
                 relatedSection = relatedSection,
                 commentsSection = commentsSection,
-                errorDialog = viewState.failedAction?.let { error ->
+                errorDialog = viewState.generalResource.failedAction?.let { error ->
                     ErrorDialogUi(
                         error = error.cause,
                         retryAction = error.retryAction,
-                        dismissAction = safeCallback { viewStateStorage.update { it.copy(failedAction = null) } },
+                        dismissAction = safeCallback { viewStateStorage.update { it.copy(generalResource = Resource.idle()) } },
                     )
                 },
                 contextMenuOptions = listOfNotNull(
@@ -384,7 +385,8 @@ internal class GetLinkDetailsQuery @Inject constructor(
         } else {
             val isConsideredNsfw = usedTags.contains("nsfw") && filteringPreferences.hideNsfwContent
             val isConsideredPlus18 = embed?.hasAdultContent == true && filteringPreferences.hidePlus18Content
-            val hasNsfwOverlay = isConsideredNsfw || isConsideredPlus18
+            val couldHaveNsfwOverlay = isConsideredNsfw || isConsideredPlus18
+            val hasNsfwOverlay = couldHaveNsfwOverlay && !viewState.allowedNsfwImages.contains(embed?.id)
 
             LinkCommentUi.Normal(
                 id = id,
@@ -417,12 +419,11 @@ internal class GetLinkDetailsQuery @Inject constructor(
                     },
                 ),
                 badge = color,
-                shareAction = safeCallback { interopRequests.request(InteropRequest.Share(url = wykopUrl(linkId = link.id))) },
                 embed = embed?.let { embed ->
                     embed.toUi(
                         clickAction = safeCallback {
                             if (hasNsfwOverlay) {
-                                TODO("Hide nsfw")
+                                viewStateStorage.update { it.copy(allowedNsfwImages = it.allowedNsfwImages + embed.id) }
                             } else {
                                 showEmbedImage(embed, commentId = id)
                             }
@@ -431,6 +432,37 @@ internal class GetLinkDetailsQuery @Inject constructor(
                         forceExpanded = false,
                         thresholdPercentage = imagePreferences.cutImagesProportion.takeIf { imagePreferences.cutImages },
                     )
+                },
+                moreAction = safeCallback {
+                    viewStateStorage.update { viewState ->
+                        viewState.copy(
+                            picker = OptionPickerUi(
+                                title = Strings.Link.MORE_TITLE_COMMENT,
+                                reasons = listOf(
+                                    OptionPickerUi.Option(
+                                        label = Strings.Link.MORE_OPTION_SHARE,
+                                        icon = Drawable.Share,
+                                        clickAction = safeCallback {
+                                            interopRequests.request(InteropRequest.Share(url = wykopUrl(linkId = link.id)))
+                                        },
+                                    ),
+                                    OptionPickerUi.Option(
+                                        label = Strings.Link.MORE_OPTION_COPY,
+                                        icon = Drawable.Copy,
+                                        clickAction = safeCallback {
+                                            TODO("Copy not available")
+                                        },
+                                    ),
+                                    OptionPickerUi.Option(
+                                        label = Strings.Link.MORE_OPTION_REPORT,
+                                        icon = Drawable.Report,
+                                        clickAction = safeCallback { TODO("Report not available") },
+                                    ),
+                                ),
+                                dismissAction = safeCallback { viewStateStorage.update { it.copy(picker = null) } },
+                            ),
+                        )
+                    }
                 },
             )
         }
@@ -442,7 +474,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
             EmbedType.AnimatedImage -> TODO("Show animated image")
             EmbedType.Video -> TODO("Show image")
             EmbedType.Unknown -> viewStateStorage.update {
-                it.copy(failedAction = FailedAction(IllegalArgumentException("Unsupported image type. commentId=$commentId")))
+                it.copy(generalResource = Resource.error(FailedAction(IllegalArgumentException("Unsupported image type. ($commentId)"))))
             }
         }
     }
@@ -450,7 +482,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
     private fun safeCallback(function: suspend CoroutineScope.() -> Unit): () -> Unit = {
         appScopes.safeKeyed<LinkDetailsScope>(linkId) {
             runCatching { function() }
-                .onFailure { failure -> viewStateStorage.update { it.copy(failedAction = FailedAction(failure)) } }
+                .onFailure { failure -> viewStateStorage.update { it.copy(generalResource = Resource.error(FailedAction(failure))) } }
         }
     }
 }

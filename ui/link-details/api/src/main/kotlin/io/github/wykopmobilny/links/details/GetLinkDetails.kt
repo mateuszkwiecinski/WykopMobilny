@@ -87,6 +87,6 @@ sealed class LinkCommentUi {
         val plusCount: Button,
         val minusCount: Button,
         val embed: EmbedMediaUi?,
-        val shareAction: () -> Unit,
+        val moreAction: () -> Unit,
     ) : LinkCommentUi()
 }

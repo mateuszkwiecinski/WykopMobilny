@@ -26,8 +26,11 @@ object Strings {
         const val BURY_REASON_WRONG_CONTENT = "Treśc nieodpowiednia"
         const val BURY_REASON_UNSUITABLE_CONTENT = "Nie nadaje się"
 
-        const val MORE_TITLE = "Opcje znaleziska:"
+        const val MORE_TITLE_LINK = "Opcje znaleziska:"
+        const val MORE_TITLE_COMMENT = "Opcje komentarza:"
         const val MORE_OPTION_SHARE = "Udostępnij"
+        const val MORE_OPTION_COPY = "Skopiuj treść"
+        const val MORE_OPTION_REPORT = "Zgłoś naruszenie"
         const val MORE_OPTION_OPEN_IN_BROWSER = "Otwórz w przeglądarce"
 
         const val COMMENTS_SORT_BEST = "Najlepsze"

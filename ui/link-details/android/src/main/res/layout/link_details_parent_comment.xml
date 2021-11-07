@@ -130,20 +130,60 @@
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/txtBody"
         app:layout_goneMarginTop="8dp"
-        tools:layout_height="300dp"
         />
 
     <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrierBottom"
+        android:id="@+id/contentBarrier"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="imgEmbed, txtBody"
         />
 
+    <com.github.wykopmobilny.ui.components.FlatButton
+        android:id="@+id/plusButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toBottomOf="@id/moreButton"
+        app:layout_constraintEnd_toStartOf="@id/minusButton"
+        app:layout_constraintTop_toBottomOf="@id/contentBarrier"
+        />
+
+    <com.github.wykopmobilny.ui.components.FlatButton
+        android:id="@+id/minusButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/moreButton"
+        app:layout_constraintEnd_toStartOf="@id/moreButton"
+        app:layout_constraintTop_toBottomOf="@id/contentBarrier"
+        />
+
+    <ImageView
+        android:id="@+id/moreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:src="@drawable/ic_more"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contentBarrier"
+        app:tint="?colorControlNormal"
+        tools:tint="?colorControlNormal"
+        />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/bottomBarrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="plusButton, minusButton, moreButton"
+        />
+
     <View
         android:layout_width="0dp"
         android:layout_height="8dp"
-        app:layout_constraintTop_toBottomOf="@id/barrierBottom"
+        app:layout_constraintTop_toBottomOf="@id/bottomBarrier"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
