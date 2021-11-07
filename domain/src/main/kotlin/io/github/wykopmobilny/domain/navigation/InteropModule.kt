@@ -80,7 +80,7 @@ internal class InteropSettingPreferencesApi @Inject constructor(
     override val openSpoilersDialog: Boolean
         get() = interop(UserSettings.openSpoilersInDialog) ?: true
     override val hideLowRangeAuthors: Boolean
-        get() = interop(UserSettings.showAuthor) ?: false
+        get() = interop(UserSettings.hideNewUserContent) ?: false
     override val hideContentWithoutTags: Boolean
         get() = interop(UserSettings.hideContentWithNoTags) ?: false
     override val cutImageProportion: Int?
