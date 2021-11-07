@@ -1,6 +1,7 @@
 package io.github.wykopmobilny.screenshots
 
 import android.Manifest
+import android.util.Log
 import android.util.Size
 import android.view.View
 import android.view.View.MeasureSpec.makeMeasureSpec
@@ -48,7 +49,9 @@ abstract class BaseScreenshotTest : ScreenshotTest {
             val container = launchFragmentInContainer(
                 instantiate = ::createFragment,
                 themeResId = theme.theme,
-                fragmentArgs = fragmentArgs,
+                fragmentArgs = runCatching { fragmentArgs }
+                    .onFailure { Log.w("ScreenshotsTests", it) }
+                    .getOrNull(),
             )
                 .withFragment {
                     beforeScreenshot(requireView())
