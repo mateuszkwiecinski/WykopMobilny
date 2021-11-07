@@ -11,7 +11,6 @@ android {
 dependencies {
     api(projects.ui.components.entries.api)
     implementation(projects.ui.base.android)
-    implementation(libs.swiperefreshlayout.core)
     implementation(libs.glide.core)
     implementation(libs.paging.runtime)
     implementation(libs.recyclerview.core)

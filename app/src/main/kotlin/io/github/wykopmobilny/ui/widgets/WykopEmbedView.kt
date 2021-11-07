@@ -137,14 +137,14 @@ class WykopEmbedView(context: Context, attrs: AttributeSet) : FrameLayout(contex
                         if (enableYoutubePlayer) {
                             navigator.openYoutubeActivity(image.url)
                         } else {
-                            getActivityContext()!!.openBrowser(image.url)
+                            getActivityContext()?.openBrowser(image.url)
                         }
                     }
                     "gfycat", "streamable", "coub" -> {
                         if (enableEmbedPlayer) {
                             navigator.openEmbedActivity(image.url)
                         } else {
-                            getActivityContext()!!.openBrowser(image.url)
+                            getActivityContext()?.openBrowser(image.url)
                         }
                     }
                     else -> navigator.openBrowser(image.url)

@@ -21,6 +21,7 @@ internal data class EntryInfo(
 internal data class LinkInfo(
     val id: Long,
     val title: String,
+    val isHot: Boolean,
     val description: String,
     val tags: List<String>,
     val sourceUrl: String,
@@ -28,12 +29,16 @@ internal data class LinkInfo(
     val commentsCount: Int,
     val relatedCount: Int,
     val voteCount: Int,
+    val buryCount: Int,
     val postedAt: Instant,
     val userAction: UserVote?,
     val app: String?,
     val author: UserInfo,
     val userFavorite: Boolean,
 ) : ProfileAction()
+
+internal val LinkInfo.wykopUrl: String
+    get() = "https://www.wykop.pl/link/$id"
 
 internal data class UserInfo(
     val profileId: String,

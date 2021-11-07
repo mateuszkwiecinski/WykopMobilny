@@ -2,14 +2,148 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground"
     >
 
+    <com.github.wykopmobilny.ui.components.AvatarView
+        android:id="@+id/imgAvatar"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="#ff00ff"
+        />
+
     <TextView
+        android:id="@+id/txtUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:textAppearance="@style/TextAppearance.MaterialScale.Body2"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@+id/txtTimestamp"
+        app:layout_constraintEnd_toStartOf="@id/txtCollapsed"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/imgAvatar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_goneMarginEnd="8dp"
+        tools:text="\@powodzenia"
+        tools:textColor="#f0f"
+        />
+
+    <TextView
+        android:id="@+id/txtTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.MaterialScale.Caption.Secondary"
+        app:layout_constraintBottom_toBottomOf="@id/imgAvatar"
+        app:layout_constraintStart_toStartOf="@id/txtUser"
+        app:layout_constraintTop_toBottomOf="@id/txtUser"
+        tools:text="2 godz."
+        />
+
+    <TextView
+        android:id="@+id/space"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\u00A0"
+        android:textAppearance="@style/TextAppearance.MaterialScale.Caption.Secondary"
+        app:layout_constraintStart_toEndOf="@id/txtTimestamp"
+        app:layout_constraintTop_toTopOf="@id/txtTimestamp"
+        tools:ignore="HardcodedText"
+        />
+
+    <TextView
+        android:id="@+id/txtApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:textAppearance="@style/TextAppearance.MaterialScale.Caption.Secondary"
+        app:layout_constraintStart_toEndOf="@id/space"
+        app:layout_constraintTop_toTopOf="@id/txtTimestamp"
+        tools:text="via Android"
+        />
+
+    <TextView
+        android:id="@+id/txtCollapsed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/ripple_rounded"
+        android:minWidth="15dp"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="2dp"
+        android:textAppearance="@style/TextAppearance.MaterialScale.Caption"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="+5"
+        />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="parent"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="imgAvatar, txtTimestamp"
+        />
+
+    <TextView
+        android:id="@+id/txtBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:textAppearance="@style/TextAppearance.MaterialScale.Body2"
+        android:textIsSelectable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrierTop"
+        tools:maxLines="5"
+        tools:text="@tools:sample/lorem/random"
+        />
+
+    <View
+        android:id="@+id/imgBadge"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        tools:background="#f0f"
+        />
+
+    <com.github.wykopmobilny.ui.components.utils.EmbedMediaView
+        android:id="@+id/imgEmbed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/txtBody"
+        app:layout_goneMarginTop="8dp"
+        tools:layout_height="300dp"
+        />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierBottom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="imgEmbed, txtBody"
+        />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        app:layout_constraintTop_toBottomOf="@id/barrierBottom"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

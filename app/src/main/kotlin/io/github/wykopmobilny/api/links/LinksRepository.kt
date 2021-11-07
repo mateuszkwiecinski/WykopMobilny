@@ -75,14 +75,14 @@ class LinksRepository @Inject constructor(
             .compose(ErrorHandlerTransformer())
             .map { LinkMapper.map(it, owmContentFilter) }
 
-    override fun commentVoteUp(linkId: Long) =
-        rxSingle { linksApi.commentVoteUp(linkId) }
+    override fun commentVoteUp(linkId: Long, commentId: Long) =
+        rxSingle { linksApi.commentVoteUp(linkId = linkId, commentId = commentId) }
             .flatMap { patronsApi.ensurePatrons(it) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
 
-    override fun commentVoteDown(linkId: Long) =
-        rxSingle { linksApi.commentVoteDown(linkId) }
+    override fun commentVoteDown(linkId: Long, commentId: Long) =
+        rxSingle { linksApi.commentVoteDown(linkId = linkId, commentId = commentId) }
             .flatMap { patronsApi.ensurePatrons(it) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
@@ -98,8 +98,8 @@ class LinksRepository @Inject constructor(
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
 
-    override fun commentVoteCancel(linkId: Long) =
-        rxSingle { linksApi.commentVoteCancel(linkId) }
+    override fun commentVoteCancel(linkId: Long, commentId: Long) =
+        rxSingle { linksApi.commentVoteCancel(linkId = linkId, commentId = commentId) }
             .flatMap { patronsApi.ensurePatrons(it) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
@@ -229,8 +229,8 @@ class LinksRepository @Inject constructor(
             .map { it.map { response -> RelatedMapper.map(response) } }
 
     override fun markFavorite(linkId: Long) =
-        rxSingle { linksApi.markFavorite(linkId) }
+        rxSingle { linksApi.toggleFavorite(linkId) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
-            .map { it.first() }
+            .map {  }
 }

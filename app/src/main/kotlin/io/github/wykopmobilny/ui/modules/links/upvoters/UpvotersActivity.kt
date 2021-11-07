@@ -34,6 +34,7 @@ class UpvotersActivity : BaseActivity(), androidx.swiperefreshlayout.widget.Swip
 
     @Inject
     lateinit var upvotersAdapter: UpvoterListAdapter
+    override val enableSwipeBackLayout = true
 
     private val binding by viewBinding(ActivityVoterslistBinding::inflate)
 

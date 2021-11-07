@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:gravity="center_vertical"
+    android:minHeight="?listPreferredItemHeightSmall"
+    android:orientation="horizontal"
+    >
+
+    <View
+        android:id="@+id/imgBadge"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        tools:background="#f0f"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/hidden_entry"
+        android:textAppearance="@style/TextAppearance.MaterialScale.Body2"
+        />
+
+    <TextView
+        android:id="@+id/txtUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.MaterialScale.Body2"
+        tools:text="\@powodzenia"
+        tools:textColor="#f0f"
+        />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:minHeight="8dp"
+        />
+
+    <TextView
+        android:id="@+id/txtCollapsed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/ripple_rounded"
+        android:minWidth="15dp"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="2dp"
+        android:textAppearance="@style/TextAppearance.MaterialScale.Caption"
+        tools:text="+5"
+        />
+</LinearLayout>

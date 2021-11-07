@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-
+    <string name="share">Udostępnij</string>
+    <string name="add_comment">Dodaj komentarz</string>
+    <string name="separator">•</string>
+    <string name="hidden_entry">Pokaż ukryty wpis od:\u00A0</string>
 </resources>

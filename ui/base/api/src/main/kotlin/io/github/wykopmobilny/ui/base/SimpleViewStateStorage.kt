@@ -23,3 +23,8 @@ data class FailedAction(
     val cause: Throwable,
     val retryAction: (() -> Unit)? = null,
 )
+
+sealed class ItemState {
+    object InProgress : ItemState()
+    data class Error(val error: Throwable) : ItemState()
+}

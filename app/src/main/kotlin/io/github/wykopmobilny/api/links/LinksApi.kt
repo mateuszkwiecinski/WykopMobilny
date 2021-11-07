@@ -26,11 +26,11 @@ interface LinksApi {
     fun getLinkComments(linkId: Long, sortBy: String): Single<List<LinkComment>>
     fun getLink(linkId: Long): Single<Link>
 
-    fun commentVoteUp(linkId: Long): Single<LinkVoteResponse>
-    fun commentVoteDown(linkId: Long): Single<LinkVoteResponse>
+    fun commentVoteUp(linkId: Long, commentId: Long): Single<LinkVoteResponse>
+    fun commentVoteDown(linkId: Long, commentId: Long): Single<LinkVoteResponse>
     fun relatedVoteUp(linkId: Long, relatedId: Int): Single<VoteResponse>
     fun relatedVoteDown(linkId: Long, relatedId: Int): Single<VoteResponse>
-    fun commentVoteCancel(linkId: Long): Single<LinkVoteResponse>
+    fun commentVoteCancel(linkId: Long, commentId: Long): Single<LinkVoteResponse>
     fun commentDelete(commentId: Long): Single<LinkComment>
     fun commentAdd(
         body: String,
@@ -75,6 +75,6 @@ interface LinksApi {
     fun voteRemove(linkId: Long, notifyPublisher: Boolean = true): Single<DigResponse>
     fun getUpvoters(linkId: Long): Single<List<Upvoter>>
     fun getDownvoters(linkId: Long): Single<List<Downvoter>>
-    fun markFavorite(linkId: Long): Single<Boolean>
+    fun markFavorite(linkId: Long): Single<Unit>
     fun getRelated(linkId: Long): Single<List<Related>>
 }

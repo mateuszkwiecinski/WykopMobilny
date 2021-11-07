@@ -13,6 +13,7 @@ import io.github.wykopmobilny.ui.blacklist.GetBlacklistDetails
 import io.github.wykopmobilny.ui.blacklist.android.databinding.FragmentBlacklistMainBinding
 import io.github.wykopmobilny.utils.bindings.collectErrorDialog
 import io.github.wykopmobilny.utils.bindings.collectSnackbar
+import io.github.wykopmobilny.utils.bindings.setOnClick
 import io.github.wykopmobilny.utils.destroyDependency
 import io.github.wykopmobilny.utils.requireDependency
 import io.github.wykopmobilny.utils.viewBinding
@@ -64,11 +65,11 @@ internal class BlacklistMainFragment : Fragment(R.layout.fragment_blacklist_main
                         binding.emptyContainer.isVisible = true
                         binding.btnImport.isVisible = !content.isLoading
                         binding.btnProgress.isVisible = content.isLoading
-                        binding.btnImport.setOnClickListener { content.loadAction() }
+                        binding.btnImport.setOnClick(content.loadAction)
                     }
                     is BlacklistedDetailsUi.Content.WithData -> {
                         binding.emptyContainer.isVisible = false
-                        binding.btnImport.setOnClickListener(null)
+                        binding.btnImport.setOnClick(null)
                         binding.viewPager.isVisible = true
                         binding.tabLayout.isVisible = true
                     }

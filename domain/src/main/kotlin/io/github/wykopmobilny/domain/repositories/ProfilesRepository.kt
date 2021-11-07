@@ -1,4 +1,4 @@
-package io.github.wykopmobilny.domain.blacklist.actions
+package io.github.wykopmobilny.domain.repositories
 
 import io.github.wykopmobilny.api.endpoints.ProfileRetrofitApi
 import io.github.wykopmobilny.api.responses.ObserveStateResponse

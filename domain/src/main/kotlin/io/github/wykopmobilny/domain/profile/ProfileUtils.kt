@@ -2,7 +2,8 @@ package io.github.wykopmobilny.domain.profile
 
 import io.github.wykopmobilny.data.cache.api.GenderEntity
 import io.github.wykopmobilny.data.cache.api.UserColorEntity
-import io.github.wykopmobilny.ui.components.widgets.ColorHex
+import io.github.wykopmobilny.ui.components.widgets.Color
+import io.github.wykopmobilny.ui.components.widgets.ColorConst
 import io.github.wykopmobilny.ui.components.widgets.ColorReference
 import kotlinx.datetime.DateTimePeriod
 
@@ -28,21 +29,21 @@ internal fun UserColorEntity.toColorDomain() =
 
 internal fun UserInfo.Gender?.toUi() =
     when (this) {
-        UserInfo.Gender.Male -> "#46ABF2"
-        UserInfo.Gender.Female -> "#f246d0"
-        null -> "#00000000"
-    }.let(::ColorHex)
+        UserInfo.Gender.Male -> ColorConst.Male
+        UserInfo.Gender.Female -> ColorConst.Female
+        null -> ColorConst.Transparent
+    }
 
-internal fun UserInfo.Color.toUi() =
+internal fun UserInfo.Color.toUi(): Color =
     when (this) {
-        UserInfo.Color.Green -> ColorHex("#339933")
-        UserInfo.Color.Orange -> ColorHex("#ff5917")
-        UserInfo.Color.Claret -> ColorHex("#BB0000")
+        UserInfo.Color.Green -> ColorConst.UserGreen
+        UserInfo.Color.Orange -> ColorConst.UserOrange
+        UserInfo.Color.Claret -> ColorConst.UserClaret
         UserInfo.Color.Admin -> ColorReference.Admin
-        UserInfo.Color.Banned -> ColorHex("#999999")
-        UserInfo.Color.Deleted -> ColorHex("#999999")
-        UserInfo.Color.Client -> ColorHex("#3F6FA0")
-        UserInfo.Color.Unknown -> ColorHex("#0000FF")
+        UserInfo.Color.Banned -> ColorConst.UserBanned
+        UserInfo.Color.Deleted -> ColorConst.UserDeleted
+        UserInfo.Color.Client -> ColorConst.UserClient
+        UserInfo.Color.Unknown -> ColorConst.UserUnknown
     }
 
 internal fun DateTimePeriod.toPrettyString(

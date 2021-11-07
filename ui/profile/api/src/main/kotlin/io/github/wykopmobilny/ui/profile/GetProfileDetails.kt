@@ -1,6 +1,7 @@
 package io.github.wykopmobilny.ui.profile
 
 import io.github.wykopmobilny.ui.base.Query
+import io.github.wykopmobilny.ui.base.components.ContextMenuOptionUi
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
 import io.github.wykopmobilny.ui.components.widgets.UserInfoUi
 
@@ -21,11 +22,6 @@ data class ProfileHeaderUi(
     val banReason: BanReasonUi?,
     val followersCount: Int?,
     val joinedAgo: String?,
-)
-
-data class ContextMenuOptionUi<T : Enum<T>>(
-    val option: T,
-    val onClick: () -> Unit,
 )
 
 enum class ProfileMenuOption {

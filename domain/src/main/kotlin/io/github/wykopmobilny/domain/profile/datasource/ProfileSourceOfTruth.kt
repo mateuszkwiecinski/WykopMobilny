@@ -39,6 +39,7 @@ internal fun profileSourceOfTruth(
                     val entry = LinkInfo(
                         id = link.id,
                         title = link.title,
+                        isHot = link.isHot,
                         description = link.description,
                         tags = link.tags.split(" "),
                         sourceUrl = link.sourceUrl,
@@ -52,6 +53,7 @@ internal fun profileSourceOfTruth(
                         ),
                         commentsCount = link.commentsCount,
                         voteCount = link.voteCount,
+                        buryCount = link.buryCount,
                         relatedCount = link.relatedCount,
                         postedAt = link.postedAt,
                         app = link.app,
@@ -201,8 +203,8 @@ internal fun EmbedResponse.toEntity(): Embed {
 
 internal fun String?.asUserVote() =
     when (this) {
-        "dig" -> UserVote.Down
-        "bury" -> UserVote.Up
+        "dig" -> UserVote.Up
+        "bury" -> UserVote.Down
         else -> null
     }
 

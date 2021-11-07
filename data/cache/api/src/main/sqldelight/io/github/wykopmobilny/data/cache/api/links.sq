@@ -28,6 +28,14 @@ insertOrReplace:
 INSERT OR REPLACE INTO linkEntity
 VALUES ?;
 
+vote:
+UPDATE linkEntity
+SET
+  voteCount = :voteCount,
+  buryCount = :buryCount,
+  userVote = :userVote
+WHERE id = :id;
+
 selectById:
 SELECT
   linkEntity.*,
