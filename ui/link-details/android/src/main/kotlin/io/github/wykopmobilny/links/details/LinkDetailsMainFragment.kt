@@ -42,7 +42,6 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
 
     private lateinit var getLinkDetails: GetLinkDetails
 
-
     override fun onAttach(context: Context) {
         getLinkDetails = context.requireKeyedDependency<LinkDetailsDependencies>(linkId).getLinkDetails()
         super.onAttach(context)

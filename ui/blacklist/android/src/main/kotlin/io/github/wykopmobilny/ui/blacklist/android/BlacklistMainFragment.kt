@@ -16,7 +16,6 @@ import io.github.wykopmobilny.utils.bindings.collectSnackbar
 import io.github.wykopmobilny.utils.bindings.setOnClick
 import io.github.wykopmobilny.utils.destroyDependency
 import io.github.wykopmobilny.utils.requireDependency
-import io.github.wykopmobilny.utils.viewBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
@@ -27,8 +26,6 @@ fun blacklistMainFragment(): Fragment = BlacklistMainFragment()
 
 internal class BlacklistMainFragment : Fragment(R.layout.fragment_blacklist_main) {
 
-    private val binding by viewBinding(FragmentBlacklistMainBinding::bind)
-
     lateinit var getBlacklistDetails: GetBlacklistDetails
 
     override fun onAttach(context: Context) {
@@ -38,6 +35,7 @@ internal class BlacklistMainFragment : Fragment(R.layout.fragment_blacklist_main
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentBlacklistMainBinding.bind(view)
         binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
@@ -51,11 +49,11 @@ internal class BlacklistMainFragment : Fragment(R.layout.fragment_blacklist_main
                 .attach()
             launch { shared.map { it.errorDialog }.collectErrorDialog(requireContext()) }
             launch { shared.map { it.snackbar }.collectSnackbar(binding.root) }
-            launch { shared.collectState() }
+            launch { shared.bindContent(binding) }
         }
     }
 
-    private suspend fun Flow<BlacklistedDetailsUi>.collectState() {
+    private suspend fun Flow<BlacklistedDetailsUi>.bindContent(binding: FragmentBlacklistMainBinding) {
         map { it.content }
             .collect { content ->
                 when (content) {
