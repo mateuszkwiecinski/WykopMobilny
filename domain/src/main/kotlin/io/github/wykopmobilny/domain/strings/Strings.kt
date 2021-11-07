@@ -40,4 +40,15 @@ object Strings {
         fun moreOptioDownvotersList(count: Int) = "Lista zakopujących ($count)"
         fun commentsSortOption(key: String) = "$key komentarze"
     }
+
+    object Profile {
+
+        const val PRIVATE_MESSAGE = "Wiadomość prywatna"
+        const val OBSERVE_USER = "Obserwuj"
+        const val UNOBSERVE_USER = "Nie obserwuj"
+        const val BLOCK_USER = "Zablokuj"
+        const val UNBLOCK_USER = "Odblokuj"
+        const val BADGES = "Osiągnięcia"
+        const val REPORT = "Zgłoś"
+    }
 }

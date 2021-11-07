@@ -10,7 +10,7 @@ interface GetProfileDetails : Query<ProfileDetailsUi>
 class ProfileDetailsUi(
     val header: ProfileHeaderUi,
     val onAddEntryClicked: () -> Unit,
-    val contextMenuOptions: List<ContextMenuOptionUi<ProfileMenuOption>>,
+    val contextMenuOptions: List<ContextMenuOptionUi>,
     val errorDialog: ErrorDialogUi?,
 )
 
@@ -23,16 +23,6 @@ data class ProfileHeaderUi(
     val followersCount: Int?,
     val joinedAgo: String?,
 )
-
-enum class ProfileMenuOption {
-    PrivateMessage,
-    Unblock,
-    Block,
-    ObserveProfile,
-    UnobserveProfile,
-    Badges,
-    Report,
-}
 
 data class BanReasonUi(
     val reason: String?,

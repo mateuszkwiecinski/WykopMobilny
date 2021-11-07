@@ -28,5 +28,5 @@ fun Context.readColorAttr(@AttrRes attrColor: Int): ColorStateList {
 }
 
 
-val View.layoutInflater
+val View.layoutInflater: LayoutInflater
     get() = LayoutInflater.from(context)

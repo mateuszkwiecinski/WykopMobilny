@@ -1,6 +1,7 @@
 package io.github.wykopmobilny.ui.base.components
 
-data class ContextMenuOptionUi<T : Enum<T>>(
-    val option: T,
+data class ContextMenuOptionUi(
+    val label: String,
+    val icon: Drawable? = null,
     val onClick: () -> Unit,
 )

@@ -8,6 +8,7 @@ import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.InteropRequestsProvider
 import io.github.wykopmobilny.domain.profile.di.ProfileScope
 import io.github.wykopmobilny.domain.repositories.ProfilesRepository
+import io.github.wykopmobilny.domain.strings.Strings
 import io.github.wykopmobilny.domain.utils.safeKeyed
 import io.github.wykopmobilny.storage.api.UserInfoStorage
 import io.github.wykopmobilny.ui.base.AppDispatchers
@@ -15,12 +16,12 @@ import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.base.FailedAction
 import io.github.wykopmobilny.ui.base.SimpleViewStateStorage
 import io.github.wykopmobilny.ui.base.components.ContextMenuOptionUi
+import io.github.wykopmobilny.ui.base.components.Drawable
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
 import io.github.wykopmobilny.ui.profile.BanReasonUi
 import io.github.wykopmobilny.ui.profile.GetProfileDetails
 import io.github.wykopmobilny.ui.profile.ProfileDetailsUi
 import io.github.wykopmobilny.ui.profile.ProfileHeaderUi
-import io.github.wykopmobilny.ui.profile.ProfileMenuOption
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
@@ -112,37 +113,38 @@ internal class GetProfileDetailsQuery @Inject constructor(
             .flowOn(AppDispatchers.Default)
 
     private fun badgesOption() = ContextMenuOptionUi(
-        option = ProfileMenuOption.Badges,
+        label = Strings.Profile.BADGES,
         onClick = safeCallback { TODO() },
     )
 
     private fun privateMessageOption() = ContextMenuOptionUi(
-        option = ProfileMenuOption.PrivateMessage,
+        label = Strings.Profile.PRIVATE_MESSAGE,
+        icon = Drawable.PrivateMessage,
         onClick = safeCallback { interopRequests.request(InteropRequest.PrivateMessage(profileId)) },
     )
 
     private fun blockOption() = ContextMenuOptionUi(
-        option = ProfileMenuOption.Block,
+        label = Strings.Profile.BLOCK_USER,
         onClick = safeCallback { profilesRepository.blockUser(profileId) },
     )
 
     private fun unblockOption() = ContextMenuOptionUi(
-        option = ProfileMenuOption.Unblock,
+        label = Strings.Profile.UNBLOCK_USER,
         onClick = safeCallback { profilesRepository.unblockUser(profileId) },
     )
 
     private fun observeOption() = ContextMenuOptionUi(
-        option = ProfileMenuOption.ObserveProfile,
+        label = Strings.Profile.OBSERVE_USER,
         onClick = safeCallback { profilesRepository.observeUser(profileId) },
     )
 
     private fun unobserveOption() = ContextMenuOptionUi(
-        option = ProfileMenuOption.UnobserveProfile,
+        label = Strings.Profile.UNOBSERVE_USER,
         onClick = safeCallback { profilesRepository.unobserveUser(profileId) },
     )
 
     private fun reportOption() = ContextMenuOptionUi(
-        option = ProfileMenuOption.Report,
+        label = Strings.Profile.REPORT,
         onClick = safeCallback { TODO() },
     )
 

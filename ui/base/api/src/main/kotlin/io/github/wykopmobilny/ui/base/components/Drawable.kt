@@ -6,5 +6,6 @@ enum class Drawable {
     Share,
     Upvoters,
     Downvoters,
-    Browser
+    Browser,
+    PrivateMessage,
 }

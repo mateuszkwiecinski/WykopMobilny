@@ -34,7 +34,6 @@ import io.github.wykopmobilny.links.details.CommentsSectionUi
 import io.github.wykopmobilny.links.details.GetLinkDetails
 import io.github.wykopmobilny.links.details.LinkCommentUi
 import io.github.wykopmobilny.links.details.LinkDetailsHeaderUi
-import io.github.wykopmobilny.links.details.LinkDetailsMenuOption
 import io.github.wykopmobilny.links.details.LinkDetailsUi
 import io.github.wykopmobilny.links.details.ParentCommentUi
 import io.github.wykopmobilny.links.details.RelatedLinkUi
@@ -277,7 +276,8 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 contextMenuOptions = listOfNotNull(
                     link?.wykopUrl?.let { shareUrl ->
                         ContextMenuOptionUi(
-                            option = LinkDetailsMenuOption.Share,
+                            icon = Drawable.Share,
+                            label = Strings.SHARE_TITLE,
                             onClick = safeCallback { interopRequests.request(InteropRequest.Share(url = shareUrl)) },
                         )
                     },

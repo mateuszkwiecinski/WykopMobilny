@@ -19,7 +19,7 @@ class LinkDetailsUi(
     val swipeRefresh: SwipeRefreshUi,
     val header: LinkDetailsHeaderUi,
     val relatedSection: List<RelatedLinkUi>?,
-    val contextMenuOptions: List<ContextMenuOptionUi<LinkDetailsMenuOption>>,
+    val contextMenuOptions: List<ContextMenuOptionUi>,
     val commentsSection: CommentsSectionUi,
     val errorDialog: ErrorDialogUi?,
     val picker: OptionPickerUi?,
@@ -89,8 +89,4 @@ sealed class LinkCommentUi {
         val embed: EmbedMediaUi?,
         val shareAction: () -> Unit,
     ) : LinkCommentUi()
-}
-
-enum class LinkDetailsMenuOption {
-    Share,
 }

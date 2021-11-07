@@ -56,7 +56,7 @@ internal class ProfileMainFragment : Fragment(R.layout.fragment_profile) {
             val shared = getProfileDetails().stateIn(this)
 
             launch { shared.map { it.errorDialog }.collectErrorDialog(view.context) }
-            launch { shared.map { it.contextMenuOptions }.collectMenuOptions(binding.toolbar, ::contextMenuMapping) }
+            launch { shared.map { it.contextMenuOptions }.collectMenuOptions(binding.toolbar) }
             launch { shared.map { it.onAddEntryClicked }.setOnClick(binding.addEntry) }
             launch { shared.map { it.header }.bindHeader(binding) }
         }
@@ -95,17 +95,6 @@ internal class ProfileMainFragment : Fragment(R.layout.fragment_profile) {
             Glide.with(binding.root).load(header.userInfo?.avatar?.avatarUrl).transition(withCrossFade()).into(binding.profilePicture)
         }
     }
-
-    private fun contextMenuMapping(option: ProfileMenuOption) =
-        when (option) {
-            ProfileMenuOption.PrivateMessage -> R.string.private_message to R.drawable.ic_pw
-            ProfileMenuOption.Unblock -> R.string.unblock_user to null
-            ProfileMenuOption.Block -> R.string.block_user to null
-            ProfileMenuOption.ObserveProfile -> R.string.observe_user to null
-            ProfileMenuOption.UnobserveProfile -> R.string.unobserve_user to null
-            ProfileMenuOption.Badges -> R.string.badges to null
-            ProfileMenuOption.Report -> R.string.report to null
-        }
 
     override fun onDestroy() {
         super.onDestroy()

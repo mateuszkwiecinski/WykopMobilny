@@ -7,18 +7,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 
-suspend fun <T : Enum<T>> Flow<List<ContextMenuOptionUi<T>>>.collectMenuOptions(
+suspend fun Flow<List<ContextMenuOptionUi>>.collectMenuOptions(
     toolbar: MaterialToolbar,
-    mapping: (T) -> Pair<Int, Int?>,
 ) {
-    distinctUntilChangedBy { it.map(ContextMenuOptionUi<T>::option) }.collect { options ->
-        toolbar.menu.clear()
-        options.forEach { menuOption ->
-            val (textRes, imageRes) = mapping(menuOption.option)
-            toolbar.menu.add(textRes).apply {
-                setOnMenuItemClickListener { menuOption.onClick(); true }
-                imageRes?.let(::setIcon)?.let { setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM) }
+    distinctUntilChangedBy { it.map(ContextMenuOptionUi::label) + it.map(ContextMenuOptionUi::icon) }
+        .collect { options ->
+            toolbar.menu.clear()
+            options.forEach { menuOption ->
+                toolbar.menu.add(menuOption.label).apply {
+                    setOnMenuItemClickListener { menuOption.onClick(); true }
+                    menuOption.icon?.drawableRes?.let(::setIcon)?.let { setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM) }
+                }
             }
         }
-    }
 }

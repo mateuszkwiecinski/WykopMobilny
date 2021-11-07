@@ -68,7 +68,7 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
             }
             launch { shared.map { it.errorDialog }.collectErrorDialog(view.context) }
             launch { shared.map { it.swipeRefresh }.collectSwipeRefresh(binding.swipeRefresh) }
-            launch { shared.map { it.contextMenuOptions }.collectMenuOptions(binding.toolbar, ::contextMenuMapping) }
+            launch { shared.map { it.contextMenuOptions }.collectMenuOptions(binding.toolbar) }
             launch { shared.map { it.picker }.collectOptionPicker(view.context) }
             launch {
                 shared.map { it.header }
@@ -92,10 +92,6 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
                     }
             }
         }
-    }
-
-    private fun contextMenuMapping(option: LinkDetailsMenuOption) = when (option) {
-        LinkDetailsMenuOption.Share -> R.string.share to R.drawable.ic_share
     }
 
     override fun onDestroy() {

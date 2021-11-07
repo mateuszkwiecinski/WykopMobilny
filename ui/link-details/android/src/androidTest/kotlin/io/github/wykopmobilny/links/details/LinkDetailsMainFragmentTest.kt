@@ -3,6 +3,7 @@ package io.github.wykopmobilny.links.details
 import io.github.wykopmobilny.screenshots.BaseScreenshotTest
 import io.github.wykopmobilny.screenshots.unboundedHeight
 import io.github.wykopmobilny.ui.base.components.ContextMenuOptionUi
+import io.github.wykopmobilny.ui.base.components.Drawable
 import io.github.wykopmobilny.ui.base.components.SwipeRefreshUi
 import io.github.wykopmobilny.ui.components.widgets.AvatarUi
 import io.github.wykopmobilny.ui.components.widgets.Button
@@ -35,7 +36,8 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                 errorDialog = null,
                 contextMenuOptions = listOf(
                     ContextMenuOptionUi(
-                        option = LinkDetailsMenuOption.Share,
+                        icon = Drawable.Share,
+                        label = "Share",
                         onClick = {},
                     ),
                 ),
