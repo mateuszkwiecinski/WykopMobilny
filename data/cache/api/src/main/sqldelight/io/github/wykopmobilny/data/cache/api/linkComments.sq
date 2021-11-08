@@ -32,7 +32,7 @@ SET
   voteCount = :voteCount,
   voteCountPlus = :voteCountPlus,
   userVote = :userVote
-WHERE id = :id;
+WHERE id = :id AND linkId = :linkId;
 
 selectByLinkId:
 SELECT

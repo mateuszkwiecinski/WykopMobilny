@@ -4,10 +4,10 @@ import io.github.wykopmobilny.data.cache.api.UserVote
 import io.github.wykopmobilny.domain.profile.UserInfo
 
 internal data class RelatedLink(
-    val id: Int,
+    val id: Long,
     val url: String,
     val voteCount: Int,
     val author: UserInfo?,
     val title: String,
-    val userVote: UserVote,
+    val userVote: UserVote?,
 )

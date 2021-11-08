@@ -9,5 +9,7 @@ enum class Drawable {
     Browser,
     PrivateMessage,
     Copy,
-    Report
+    Report,
+    Plus,
+    Minus,
 }

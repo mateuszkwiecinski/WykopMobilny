@@ -27,12 +27,15 @@ internal fun LinkComment.wykopUrl(linkId: Long) =
     "https://www.wykop.pl/link/$linkId/#comment-$id"
 
 internal fun Embed.toUi(
-    clickAction: () -> Unit,
+    useLowQualityImage: Boolean,
     hasNsfwOverlay: Boolean,
-    forceExpanded: Boolean,
-    thresholdPercentage: Int?,
+    clickAction: () -> Unit,
 ) = EmbedMediaUi(
-    previewUrl = id,
+    previewUrl = if (useLowQualityImage) {
+        preview
+    } else {
+        id
+    },
     fileName = fileName,
     size = size,
     clickAction = clickAction,
@@ -41,12 +44,10 @@ internal fun Embed.toUi(
     } else {
         when (type) {
             EmbedType.AnimatedImage -> Overlay.PlayGif
-            EmbedType.Video -> Overlay.PlayWideo
+            EmbedType.Video -> Overlay.PlayVideo
             EmbedType.StaticImage,
             EmbedType.Unknown,
             -> null
         }
     },
-    forceExpanded = forceExpanded,
-    thresholdPercentage = thresholdPercentage,
 )

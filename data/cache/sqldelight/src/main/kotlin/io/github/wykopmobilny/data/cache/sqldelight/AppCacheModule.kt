@@ -14,6 +14,7 @@ import io.github.wykopmobilny.data.cache.api.GenderEntity
 import io.github.wykopmobilny.data.cache.api.LinkCommentsEntity
 import io.github.wykopmobilny.data.cache.api.LinkEntity
 import io.github.wykopmobilny.data.cache.api.ProfileEntity
+import io.github.wykopmobilny.data.cache.api.RelatedLinkEntity
 import io.github.wykopmobilny.data.cache.api.UserColorEntity
 import io.github.wykopmobilny.data.cache.api.UserVote
 import kotlinx.datetime.Instant
@@ -54,7 +55,10 @@ internal class AppCacheModule {
         linkCommentsEntityAdapter = LinkCommentsEntity.Adapter(
             postedAtAdapter = InstantAdapter,
             userVoteAdapter = EnumAdapter(UserVote.values()),
-        )
+        ),
+        relatedLinkEntityAdapter = RelatedLinkEntity.Adapter(
+            userVoteAdapter = EnumAdapter(UserVote.values()),
+        ),
     )
 }
 

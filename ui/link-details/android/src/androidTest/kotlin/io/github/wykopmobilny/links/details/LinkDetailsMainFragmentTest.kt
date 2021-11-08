@@ -69,10 +69,10 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                                 app = null,
                                 body = "Comment body",
                                 badge = null,
-                                plusCount = stubCounter(),
-                                minusCount = stubCounter(),
-                                shareAction = {},
+                                plusCount = plusCounter(),
+                                minusCount = minusCounter(),
                                 embed = null,
+                                moreAction = {},
                             ),
                         ) to listOf(
                             LinkCommentUi.Normal(
@@ -82,10 +82,10 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                                 app = null,
                                 body = "Comment body",
                                 badge = ColorConst.CommentOriginalPoster,
-                                plusCount = stubCounter(count = 10),
-                                minusCount = stubCounter(count = 10),
-                                shareAction = {},
+                                plusCount = plusCounter(count = 10),
+                                minusCount = minusCounter(count = 10),
                                 embed = null,
+                                moreAction = {},
                             ),
                             LinkCommentUi.Hidden(
                                 id = 125,
@@ -110,10 +110,10 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                                 app = null,
                                 body = "Comment body",
                                 badge = null,
-                                plusCount = stubCounter(),
-                                minusCount = stubCounter(color = ColorConst.CounterDownvoted),
-                                shareAction = {},
+                                plusCount = plusCounter(),
+                                minusCount = minusCounter(clicked = true),
                                 embed = null,
+                                moreAction = {},
                             ),
                         ) to emptyList(),
                         ParentCommentUi(
@@ -126,9 +126,9 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                                 app = "Random app",
                                 body = "Comment body",
                                 badge = ColorConst.CommentCurrentUser,
-                                plusCount = stubCounter(color = ColorConst.CounterUpvoted),
-                                minusCount = stubCounter(count = 0),
-                                shareAction = {},
+                                plusCount = plusCounter(clicked = true),
+                                minusCount = minusCounter(count = 0),
+                                moreAction = {},
                                 embed = null,
                             ),
                         ) to listOf(
@@ -139,9 +139,9 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                                 app = null,
                                 body = "Comment body",
                                 badge = ColorConst.CommentOriginalPoster,
-                                plusCount = stubCounter(count = 123),
-                                minusCount = stubCounter(count = 1, color = ColorConst.CounterDownvoted),
-                                shareAction = {},
+                                plusCount = plusCounter(count = 123),
+                                minusCount = minusCounter(count = 1, clicked = true),
+                                moreAction = {},
                                 embed = null,
                             ),
                         ),
@@ -155,27 +155,37 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
         }
         record(size = unboundedHeight())
     }
-
-    private fun stubUser(
-        text: String,
-        color: Color = ColorConst.UserOrange,
-    ) = UserInfoUi(
-        avatar = AvatarUi(
-            avatarUrl = null,
-            rank = 123,
-            genderStrip = ColorConst.Male,
-            onClicked = null,
-        ),
-        name = text,
-        color = color,
-    )
-
-    private fun stubCounter(
-        count: Int = 123,
-        color: Color? = null,
-    ) = Button(
-        label = count.toString(),
-        color = color,
-        clickAction = {},
-    )
 }
+
+private fun stubUser(
+    text: String,
+    color: Color = ColorConst.UserOrange,
+) = UserInfoUi(
+    avatar = AvatarUi(
+        avatarUrl = BaseScreenshotTest.avatarUrl,
+        rank = 123,
+        genderStrip = ColorConst.Male,
+        onClicked = null,
+    ),
+    name = text,
+    color = color,
+)
+
+private fun plusCounter(
+    count: Int = 123,
+    clicked: Boolean = false,
+) = Button(
+    icon = Drawable.Plus,
+    label = count.toString(),
+    color = if (clicked) ColorConst.CounterUpvoted else null,
+    clickAction = {},
+)
+private fun minusCounter(
+    count: Int = 123,
+    clicked: Boolean = false,
+) = Button(
+    icon = Drawable.Minus,
+    label = count.toString(),
+    color = if (clicked) ColorConst.CounterDownvoted else null,
+    clickAction = {},
+)

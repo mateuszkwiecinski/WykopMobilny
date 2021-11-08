@@ -15,4 +15,6 @@ val Drawable.drawableRes: Int
         Drawable.PrivateMessage -> R.drawable.ic_pw
         Drawable.Copy -> R.drawable.ic_copy
         Drawable.Report -> R.drawable.ic_report
+        Drawable.Plus -> R.drawable.ic_plus
+        Drawable.Minus -> R.drawable.ic_minus
     }

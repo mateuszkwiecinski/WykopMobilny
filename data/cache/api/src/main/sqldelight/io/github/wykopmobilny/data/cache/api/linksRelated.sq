@@ -1,0 +1,42 @@
+import io.github.wykopmobilny.data.cache.api.UserVote;
+
+CREATE TABLE relatedLinkEntity (
+    id INTEGER NOT NULL UNIQUE PRIMARY KEY,
+    userVote INTEGER AS UserVote,
+    voteCount INTEGER AS Int NOT NULL,
+    url TEXT NOT NULL,
+    profileId TEXT,
+    title TEXT NOT NULL,
+    linkId INTEGER NOT NULL,
+    orderOnPage INTEGER AS Int NOT NULL,
+    FOREIGN KEY (profileId) REFERENCES profileEntity(id),
+    FOREIGN KEY (linkId) REFERENCES linkEntity(id) ON DELETE CASCADE
+);
+
+
+insertOrReplace:
+INSERT OR REPLACE INTO relatedLinkEntity
+VALUES ?;
+
+vote:
+UPDATE relatedLinkEntity
+SET
+  voteCount = :voteCount,
+  userVote = :userVote
+WHERE id = :id AND linkId = :linkId;
+
+selectByLinkId:
+SELECT
+  relatedLinkEntity.*,
+  profileEntity.rank,
+  profileEntity.color,
+  profileEntity.gender,
+  profileEntity.avatar
+FROM relatedLinkEntity
+LEFT JOIN profileEntity ON relatedLinkEntity.profileId = profileEntity.id
+WHERE relatedLinkEntity.linkId = ?
+ORDER BY relatedLinkEntity.orderOnPage;
+
+deleteByLinkId:
+DELETE FROM relatedLinkEntity
+WHERE linkId = ?;

@@ -7,7 +7,7 @@ import io.github.wykopmobilny.api.responses.LinkCommentResponse
 import io.github.wykopmobilny.data.cache.api.AppCache
 import io.github.wykopmobilny.data.cache.api.Embed
 import io.github.wykopmobilny.data.cache.api.LinkCommentsEntity
-import io.github.wykopmobilny.data.cache.api.SelectByLinkId
+import io.github.wykopmobilny.data.cache.api.linkComments.SelectByLinkId
 import io.github.wykopmobilny.domain.linkdetails.LinkComment
 import io.github.wykopmobilny.domain.profile.UserInfo
 import io.github.wykopmobilny.domain.profile.datasource.asUserVote

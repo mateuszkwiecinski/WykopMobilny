@@ -1,6 +1,7 @@
 package com.github.wykopmobilny.ui.components
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
@@ -24,7 +25,11 @@ fun AvatarView.bind(model: AvatarUi?) {
     val binding = ViewAvatarSimpleBinding.bind(this)
     Glide.with(binding.imgAvatar)
         .load(model?.avatarUrl)
+        .circleCrop()
         .into(binding.imgAvatar)
     binding.imgAvatar.setOnClick(model?.onClicked)
-    binding.imgGenderStrip.setBackgroundColor(model?.genderStrip.toColorInt(context).defaultColor)
+    Glide.with(binding.imgGenderStrip)
+        .load(model?.genderStrip.toColorInt(context).defaultColor.let(::ColorDrawable))
+        .circleCrop()
+        .into(binding.imgGenderStrip)
 }

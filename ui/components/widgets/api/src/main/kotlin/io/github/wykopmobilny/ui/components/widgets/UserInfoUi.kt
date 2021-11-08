@@ -7,7 +7,7 @@ data class UserInfoUi(
 )
 
 data class AvatarUi(
-    val avatarUrl: String?,
+    val avatarUrl: String,
     val rank: Int?,
     val genderStrip: Color?,
     val onClicked: (() -> Unit)?

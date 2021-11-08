@@ -13,7 +13,6 @@ import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.InteropRequestsProvider
 import io.github.wykopmobilny.domain.profile.LinkInfo
 import io.github.wykopmobilny.domain.profile.UserInfo
-import io.github.wykopmobilny.domain.profile.coloredCounter
 import io.github.wykopmobilny.domain.profile.toPrettyString
 import io.github.wykopmobilny.domain.profile.toUi
 import io.github.wykopmobilny.domain.profile.wykopUrl
@@ -37,6 +36,7 @@ import io.github.wykopmobilny.links.details.LinkDetailsHeaderUi
 import io.github.wykopmobilny.links.details.LinkDetailsUi
 import io.github.wykopmobilny.links.details.ParentCommentUi
 import io.github.wykopmobilny.links.details.RelatedLinkUi
+import io.github.wykopmobilny.links.details.RelatedLinksSectionUi
 import io.github.wykopmobilny.storage.api.Blacklist
 import io.github.wykopmobilny.storage.api.LoggedUserInfo
 import io.github.wykopmobilny.storage.api.UserInfoStorage
@@ -58,7 +58,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
@@ -73,11 +72,12 @@ import kotlin.math.roundToInt
 internal class GetLinkDetailsQuery @Inject constructor(
     @LinkId private val linkId: Long,
     private val linkStore: Store<Long, LinkInfo>,
+    private val commentsStore: Store<Long, Map<LinkComment, List<LinkComment>>>,
+    private val relatedLinksStore: Store<Long, List<RelatedLink>>,
     private val getLinksPreferences: GetLinksPreferences,
     private val getFilteringPreferences: GetFilteringPreferences,
     private val getImagePreferences: GetImagesPreferences,
     private val userInfoStorage: UserInfoStorage,
-    private val commentsStore: Store<Long, Map<LinkComment, List<LinkComment>>>,
     private val viewStateStorage: LinkDetailsViewStateStorage,
     private val appScopes: AppScopes,
     private val appStorage: AppStorage,
@@ -93,9 +93,10 @@ internal class GetLinkDetailsQuery @Inject constructor(
             detailsFlow(),
             viewStateStorage.state,
             commentsFlow(),
+            relatedLinksFlow(),
             userInfoStorage.loggedUser,
             getLinksPreferences(),
-        ) { link, viewState, (comments, toggleCommentsAction), loggedUser, linkpreferences ->
+        ) { link, viewState, (comments, toggleCommentsAction), relatedLinks, loggedUser, linkpreferences ->
             val header = if (link == null) {
                 LinkDetailsHeaderUi.Loading
             } else {
@@ -218,6 +219,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                             }
                         },
                     ),
+                    currentUser = loggedUser?.toUi(onClicked = null),
                     addCommentAction = safeCallback { TODO("Not supported") },
                 )
             }
@@ -228,7 +230,26 @@ internal class GetLinkDetailsQuery @Inject constructor(
             val relatedSection = if (link == null) {
                 null
             } else if (link.relatedCount > 0) {
-                emptyList<RelatedLinkUi>() // not supported yet
+                val resource = viewState.relatedResource
+                if (resource.isLoading) {
+                    RelatedLinksSectionUi.Loading
+                } else if (resource.failedAction != null) {
+                    RelatedLinksSectionUi.FullWidthError(
+                        retryAction = safeCallback { resource.failedAction?.retryAction.let(::checkNotNull).invoke() },
+                    )
+                } else {
+                    val addLinkAction = safeCallback { TODO() }
+                    if (!relatedLinks.isNullOrEmpty()) {
+                        RelatedLinksSectionUi.WithData(
+                            links = relatedLinks.map { related -> related.toUi(linkId = link.id) },
+                            addLinkAction = addLinkAction,
+                        )
+                    } else {
+                        RelatedLinksSectionUi.Empty(
+                            addLinkAction = addLinkAction,
+                        )
+                    }
+                }
             } else {
                 null
             }
@@ -287,6 +308,34 @@ internal class GetLinkDetailsQuery @Inject constructor(
             )
         }
 
+    private fun RelatedLink.toUi(linkId: Long) = RelatedLinkUi(
+        author = author?.toUi(onClicked = null),
+        upvotesCount = TwoActionsCounterUi(
+            count = voteCount,
+            color = when (userVote) {
+                UserVote.Up -> ColorConst.CounterUpvoted
+                UserVote.Down -> ColorConst.CounterDownvoted
+                null -> null
+            },
+            upvoteAction = when (userVote) {
+                UserVote.Up -> null
+                UserVote.Down,
+                null,
+                -> safeCallback { linksRepository.relatedVoteUp(linkId = linkId, relatedId = id) }
+            },
+            downvoteAction = when (userVote) {
+                UserVote.Down -> null
+                UserVote.Up,
+                null,
+                -> safeCallback { linksRepository.relatedVoteDown(linkId = linkId, relatedId = id) }
+            },
+        ),
+        title = title,
+        domain = URL(url).host.removePrefix("www."),
+        clickAction = safeCallback { interopRequests.request(InteropRequest.WebBrowser(url)) },
+        shareAction = safeCallback { interopRequests.request(InteropRequest.Share(url)) },
+    )
+
     private fun commentsFlow() =
         combine(
             commentsStore.stream(StoreRequest.cached(key = linkId, refresh = false))
@@ -298,7 +347,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
             getFilteringPreferences(),
             getImagePreferences(),
             userInfoStorage.loggedUser,
-            detailsFlow().filterNotNull(),
+            detailsFlow(),
             blacklistStore.stream(StoreRequest.cached(key = Unit, refresh = false))
                 .map { it.dataOrNull() }
                 .filterNotNull()
@@ -310,6 +359,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 CommentsDefaultSort.New -> compareByDescending { it.postedAt }
                 CommentsDefaultSort.Old -> compareBy { it.postedAt }
             }
+            link ?: return@combine emptyMap<ParentCommentUi, List<LinkCommentUi>>() to null
 
             val commentsUi = comments.orEmpty()
                 .toSortedMap(comparator)
@@ -351,6 +401,10 @@ internal class GetLinkDetailsQuery @Inject constructor(
             commentsUi to commentsAction
         }
 
+    private fun relatedLinksFlow() =
+        relatedLinksStore.stream(StoreRequest.cached(key = linkId, refresh = false))
+            .map { it.dataOrNull() }
+
     private fun detailsFlow() =
         linkStore.stream(StoreRequest.cached(linkId, refresh = false))
             .map { it.dataOrNull() }
@@ -390,37 +444,40 @@ internal class GetLinkDetailsQuery @Inject constructor(
 
             LinkCommentUi.Normal(
                 id = id,
-                postedAgo = postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(),
+                postedAgo = postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(suffix = "temu"),
                 app = app,
                 body = body.takeIf { it.isNotBlank() },
                 author = author.toUi(
                     onClicked = safeCallback { interopRequests.request(InteropRequest.Profile(profileId = author.profileId)) },
                 ),
-                plusCount = coloredCounter(
-                    userAction = userAction.takeIf { it == UserVote.Up },
-                    voteCount = plusCount,
-                    onClicked = safeCallback {
-                        if (userAction == null) {
-                            linksRepository.commentVoteUp(linkId = link.id, commentId = id)
-                        } else {
+                plusCount = Button(
+                    color = if (userAction == UserVote.Up) ColorConst.CounterUpvoted else null,
+                    label = plusCount.toString(),
+                    icon = Drawable.Plus,
+                    clickAction = safeCallback {
+                        if (userAction == UserVote.Up) {
                             linksRepository.removeCommentVote(linkId = link.id, commentId = id)
+                        } else {
+                            linksRepository.commentVoteUp(linkId = link.id, commentId = id)
                         }
                     },
                 ),
-                minusCount = coloredCounter(
-                    userAction = userAction.takeIf { it == UserVote.Down },
-                    voteCount = minusCount,
-                    onClicked = safeCallback {
-                        if (userAction == null) {
-                            linksRepository.commentVoteDown(linkId = link.id, commentId = id)
-                        } else {
+                minusCount = Button(
+                    color = if (userAction == UserVote.Down) ColorConst.CounterDownvoted else null,
+                    label = minusCount.toString(),
+                    icon = Drawable.Minus,
+                    clickAction = safeCallback {
+                        if (userAction == UserVote.Down) {
                             linksRepository.removeCommentVote(linkId = link.id, commentId = id)
+                        } else {
+                            linksRepository.commentVoteDown(linkId = link.id, commentId = id)
                         }
                     },
                 ),
                 badge = color,
                 embed = embed?.let { embed ->
                     embed.toUi(
+                        useLowQualityImage = imagePreferences.showMinifiedImages,
                         clickAction = safeCallback {
                             if (hasNsfwOverlay) {
                                 viewStateStorage.update { it.copy(allowedNsfwImages = it.allowedNsfwImages + embed.id) }
@@ -429,8 +486,6 @@ internal class GetLinkDetailsQuery @Inject constructor(
                             }
                         },
                         hasNsfwOverlay = hasNsfwOverlay,
-                        forceExpanded = false,
-                        thresholdPercentage = imagePreferences.cutImagesProportion.takeIf { imagePreferences.cutImages },
                     )
                 },
                 moreAction = safeCallback {
