@@ -3,15 +3,18 @@ package io.github.wykopmobilny.utils.bindings
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.base.android.R
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.flowOn
 
 suspend fun Flow<ErrorDialogUi?>.collectErrorDialog(context: Context) {
     var dialog: AlertDialog? = null
     distinctUntilChangedBy { it?.error }
+        .flowOn(AppDispatchers.Default)
         .collect { dialogUi ->
             dialog?.dismiss()
             dialog = if (dialogUi != null) {

@@ -5,6 +5,7 @@ import com.dropbox.android.external.store4.fresh
 import io.github.wykopmobilny.api.endpoints.LinksRetrofitApi
 import io.github.wykopmobilny.api.responses.DigResponse
 import io.github.wykopmobilny.api.responses.LinkVoteResponse
+import io.github.wykopmobilny.api.responses.VoteResponse
 import io.github.wykopmobilny.data.cache.api.AppCache
 import io.github.wykopmobilny.data.cache.api.UserVote
 import io.github.wykopmobilny.domain.api.ApiClient
@@ -43,17 +44,52 @@ internal class LinksRepository @Inject constructor(
 
     suspend fun commentVoteUp(linkId: Long, commentId: Long) {
         val response = api.fetch { linksApi.commentVoteUp(linkId = linkId, commentId = commentId) }
-        updateCommentVotes(linkId, response, userVote = UserVote.Up)
+        updateCommentVotes(
+            linkId = linkId,
+            commentId = commentId,
+            response = response,
+            userVote = UserVote.Up,
+        )
     }
 
     suspend fun commentVoteDown(linkId: Long, commentId: Long) {
         val response = api.fetch { linksApi.commentVoteDown(linkId = linkId, commentId = commentId) }
-        updateCommentVotes(linkId, response, userVote = UserVote.Down)
+        updateCommentVotes(
+            linkId = linkId,
+            commentId = commentId,
+            response = response,
+            userVote = UserVote.Down,
+        )
     }
 
     suspend fun removeCommentVote(linkId: Long, commentId: Long) {
         val response = api.fetch { linksApi.commentVoteCancel(linkId = linkId, commentId = commentId) }
-        updateCommentVotes(linkId, response, userVote = null)
+        updateCommentVotes(
+            linkId = linkId,
+            commentId = commentId,
+            response = response,
+            userVote = null,
+        )
+    }
+
+    suspend fun relatedVoteUp(linkId: Long, relatedId: Long) {
+        val response = api.fetch { linksApi.relatedVoteDown(linkId = linkId, relatedId = relatedId) }
+        updateRelatedLinks(
+            linkId = linkId,
+            relatedId = relatedId,
+            response = response,
+            userVote = UserVote.Up,
+        )
+    }
+
+    suspend fun relatedVoteDown(linkId: Long, relatedId: Long) {
+        val response = api.fetch { linksApi.relatedVoteDown(linkId = linkId, relatedId = relatedId) }
+        updateRelatedLinks(
+            linkId = linkId,
+            relatedId = relatedId,
+            response = response,
+            userVote = UserVote.Down,
+        )
     }
 
     private suspend fun updateLinkVotes(
@@ -70,16 +106,35 @@ internal class LinksRepository @Inject constructor(
     }
 
     private suspend fun updateCommentVotes(
+        linkId: Long,
         commentId: Long,
         response: LinkVoteResponse,
         userVote: UserVote?,
     ) = withContext(AppDispatchers.IO) {
         appCache.linkCommentsQueries.vote(
             id = commentId,
+            linkId = linkId,
             userVote = userVote,
             voteCount = response.voteCount,
             voteCountPlus = response.voteCountPlus,
         )
+    }
+
+    private suspend fun updateRelatedLinks(
+        linkId: Long,
+        relatedId: Long,
+        response: VoteResponse,
+        userVote: UserVote,
+    ) = withContext(AppDispatchers.IO) {
+        val voteCount = response.voteCount
+        if (voteCount != null) {
+            appCache.linksRelatedQueries.vote(
+                id = relatedId,
+                linkId = linkId,
+                userVote = userVote,
+                voteCount = voteCount,
+            )
+        }
     }
 }
 

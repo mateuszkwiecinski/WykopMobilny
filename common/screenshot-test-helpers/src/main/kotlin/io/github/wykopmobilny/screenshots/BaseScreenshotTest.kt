@@ -101,6 +101,10 @@ abstract class BaseScreenshotTest : ScreenshotTest {
 
         layout(0, 0, measuredWidth, measuredHeight)
     }
+
+    companion object {
+        const val avatarUrl = "https://www.wykop.pl/cdn/c3397992/avatar_def,q150.png"
+    }
 }
 
 private fun View.guessUnboundedHeight(deviceWidth: Int) {

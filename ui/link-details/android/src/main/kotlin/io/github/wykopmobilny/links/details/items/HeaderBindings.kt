@@ -55,6 +55,7 @@ internal fun LinkDetailsHeaderBinding.bindHeader(header: LinkDetailsHeaderUi) =
             moreButton.setOnClick(header.moreAction)
             commentSortButton.bind(header.commentsSort)
             addCommentButton.setOnClick(header.addCommentAction)
+            imgAvatar.bind(header.currentUser?.avatar)
         }
     }
 

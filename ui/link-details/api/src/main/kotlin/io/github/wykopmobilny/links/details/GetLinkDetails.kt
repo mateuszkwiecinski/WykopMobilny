@@ -18,11 +18,12 @@ interface GetLinkDetails : Query<LinkDetailsUi>
 class LinkDetailsUi(
     val swipeRefresh: SwipeRefreshUi,
     val header: LinkDetailsHeaderUi,
-    val relatedSection: List<RelatedLinkUi>?,
+    val relatedSection: RelatedLinksSectionUi?,
     val contextMenuOptions: List<ContextMenuOptionUi>,
     val commentsSection: CommentsSectionUi,
     val errorDialog: ErrorDialogUi?,
     val picker: OptionPickerUi?,
+    val snackbar: String?,
 )
 
 sealed class LinkDetailsHeaderUi {
@@ -39,6 +40,7 @@ sealed class LinkDetailsHeaderUi {
         val previewImageUrl: String?,
         val badge: Color?,
         val author: UserInfoUi,
+        val currentUser: UserInfoUi?,
         val domain: String,
         val tags: List<TagUi>,
         val favoriteButton: ToggleButtonUi,
@@ -49,11 +51,30 @@ sealed class LinkDetailsHeaderUi {
     ) : LinkDetailsHeaderUi()
 }
 
+sealed class RelatedLinksSectionUi {
+
+    object Loading : RelatedLinksSectionUi()
+
+    data class Empty(
+        val addLinkAction: () -> Unit,
+    ) : RelatedLinksSectionUi()
+
+    data class WithData(
+        val links: List<RelatedLinkUi>,
+        val addLinkAction: () -> Unit,
+    ) : RelatedLinksSectionUi()
+
+    data class FullWidthError(
+        val retryAction: () -> Unit,
+    ) : RelatedLinksSectionUi()
+}
+
 data class RelatedLinkUi(
-    val author: UserInfoUi,
+    val author: UserInfoUi?,
     val upvotesCount: TwoActionsCounterUi,
     val title: String,
-    val domainUrl: String,
+    val domain: String,
+    val clickAction: () -> Unit,
     val shareAction: () -> Unit,
 )
 
@@ -87,6 +108,6 @@ sealed class LinkCommentUi {
         val plusCount: Button,
         val minusCount: Button,
         val embed: EmbedMediaUi?,
-        val shareAction: () -> Unit,
+        val moreAction: () -> Unit,
     ) : LinkCommentUi()
 }

@@ -8,7 +8,6 @@ import io.github.wykopmobilny.fakes.FakeCookieProvider
 import io.github.wykopmobilny.storage.android.DaggerStoragesComponent
 import io.github.wykopmobilny.storage.android.StoragesComponent
 import io.github.wykopmobilny.ui.base.AppDispatchers
-import io.github.wykopmobilny.utils.AndroidHtmlUtils
 import kotlinx.coroutines.asExecutor
 import kotlinx.datetime.Clock
 import okhttp3.OkHttpClient
@@ -72,7 +71,6 @@ internal class TestApp : WykopApp() {
             appScopes = this,
             connectConfig = { ConnectConfig("http://localhost:8000/Login/Connect") },
             clock = Clock.System,
-            htmlUtils = AndroidHtmlUtils,
             storages = storages,
             scraper = scraper,
             wykop = wykopApi,

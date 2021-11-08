@@ -6,17 +6,37 @@ import kotlinx.coroutines.flow.update
 
 class SimpleViewStateStorage {
 
-    private val _state = MutableStateFlow(SimpleViewState())
-    val state: StateFlow<SimpleViewState> = _state
+    private val _state = MutableStateFlow(Resource.idle())
+    val state: StateFlow<Resource> = _state
 
-    fun update(updater: (old: SimpleViewState) -> SimpleViewState) {
+    fun update(updater: (old: Resource) -> Resource) {
         _state.update(updater)
     }
+}
 
-    data class SimpleViewState(
-        val isLoading: Boolean = false,
-        val failedAction: FailedAction? = null,
-    )
+@Suppress("DataClassPrivateConstructor")
+data class Resource private constructor(
+    val isLoading: Boolean = false,
+    val failedAction: FailedAction? = null,
+) {
+
+    companion object {
+
+        fun loading() = Resource(
+            isLoading = true,
+            failedAction = null,
+        )
+
+        fun error(failedAction: FailedAction) = Resource(
+            isLoading = false,
+            failedAction = failedAction,
+        )
+
+        fun idle() = Resource(
+            isLoading = false,
+            failedAction = null,
+        )
+    }
 }
 
 data class FailedAction(

@@ -4,7 +4,6 @@ import androidx.core.view.isVisible
 import com.github.wykopmobilny.ui.components.bind
 import com.github.wykopmobilny.ui.components.setUserNick
 import com.github.wykopmobilny.ui.components.utils.bind
-import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.links.details.LinkCommentUi
 import io.github.wykopmobilny.ui.link_details.android.databinding.LinkDetailsReplyCommentBinding
 import io.github.wykopmobilny.ui.link_details.android.databinding.LinkDetailsReplyCommentHiddenBinding
@@ -26,4 +25,7 @@ internal fun LinkDetailsReplyCommentBinding.bindReplyComment(comment: LinkCommen
     txtBody.text = comment.body
     imgEmbed.bind(comment.embed)
     imgBadge.setBackgroundColor(comment.badge.toColorInt(context = root.context).defaultColor)
+    plusButton.bind(comment.plusCount)
+    minusButton.bind(comment.minusCount)
+    moreButton.setOnClick(comment.moreAction)
 }

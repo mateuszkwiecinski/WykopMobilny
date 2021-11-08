@@ -18,20 +18,23 @@ import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.flowOn
 
 suspend fun Flow<OptionPickerUi?>.collectOptionPicker(
     context: Context,
 ) {
     var dialog: BottomSheetDialog? = null
-    distinctUntilChangedBy { it?.reasons?.map(OptionPickerUi.Option::label) }.collect { picker ->
-        dialog?.dismiss()
-        if (picker != null) {
-            dialog = OptionPickerBottomSheet(picker, context).apply {
-                setOnDismissListener { picker.dismissAction() }
-                show()
+    distinctUntilChangedBy { it?.reasons?.map(OptionPickerUi.Option::label) }
+        .flowOn(AppDispatchers.Default)
+        .collect { picker ->
+            dialog?.dismiss()
+            if (picker != null) {
+                dialog = OptionPickerBottomSheet(picker, context).apply {
+                    setOnDismissListener { picker.dismissAction() }
+                    show()
+                }
             }
         }
-    }
 }
 
 private class OptionPickerBottomSheet(

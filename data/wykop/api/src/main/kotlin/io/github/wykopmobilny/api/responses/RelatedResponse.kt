@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class RelatedResponse(
-    @field:Json(name = "id") val id: Int,
+    @field:Json(name = "id") val id: Long,
     @field:Json(name = "url") val url: String,
     @field:Json(name = "vote_count") val voteCount: Int,
     @field:Json(name = "author") val author: AuthorResponse?,

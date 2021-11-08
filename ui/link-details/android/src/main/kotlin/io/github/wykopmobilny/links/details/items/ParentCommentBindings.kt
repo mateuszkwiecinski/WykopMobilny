@@ -9,18 +9,17 @@ import io.github.wykopmobilny.links.details.ParentCommentUi
 import io.github.wykopmobilny.ui.link_details.android.databinding.LinkDetailsParentCommentBinding
 import io.github.wykopmobilny.ui.link_details.android.databinding.LinkDetailsParentCommentHiddenBinding
 import io.github.wykopmobilny.utils.bindings.setOnClick
-import io.github.wykopmobilny.utils.bindings.setOnLongClick
 import io.github.wykopmobilny.utils.bindings.toColorInt
 
 internal fun LinkDetailsParentCommentBinding.bindParentComment(
     parent: ParentCommentUi,
     data: LinkCommentUi.Normal,
 ) {
-    root.setOnLongClick(parent.toggleExpansionStateAction)
+//    root.setOnLongClick(parent.toggleExpansionStateAction)
 
     txtCollapsed.isVisible = parent.collapsedCount != null
     txtCollapsed.text = parent.collapsedCount
-    txtCollapsed.setOnClick(parent.toggleExpansionStateAction)
+//    txtCollapsed.setOnClick(parent.toggleExpansionStateAction)
 
     imgAvatar.bind(data.author.avatar)
     txtUser.setUserNick(data.author)
@@ -30,6 +29,9 @@ internal fun LinkDetailsParentCommentBinding.bindParentComment(
     txtBody.text = data.body
     imgEmbed.bind(data.embed)
     imgBadge.setBackgroundColor(data.badge.toColorInt(context = root.context).defaultColor)
+    plusButton.bind(data.plusCount)
+    minusButton.bind(data.minusCount)
+    moreButton.setOnClick(data.moreAction)
 }
 
 internal fun LinkDetailsParentCommentHiddenBinding.bindHiddenParent(
@@ -37,11 +39,11 @@ internal fun LinkDetailsParentCommentHiddenBinding.bindHiddenParent(
     data: LinkCommentUi.Hidden,
 ) {
     root.setOnClick(data.onClicked)
-    root.setOnLongClick(parent.toggleExpansionStateAction)
+//    root.setOnLongClick(parent.toggleExpansionStateAction)
 
     txtCollapsed.isVisible = parent.collapsedCount != null
     txtCollapsed.text = parent.collapsedCount
-    txtCollapsed.setOnClick(parent.toggleExpansionStateAction)
+//    txtCollapsed.setOnClick(parent.toggleExpansionStateAction)
 
     txtUser.setUserNick(data.author)
     imgBadge.setBackgroundColor(data.badge.toColorInt(context = root.context).defaultColor)

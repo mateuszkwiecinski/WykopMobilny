@@ -10,13 +10,12 @@
 
     <com.github.wykopmobilny.ui.components.AvatarView
         android:id="@+id/imgAvatar"
-        android:layout_width="32dp"
+        android:layout_width="36dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:background="#ff00ff"
         />
 
     <TextView
@@ -24,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="4dp"
         android:textAppearance="@style/TextAppearance.MaterialScale.Body2"
         app:layout_constrainedWidth="true"
@@ -34,7 +33,6 @@
         app:layout_constraintStart_toEndOf="@id/imgAvatar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_goneMarginEnd="8dp"
         tools:text="\@powodzenia"
         tools:textColor="#f0f"
         />
@@ -99,17 +97,31 @@
 
     <TextView
         android:id="@+id/txtBody"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
+        android:layout_marginEnd="8dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:textAppearance="@style/TextAppearance.MaterialScale.Body2"
         android:textIsSelectable="true"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/imgAvatar"
         app:layout_constraintTop_toBottomOf="@id/barrierTop"
         tools:maxLines="5"
         tools:text="@tools:sample/lorem/random"
+        />
+
+
+    <com.github.wykopmobilny.ui.components.utils.EmbedMediaView
+        android:id="@+id/imgEmbed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/imgAvatar"
+        app:layout_constraintTop_toBottomOf="@id/txtBody"
+        app:layout_goneMarginTop="2dp"
         />
 
     <View
@@ -122,28 +134,45 @@
         tools:background="#f0f"
         />
 
-    <com.github.wykopmobilny.ui.components.utils.EmbedMediaView
-        android:id="@+id/imgEmbed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/txtBody"
-        app:layout_goneMarginTop="8dp"
-        tools:layout_height="300dp"
-        />
-
     <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrierBottom"
+        android:id="@+id/contentBarrier"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="imgEmbed, txtBody"
         />
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="8dp"
-        app:layout_constraintTop_toBottomOf="@id/barrierBottom"
+    <com.github.wykopmobilny.ui.components.SimpleCounter
+        android:id="@+id/minusButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        app:layout_constraintEnd_toStartOf="@id/moreButton"
+        app:layout_constraintTop_toBottomOf="@id/contentBarrier"
+        />
+
+    <com.github.wykopmobilny.ui.components.SimpleCounter
+        android:id="@+id/plusButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toStartOf="@id/minusButton"
+        app:layout_constraintTop_toBottomOf="@id/contentBarrier"
+        />
+
+    <ImageView
+        android:id="@+id/moreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="4dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="6dp"
+        android:src="@drawable/ic_more"
+        app:layout_constraintBottom_toBottomOf="@id/minusButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contentBarrier"
+        app:tint="?colorControlNormal"
+        tools:tint="?colorControlNormal"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

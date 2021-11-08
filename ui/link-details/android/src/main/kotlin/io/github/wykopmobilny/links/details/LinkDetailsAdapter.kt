@@ -82,7 +82,7 @@ internal sealed class ListItem {
 
     data class Header(val header: LinkDetailsHeaderUi) : ListItem()
 
-    data class RelatedSection(val related: List<RelatedLinkUi>) : ListItem()
+    data class RelatedSection(val related: RelatedLinksSectionUi) : ListItem()
 
     data class ParentComment(val comment: ParentCommentUi) : ListItem()
 
@@ -114,7 +114,6 @@ private val LinkCommentUi.id
 @OptIn(ExperimentalStdlibApi::class)
 internal fun LinkDetailsUi.toAdapterList(): List<ListItem> = buildList {
     add(ListItem.Header(header))
-//    relatedSection?.let { add(ListItem.Related(it)) }
     commentsSection.comments.forEach { (parent, replies) ->
         add(ListItem.ParentComment(parent))
         addAll(replies.map(ListItem::ReplyComment))

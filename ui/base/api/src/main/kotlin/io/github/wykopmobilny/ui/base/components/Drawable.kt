@@ -8,4 +8,8 @@ enum class Drawable {
     Downvoters,
     Browser,
     PrivateMessage,
+    Copy,
+    Report,
+    Plus,
+    Minus,
 }

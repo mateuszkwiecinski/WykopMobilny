@@ -13,9 +13,9 @@ import io.github.wykopmobilny.domain.utils.safeKeyed
 import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.base.components.Drawable
 import io.github.wykopmobilny.ui.components.widgets.AvatarUi
+import io.github.wykopmobilny.ui.components.widgets.Button
 import io.github.wykopmobilny.ui.components.widgets.ColorConst
 import io.github.wykopmobilny.ui.components.widgets.ListElementUi
-import io.github.wykopmobilny.ui.components.widgets.Button
 import io.github.wykopmobilny.ui.components.widgets.UserInfoUi
 import io.github.wykopmobilny.ui.profile.GetProfileActions
 import kotlinx.coroutines.CoroutineScope
@@ -113,7 +113,7 @@ internal fun UserInfo.toUi(
     color = color.toUi(),
 )
 
-internal fun coloredCounter(
+private fun coloredCounter(
     userAction: UserVote?,
     voteCount: Int,
     icon: Drawable? = null,

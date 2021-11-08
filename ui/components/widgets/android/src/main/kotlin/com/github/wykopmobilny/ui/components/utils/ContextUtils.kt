@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
+import androidx.annotation.AnyRes
 import androidx.annotation.AttrRes
 import androidx.annotation.Dimension
 import androidx.core.content.ContextCompat
@@ -25,6 +26,14 @@ fun Context.readColorAttr(@AttrRes attrColor: Int): ColorStateList {
     } else {
         ColorStateList.valueOf(typedValue.data)
     }
+}
+
+@AnyRes
+fun Context.readAttr(@AttrRes attrColor: Int): Int {
+    val typedValue = TypedValue()
+    theme.resolveAttribute(attrColor, typedValue, true)
+
+    return typedValue.resourceId
 }
 
 

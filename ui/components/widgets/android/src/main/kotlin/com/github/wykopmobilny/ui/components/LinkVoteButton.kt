@@ -31,7 +31,9 @@ fun LinkVoteButton.bind(value: TwoActionsCounterUi) {
     binding.txtCount.text = value.count.toString()
     binding.txtCount.setTextColor(color)
     binding.imgVoteUp.imageTintList = color
+    binding.imgVoteUp.isEnabled = value.upvoteAction != null
     binding.imgVoteUp.setOnClick(value.upvoteAction)
     binding.imgVoteDown.imageTintList = color
+    binding.imgVoteDown.isEnabled = value.downvoteAction != null
     binding.imgVoteDown.setOnClick(value.downvoteAction)
 }

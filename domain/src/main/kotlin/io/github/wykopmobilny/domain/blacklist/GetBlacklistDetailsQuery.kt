@@ -7,10 +7,12 @@ import io.github.wykopmobilny.domain.blacklist.di.BlacklistScope
 import io.github.wykopmobilny.domain.repositories.ProfilesRepository
 import io.github.wykopmobilny.domain.repositories.TagsRepository
 import io.github.wykopmobilny.domain.utils.safe
+import io.github.wykopmobilny.domain.utils.withResource
 import io.github.wykopmobilny.storage.api.Blacklist
 import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.base.FailedAction
 import io.github.wykopmobilny.ui.base.ItemState
+import io.github.wykopmobilny.ui.base.Resource
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
 import io.github.wykopmobilny.ui.blacklist.BlacklistedDetailsUi
 import io.github.wykopmobilny.ui.blacklist.BlacklistedElementUi
@@ -34,13 +36,13 @@ internal class GetBlacklistDetailsQuery @Inject constructor(
             val blacklist = response.dataOrNull()
             val content = if (blacklist == null || blacklist.users.isEmpty() && blacklist.tags.isEmpty()) {
                 BlacklistedDetailsUi.Content.Empty(
-                    isLoading = viewStateUi.isLoading,
+                    isLoading = viewStateUi.generalResource.isLoading,
                     loadAction = ::refresh,
                 )
             } else {
                 BlacklistedDetailsUi.Content.WithData(
                     users = BlacklistedDetailsUi.Content.WithData.ElementPage(
-                        isRefreshing = viewStateUi.isLoading,
+                        isRefreshing = viewStateUi.generalResource.isLoading,
                         refreshAction = ::refresh,
                         elements = blacklist.users.sorted()
                             .map { user ->
@@ -51,9 +53,11 @@ internal class GetBlacklistDetailsQuery @Inject constructor(
                                             showError = {
                                                 viewState.update {
                                                     it.copy(
-                                                        visibleError = FailedAction(
-                                                            cause = state.error,
-                                                            retryAction = { unblockUser(user) },
+                                                        generalResource = Resource.error(
+                                                            failedAction = FailedAction(
+                                                                cause = state.error,
+                                                                retryAction = { unblockUser(user) },
+                                                            ),
                                                         ),
                                                     )
                                                 }
@@ -68,7 +72,7 @@ internal class GetBlacklistDetailsQuery @Inject constructor(
                             },
                     ),
                     tags = BlacklistedDetailsUi.Content.WithData.ElementPage(
-                        isRefreshing = viewStateUi.isLoading,
+                        isRefreshing = viewStateUi.generalResource.isLoading,
                         refreshAction = ::refresh,
                         elements = blacklist.tags.sorted()
                             .map { tag ->
@@ -79,9 +83,11 @@ internal class GetBlacklistDetailsQuery @Inject constructor(
                                             showError = {
                                                 viewState.update {
                                                     it.copy(
-                                                        visibleError = FailedAction(
-                                                            cause = state.error,
-                                                            retryAction = { unblockTag(tag) },
+                                                        generalResource = Resource.error(
+                                                            failedAction = FailedAction(
+                                                                cause = state.error,
+                                                                retryAction = { unblockTag(tag) },
+                                                            ),
                                                         ),
                                                     )
                                                 }
@@ -99,11 +105,13 @@ internal class GetBlacklistDetailsQuery @Inject constructor(
             }
 
             BlacklistedDetailsUi(
-                errorDialog = viewStateUi.visibleError?.let { error ->
+                errorDialog = viewStateUi.generalResource.failedAction?.let { error ->
                     ErrorDialogUi(
                         error = error.cause,
                         retryAction = error.retryAction,
-                        dismissAction = { appScopes.safe<BlacklistScope> { viewState.update { it.copy(visibleError = null) } } },
+                        dismissAction = {
+                            appScopes.safe<BlacklistScope> { viewState.update { it.copy(generalResource = Resource.idle()) } }
+                        },
                     )
                 },
                 content = content,
@@ -111,17 +119,11 @@ internal class GetBlacklistDetailsQuery @Inject constructor(
         }
 
     private fun refresh(): Unit = appScopes.safe<BlacklistScope> {
-        viewState.update { it.copy(isLoading = true, visibleError = null) }
-        runCatching { store.fresh(Unit) }
-            .onFailure { error ->
-                viewState.update {
-                    it.copy(
-                        isLoading = false,
-                        visibleError = FailedAction(cause = error, retryAction = ::refresh),
-                    )
-                }
-            }
-            .onSuccess { viewState.update { it.copy(isLoading = false) } }
+        withResource(
+            refresh = { store.fresh(Unit) },
+            update = { resource -> viewState.update { it.copy(generalResource = resource) } },
+            launch = { callback -> appScopes.safe<BlacklistScope>(block = callback) },
+        )
     }
 
     private fun unblockTag(tag: String) = appScopes.safe<BlacklistScope> {

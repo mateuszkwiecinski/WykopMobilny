@@ -2,9 +2,12 @@ package io.github.wykopmobilny.domain.profile
 
 import io.github.wykopmobilny.data.cache.api.GenderEntity
 import io.github.wykopmobilny.data.cache.api.UserColorEntity
+import io.github.wykopmobilny.storage.api.LoggedUserInfo
+import io.github.wykopmobilny.ui.components.widgets.AvatarUi
 import io.github.wykopmobilny.ui.components.widgets.Color
 import io.github.wykopmobilny.ui.components.widgets.ColorConst
 import io.github.wykopmobilny.ui.components.widgets.ColorReference
+import io.github.wykopmobilny.ui.components.widgets.UserInfoUi
 import kotlinx.datetime.DateTimePeriod
 
 internal const val DEFAULT_PROFILE_BACKGROUND = "https://i.imgur.com/aSm6pSJ.jpg"
@@ -82,3 +85,14 @@ internal fun DateTimePeriod.toPrettyString(
 
     return "$yearsPart $monthsPart $daysPart $hoursPart $minutesPart $suffix".replace("\\s+".toRegex(), " ").trim()
 }
+
+internal fun LoggedUserInfo.toUi(onClicked: (() -> Unit)?) = UserInfoUi(
+    avatar = AvatarUi(
+        avatarUrl = avatarUrl,
+        rank = null,
+        genderStrip = null,
+        onClicked = onClicked,
+    ),
+    name = id,
+    color = null,
+)

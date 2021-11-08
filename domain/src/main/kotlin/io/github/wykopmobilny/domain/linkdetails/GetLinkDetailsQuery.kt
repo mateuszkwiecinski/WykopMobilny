@@ -9,11 +9,12 @@ import io.github.wykopmobilny.data.cache.api.UserVote
 import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.linkdetails.di.LinkDetailsScope
 import io.github.wykopmobilny.domain.linkdetails.di.LinkId
+import io.github.wykopmobilny.domain.navigation.ClipboardService
+import io.github.wykopmobilny.domain.navigation.HtmlUtils
 import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.InteropRequestsProvider
 import io.github.wykopmobilny.domain.profile.LinkInfo
 import io.github.wykopmobilny.domain.profile.UserInfo
-import io.github.wykopmobilny.domain.profile.coloredCounter
 import io.github.wykopmobilny.domain.profile.toPrettyString
 import io.github.wykopmobilny.domain.profile.toUi
 import io.github.wykopmobilny.domain.profile.wykopUrl
@@ -27,7 +28,6 @@ import io.github.wykopmobilny.domain.settings.prefs.GetLinksPreferences
 import io.github.wykopmobilny.domain.settings.prefs.ImagePreferences
 import io.github.wykopmobilny.domain.settings.update
 import io.github.wykopmobilny.domain.strings.Strings
-import io.github.wykopmobilny.domain.utils.HtmlUtils
 import io.github.wykopmobilny.domain.utils.combine
 import io.github.wykopmobilny.domain.utils.safeKeyed
 import io.github.wykopmobilny.links.details.CommentsSectionUi
@@ -37,12 +37,14 @@ import io.github.wykopmobilny.links.details.LinkDetailsHeaderUi
 import io.github.wykopmobilny.links.details.LinkDetailsUi
 import io.github.wykopmobilny.links.details.ParentCommentUi
 import io.github.wykopmobilny.links.details.RelatedLinkUi
+import io.github.wykopmobilny.links.details.RelatedLinksSectionUi
 import io.github.wykopmobilny.storage.api.Blacklist
 import io.github.wykopmobilny.storage.api.LoggedUserInfo
 import io.github.wykopmobilny.storage.api.UserInfoStorage
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.base.FailedAction
+import io.github.wykopmobilny.ui.base.Resource
 import io.github.wykopmobilny.ui.base.components.ContextMenuOptionUi
 import io.github.wykopmobilny.ui.base.components.Drawable
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
@@ -57,7 +59,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
@@ -72,11 +74,12 @@ import kotlin.math.roundToInt
 internal class GetLinkDetailsQuery @Inject constructor(
     @LinkId private val linkId: Long,
     private val linkStore: Store<Long, LinkInfo>,
+    private val commentsStore: Store<Long, Map<LinkComment, List<LinkComment>>>,
+    private val relatedLinksStore: Store<Long, List<RelatedLink>>,
     private val getLinksPreferences: GetLinksPreferences,
     private val getFilteringPreferences: GetFilteringPreferences,
     private val getImagePreferences: GetImagesPreferences,
     private val userInfoStorage: UserInfoStorage,
-    private val commentsStore: Store<Long, Map<LinkComment, List<LinkComment>>>,
     private val viewStateStorage: LinkDetailsViewStateStorage,
     private val appScopes: AppScopes,
     private val appStorage: AppStorage,
@@ -85,6 +88,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
     private val blacklistStore: Store<Unit, Blacklist>,
     private val linksRepository: LinksRepository,
     private val htmlUtils: HtmlUtils,
+    private val clipboardService: ClipboardService,
 ) : GetLinkDetails {
 
     override fun invoke() =
@@ -92,9 +96,10 @@ internal class GetLinkDetailsQuery @Inject constructor(
             detailsFlow(),
             viewStateStorage.state,
             commentsFlow(),
+            relatedLinksFlow(),
             userInfoStorage.loggedUser,
             getLinksPreferences(),
-        ) { link, viewState, (comments, toggleCommentsAction), loggedUser, linkpreferences ->
+        ) { link, viewState, (comments, toggleCommentsAction), relatedLinks, loggedUser, linkpreferences ->
             val header = if (link == null) {
                 LinkDetailsHeaderUi.Loading
             } else {
@@ -145,7 +150,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                     commentsCount = Button(
                         label = link.commentsCount.toString(),
                         icon = Drawable.Comments,
-                        clickAction = toggleCommentsAction,
+                        clickAction = toggleCommentsAction.takeIf { false },
                     ),
                     postedAgo = link.postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(suffix = "temu"),
                     author = link.author.toUi(
@@ -167,7 +172,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                         viewStateStorage.update { viewState ->
                             viewState.copy(
                                 picker = OptionPickerUi(
-                                    title = Strings.Link.MORE_TITLE,
+                                    title = Strings.Link.MORE_TITLE_LINK,
                                     reasons = listOf(
                                         OptionPickerUi.Option(
                                             label = Strings.Link.MORE_OPTION_SHARE,
@@ -217,27 +222,47 @@ internal class GetLinkDetailsQuery @Inject constructor(
                             }
                         },
                     ),
+                    currentUser = loggedUser?.toUi(onClicked = null),
                     addCommentAction = safeCallback { TODO("Not supported") },
                 )
             }
             val commentsSection = CommentsSectionUi(
                 comments = comments,
-                isLoading = comments.isEmpty() && viewState.isLoading,
+                isLoading = comments.isEmpty() && viewState.generalResource.isLoading,
             )
             val relatedSection = if (link == null) {
                 null
             } else if (link.relatedCount > 0) {
-                emptyList<RelatedLinkUi>() // not supported yet
+                val resource = viewState.relatedResource
+                if (resource.isLoading) {
+                    RelatedLinksSectionUi.Loading
+                } else if (resource.failedAction != null) {
+                    RelatedLinksSectionUi.FullWidthError(
+                        retryAction = safeCallback { resource.failedAction?.retryAction.let(::checkNotNull).invoke() },
+                    )
+                } else {
+                    val addLinkAction = safeCallback { TODO() }
+                    if (!relatedLinks.isNullOrEmpty()) {
+                        RelatedLinksSectionUi.WithData(
+                            links = relatedLinks.map { related -> related.toUi(linkId = link.id) },
+                            addLinkAction = addLinkAction,
+                        )
+                    } else {
+                        RelatedLinksSectionUi.Empty(
+                            addLinkAction = addLinkAction,
+                        )
+                    }
+                }
             } else {
                 null
             }
 
             LinkDetailsUi(
                 swipeRefresh = SwipeRefreshUi(
-                    isRefreshing = viewState.isLoading && link != null,
+                    isRefreshing = viewState.generalResource.isLoading && link != null,
                     refreshAction = safeCallback {
                         coroutineScope {
-                            viewStateStorage.update { viewState.copy(isLoading = true) }
+                            viewStateStorage.update { viewState.copy(generalResource = Resource.loading()) }
                             val linkRefresh = async { linkStore.fresh(linkId) }
                             val commentsRefresh = async { commentsStore.fresh(linkId) }
 
@@ -245,18 +270,18 @@ internal class GetLinkDetailsQuery @Inject constructor(
                                 .onSuccess {
                                     viewStateStorage.update {
                                         viewState.copy(
-                                            isLoading = false,
-                                            failedAction = null,
+                                            generalResource = Resource.idle(),
                                             forciblyShownBlockedComments = emptySet(),
+                                            allowedNsfwImages = emptySet(),
                                         )
                                     }
                                 }
                                 .onFailure { failure ->
                                     viewStateStorage.update {
                                         viewState.copy(
-                                            isLoading = false,
-                                            failedAction = FailedAction(cause = failure),
+                                            generalResource = Resource.error(FailedAction(cause = failure)),
                                             forciblyShownBlockedComments = emptySet(),
+                                            allowedNsfwImages = emptySet(),
                                         )
                                     }
                                 }
@@ -266,11 +291,11 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 header = header,
                 relatedSection = relatedSection,
                 commentsSection = commentsSection,
-                errorDialog = viewState.failedAction?.let { error ->
+                errorDialog = viewState.generalResource.failedAction?.let { error ->
                     ErrorDialogUi(
                         error = error.cause,
                         retryAction = error.retryAction,
-                        dismissAction = safeCallback { viewStateStorage.update { it.copy(failedAction = null) } },
+                        dismissAction = safeCallback { viewStateStorage.update { it.copy(generalResource = Resource.idle()) } },
                     )
                 },
                 contextMenuOptions = listOfNotNull(
@@ -283,8 +308,37 @@ internal class GetLinkDetailsQuery @Inject constructor(
                     },
                 ),
                 picker = viewState.picker,
+                snackbar = viewState.snackbar,
             )
         }
+
+    private fun RelatedLink.toUi(linkId: Long) = RelatedLinkUi(
+        author = author?.toUi(onClicked = null),
+        upvotesCount = TwoActionsCounterUi(
+            count = voteCount,
+            color = when (userVote) {
+                UserVote.Up -> ColorConst.CounterUpvoted
+                UserVote.Down -> ColorConst.CounterDownvoted
+                null -> null
+            },
+            upvoteAction = when (userVote) {
+                UserVote.Up -> null
+                UserVote.Down,
+                null,
+                -> safeCallback { linksRepository.relatedVoteUp(linkId = linkId, relatedId = id) }
+            },
+            downvoteAction = when (userVote) {
+                UserVote.Down -> null
+                UserVote.Up,
+                null,
+                -> safeCallback { linksRepository.relatedVoteDown(linkId = linkId, relatedId = id) }
+            },
+        ),
+        title = title,
+        domain = URL(url).host.removePrefix("www."),
+        clickAction = safeCallback { interopRequests.request(InteropRequest.WebBrowser(url)) },
+        shareAction = safeCallback { interopRequests.request(InteropRequest.Share(url)) },
+    )
 
     private fun commentsFlow() =
         combine(
@@ -297,7 +351,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
             getFilteringPreferences(),
             getImagePreferences(),
             userInfoStorage.loggedUser,
-            detailsFlow().filterNotNull(),
+            detailsFlow(),
             blacklistStore.stream(StoreRequest.cached(key = Unit, refresh = false))
                 .map { it.dataOrNull() }
                 .filterNotNull()
@@ -309,6 +363,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 CommentsDefaultSort.New -> compareByDescending { it.postedAt }
                 CommentsDefaultSort.Old -> compareBy { it.postedAt }
             }
+            link ?: return@combine emptyMap<ParentCommentUi, List<LinkCommentUi>>() to null
 
             val commentsUi = comments.orEmpty()
                 .toSortedMap(comparator)
@@ -350,6 +405,10 @@ internal class GetLinkDetailsQuery @Inject constructor(
             commentsUi to commentsAction
         }
 
+    private fun relatedLinksFlow() =
+        relatedLinksStore.stream(StoreRequest.cached(key = linkId, refresh = false))
+            .map { it.dataOrNull() }
+
     private fun detailsFlow() =
         linkStore.stream(StoreRequest.cached(linkId, refresh = false))
             .map { it.dataOrNull() }
@@ -384,56 +443,96 @@ internal class GetLinkDetailsQuery @Inject constructor(
         } else {
             val isConsideredNsfw = usedTags.contains("nsfw") && filteringPreferences.hideNsfwContent
             val isConsideredPlus18 = embed?.hasAdultContent == true && filteringPreferences.hidePlus18Content
-            val hasNsfwOverlay = isConsideredNsfw || isConsideredPlus18
+            val couldHaveNsfwOverlay = isConsideredNsfw || isConsideredPlus18
+            val hasNsfwOverlay = couldHaveNsfwOverlay && !viewState.allowedNsfwImages.contains(embed?.id)
 
             LinkCommentUi.Normal(
                 id = id,
-                postedAgo = postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(),
+                postedAgo = postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(suffix = "temu"),
                 app = app,
                 body = body.takeIf { it.isNotBlank() },
                 author = author.toUi(
                     onClicked = safeCallback { interopRequests.request(InteropRequest.Profile(profileId = author.profileId)) },
                 ),
-                plusCount = coloredCounter(
-                    userAction = userAction.takeIf { it == UserVote.Up },
-                    voteCount = plusCount,
-                    onClicked = safeCallback {
-                        if (userAction == null) {
-                            linksRepository.commentVoteUp(linkId = link.id, commentId = id)
-                        } else {
+                plusCount = Button(
+                    color = if (userAction == UserVote.Up) ColorConst.CounterUpvoted else null,
+                    label = plusCount.toString(),
+                    icon = Drawable.Plus,
+                    clickAction = safeCallback {
+                        if (userAction == UserVote.Up) {
                             linksRepository.removeCommentVote(linkId = link.id, commentId = id)
+                        } else {
+                            linksRepository.commentVoteUp(linkId = link.id, commentId = id)
                         }
                     },
                 ),
-                minusCount = coloredCounter(
-                    userAction = userAction.takeIf { it == UserVote.Down },
-                    voteCount = minusCount,
-                    onClicked = safeCallback {
-                        if (userAction == null) {
-                            linksRepository.commentVoteDown(linkId = link.id, commentId = id)
-                        } else {
+                minusCount = Button(
+                    color = if (userAction == UserVote.Down) ColorConst.CounterDownvoted else null,
+                    label = minusCount.toString(),
+                    icon = Drawable.Minus,
+                    clickAction = safeCallback {
+                        if (userAction == UserVote.Down) {
                             linksRepository.removeCommentVote(linkId = link.id, commentId = id)
+                        } else {
+                            linksRepository.commentVoteDown(linkId = link.id, commentId = id)
                         }
                     },
                 ),
                 badge = color,
-                shareAction = safeCallback { interopRequests.request(InteropRequest.Share(url = wykopUrl(linkId = link.id))) },
                 embed = embed?.let { embed ->
                     embed.toUi(
+                        useLowQualityImage = imagePreferences.showMinifiedImages,
                         clickAction = safeCallback {
                             if (hasNsfwOverlay) {
-                                TODO("Hide nsfw")
+                                viewStateStorage.update { it.copy(allowedNsfwImages = it.allowedNsfwImages + embed.id) }
                             } else {
                                 showEmbedImage(embed, commentId = id)
                             }
                         },
                         hasNsfwOverlay = hasNsfwOverlay,
-                        forceExpanded = false,
-                        thresholdPercentage = imagePreferences.cutImagesProportion.takeIf { imagePreferences.cutImages },
                     )
+                },
+                moreAction = safeCallback {
+                    viewStateStorage.update { viewState ->
+                        viewState.copy(
+                            picker = OptionPickerUi(
+                                title = Strings.Link.MORE_TITLE_COMMENT,
+                                reasons = listOf(
+                                    OptionPickerUi.Option(
+                                        label = Strings.Link.MORE_OPTION_SHARE,
+                                        icon = Drawable.Share,
+                                        clickAction = safeCallback {
+                                            interopRequests.request(InteropRequest.Share(url = wykopUrl(linkId = link.id)))
+                                        },
+                                    ),
+                                    OptionPickerUi.Option(
+                                        label = Strings.Link.MORE_OPTION_COPY,
+                                        icon = Drawable.Copy,
+                                        clickAction = safeCallback {
+                                            clipboardService.copy(body)
+                                            showSnackbar(Strings.COPIED_TO_CLIPBOARD)
+                                        },
+                                    ),
+                                    OptionPickerUi.Option(
+                                        label = Strings.Link.MORE_OPTION_REPORT,
+                                        icon = Drawable.Report,
+                                        clickAction = safeCallback { TODO("Report not available") },
+                                    ),
+                                ),
+                                dismissAction = safeCallback { viewStateStorage.update { it.copy(picker = null) } },
+                            ),
+                        )
+                    }
                 },
             )
         }
+    }
+
+    private suspend fun showSnackbar(copiedToClipboard: String) {
+        delay(100)
+        viewStateStorage.update { it.copy(snackbar = copiedToClipboard) }
+        delay(2500)
+        viewStateStorage.update { it.copy(snackbar = null) }
     }
 
     private suspend fun showEmbedImage(embed: Embed, commentId: Long) {
@@ -442,7 +541,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
             EmbedType.AnimatedImage -> TODO("Show animated image")
             EmbedType.Video -> TODO("Show image")
             EmbedType.Unknown -> viewStateStorage.update {
-                it.copy(failedAction = FailedAction(IllegalArgumentException("Unsupported image type. commentId=$commentId")))
+                it.copy(generalResource = Resource.error(FailedAction(IllegalArgumentException("Unsupported image type. ($commentId)"))))
             }
         }
     }
@@ -450,7 +549,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
     private fun safeCallback(function: suspend CoroutineScope.() -> Unit): () -> Unit = {
         appScopes.safeKeyed<LinkDetailsScope>(linkId) {
             runCatching { function() }
-                .onFailure { failure -> viewStateStorage.update { it.copy(failedAction = FailedAction(failure)) } }
+                .onFailure { failure -> viewStateStorage.update { it.copy(generalResource = Resource.error(FailedAction(failure))) } }
         }
     }
 }

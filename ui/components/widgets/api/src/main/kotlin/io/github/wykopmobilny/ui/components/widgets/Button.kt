@@ -12,8 +12,8 @@ data class Button(
 data class TwoActionsCounterUi(
     val count: Int,
     val color: Color? = null,
-    val upvoteAction: () -> Unit,
-    val downvoteAction: () -> Unit,
+    val upvoteAction: (() -> Unit)?,
+    val downvoteAction: (() -> Unit)?,
 )
 
 data class ToggleButtonUi(
