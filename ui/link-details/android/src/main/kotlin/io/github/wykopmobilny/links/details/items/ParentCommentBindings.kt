@@ -1,5 +1,6 @@
 package io.github.wykopmobilny.links.details.items
 
+import android.text.method.LinkMovementMethod
 import androidx.core.view.isVisible
 import com.github.wykopmobilny.ui.components.bind
 import com.github.wykopmobilny.ui.components.setUserNick
@@ -27,6 +28,7 @@ internal fun LinkDetailsParentCommentBinding.bindParentComment(
     txtApp.text = data.app?.let { "via $it" }
     txtBody.isVisible = data.body != null
     txtBody.text = data.body
+    txtBody.movementMethod = LinkMovementMethod.getInstance()
     imgEmbed.bind(data.embed)
     imgBadge.setBackgroundColor(data.badge.toColorInt(context = root.context).defaultColor)
     plusButton.bind(data.plusCount)

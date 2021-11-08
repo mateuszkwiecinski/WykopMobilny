@@ -450,7 +450,19 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 id = id,
                 postedAgo = postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(suffix = "temu"),
                 app = app,
-                body = body.takeIf { it.isNotBlank() },
+                body = body.takeIf { it.isNotBlank() }?.let {
+                    htmlUtils.parseHtml(
+                        text = it,
+                        onLinkClicked = safeCallback { link ->
+                            val request = when {
+                                link.startsWith("@") -> InteropRequest.Profile(link.substringAfter("@"))
+                                link.startsWith("#") -> InteropRequest.Tag(link.substringAfter("#"))
+                                else -> InteropRequest.WebBrowser(link)
+                            }
+                            interopRequests.request(request)
+                        },
+                    )
+                },
                 author = author.toUi(
                     onClicked = safeCallback { interopRequests.request(InteropRequest.Profile(profileId = author.profileId)) },
                 ),
@@ -549,6 +561,13 @@ internal class GetLinkDetailsQuery @Inject constructor(
     private fun safeCallback(function: suspend CoroutineScope.() -> Unit): () -> Unit = {
         appScopes.safeKeyed<LinkDetailsScope>(linkId) {
             runCatching { function() }
+                .onFailure { failure -> viewStateStorage.update { it.copy(generalResource = Resource.error(FailedAction(failure))) } }
+        }
+    }
+
+    private fun <T> safeCallback(function: suspend CoroutineScope.(T) -> Unit): (T) -> Unit = {
+        appScopes.safeKeyed<LinkDetailsScope>(linkId) {
+            runCatching { function(it) }
                 .onFailure { failure -> viewStateStorage.update { it.copy(generalResource = Resource.error(FailedAction(failure))) } }
         }
     }

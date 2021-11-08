@@ -103,7 +103,7 @@ sealed class LinkCommentUi {
         val author: UserInfoUi,
         val postedAgo: String,
         val app: String?,
-        val body: String?,
+        val body: CharSequence?,
         val badge: Color?,
         val plusCount: Button,
         val minusCount: Button,

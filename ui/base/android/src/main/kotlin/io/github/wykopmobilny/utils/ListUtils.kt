@@ -16,7 +16,7 @@ fun <T> asyncDifferConfig(diff: DiffUtil.ItemCallback<T>) = AsyncDifferConfig.Bu
  * https://stackoverflow.com/questions/37566303/edittext-giving-error-textview-does-not-support-text-selection-selection-canc
  */
 fun TextView.fixTextIsSelectableWhenUnderRecyclerView() {
-    setTextIsSelectable(false)
-    measure(-1, -1)
-    setTextIsSelectable(true)
+//    setTextIsSelectable(false)
+//    measure(-1, -1)
+//    setTextIsSelectable(true)
 }
