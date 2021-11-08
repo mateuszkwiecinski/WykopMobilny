@@ -23,6 +23,7 @@ class LinkDetailsUi(
     val commentsSection: CommentsSectionUi,
     val errorDialog: ErrorDialogUi?,
     val picker: OptionPickerUi?,
+    val snackbar: String?,
 )
 
 sealed class LinkDetailsHeaderUi {

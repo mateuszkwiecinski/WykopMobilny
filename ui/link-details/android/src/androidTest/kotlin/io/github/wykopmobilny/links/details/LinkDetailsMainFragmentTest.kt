@@ -42,6 +42,7 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                     ),
                 ),
                 picker = null,
+                snackbar = null,
             )
         }
         record(size = unboundedHeight())
@@ -78,7 +79,7 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                             LinkCommentUi.Normal(
                                 id = 124,
                                 author = stubUser("fixture-reply-user"),
-                                postedAgo = "24 godziny temu",
+                                postedAgo = "24 godz. temu",
                                 app = null,
                                 body = "Comment body",
                                 badge = ColorConst.CommentOriginalPoster,
@@ -151,6 +152,7 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                 errorDialog = null,
                 contextMenuOptions = emptyList(),
                 picker = null,
+                snackbar = null,
             )
         }
         record(size = unboundedHeight())

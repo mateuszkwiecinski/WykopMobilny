@@ -7,4 +7,8 @@ interface Framework {
     fun nightModeDetector(): SystemSettingsDetector
 
     fun youtubeAppDetector(): YoutubeAppDetector
+
+    fun htmlUtils(): HtmlUtils
+
+    fun clipboardService(): ClipboardService
 }

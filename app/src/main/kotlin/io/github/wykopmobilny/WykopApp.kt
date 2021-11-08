@@ -56,7 +56,6 @@ import io.github.wykopmobilny.ui.modules.tag.TagActivity
 import io.github.wykopmobilny.ui.profile.ProfileDependencies
 import io.github.wykopmobilny.ui.search.SearchDependencies
 import io.github.wykopmobilny.ui.settings.SettingsDependencies
-import io.github.wykopmobilny.utils.AndroidHtmlUtils
 import io.github.wykopmobilny.utils.ApplicationInjector
 import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.requireDependency
@@ -130,7 +129,6 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                 ConnectConfig(connectUrl = "https://a2.wykop.pl/login/connect/appkey/$appKey")
             },
             clock = Clock.System,
-            htmlUtils = AndroidHtmlUtils,
             storages = storages,
             scraper = scraper,
             wykop = wykopApi,

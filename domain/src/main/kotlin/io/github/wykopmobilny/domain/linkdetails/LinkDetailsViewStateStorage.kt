@@ -22,6 +22,7 @@ data class LinkDetailsViewState(
     val relatedResource: Resource = Resource.idle(),
     val collapsedIds: Set<Long> = emptySet(),
     val picker: OptionPickerUi? = null,
+    val snackbar: String? = null,
     val forciblyShownBlockedComments: Set<Long> = emptySet(),
     val allowedNsfwImages: Set<String> = emptySet(),
 )

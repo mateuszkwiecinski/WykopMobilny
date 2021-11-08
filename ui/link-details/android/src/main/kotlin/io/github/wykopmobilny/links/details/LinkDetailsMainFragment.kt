@@ -9,12 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.github.wykopmobilny.ui.components.utils.readAttr
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.link_details.android.R
 import io.github.wykopmobilny.ui.link_details.android.databinding.FragmentLinkDetailsBinding
 import io.github.wykopmobilny.utils.bindings.collectErrorDialog
 import io.github.wykopmobilny.utils.bindings.collectMenuOptions
 import io.github.wykopmobilny.utils.bindings.collectOptionPicker
+import io.github.wykopmobilny.utils.bindings.collectSnackbar
 import io.github.wykopmobilny.utils.bindings.collectSwipeRefresh
 import io.github.wykopmobilny.utils.bindings.setOnClick
 import io.github.wykopmobilny.utils.bindings.toColorInt
@@ -69,6 +71,7 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
             launch { shared.map { it.swipeRefresh }.collectSwipeRefresh(binding.swipeRefresh) }
             launch { shared.map { it.contextMenuOptions }.collectMenuOptions(binding.toolbar) }
             launch { shared.map { it.picker }.collectOptionPicker(view.context) }
+            launch { shared.map { it.snackbar }.collectSnackbar(view) }
             launch {
                 shared.map { it.header }
                     .collect { header ->
@@ -77,15 +80,17 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
                                 binding.parallaxContainer.isInvisible = true
                             }
                             is LinkDetailsHeaderUi.WithData -> {
-                                binding.parallaxContainer.isVisible = true
-                                Glide.with(this@LinkDetailsMainFragment)
-                                    .load(header.previewImageUrl)
-                                    .transition(withCrossFade())
-                                    .into(binding.imgPreview)
+                                if (header.previewImageUrl != null) {
+                                    Glide.with(this@LinkDetailsMainFragment)
+                                        .load(header.previewImageUrl)
+                                        .transition(withCrossFade())
+                                        .into(binding.imgPreview)
+                                }
                                 binding.imgPreview.setOnClick(header.viewLinkAction)
                                 binding.txtDomain.text = header.domain
                                 binding.hotBadgeStrip.isVisible = header.badge != null
                                 binding.hotBadgeStrip.setBackgroundColor(header.badge.toColorInt(view.context).defaultColor)
+                                binding.parallaxContainer.isVisible = header.previewImageUrl != null
                             }
                         }
                     }

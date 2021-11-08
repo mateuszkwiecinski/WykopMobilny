@@ -4,6 +4,7 @@ object Strings {
 
     const val APP_NAME = "Wykop"
     const val SHARE_TITLE = "Udostępnij"
+    const val COPIED_TO_CLIPBOARD = "Skopiowano do schowka"
 
     object Notifications {
 

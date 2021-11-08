@@ -21,7 +21,6 @@ import io.github.wykopmobilny.domain.settings.di.SettingsDomainComponent
 import io.github.wykopmobilny.domain.startup.AppConfig
 import io.github.wykopmobilny.domain.startup.InitializeApp
 import io.github.wykopmobilny.domain.styles.di.StylesDomainComponent
-import io.github.wykopmobilny.domain.utils.HtmlUtils
 import io.github.wykopmobilny.domain.work.di.WorkDomainComponent
 import io.github.wykopmobilny.notification.NotificationsApi
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
@@ -59,7 +58,6 @@ interface DomainComponent {
             @BindsInstance connectConfig: () -> ConnectConfig,
             @BindsInstance clock: Clock,
             @BindsInstance appConfig: AppConfig,
-            @BindsInstance htmlUtils: HtmlUtils,
             storages: Storages,
             scraper: Scraper,
             wykop: WykopApi,

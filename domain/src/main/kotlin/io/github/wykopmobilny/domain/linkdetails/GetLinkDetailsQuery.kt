@@ -9,6 +9,8 @@ import io.github.wykopmobilny.data.cache.api.UserVote
 import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.linkdetails.di.LinkDetailsScope
 import io.github.wykopmobilny.domain.linkdetails.di.LinkId
+import io.github.wykopmobilny.domain.navigation.ClipboardService
+import io.github.wykopmobilny.domain.navigation.HtmlUtils
 import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.InteropRequestsProvider
 import io.github.wykopmobilny.domain.profile.LinkInfo
@@ -26,7 +28,6 @@ import io.github.wykopmobilny.domain.settings.prefs.GetLinksPreferences
 import io.github.wykopmobilny.domain.settings.prefs.ImagePreferences
 import io.github.wykopmobilny.domain.settings.update
 import io.github.wykopmobilny.domain.strings.Strings
-import io.github.wykopmobilny.domain.utils.HtmlUtils
 import io.github.wykopmobilny.domain.utils.combine
 import io.github.wykopmobilny.domain.utils.safeKeyed
 import io.github.wykopmobilny.links.details.CommentsSectionUi
@@ -58,6 +59,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
@@ -86,6 +88,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
     private val blacklistStore: Store<Unit, Blacklist>,
     private val linksRepository: LinksRepository,
     private val htmlUtils: HtmlUtils,
+    private val clipboardService: ClipboardService,
 ) : GetLinkDetails {
 
     override fun invoke() =
@@ -147,7 +150,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                     commentsCount = Button(
                         label = link.commentsCount.toString(),
                         icon = Drawable.Comments,
-                        clickAction = toggleCommentsAction,
+                        clickAction = toggleCommentsAction.takeIf { false },
                     ),
                     postedAgo = link.postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(suffix = "temu"),
                     author = link.author.toUi(
@@ -305,6 +308,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                     },
                 ),
                 picker = viewState.picker,
+                snackbar = viewState.snackbar,
             )
         }
 
@@ -505,7 +509,8 @@ internal class GetLinkDetailsQuery @Inject constructor(
                                         label = Strings.Link.MORE_OPTION_COPY,
                                         icon = Drawable.Copy,
                                         clickAction = safeCallback {
-                                            TODO("Copy not available")
+                                            clipboardService.copy(body)
+                                            showSnackbar(Strings.COPIED_TO_CLIPBOARD)
                                         },
                                     ),
                                     OptionPickerUi.Option(
@@ -521,6 +526,13 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 },
             )
         }
+    }
+
+    private suspend fun showSnackbar(copiedToClipboard: String) {
+        delay(100)
+        viewStateStorage.update { it.copy(snackbar = copiedToClipboard) }
+        delay(2500)
+        viewStateStorage.update { it.copy(snackbar = null) }
     }
 
     private suspend fun showEmbedImage(embed: Embed, commentId: Long) {

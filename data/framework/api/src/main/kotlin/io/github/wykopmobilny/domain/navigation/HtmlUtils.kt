@@ -1,4 +1,4 @@
-package io.github.wykopmobilny.domain.utils
+package io.github.wykopmobilny.domain.navigation
 
 interface HtmlUtils {
 
