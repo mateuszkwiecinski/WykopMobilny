@@ -20,9 +20,8 @@ class EmbedMediaView(context: Context, attrs: AttributeSet?) : ConstraintLayout(
 fun EmbedMediaView.bind(model: EmbedMediaUi?) {
     val binding = ViewEmbedMediaBinding.bind(this)
     binding.root.isVisible = model != null
-    model ?: return
 
-    Glide.with(this).load(model.previewUrl)
+    Glide.with(this).load(model?.previewUrl)
         .transition(withCrossFade())
         .into(binding.imgPreview)
 }

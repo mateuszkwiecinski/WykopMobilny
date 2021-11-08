@@ -101,6 +101,8 @@ internal sealed class ListItem {
 
         override fun areContentsTheSame(oldItem: ListItem, newItem: ListItem) =
             oldItem == newItem
+
+        override fun getChangePayload(oldItem: ListItem, newItem: ListItem) = newItem
     }
 }
 

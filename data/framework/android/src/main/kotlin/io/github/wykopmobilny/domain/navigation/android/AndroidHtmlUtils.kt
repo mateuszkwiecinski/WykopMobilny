@@ -8,15 +8,17 @@ import androidx.core.text.HtmlCompat
 import androidx.core.text.getSpans
 import androidx.core.text.toSpannable
 import io.github.wykopmobilny.domain.navigation.HtmlUtils
+import io.github.wykopmobilny.ui.base.AppDispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class AndroidHtmlUtils @Inject constructor() : HtmlUtils {
 
 
-    override fun parseHtml(text: String, onLinkClicked: ((String) -> Unit)?): CharSequence {
-        val parsed = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    override suspend fun parseHtml(text: String, onLinkClicked: ((String) -> Unit)?) = withContext(AppDispatchers.Default) {
+        val parsed = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
 
-        return if (onLinkClicked == null) {
+        if (onLinkClicked == null) {
             parsed
         } else {
             parsed.toSpannable().apply {

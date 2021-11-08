@@ -56,7 +56,6 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
 
         val adapter = LinkDetailsAdapter()
         binding.list.adapter = adapter
-        binding.list.itemAnimator?.changeDuration = 0
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             val shared = getLinkDetails()
                 .flowOn(AppDispatchers.Default)

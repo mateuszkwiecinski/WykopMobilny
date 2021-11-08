@@ -1,7 +1,7 @@
 package io.github.wykopmobilny.links.details.items
 
-import android.text.method.LinkMovementMethod
 import androidx.core.view.isVisible
+import com.github.wykopmobilny.ui.components.SelectableLinkMovement
 import com.github.wykopmobilny.ui.components.bind
 import com.github.wykopmobilny.ui.components.setUserNick
 import com.github.wykopmobilny.ui.components.utils.bind
@@ -24,7 +24,7 @@ internal fun LinkDetailsReplyCommentBinding.bindReplyComment(comment: LinkCommen
     txtApp.text = comment.app?.let { "via $it" }
     txtBody.isVisible = comment.body != null
     txtBody.text = comment.body
-    txtBody.movementMethod = LinkMovementMethod.getInstance()
+    txtBody.movementMethod = SelectableLinkMovement
     imgEmbed.bind(comment.embed)
     imgBadge.setBackgroundColor(comment.badge.toColorInt(context = root.context).defaultColor)
     plusButton.bind(comment.plusCount)

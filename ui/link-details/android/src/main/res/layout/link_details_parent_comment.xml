@@ -103,6 +103,7 @@
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:textAppearance="@style/TextAppearance.MaterialScale.Body2"
+        android:textIsSelectable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/imgAvatar"
         app:layout_constraintTop_toBottomOf="@id/barrierTop"
