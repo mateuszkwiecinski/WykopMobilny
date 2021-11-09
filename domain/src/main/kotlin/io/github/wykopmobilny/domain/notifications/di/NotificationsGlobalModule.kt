@@ -4,7 +4,7 @@ import com.dropbox.android.external.store4.StoreBuilder
 import dagger.Module
 import dagger.Provides
 import io.github.wykopmobilny.api.endpoints.NotificationsRetrofitApi
-import io.github.wykopmobilny.domain.api.apiFetcher
+import io.github.wykopmobilny.domain.api.ApiClient
 import io.github.wykopmobilny.ui.base.AppScopes
 import javax.inject.Singleton
 
@@ -16,8 +16,9 @@ internal class NotificationsGlobalModule {
     fun notificationsStore(
         retrofitApi: NotificationsRetrofitApi,
         appScopes: AppScopes,
+        apiClient: ApiClient,
     ) = StoreBuilder.from(
-        fetcher = apiFetcher(retrofitApi::getNotifications),
+        fetcher = apiClient.fetcher(retrofitApi::getNotifications),
     )
         .scope(appScopes.applicationScope)
         .build()

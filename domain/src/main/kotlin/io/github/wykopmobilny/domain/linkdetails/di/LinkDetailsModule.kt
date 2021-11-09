@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Provides
 import io.github.wykopmobilny.api.endpoints.LinksRetrofitApi
 import io.github.wykopmobilny.data.cache.api.AppCache
-import io.github.wykopmobilny.domain.api.apiFetcher
+import io.github.wykopmobilny.domain.api.ApiClient
 import io.github.wykopmobilny.domain.di.ScopeInitializer
 import io.github.wykopmobilny.domain.linkdetails.GetLinkDetailsQuery
 import io.github.wykopmobilny.domain.linkdetails.InitializeLinkDetails
@@ -31,8 +31,9 @@ internal abstract class LinkDetailsModule {
             retrofitApi: LinksRetrofitApi,
             appScopes: AppScopes,
             cache: AppCache,
+            apiClient: ApiClient,
         ): Store<Long, LinkInfo> = StoreBuilder.from(
-            fetcher = apiFetcher(retrofitApi::getLink),
+            fetcher = apiClient.fetcher(retrofitApi::getLink),
             sourceOfTruth = linkDetailsSourceOfTruth(cache),
         )
             .scope(appScopes.applicationScope)
@@ -44,8 +45,9 @@ internal abstract class LinkDetailsModule {
             retrofitApi: LinksRetrofitApi,
             appScopes: AppScopes,
             cache: AppCache,
+            apiClient: ApiClient,
         ): Store<Long, Map<LinkComment, List<LinkComment>>> = StoreBuilder.from(
-            fetcher = apiFetcher { linkId ->
+            fetcher = apiClient.fetcher { linkId ->
                 retrofitApi.getLinkComments(
                     linkId = linkId,
                     sortBy = "old", // we'll sort it on the app side 😬
@@ -62,8 +64,9 @@ internal abstract class LinkDetailsModule {
             retrofitApi: LinksRetrofitApi,
             appScopes: AppScopes,
             cache: AppCache,
+            apiClient: ApiClient,
         ): Store<Long, List<RelatedLink>> = StoreBuilder.from(
-            fetcher = apiFetcher(retrofitApi::getRelated),
+            fetcher = apiClient.fetcher(retrofitApi::getRelated),
             sourceOfTruth = relatedLinksSourceOfTruth(cache),
         )
             .scope(appScopes.applicationScope)

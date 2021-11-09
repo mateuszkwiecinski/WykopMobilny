@@ -18,9 +18,9 @@ import io.github.wykopmobilny.data.cache.api.GenderEntity
 import io.github.wykopmobilny.data.cache.api.ProfileDetailsView
 import io.github.wykopmobilny.data.cache.api.ProfileEntity
 import io.github.wykopmobilny.data.cache.api.UserColorEntity
+import io.github.wykopmobilny.domain.api.ApiClient
 import io.github.wykopmobilny.domain.api.PagingSource
 import io.github.wykopmobilny.domain.api.StoreMediator
-import io.github.wykopmobilny.domain.api.apiFetcher
 import io.github.wykopmobilny.domain.di.ScopeInitializer
 import io.github.wykopmobilny.domain.profile.GetProfileActionsQuery
 import io.github.wykopmobilny.domain.profile.GetProfileDetailsQuery
@@ -51,8 +51,9 @@ internal abstract class ProfileModule {
             retrofitApi: ProfileRetrofitApi,
             appScopes: AppScopes,
             cache: AppCache,
+            apiClient: ApiClient,
         ): Store<Int, List<ProfileAction>> = StoreBuilder.from(
-            fetcher = apiFetcher { page ->
+            fetcher = apiClient.fetcher { page ->
                 // pagination is broken on the  api side
                 if (page == 1) {
                     retrofitApi.getActions(profileId)
@@ -82,8 +83,9 @@ internal abstract class ProfileModule {
             retrofitApi: ProfileRetrofitApi,
             appScopes: AppScopes,
             cache: AppCache,
+            apiClient: ApiClient,
         ): Store<Unit, ProfileDetailsView> = StoreBuilder.from(
-            fetcher = apiFetcher { retrofitApi.getIndex(profileId) },
+            fetcher = apiClient.fetcher { retrofitApi.getIndex(profileId) },
             sourceOfTruth = SourceOfTruth.of<Unit, ProfileResponse, ProfileDetailsView>(
                 reader = {
                     cache.profileQueries.selectById(profileId)

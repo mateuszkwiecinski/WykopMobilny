@@ -14,7 +14,6 @@ import javax.inject.Inject
 
 internal class AndroidHtmlUtils @Inject constructor() : HtmlUtils {
 
-
     override suspend fun parseHtml(text: String, onLinkClicked: ((String) -> Unit)?) = withContext(AppDispatchers.Default) {
         val parsed = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
 

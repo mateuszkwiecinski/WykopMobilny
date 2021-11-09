@@ -18,22 +18,22 @@ internal class ProfilesRepository @Inject constructor(
 ) {
 
     suspend fun blockUser(profileId: String) {
-        val response = api.fetch { profilesApi.block(profileId) }
+        val response = api.mutation { profilesApi.block(profileId) }
         update(profileId = profileId, response = response)
     }
 
     suspend fun unblockUser(profileId: String) {
-        val response = api.fetch { profilesApi.unblock(profileId) }
+        val response = api.mutation { profilesApi.unblock(profileId) }
         update(profileId = profileId, response = response)
     }
 
     suspend fun observeUser(profileId: String) {
-        val response = api.fetch { profilesApi.observe(profileId) }
+        val response = api.mutation { profilesApi.observe(profileId) }
         update(profileId = profileId, response = response)
     }
 
     suspend fun unobserveUser(profileId: String) {
-        val response = api.fetch { profilesApi.unobserve(profileId) }
+        val response = api.mutation { profilesApi.unobserve(profileId) }
         update(profileId = profileId, response = response)
     }
 

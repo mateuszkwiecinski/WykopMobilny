@@ -457,6 +457,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                             val request = when {
                                 link.startsWith("@") -> InteropRequest.Profile(link.substringAfter("@"))
                                 link.startsWith("#") -> InteropRequest.Tag(link.substringAfter("#"))
+                                link.startsWith("spoiler:") -> TODO("NOT SUPPORTED")
                                 else -> InteropRequest.WebBrowser(link)
                             }
                             interopRequests.request(request)
