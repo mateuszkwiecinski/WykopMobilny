@@ -8,7 +8,7 @@ interface Framework {
 
     fun youtubeAppDetector(): YoutubeAppDetector
 
-    fun htmlUtils(): HtmlUtils
+    fun htmlUtils(): WykopTextUtils
 
     fun clipboardService(): ClipboardService
 }

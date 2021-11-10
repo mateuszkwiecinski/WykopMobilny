@@ -3,6 +3,7 @@ package io.github.wykopmobilny.links.details
 import io.github.wykopmobilny.ui.base.Query
 import io.github.wykopmobilny.ui.base.components.ContextMenuOptionUi
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
+import io.github.wykopmobilny.ui.base.components.InfoDialogUi
 import io.github.wykopmobilny.ui.base.components.OptionPickerUi
 import io.github.wykopmobilny.ui.base.components.SwipeRefreshUi
 import io.github.wykopmobilny.ui.components.widgets.Button
@@ -22,6 +23,7 @@ class LinkDetailsUi(
     val contextMenuOptions: List<ContextMenuOptionUi>,
     val commentsSection: CommentsSectionUi,
     val errorDialog: ErrorDialogUi?,
+    val infoDialog: InfoDialogUi?,
     val picker: OptionPickerUi?,
     val snackbar: String?,
 )

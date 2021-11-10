@@ -34,6 +34,7 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                     isLoading = true,
                 ),
                 errorDialog = null,
+                infoDialog = null,
                 contextMenuOptions = listOf(
                     ContextMenuOptionUi(
                         icon = Drawable.Share,
@@ -150,6 +151,7 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                     isLoading = false,
                 ),
                 errorDialog = null,
+                infoDialog = null,
                 contextMenuOptions = emptyList(),
                 picker = null,
                 snackbar = null,

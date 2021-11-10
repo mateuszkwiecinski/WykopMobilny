@@ -10,9 +10,9 @@ import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.linkdetails.di.LinkDetailsScope
 import io.github.wykopmobilny.domain.linkdetails.di.LinkId
 import io.github.wykopmobilny.domain.navigation.ClipboardService
-import io.github.wykopmobilny.domain.navigation.HtmlUtils
 import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.InteropRequestsProvider
+import io.github.wykopmobilny.domain.navigation.WykopTextUtils
 import io.github.wykopmobilny.domain.profile.LinkInfo
 import io.github.wykopmobilny.domain.profile.UserInfo
 import io.github.wykopmobilny.domain.profile.toPrettyString
@@ -21,14 +21,15 @@ import io.github.wykopmobilny.domain.profile.wykopUrl
 import io.github.wykopmobilny.domain.repositories.LinksRepository
 import io.github.wykopmobilny.domain.settings.CommentsDefaultSort
 import io.github.wykopmobilny.domain.settings.UserSettings
-import io.github.wykopmobilny.domain.settings.prefs.FilteringPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetFilteringPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetImagesPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetLinksPreferences
-import io.github.wykopmobilny.domain.settings.prefs.ImagePreferences
+import io.github.wykopmobilny.domain.settings.prefs.GetMikroblogPreferences
 import io.github.wykopmobilny.domain.settings.update
 import io.github.wykopmobilny.domain.strings.Strings
 import io.github.wykopmobilny.domain.utils.combine
+import io.github.wykopmobilny.domain.utils.commentparsing.copyableText
+import io.github.wykopmobilny.domain.utils.commentparsing.toCommentBody
 import io.github.wykopmobilny.domain.utils.safeKeyed
 import io.github.wykopmobilny.links.details.CommentsSectionUi
 import io.github.wykopmobilny.links.details.GetLinkDetails
@@ -48,6 +49,7 @@ import io.github.wykopmobilny.ui.base.Resource
 import io.github.wykopmobilny.ui.base.components.ContextMenuOptionUi
 import io.github.wykopmobilny.ui.base.components.Drawable
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
+import io.github.wykopmobilny.ui.base.components.InfoDialogUi
 import io.github.wykopmobilny.ui.base.components.OptionPickerUi
 import io.github.wykopmobilny.ui.base.components.SwipeRefreshUi
 import io.github.wykopmobilny.ui.components.widgets.Button
@@ -60,6 +62,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
@@ -79,6 +83,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
     private val getLinksPreferences: GetLinksPreferences,
     private val getFilteringPreferences: GetFilteringPreferences,
     private val getImagePreferences: GetImagesPreferences,
+    private val getMikroblogPreferences: GetMikroblogPreferences,
     private val userInfoStorage: UserInfoStorage,
     private val viewStateStorage: LinkDetailsViewStateStorage,
     private val appScopes: AppScopes,
@@ -87,7 +92,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
     private val interopRequests: InteropRequestsProvider,
     private val blacklistStore: Store<Unit, Blacklist>,
     private val linksRepository: LinksRepository,
-    private val htmlUtils: HtmlUtils,
+    private val textUtils: WykopTextUtils,
     private val clipboardService: ClipboardService,
 ) : GetLinkDetails {
 
@@ -104,8 +109,8 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 LinkDetailsHeaderUi.Loading
             } else {
                 LinkDetailsHeaderUi.WithData(
-                    title = htmlUtils.parseHtml(link.title).toString(),
-                    body = htmlUtils.parseHtml(link.description).toString(),
+                    title = textUtils.parseHtml(link.title).toString(),
+                    body = textUtils.parseHtml(link.description).toString(),
                     domain = URL(link.sourceUrl).host.removePrefix("www."),
                     badge = ColorConst.LinkBadgeHot.takeIf { link.isHot },
                     voteCount = TwoActionsCounterUi(
@@ -180,12 +185,26 @@ internal class GetLinkDetailsQuery @Inject constructor(
                                             clickAction = safeCallback { interopRequests.request(InteropRequest.Share(link.wykopUrl)) },
                                         ),
                                         OptionPickerUi.Option(
+                                            label = Strings.Link.MORE_OPTION_COPY,
+                                            icon = Drawable.Copy,
+                                            clickAction = safeCallback {
+                                                clipboardService.copy(
+                                                    """
+                                                        ${link.title.copyableText(textUtils)}
+                                                        
+                                                        ${link.description.copyableText(textUtils)}
+                                                    """.trimIndent(),
+                                                )
+                                                showSnackbar(Strings.COPIED_TO_CLIPBOARD)
+                                            },
+                                        ),
+                                        OptionPickerUi.Option(
                                             label = Strings.Link.moreOptionUpvotersList(link.voteCount),
                                             icon = Drawable.Upvoters,
                                             clickAction = safeCallback { interopRequests.request(InteropRequest.UpvotersList(link.id)) },
                                         ),
                                         OptionPickerUi.Option(
-                                            label = Strings.Link.moreOptioDownvotersList(link.buryCount),
+                                            label = Strings.Link.moreOptionDownvotersList(link.buryCount),
                                             icon = Drawable.Downvoters,
                                             clickAction = safeCallback { interopRequests.request(InteropRequest.DownvotersList(link.id)) },
                                         ),
@@ -298,6 +317,13 @@ internal class GetLinkDetailsQuery @Inject constructor(
                         dismissAction = safeCallback { viewStateStorage.update { it.copy(generalResource = Resource.idle()) } },
                     )
                 },
+                infoDialog = viewState.spoilerDialog?.let {
+                    InfoDialogUi(
+                        title = Strings.Comment.SPOILER_DIALOG_TITLE,
+                        message = it,
+                        dismissAction = safeCallback { viewStateStorage.update { it.copy(spoilerDialog = null) } },
+                    )
+                },
                 contextMenuOptions = listOfNotNull(
                     link?.wykopUrl?.let { shareUrl ->
                         ContextMenuOptionUi(
@@ -345,11 +371,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
             commentsStore.stream(StoreRequest.cached(key = linkId, refresh = false))
                 .map { it.dataOrNull() }
                 .distinctUntilChanged(),
-            getLinksPreferences()
-                .map { it.commentsSort }
-                .distinctUntilChanged(),
-            getFilteringPreferences(),
-            getImagePreferences(),
+            getCommentPreferences(),
             userInfoStorage.loggedUser,
             detailsFlow(),
             blacklistStore.stream(StoreRequest.cached(key = Unit, refresh = false))
@@ -357,9 +379,9 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 .filterNotNull()
                 .distinctUntilChanged(),
             viewStateStorage.state,
-        ) { comments, sortPreferences, filteringPreferences, imagePreferences, loggedUser, link, blacklist, viewState ->
-            val comparator: Comparator<LinkComment> = when (sortPreferences) {
-                CommentsDefaultSort.Best -> compareBy { it.totalCount }
+        ) { comments, commentPreferences, loggedUser, link, blacklist, viewState ->
+            val comparator: Comparator<LinkComment> = when (commentPreferences.sort) {
+                CommentsDefaultSort.Best -> compareByDescending { it.totalCount }
                 CommentsDefaultSort.New -> compareByDescending { it.postedAt }
                 CommentsDefaultSort.Old -> compareBy { it.postedAt }
             }
@@ -372,8 +394,8 @@ internal class GetLinkDetailsQuery @Inject constructor(
 
                     val replies = value
                         .sortedBy { it.postedAt }
-                        .map { reply -> reply.toUi(loggedUser, link, filteringPreferences, imagePreferences, blacklist, viewState) }
-                        .filterNot { it is LinkCommentUi.Hidden && filteringPreferences.hideBlacklistedContent }
+                        .map { reply -> reply.toUi(loggedUser, link, commentPreferences, blacklist, viewState) }
+                        .filterNot { it is LinkCommentUi.Hidden && commentPreferences.hideBlacklistedContent }
                     val parent = ParentCommentUi(
                         collapsedCount = if (isCollapsed && replies.isNotEmpty()) "+${replies.size}" else null,
                         toggleExpansionStateAction = if (replies.isNotEmpty()) {
@@ -390,7 +412,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                         } else {
                             null
                         },
-                        data = key.toUi(loggedUser, link, filteringPreferences, imagePreferences, blacklist, viewState),
+                        data = key.toUi(loggedUser, link, commentPreferences, blacklist, viewState),
                     )
 
                     parent to replies.takeUnless { isCollapsed }.orEmpty()
@@ -405,6 +427,24 @@ internal class GetLinkDetailsQuery @Inject constructor(
             commentsUi to commentsAction
         }
 
+    private fun getCommentPreferences(): Flow<CommentPreferences> = combine(
+        getLinksPreferences(),
+        getFilteringPreferences(),
+        getImagePreferences(),
+        getMikroblogPreferences(),
+    ) { links, filtering, image, mikroblog ->
+        CommentPreferences(
+            hideNewUserContent = filtering.hideNewUserContent,
+            hideNsfwContent = filtering.hideNsfwContent,
+            hideBlacklistedContent = filtering.hideBlacklistedContent,
+            hidePlus18Content = filtering.hidePlus18Content,
+            sort = links.commentsSort,
+            openSpoilersInDialog = mikroblog.openSpoilersInDialog,
+            showMinifiedImages = image.showMinifiedImages,
+        )
+    }
+        .distinctUntilChanged()
+
     private fun relatedLinksFlow() =
         relatedLinksStore.stream(StoreRequest.cached(key = linkId, refresh = false))
             .map { it.dataOrNull() }
@@ -417,8 +457,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
     private suspend fun LinkComment.toUi(
         loggedUser: LoggedUserInfo?,
         link: LinkInfo,
-        filteringPreferences: FilteringPreferences,
-        imagePreferences: ImagePreferences,
+        commentPreferences: CommentPreferences,
         blacklist: Blacklist,
         viewState: LinkDetailsViewState,
     ): LinkCommentUi {
@@ -427,7 +466,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
             link.author.profileId -> ColorConst.CommentOriginalPoster
             else -> null
         }
-        val isBlocked = isBlocked(filteringPreferences, blacklist)
+        val isBlocked = isBlocked(commentPreferences.hideNewUserContent, blacklist)
 
         return if (isBlocked && !viewState.forciblyShownBlockedComments.contains(id)) {
             LinkCommentUi.Hidden(
@@ -441,8 +480,8 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 },
             )
         } else {
-            val isConsideredNsfw = usedTags.contains("nsfw") && filteringPreferences.hideNsfwContent
-            val isConsideredPlus18 = embed?.hasAdultContent == true && filteringPreferences.hidePlus18Content
+            val isConsideredNsfw = usedTags.contains("nsfw") && commentPreferences.hideNsfwContent
+            val isConsideredPlus18 = embed?.hasAdultContent == true && commentPreferences.hidePlus18Content
             val couldHaveNsfwOverlay = isConsideredNsfw || isConsideredPlus18
             val hasNsfwOverlay = couldHaveNsfwOverlay && !viewState.allowedNsfwImages.contains(embed?.id)
 
@@ -450,20 +489,22 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 id = id,
                 postedAgo = postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(suffix = "temu"),
                 app = app,
-                body = body.takeIf { it.isNotBlank() }?.let {
-                    htmlUtils.parseHtml(
-                        text = it,
-                        onLinkClicked = safeCallback { link ->
-                            val request = when {
-                                link.startsWith("@") -> InteropRequest.Profile(link.substringAfter("@"))
-                                link.startsWith("#") -> InteropRequest.Tag(link.substringAfter("#"))
-                                link.startsWith("spoiler:") -> TODO("NOT SUPPORTED")
-                                else -> InteropRequest.WebBrowser(link)
-                            }
-                            interopRequests.request(request)
-                        },
-                    )
-                },
+                body = body.toCommentBody(
+                    textUtils = textUtils,
+                    showsSpoilersInDialog = commentPreferences.openSpoilersInDialog,
+                    expandedSpoilers = viewState.expandedSpoilers[id].orEmpty(),
+                    showSpoilerDialog = safeCallback { content ->
+                        val contentParsed = content()
+                        viewStateStorage.update { it.copy(spoilerDialog = contentParsed) }
+                    },
+                    saveExpandedSpoiler = safeCallback { spoilerId ->
+                        viewStateStorage.update {
+                            val spoilersInComment = it.expandedSpoilers[id].orEmpty() + spoilerId
+                            it.copy(expandedSpoilers = it.expandedSpoilers + (id to spoilersInComment))
+                        }
+                    },
+                    onNavigation = safeCallback { request -> interopRequests.request(request) },
+                ),
                 author = author.toUi(
                     onClicked = safeCallback { interopRequests.request(InteropRequest.Profile(profileId = author.profileId)) },
                 ),
@@ -494,7 +535,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 badge = color,
                 embed = embed?.let { embed ->
                     embed.toUi(
-                        useLowQualityImage = imagePreferences.showMinifiedImages,
+                        useLowQualityImage = commentPreferences.showMinifiedImages,
                         clickAction = safeCallback {
                             if (hasNsfwOverlay) {
                                 viewStateStorage.update { it.copy(allowedNsfwImages = it.allowedNsfwImages + embed.id) }
@@ -522,7 +563,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                                         label = Strings.Link.MORE_OPTION_COPY,
                                         icon = Drawable.Copy,
                                         clickAction = safeCallback {
-                                            clipboardService.copy(body)
+                                            clipboardService.copy(body.copyableText(textUtils))
                                             showSnackbar(Strings.COPIED_TO_CLIPBOARD)
                                         },
                                     ),
@@ -572,6 +613,13 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 .onFailure { failure -> viewStateStorage.update { it.copy(generalResource = Resource.error(FailedAction(failure))) } }
         }
     }
+
+    private fun <T1, T2> safeCallback(function: suspend CoroutineScope.(T1, T2) -> Unit): (T1, T2) -> Unit = { t1, t2 ->
+        appScopes.safeKeyed<LinkDetailsScope>(linkId) {
+            runCatching { function(t1, t2) }
+                .onFailure { failure -> viewStateStorage.update { it.copy(generalResource = Resource.error(FailedAction(failure))) } }
+        }
+    }
 }
 
 private val VoteDownReason.label: String
@@ -609,12 +657,22 @@ private val LinkComment.usedTags
     get() = tagsRegex.matchEntire(body)?.groupValues.orEmpty()
 
 private suspend fun LinkComment.isBlocked(
-    filteringPreferences: FilteringPreferences,
+    hideNewUserContent: Boolean,
     blacklist: Blacklist,
 ): Boolean = withContext(AppDispatchers.Default) {
     val blockedTagsUsed = usedTags.intersect(blacklist.tags)
     val linkAuthorOnBlackList = blacklist.users.contains(author.profileId)
-    val isTooLowRank = filteringPreferences.hideNewUserContent && author.color == UserInfo.Color.Green
+    val isTooLowRank = hideNewUserContent && author.color == UserInfo.Color.Green
 
     blockedTagsUsed.isNotEmpty() || linkAuthorOnBlackList || isTooLowRank
 }
+
+private data class CommentPreferences(
+    val hideNewUserContent: Boolean,
+    val hideNsfwContent: Boolean,
+    val sort: CommentsDefaultSort,
+    val hideBlacklistedContent: Boolean,
+    val hidePlus18Content: Boolean,
+    val openSpoilersInDialog: Boolean,
+    val showMinifiedImages: Boolean,
+)

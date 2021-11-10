@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.github.wykopmobilny.ui.components.utils.readAttr
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.link_details.android.R
 import io.github.wykopmobilny.ui.link_details.android.databinding.FragmentLinkDetailsBinding
 import io.github.wykopmobilny.utils.bindings.collectErrorDialog
+import io.github.wykopmobilny.utils.bindings.collectInfoDialog
 import io.github.wykopmobilny.utils.bindings.collectMenuOptions
 import io.github.wykopmobilny.utils.bindings.collectOptionPicker
 import io.github.wykopmobilny.utils.bindings.collectSnackbar
@@ -67,6 +67,7 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
                     .collect { adapter.submitList(it) }
             }
             launch { shared.map { it.errorDialog }.collectErrorDialog(view.context) }
+            launch { shared.map { it.infoDialog }.collectInfoDialog(view.context) }
             launch { shared.map { it.swipeRefresh }.collectSwipeRefresh(binding.swipeRefresh) }
             launch { shared.map { it.contextMenuOptions }.collectMenuOptions(binding.toolbar) }
             launch { shared.map { it.picker }.collectOptionPicker(view.context) }

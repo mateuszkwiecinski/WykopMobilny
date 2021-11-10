@@ -264,7 +264,7 @@
                 <data
                     android:host="www.wykop.pl"
                     android:pathPrefix="/wpis"
-                    android:scheme="https"
+                    android:scheme="http"
                     />
             </intent-filter>
         </activity>

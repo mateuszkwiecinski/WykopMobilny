@@ -6,7 +6,7 @@ import dagger.Binds
 import dagger.Module
 import io.github.wykopmobilny.domain.navigation.AppRestarter
 import io.github.wykopmobilny.domain.navigation.ClipboardService
-import io.github.wykopmobilny.domain.navigation.HtmlUtils
+import io.github.wykopmobilny.domain.navigation.WykopTextUtils
 import io.github.wykopmobilny.domain.navigation.SystemSettingsDetector
 import io.github.wykopmobilny.domain.navigation.YoutubeAppDetector
 
@@ -26,7 +26,7 @@ internal abstract class FrameworkModule {
     abstract fun AndroidYoutubeAppDetector.youtubeDetector(): YoutubeAppDetector
 
     @Binds
-    abstract fun AndroidHtmlUtils.htmlUtils(): HtmlUtils
+    abstract fun AndroidWykopTextUtils.htmlUtils(): WykopTextUtils
 
     @Binds
     abstract fun AndroidClipboardService.clipboardService(): ClipboardService

@@ -52,8 +52,7 @@ fun TextView.prepareBody(
                     setPositiveButton(android.R.string.ok, null)
                     val dialog = create()
                     dialog.show()
-                    dialog.findViewById<TextView>(android.R.id.message)?.movementMethod =
-                        LinkMovementMethod.getInstance()
+                    dialog.findViewById<TextView>(android.R.id.message)?.movementMethod = LinkMovementMethod.getInstance()
                 }
             }
         } else urlClickListener(url.text())
