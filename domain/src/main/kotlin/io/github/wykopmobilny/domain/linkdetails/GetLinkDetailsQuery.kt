@@ -567,11 +567,6 @@ internal class GetLinkDetailsQuery @Inject constructor(
                                             showSnackbar(Strings.COPIED_TO_CLIPBOARD)
                                         },
                                     ),
-                                    OptionPickerUi.Option(
-                                        label = Strings.Link.MORE_OPTION_REPORT,
-                                        icon = Drawable.Report,
-                                        clickAction = safeCallback { TODO("Report not available") },
-                                    ),
                                 ),
                                 dismissAction = safeCallback { viewStateStorage.update { it.copy(picker = null) } },
                             ),
