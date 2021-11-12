@@ -28,9 +28,7 @@ internal fun LinkDetailsReplyCommentBinding.bindReplyComment(comment: LinkCommen
     txtBody.text = comment.body
     txtBody.movementMethod = SelectableLinkMovement
     imgEmbed.bind(comment.embed)
-    val badgeColor = (comment.badge?.toColorInt(context = root.context)
-        ?: root.context.readColorAttr(R.attr.colorControlHighlightOnPrimary))
-        .defaultColor
+    val badgeColor = (comment.badge?.toColorInt(context = root.context) ?: root.context.readColorAttr(R.attr.colorDivider)).defaultColor
     lineCommentMiddle.setBackgroundColor(badgeColor)
     lineCommentLast.setBackgroundColor(badgeColor)
     lineAlwaysVisible.setBackgroundColor(badgeColor)

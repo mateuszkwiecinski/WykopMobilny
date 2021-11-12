@@ -5,8 +5,8 @@ import io.github.wykopmobilny.data.cache.api.EmbedType
 import io.github.wykopmobilny.data.cache.api.UserVote
 import io.github.wykopmobilny.domain.profile.UserInfo
 import io.github.wykopmobilny.ui.components.widgets.EmbedMediaUi
-import io.github.wykopmobilny.ui.components.widgets.EmbedMediaUi.Overlay
 import kotlinx.datetime.Instant
+import java.net.URL
 
 internal data class LinkComment(
     val id: Long,
@@ -31,23 +31,31 @@ internal fun Embed.toUi(
     hasNsfwOverlay: Boolean,
     clickAction: () -> Unit,
 ) = EmbedMediaUi(
-    previewUrl = if (useLowQualityImage) {
-        preview
-    } else {
-        id
+    content = when (type) {
+        EmbedType.AnimatedImage ->
+            EmbedMediaUi.Content.PlayableMedia(
+                url = id,
+                previewImage = preview,
+                domain = "Gif",
+            )
+        EmbedType.Video ->
+            EmbedMediaUi.Content.PlayableMedia(
+                url = id,
+                previewImage = preview,
+                domain = URL(id).host.split(".").dropLast(1).lastOrNull() ?: URL(id).host,
+            )
+        EmbedType.StaticImage,
+        EmbedType.Unknown,
+        -> EmbedMediaUi.Content.StaticImage(
+            url = if (useLowQualityImage) {
+                id
+            } else {
+                preview
+            },
+            fileName = fileName,
+        )
     },
-    fileName = fileName,
-    size = size,
+    size = size.takeIf { useLowQualityImage || type == EmbedType.AnimatedImage },
+    hasNsfwOverlay = hasNsfwOverlay,
     clickAction = clickAction,
-    overlay = if (hasNsfwOverlay) {
-        Overlay.Nsfw
-    } else {
-        when (type) {
-            EmbedType.AnimatedImage -> Overlay.PlayGif
-            EmbedType.Video -> Overlay.PlayVideo
-            EmbedType.StaticImage,
-            EmbedType.Unknown,
-            -> null
-        }
-    },
 )

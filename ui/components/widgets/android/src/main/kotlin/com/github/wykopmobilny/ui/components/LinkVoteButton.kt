@@ -24,7 +24,7 @@ class LinkVoteButton(context: Context, attrs: AttributeSet?) : LinearLayout(cont
 
 fun LinkVoteButton.bind(value: TwoActionsCounterUi) {
     val binding = ViewLinkVoteButtonBinding.bind(this)
-    val stroke = value.color?.toColorInt(context) ?: context.readColorAttr(R.attr.outlineColor)
+    val stroke = value.color?.toColorInt(context) ?: context.readColorAttr(R.attr.colorOutline)
     val color = value.color?.toColorInt(context) ?: context.readColorAttr(R.attr.colorControlNormal)
 
     (background.mutate() as RippleDrawable).getDrawable(1).mutate().setTintList(stroke)

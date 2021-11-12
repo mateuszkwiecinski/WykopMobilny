@@ -15,6 +15,7 @@ import io.github.wykopmobilny.utils.bindings.toColorInt
 internal fun LinkDetailsParentCommentBinding.bindParentComment(
     parent: ParentCommentUi,
     data: LinkCommentUi.Normal,
+    hasReplies: Boolean,
 ) {
 //    root.setOnLongClick(parent.toggleExpansionStateAction)
 
@@ -34,6 +35,7 @@ internal fun LinkDetailsParentCommentBinding.bindParentComment(
     plusButton.bind(data.plusCount)
     minusButton.bind(data.minusCount)
     moreButton.setOnClick(data.moreAction)
+    lineComment.isVisible = hasReplies
 }
 
 internal fun LinkDetailsParentCommentHiddenBinding.bindHiddenParent(

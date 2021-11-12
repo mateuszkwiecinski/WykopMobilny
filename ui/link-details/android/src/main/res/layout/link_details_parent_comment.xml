@@ -10,7 +10,7 @@
 
     <com.github.wykopmobilny.ui.components.AvatarView
         android:id="@+id/imgAvatar"
-        android:layout_width="36dp"
+        android:layout_width="32dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
@@ -129,7 +129,7 @@
         android:id="@+id/imgBadge"
         android:layout_width="2dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/contentBarrier"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:background="#f0f"
@@ -175,5 +175,17 @@
         app:layout_constraintTop_toBottomOf="@id/contentBarrier"
         app:tint="?colorControlNormal"
         tools:tint="?colorControlNormal"
+        />
+
+    <View
+        android:id="@+id/lineComment"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:background="?colorDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contentBarrier"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

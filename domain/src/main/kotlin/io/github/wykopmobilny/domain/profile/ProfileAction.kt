@@ -26,6 +26,7 @@ internal data class LinkInfo(
     val tags: List<String>,
     val sourceUrl: String,
     val previewImageUrl: String?,
+    val fullImageUrl: String?,
     val commentsCount: Int,
     val relatedCount: Int,
     val voteCount: Int,

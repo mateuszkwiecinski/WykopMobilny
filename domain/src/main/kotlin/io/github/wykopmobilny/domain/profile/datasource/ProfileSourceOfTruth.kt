@@ -6,6 +6,7 @@ import com.squareup.sqldelight.runtime.coroutines.mapToList
 import io.github.wykopmobilny.api.responses.AuthorResponse
 import io.github.wykopmobilny.api.responses.EmbedResponse
 import io.github.wykopmobilny.api.responses.EntryLinkResponse
+import io.github.wykopmobilny.api.responses.properUrl
 import io.github.wykopmobilny.data.cache.api.AppCache
 import io.github.wykopmobilny.data.cache.api.Embed
 import io.github.wykopmobilny.data.cache.api.EmbedType
@@ -14,6 +15,7 @@ import io.github.wykopmobilny.data.cache.api.LinkEntity
 import io.github.wykopmobilny.data.cache.api.ProfileActionsEntity
 import io.github.wykopmobilny.data.cache.api.ProfileQueries
 import io.github.wykopmobilny.data.cache.api.UserVote
+import io.github.wykopmobilny.domain.linkdetails.datasource.stripImageCompression
 import io.github.wykopmobilny.domain.profile.EntryInfo
 import io.github.wykopmobilny.domain.profile.LinkInfo
 import io.github.wykopmobilny.domain.profile.ProfileAction
@@ -44,6 +46,7 @@ internal fun profileSourceOfTruth(
                         tags = link.tags.split(" "),
                         sourceUrl = link.sourceUrl,
                         previewImageUrl = link.previewImageUrl,
+                        fullImageUrl = link.fullImageUrl,
                         author = UserInfo(
                             profileId = link.profileId,
                             avatarUrl = link.avatar,
@@ -117,6 +120,7 @@ internal fun profileSourceOfTruth(
                             tags = tags,
                             sourceUrl = sourceUrl,
                             previewImageUrl = preview,
+                            fullImageUrl = preview?.stripImageCompression(),
                             voteCount = voteCount,
                             buryCount = buryCount,
                             commentsCount = commentsCount,
@@ -143,7 +147,7 @@ internal fun profileSourceOfTruth(
                             postedAt = date,
                             body = body.orEmpty(),
                             voteCount = voteCount,
-                            embedId = embed?.url,
+                            embedId = embed?.properUrl,
                             commentsCount = commentsCount,
                             isBlocked = blocked,
                             isFavorite = favorite,
@@ -183,16 +187,16 @@ internal fun ProfileQueries.upsert(author: AuthorResponse) {
 internal fun EmbedResponse.toEntity(): Embed {
     val knownType = when (type) {
         "image" -> if (animated) {
-            EmbedType.StaticImage
-        } else {
             EmbedType.AnimatedImage
+        } else {
+            EmbedType.StaticImage
         }
         "video" -> EmbedType.Video
         else -> EmbedType.Unknown
     }
 
     return Embed(
-        id = url,
+        id = properUrl,
         type = knownType,
         fileName = source,
         preview = preview,

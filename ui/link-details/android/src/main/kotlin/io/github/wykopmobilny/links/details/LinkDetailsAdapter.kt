@@ -57,7 +57,11 @@ internal class LinkDetailsAdapter : ListAdapter<ListItem, LinkDetailsAdapter.Bin
         when (val item = getItem(position)) {
             is ListItem.Header -> (holder.binding as LinkDetailsHeaderBinding).bindHeader(item.header)
             is ListItem.ParentComment -> when (val data = item.comment.data) {
-                is LinkCommentUi.Normal -> (holder.binding as LinkDetailsParentCommentBinding).bindParentComment(item.comment, data)
+                is LinkCommentUi.Normal -> (holder.binding as LinkDetailsParentCommentBinding).bindParentComment(
+                    parent = item.comment,
+                    data = data,
+                    hasReplies = item.hasReplies,
+                )
                 is LinkCommentUi.Hidden -> (holder.binding as LinkDetailsParentCommentHiddenBinding).bindHiddenParent(item.comment, data)
             }
             is ListItem.ReplyComment -> when (val comment = item.comment) {
@@ -84,7 +88,10 @@ internal sealed class ListItem {
 
     data class RelatedSection(val related: RelatedLinksSectionUi) : ListItem()
 
-    data class ParentComment(val comment: ParentCommentUi) : ListItem() {
+    data class ParentComment(
+        val comment: ParentCommentUi,
+        val hasReplies: Boolean,
+    ) : ListItem() {
         val id = comment.data.id
     }
 
@@ -124,7 +131,7 @@ private val LinkCommentUi.id
 internal fun LinkDetailsUi.toAdapterList(): List<ListItem> = buildList {
     add(ListItem.Header(header))
     commentsSection.comments.forEach { (parent, replies) ->
-        add(ListItem.ParentComment(parent))
+        add(ListItem.ParentComment(parent, hasReplies = replies.isNotEmpty()))
         addAll(replies.map { linkCommentUi -> ListItem.ReplyComment(linkCommentUi, linkCommentUi.id == replies.last().id) })
     }
 }

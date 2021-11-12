@@ -30,7 +30,7 @@ internal class GetMediaPreferences @Inject constructor(
     }
 }
 
-data class MediaPlayerPreferences(
+internal data class MediaPlayerPreferences(
     val useYoutubePlayer: Boolean,
     val useEmbeddedPlayer: Boolean,
 )

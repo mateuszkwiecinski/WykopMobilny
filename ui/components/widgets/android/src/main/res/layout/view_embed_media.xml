@@ -18,4 +18,62 @@
         tools:src="@drawable/ic_favorite"
         tools:tint="#f0f"
         />
+
+    <ImageView
+        android:id="@+id/imgPromptBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/outlined_circle"
+        android:theme="@style/ThemeOverlay.App.ImageOverlay"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/txtPrompt"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="4dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.MaterialScale.Caption"
+        android:textColor="?textColorOnDarkSurface"
+        app:autoSizeMaxTextSize="12dp"
+        app:autoSizeMinTextSize="2sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/imgPromptBackground"
+        app:layout_constraintEnd_toEndOf="@id/imgPromptBackground"
+        app:layout_constraintStart_toStartOf="@id/imgPromptBackground"
+        app:layout_constraintTop_toTopOf="@id/imgPromptBackground"
+        tools:text="Reddit"
+        />
+
+    <ImageView
+        android:id="@+id/fullOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintBottom_toBottomOf="@id/imgPreview"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="#22000000"
+        tools:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/txtSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?colorOnSurface"
+        android:padding="4dp"
+        android:textAppearance="@style/TextAppearance.MaterialScale.Caption.Secondary"
+        android:textColor="?textColorOnDarkSurface"
+        android:theme="@style/ThemeOverlay.App.ImageOverlay"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="123 Kb"
+        />
 </merge>

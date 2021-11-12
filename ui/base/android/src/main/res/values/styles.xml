@@ -8,6 +8,7 @@
     <style name="Widget.App.Toolbar.Dark">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar.Dark</item>
     </style>
+
     <style name="Widget.App.Toolbar.Amoled" parent="Widget.App.Toolbar.Dark">
         <item name="android:elevation">0dp</item>
     </style>
@@ -23,6 +24,11 @@
 
     <style name="ThemeOverlay.App.Toolbar.Transparent">
         <item name="colorPrimary">#00000000</item>
+    </style>
+
+    <style name="ThemeOverlay.App.ImageOverlay" parent="ThemeOverlay.MaterialComponents">
+        <item name="colorOnSurface">#80000000</item>
+        <item name="colorOutline">#BFBFBF</item>
     </style>
 
     <style name="Widget.App.Tab" parent="Widget.MaterialComponents.TabLayout">

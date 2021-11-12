@@ -151,7 +151,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                         },
                     ),
                     upvotePercentage = link.upvotePercentage,
-                    previewImageUrl = link.previewImageUrl,
+                    previewImageUrl = link.fullImageUrl,
                     commentsCount = Button(
                         label = link.commentsCount.toString(),
                         icon = Drawable.Comments,
@@ -388,8 +388,8 @@ internal class GetLinkDetailsQuery @Inject constructor(
             link ?: return@combine emptyMap<ParentCommentUi, List<LinkCommentUi>>() to null
 
             val commentsUi = comments.orEmpty()
-                .toSortedMap(comparator)
-                .mapNotNull { (key, value) ->
+                .toSortedMap(comparator.thenComparing(compareBy { it.id }))
+                .map { (key, value) ->
                     val isCollapsed = viewState.collapsedIds.contains(key.id)
 
                     val replies = value
@@ -587,9 +587,9 @@ internal class GetLinkDetailsQuery @Inject constructor(
 
     private suspend fun showEmbedImage(embed: Embed, commentId: Long) {
         when (embed.type) {
-            EmbedType.StaticImage -> TODO("Show image")
-            EmbedType.AnimatedImage -> TODO("Show animated image")
-            EmbedType.Video -> TODO("Show image")
+            EmbedType.StaticImage -> TODO("Show image ${embed.id}")
+            EmbedType.AnimatedImage -> TODO("Show animated image ${embed.id}")
+            EmbedType.Video -> TODO("Show video ${embed.id}")
             EmbedType.Unknown -> viewStateStorage.update {
                 it.copy(generalResource = Resource.error(FailedAction(IllegalArgumentException("Unsupported image type. ($commentId)"))))
             }
