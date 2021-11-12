@@ -103,7 +103,7 @@ abstract class BaseScreenshotTest : ScreenshotTest {
     }
 
     companion object {
-        const val avatarUrl = "https://www.wykop.pl/cdn/c3397992/avatar_def,q150.png"
+        const val avatarUrl = "file:///android_asset/responses/avatar.png"
     }
 }
 

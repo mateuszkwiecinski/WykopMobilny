@@ -21,7 +21,7 @@ internal fun LinkDetailsParentCommentBinding.bindParentComment(
 
     txtCollapsed.isVisible = parent.collapsedCount != null
     txtCollapsed.text = parent.collapsedCount
-//    txtCollapsed.setOnClick(parent.toggleExpansionStateAction)
+    txtCollapsed.setOnClick(parent.toggleExpansionStateAction)
 
     imgAvatar.bind(data.author.avatar)
     txtUser.setUserNick(data.author)

@@ -16,7 +16,8 @@ import io.github.wykopmobilny.utils.bindings.toColorInt
 internal fun LinkDetailsReplyCommentHiddenBinding.bindHiddenReply(comment: LinkCommentUi.Hidden) {
     root.setOnClick(comment.onClicked)
     txtUser.setUserNick(comment.author)
-    imgBadge.setBackgroundColor(comment.badge.toColorInt(context = root.context).defaultColor)
+    val badgeColor = (comment.badge?.toColorInt(context = root.context) ?: root.context.readColorAttr(R.attr.colorDivider)).defaultColor
+    imgBadge.setBackgroundColor(badgeColor)
 }
 
 internal fun LinkDetailsReplyCommentBinding.bindReplyComment(comment: LinkCommentUi.Normal, isLast: Boolean) {

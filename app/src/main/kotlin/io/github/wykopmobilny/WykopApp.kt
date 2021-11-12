@@ -46,11 +46,14 @@ import io.github.wykopmobilny.ui.blacklist.BlacklistDependencies
 import io.github.wykopmobilny.ui.login.LoginDependencies
 import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.modules.blacklist.BlacklistActivity
+import io.github.wykopmobilny.ui.modules.embedview.EmbedViewActivity
+import io.github.wykopmobilny.ui.modules.embedview.YoutubeActivity
 import io.github.wykopmobilny.ui.modules.input.entry.add.AddEntryActivity
 import io.github.wykopmobilny.ui.modules.links.downvoters.DownvotersActivity
 import io.github.wykopmobilny.ui.modules.links.upvoters.UpvotersActivity
 import io.github.wykopmobilny.ui.modules.mainnavigation.MainNavigationActivity
 import io.github.wykopmobilny.ui.modules.notificationslist.NotificationsListActivity
+import io.github.wykopmobilny.ui.modules.photoview.PhotoViewActivity
 import io.github.wykopmobilny.ui.modules.pm.conversation.ConversationActivity
 import io.github.wykopmobilny.ui.modules.profile.ProfileActivity
 import io.github.wykopmobilny.ui.modules.tag.TagActivity
@@ -384,6 +387,10 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                     }
                     is InteropRequest.DownvotersList -> context.startActivity(DownvotersActivity.createIntent(it.linkId, context))
                     is InteropRequest.UpvotersList -> context.startActivity(UpvotersActivity.createIntent(it.linkId, context))
+                    is InteropRequest.OpenPlayer -> context.startActivity(EmbedViewActivity.createIntent(context, it.url))
+                    is InteropRequest.OpenYoutube -> context.startActivity(YoutubeActivity.createIntent(context, it.url))
+                    is InteropRequest.ShowGif -> context.startActivity(PhotoViewActivity.createIntent(context, it.url))
+                    is InteropRequest.ShowImage -> context.startActivity(PhotoViewActivity.createIntent(context, it.url))
                 }
                     .run { }
             }

@@ -17,6 +17,7 @@ dependencies {
     implementation("androidx.fragment:fragment-testing:1.3.6")
     implementation("com.karumi:shot-android:5.11.2")
     implementation(libs.bundles.espresso)
+    implementation(libs.glide.core)
     api("com.thedeanda:lorem:2.1")
     api("junit:junit:4.13.2")
 }

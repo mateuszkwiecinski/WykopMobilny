@@ -156,7 +156,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                     commentsCount = Button(
                         label = link.commentsCount.toString(),
                         icon = Drawable.Comments,
-                        clickAction = toggleCommentsAction.takeIf { false },
+                        clickAction = toggleCommentsAction,
                     ),
                     postedAgo = link.postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(suffix = "temu"),
                     author = link.author.toUi(
@@ -547,17 +547,8 @@ internal class GetLinkDetailsQuery @Inject constructor(
                                 interopRequests.openMedia(
                                     embed = embed,
                                     preferences = commentPreferences.mediaPreferences,
-                                ) {
-                                    viewStateStorage.update {
-                                        it.copy(
-                                            generalResource = Resource.error(
-                                                failedAction = FailedAction(
-                                                    cause = IllegalArgumentException("Unsupported image type. (${embed.id})"),
-                                                ),
-                                            ),
-                                        )
-                                    }
-                                }
+                                    onUnknown = { showError("Unsupported image type. (${embed.id})") },
+                                )
                             }
                         },
                         hasNsfwOverlay = hasNsfwOverlay,
@@ -591,6 +582,12 @@ internal class GetLinkDetailsQuery @Inject constructor(
                     }
                 },
             )
+        }
+    }
+
+    private fun showError(message: String) {
+        viewStateStorage.update {
+            it.copy(generalResource = Resource.error(failedAction = FailedAction(cause = IllegalArgumentException(message))))
         }
     }
 

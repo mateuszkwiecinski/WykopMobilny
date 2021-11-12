@@ -43,10 +43,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.MaterialScale.Caption.Secondary"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@id/imgAvatar"
+        app:layout_constraintEnd_toStartOf="@id/txtApp"
         app:layout_constraintStart_toStartOf="@id/txtUser"
         app:layout_constraintTop_toBottomOf="@id/txtUser"
-        tools:text="2 godz."
+        tools:text="2 godz. temu"
         />
 
     <TextView
@@ -64,10 +66,15 @@
         android:id="@+id/txtApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:enabled="false"
         android:textAppearance="@style/TextAppearance.MaterialScale.Caption.Secondary"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@id/txtCollapsed"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/space"
         app:layout_constraintTop_toTopOf="@id/txtTimestamp"
+        app:layout_goneMarginEnd="8dp"
         tools:text="via Android"
         />
 
@@ -93,7 +100,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="imgAvatar, txtTimestamp"
+        app:constraint_referenced_ids="imgAvatar, txtTimestamp, txtApp"
         />
 
     <TextView
