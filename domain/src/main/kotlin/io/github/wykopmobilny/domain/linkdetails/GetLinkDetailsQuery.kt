@@ -8,7 +8,6 @@ import io.github.wykopmobilny.data.cache.api.EmbedType
 import io.github.wykopmobilny.data.cache.api.UserVote
 import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.linkdetails.di.LinkDetailsScope
-import io.github.wykopmobilny.domain.linkdetails.di.LinkId
 import io.github.wykopmobilny.domain.navigation.ClipboardService
 import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.InteropRequestsProvider
@@ -35,6 +34,7 @@ import io.github.wykopmobilny.links.details.CommentsSectionUi
 import io.github.wykopmobilny.links.details.GetLinkDetails
 import io.github.wykopmobilny.links.details.LinkCommentUi
 import io.github.wykopmobilny.links.details.LinkDetailsHeaderUi
+import io.github.wykopmobilny.links.details.LinkDetailsKey
 import io.github.wykopmobilny.links.details.LinkDetailsUi
 import io.github.wykopmobilny.links.details.ParentCommentUi
 import io.github.wykopmobilny.links.details.RelatedLinkUi
@@ -76,7 +76,7 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 
 internal class GetLinkDetailsQuery @Inject constructor(
-    @LinkId private val linkId: Long,
+    private val key: LinkDetailsKey,
     private val linkStore: Store<Long, LinkInfo>,
     private val commentsStore: Store<Long, Map<LinkComment, List<LinkComment>>>,
     private val relatedLinksStore: Store<Long, List<RelatedLink>>,
@@ -282,8 +282,8 @@ internal class GetLinkDetailsQuery @Inject constructor(
                     refreshAction = safeCallback {
                         coroutineScope {
                             viewStateStorage.update { viewState.copy(generalResource = Resource.loading()) }
-                            val linkRefresh = async { linkStore.fresh(linkId) }
-                            val commentsRefresh = async { commentsStore.fresh(linkId) }
+                            val linkRefresh = async { linkStore.fresh(key = key.linkId) }
+                            val commentsRefresh = async { commentsStore.fresh(key = key.linkId) }
 
                             runCatching { awaitAll(linkRefresh, commentsRefresh) }
                                 .onSuccess {
@@ -368,7 +368,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
 
     private fun commentsFlow() =
         combine(
-            commentsStore.stream(StoreRequest.cached(key = linkId, refresh = false))
+            commentsStore.stream(StoreRequest.cached(key = key.linkId, refresh = false))
                 .map { it.dataOrNull() }
                 .distinctUntilChanged(),
             getCommentPreferences(),
@@ -446,11 +446,11 @@ internal class GetLinkDetailsQuery @Inject constructor(
         .distinctUntilChanged()
 
     private fun relatedLinksFlow() =
-        relatedLinksStore.stream(StoreRequest.cached(key = linkId, refresh = false))
+        relatedLinksStore.stream(StoreRequest.cached(key = key.linkId, refresh = false))
             .map { it.dataOrNull() }
 
     private fun detailsFlow() =
-        linkStore.stream(StoreRequest.cached(linkId, refresh = false))
+        linkStore.stream(StoreRequest.cached(key = key.linkId, refresh = false))
             .map { it.dataOrNull() }
             .distinctUntilChanged()
 
@@ -461,9 +461,10 @@ internal class GetLinkDetailsQuery @Inject constructor(
         blacklist: Blacklist,
         viewState: LinkDetailsViewState,
     ): LinkCommentUi {
-        val color = when (author.profileId) {
-            loggedUser?.id -> ColorConst.CommentCurrentUser
-            link.author.profileId -> ColorConst.CommentOriginalPoster
+        val color = when {
+            id == key.initialCommentId -> ColorConst.CommentLinked
+            author.profileId == loggedUser?.id -> ColorConst.CommentCurrentUser
+            author.profileId == link.author.profileId -> ColorConst.CommentOriginalPoster
             else -> null
         }
         val isBlocked = isBlocked(commentPreferences.hideNewUserContent, blacklist)
@@ -596,22 +597,15 @@ internal class GetLinkDetailsQuery @Inject constructor(
     }
 
     private fun safeCallback(function: suspend CoroutineScope.() -> Unit): () -> Unit = {
-        appScopes.safeKeyed<LinkDetailsScope>(linkId) {
+        appScopes.safeKeyed<LinkDetailsScope>(id = key) {
             runCatching { function() }
                 .onFailure { failure -> viewStateStorage.update { it.copy(generalResource = Resource.error(FailedAction(failure))) } }
         }
     }
 
     private fun <T> safeCallback(function: suspend CoroutineScope.(T) -> Unit): (T) -> Unit = {
-        appScopes.safeKeyed<LinkDetailsScope>(linkId) {
+        appScopes.safeKeyed<LinkDetailsScope>(id = key) {
             runCatching { function(it) }
-                .onFailure { failure -> viewStateStorage.update { it.copy(generalResource = Resource.error(FailedAction(failure))) } }
-        }
-    }
-
-    private fun <T1, T2> safeCallback(function: suspend CoroutineScope.(T1, T2) -> Unit): (T1, T2) -> Unit = { t1, t2 ->
-        appScopes.safeKeyed<LinkDetailsScope>(linkId) {
-            runCatching { function(t1, t2) }
                 .onFailure { failure -> viewStateStorage.update { it.copy(generalResource = Resource.error(FailedAction(failure))) } }
         }
     }

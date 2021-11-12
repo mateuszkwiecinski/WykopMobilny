@@ -33,6 +33,7 @@ import io.github.wykopmobilny.domain.styles.di.StylesScope
 import io.github.wykopmobilny.domain.work.di.WorkScope
 import io.github.wykopmobilny.initializers.RemoteConfigKeys
 import io.github.wykopmobilny.links.details.LinkDetailsDependencies
+import io.github.wykopmobilny.links.details.LinkDetailsKey
 import io.github.wykopmobilny.notification.AppNotification.Type.Notifications
 import io.github.wykopmobilny.notification.NotificationDependencies
 import io.github.wykopmobilny.notification.di.DaggerNotificationsComponent
@@ -251,16 +252,12 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             SearchDependencies::class -> getOrPutScope<SearchScope>(scopeId) { domainComponent.search() }
             NotificationDependencies::class -> getOrPutScope<NotificationsScope>(scopeId) { domainComponent.notifications() }
             LinkDetailsDependencies::class -> {
-                scopeId as Long
-                getOrPutScope<LinkDetailsScope>(scopeId) {
-                    domainComponent.linkDetails().create(linkId = scopeId)
-                }
+                scopeId as LinkDetailsKey
+                getOrPutScope<LinkDetailsScope>(scopeId) { domainComponent.linkDetails().create(key = scopeId) }
             }
             ProfileDependencies::class -> {
                 scopeId as String
-                getOrPutScope<ProfileScope>(scopeId) {
-                    domainComponent.profile().create(profileId = scopeId)
-                }
+                getOrPutScope<ProfileScope>(scopeId) { domainComponent.profile().create(profileId = scopeId) }
             }
             else -> error("Unknown dependency type $clazz")
         }.dependencyContainer as T

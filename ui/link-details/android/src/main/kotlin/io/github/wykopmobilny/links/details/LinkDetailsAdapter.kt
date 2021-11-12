@@ -84,18 +84,22 @@ internal sealed class ListItem {
 
     data class RelatedSection(val related: RelatedLinksSectionUi) : ListItem()
 
-    data class ParentComment(val comment: ParentCommentUi) : ListItem()
+    data class ParentComment(val comment: ParentCommentUi) : ListItem() {
+        val id = comment.data.id
+    }
 
-    data class ReplyComment(val comment: LinkCommentUi) : ListItem()
+    data class ReplyComment(val comment: LinkCommentUi) : ListItem() {
+        val id = comment.id
+    }
 
     companion object Diff : DiffUtil.ItemCallback<ListItem>() {
 
         override fun areItemsTheSame(oldItem: ListItem, newItem: ListItem): Boolean {
             return when (oldItem) {
                 is Header -> newItem is Header
-                is ParentComment -> oldItem.comment.data.id == (newItem as? ParentComment)?.comment?.data?.id
+                is ParentComment -> oldItem.id == (newItem as? ParentComment)?.id
                 is RelatedSection -> newItem is RelatedSection
-                is ReplyComment -> oldItem.comment.id == (newItem as? ReplyComment)?.comment?.id
+                is ReplyComment -> oldItem.id == (newItem as? ReplyComment)?.id
             }
         }
 

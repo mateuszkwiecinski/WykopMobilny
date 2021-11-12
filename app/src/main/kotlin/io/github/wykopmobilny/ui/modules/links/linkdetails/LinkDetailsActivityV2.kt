@@ -37,7 +37,7 @@ internal class LinkDetailsActivityV2 : ThemableActivity() {
         fun createIntent(context: Context, linkId: Long, commentId: Long? = null) =
             Intent(context, LinkDetailsActivityV2::class.java).apply {
                 putExtra(EXTRA_LINK_ID, linkId)
-                putExtra(EXTRA_COMMENT_ID, commentId)
+                commentId?.let{ putExtra(EXTRA_COMMENT_ID, it) }
             }
     }
 }

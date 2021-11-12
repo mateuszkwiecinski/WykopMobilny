@@ -4,3 +4,8 @@ interface LinkDetailsDependencies {
 
     fun getLinkDetails(): GetLinkDetails
 }
+
+data class LinkDetailsKey(
+    val linkId: Long,
+    val initialCommentId: Long?,
+)
