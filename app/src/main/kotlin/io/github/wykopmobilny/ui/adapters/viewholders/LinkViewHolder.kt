@@ -15,7 +15,7 @@ import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 
 class LinkViewHolder(
     private val binding: LinkLayoutBinding,
-    private val settingsApi: SettingsPreferencesApi,
+    settingsApi: SettingsPreferencesApi,
     private val navigator: NewNavigator,
     private val userManagerApi: UserManagerApi,
     private val linkActionListener: LinkActionListener,
@@ -62,7 +62,7 @@ class LinkViewHolder(
             } else {
                 if (link.isBlocked) {
                     TYPE_BLOCKED
-                } else if (link.preview == null || !settingsPreferencesApi.linkShowImage) {
+                } else if (link.fullImage == null || !settingsPreferencesApi.linkShowImage) {
                     TYPE_NOIMAGE
                 } else {
                     TYPE_IMAGE
@@ -71,14 +71,18 @@ class LinkViewHolder(
         }
     }
 
+    private val linkImagePosition by lazy { settingsApi.linkImagePosition }
+    private val linkShowAuthor by lazy { settingsApi.linkShowAuthor }
+    private val showMinifiedImages by lazy { settingsApi.showMinifiedImages }
+
     private var type: Int = TYPE_IMAGE
     private lateinit var previewImageView: ImageView
 
     fun inflateCorrectImageView() {
-        previewImageView = when (settingsApi.linkImagePosition) {
+        previewImageView = when (linkImagePosition) {
             "top" -> {
                 val img = binding.imageTop.inflate() as ImageView
-                if (settingsApi.linkShowAuthor) {
+                if (linkShowAuthor) {
                     val params = img.layoutParams as ViewGroup.MarginLayoutParams
                     params.topMargin = (img.context.resources.displayMetrics.density * 8).toInt()
                 }
@@ -111,7 +115,7 @@ class LinkViewHolder(
             setWidgetAlpha(ALPHA_NEW)
         }
 
-        if (settingsApi.linkImagePosition == "left" || settingsApi.linkImagePosition == "right") {
+        if (linkImagePosition == "left" || linkImagePosition == "right") {
             binding.titleTextView.maxLines = 2
             binding.description.maxLines = 3
         } else {
@@ -120,9 +124,14 @@ class LinkViewHolder(
         }
 
         if (type == TYPE_IMAGE) {
-            previewImageView.loadImage(link.preview!!)
+            if (showMinifiedImages) {
+                link.previewImage
+            } else {
+                link.fullImage
+            }
+                ?.let(previewImageView::loadImage)
         }
-        if (settingsApi.linkShowAuthor && link.author != null) {
+        if (linkShowAuthor && link.author != null) {
             binding.authorHeaderView.setAuthorData(link.author, link.date, link.app)
             binding.authorHeaderView.isVisible = true
             binding.dateTextView.isVisible = false

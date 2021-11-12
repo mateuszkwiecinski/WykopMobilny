@@ -57,6 +57,7 @@ class SimpleLinkViewHolder(
             }
     }
 
+    private val showMinifiedImages by lazy { settingsApi.showMinifiedImages }
     private val digCountDrawable by lazy {
         itemView.context.obtainStyledAttributes(arrayOf(R.attr.digCountDrawable).toIntArray())
             .use { it.getDrawable(0) }
@@ -84,9 +85,14 @@ class SimpleLinkViewHolder(
         binding.simpleDiggHot.isVisible = link.isHot
 
         val shouldShowSimpleImages = settingsApi.linkShowImage
-        binding.simpleImage.isVisible = link.preview != null && shouldShowSimpleImages
+        binding.simpleImage.isVisible = link.fullImage != null && shouldShowSimpleImages
         if (shouldShowSimpleImages) {
-            link.preview?.let { binding.simpleImage.loadImage(link.preview) }
+            if (showMinifiedImages) {
+                link.previewImage
+            } else {
+                link.fullImage
+            }
+                ?.let { binding.simpleImage.loadImage(it) }
         }
 
         itemView.setOnClickListener {

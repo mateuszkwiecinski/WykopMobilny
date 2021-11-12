@@ -10,18 +10,18 @@ import io.github.wykopmobilny.databinding.LinkBuryMenuBottomsheetBinding
 import io.github.wykopmobilny.databinding.LinkDetailsHeaderLayoutBinding
 import io.github.wykopmobilny.databinding.LinkMenuBottomsheetBinding
 import io.github.wykopmobilny.models.dataclass.Link
+import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.fragments.link.LinkHeaderActionListener
 import io.github.wykopmobilny.ui.fragments.link.LinkInteractor
 import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.utils.api.getGroupColor
-import io.github.wykopmobilny.utils.api.stripImageCompression
 import io.github.wykopmobilny.utils.getActivityContext
 import io.github.wykopmobilny.utils.layoutInflater
+import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.loadImage
 import io.github.wykopmobilny.utils.textview.prepareBody
 import io.github.wykopmobilny.utils.textview.removeHtml
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
-import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.usermanager.isUserAuthorized
 import java.net.URL
 
@@ -30,7 +30,8 @@ class LinkHeaderViewHolder(
     private val linkActionListener: LinkHeaderActionListener,
     private val navigator: NewNavigator,
     private val linkHandler: WykopLinkHandler,
-    private val userManagerApi: UserManagerApi
+    private val userManagerApi: UserManagerApi,
+    settingsApi: SettingsPreferencesApi,
 ) : RecyclableViewHolder(binding.root) {
 
     companion object {
@@ -44,18 +45,21 @@ class LinkHeaderViewHolder(
             userManagerApi: UserManagerApi,
             navigator: NewNavigator,
             linkHandler: WykopLinkHandler,
-            linkHeaderActionListener: LinkHeaderActionListener
+            linkHeaderActionListener: LinkHeaderActionListener,
+            settingsApi: SettingsPreferencesApi,
         ): LinkHeaderViewHolder {
             return LinkHeaderViewHolder(
                 LinkDetailsHeaderLayoutBinding.inflate(parent.layoutInflater, parent, false),
                 linkHeaderActionListener,
                 navigator,
                 linkHandler,
-                userManagerApi
+                userManagerApi,
+                settingsApi,
             )
         }
     }
 
+    private val showMinifiedImages by lazy { settingsApi.showMinifiedImages }
     fun bindView(link: Link) {
         when (link.userVote) {
             "dig" -> showDigged(link)
@@ -87,7 +91,7 @@ class LinkHeaderViewHolder(
         binding.urlTextView.text = URL(link.sourceUrl).host.removePrefix("www.")
         binding.blockedTextView.prepareBody(link.tags.convertToTagsHtml()) {
             linkHandler.handleUrl(
-                it
+                it,
             )
         }
     }
@@ -113,8 +117,13 @@ class LinkHeaderViewHolder(
 
     private fun setupBody(link: Link) {
         binding.titleTextView.text = link.title.removeHtml()
-        binding.image.isVisible = link.preview != null
-        link.preview?.let { binding.image.loadImage(link.preview.stripImageCompression()) }
+        binding.image.isVisible = link.fullImage != null
+        if (showMinifiedImages) {
+            link.previewImage
+        } else {
+            link.fullImage
+        }
+            ?.let(binding.image::loadImage)
         binding.description.text = link.description.removeHtml()
         binding.relatedCountTextView.text = link.relatedCount.toString()
         binding.relatedCountTextView.setOnClickListener {
