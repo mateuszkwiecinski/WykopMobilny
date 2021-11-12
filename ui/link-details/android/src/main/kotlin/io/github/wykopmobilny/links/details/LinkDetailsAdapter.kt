@@ -62,7 +62,7 @@ internal class LinkDetailsAdapter : ListAdapter<ListItem, LinkDetailsAdapter.Bin
             }
             is ListItem.ReplyComment -> when (val comment = item.comment) {
                 is LinkCommentUi.Hidden -> (holder.binding as LinkDetailsReplyCommentHiddenBinding).bindHiddenReply(comment)
-                is LinkCommentUi.Normal -> (holder.binding as LinkDetailsReplyCommentBinding).bindReplyComment(comment)
+                is LinkCommentUi.Normal -> (holder.binding as LinkDetailsReplyCommentBinding).bindReplyComment(comment, item.isLast)
             }
             is ListItem.RelatedSection -> (holder.binding as LinkDetailsRelatedBinding).bindRelated(item.related)
         }
@@ -88,7 +88,10 @@ internal sealed class ListItem {
         val id = comment.data.id
     }
 
-    data class ReplyComment(val comment: LinkCommentUi) : ListItem() {
+    data class ReplyComment(
+        val comment: LinkCommentUi,
+        val isLast: Boolean,
+    ) : ListItem() {
         val id = comment.id
     }
 
@@ -122,6 +125,6 @@ internal fun LinkDetailsUi.toAdapterList(): List<ListItem> = buildList {
     add(ListItem.Header(header))
     commentsSection.comments.forEach { (parent, replies) ->
         add(ListItem.ParentComment(parent))
-        addAll(replies.map(ListItem::ReplyComment))
+        addAll(replies.map { linkCommentUi -> ListItem.ReplyComment(linkCommentUi, linkCommentUi.id == replies.last().id) })
     }
 }

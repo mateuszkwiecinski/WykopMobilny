@@ -5,7 +5,9 @@ import com.github.wykopmobilny.ui.components.SelectableLinkMovement
 import com.github.wykopmobilny.ui.components.bind
 import com.github.wykopmobilny.ui.components.setUserNick
 import com.github.wykopmobilny.ui.components.utils.bind
+import com.github.wykopmobilny.ui.components.utils.readColorAttr
 import io.github.wykopmobilny.links.details.LinkCommentUi
+import io.github.wykopmobilny.ui.link_details.android.R
 import io.github.wykopmobilny.ui.link_details.android.databinding.LinkDetailsReplyCommentBinding
 import io.github.wykopmobilny.ui.link_details.android.databinding.LinkDetailsReplyCommentHiddenBinding
 import io.github.wykopmobilny.utils.bindings.setOnClick
@@ -17,7 +19,7 @@ internal fun LinkDetailsReplyCommentHiddenBinding.bindHiddenReply(comment: LinkC
     imgBadge.setBackgroundColor(comment.badge.toColorInt(context = root.context).defaultColor)
 }
 
-internal fun LinkDetailsReplyCommentBinding.bindReplyComment(comment: LinkCommentUi.Normal) {
+internal fun LinkDetailsReplyCommentBinding.bindReplyComment(comment: LinkCommentUi.Normal, isLast: Boolean) {
     imgAvatar.bind(comment.author.avatar)
     txtUser.setUserNick(comment.author)
     txtTimestamp.text = comment.postedAgo
@@ -26,8 +28,16 @@ internal fun LinkDetailsReplyCommentBinding.bindReplyComment(comment: LinkCommen
     txtBody.text = comment.body
     txtBody.movementMethod = SelectableLinkMovement
     imgEmbed.bind(comment.embed)
-    imgBadge.setBackgroundColor(comment.badge.toColorInt(context = root.context).defaultColor)
+    val badgeColor = (comment.badge?.toColorInt(context = root.context)
+        ?: root.context.readColorAttr(R.attr.colorControlHighlightOnPrimary))
+        .defaultColor
+    lineCommentMiddle.setBackgroundColor(badgeColor)
+    lineCommentLast.setBackgroundColor(badgeColor)
+    lineAlwaysVisible.setBackgroundColor(badgeColor)
+    lineHorizontal.setBackgroundColor(badgeColor)
     plusButton.bind(comment.plusCount)
     minusButton.bind(comment.minusCount)
     moreButton.setOnClick(comment.moreAction)
+    lineCommentMiddle.isVisible = !isLast
+    lineCommentLast.isVisible = isLast
 }
