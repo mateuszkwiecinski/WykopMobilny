@@ -3,8 +3,6 @@ package io.github.wykopmobilny.domain.linkdetails
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreRequest
 import com.dropbox.android.external.store4.fresh
-import io.github.wykopmobilny.data.cache.api.Embed
-import io.github.wykopmobilny.data.cache.api.EmbedType
 import io.github.wykopmobilny.data.cache.api.UserVote
 import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.linkdetails.di.LinkDetailsScope
@@ -23,7 +21,9 @@ import io.github.wykopmobilny.domain.settings.UserSettings
 import io.github.wykopmobilny.domain.settings.prefs.GetFilteringPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetImagesPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetLinksPreferences
+import io.github.wykopmobilny.domain.settings.prefs.GetMediaPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetMikroblogPreferences
+import io.github.wykopmobilny.domain.settings.prefs.MediaPlayerPreferences
 import io.github.wykopmobilny.domain.settings.update
 import io.github.wykopmobilny.domain.strings.Strings
 import io.github.wykopmobilny.domain.utils.combine
@@ -84,6 +84,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
     private val getFilteringPreferences: GetFilteringPreferences,
     private val getImagePreferences: GetImagesPreferences,
     private val getMikroblogPreferences: GetMikroblogPreferences,
+    private val getMediaPreferences: GetMediaPreferences,
     private val userInfoStorage: UserInfoStorage,
     private val viewStateStorage: LinkDetailsViewStateStorage,
     private val appScopes: AppScopes,
@@ -432,7 +433,8 @@ internal class GetLinkDetailsQuery @Inject constructor(
         getFilteringPreferences(),
         getImagePreferences(),
         getMikroblogPreferences(),
-    ) { links, filtering, image, mikroblog ->
+        getMediaPreferences(),
+    ) { links, filtering, image, mikroblog, media ->
         CommentPreferences(
             hideNewUserContent = filtering.hideNewUserContent,
             hideNsfwContent = filtering.hideNsfwContent,
@@ -441,6 +443,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
             sort = links.commentsSort,
             openSpoilersInDialog = mikroblog.openSpoilersInDialog,
             showMinifiedImages = image.showMinifiedImages,
+            mediaPreferences = media,
         )
     }
         .distinctUntilChanged()
@@ -541,7 +544,20 @@ internal class GetLinkDetailsQuery @Inject constructor(
                             if (hasNsfwOverlay) {
                                 viewStateStorage.update { it.copy(allowedNsfwImages = it.allowedNsfwImages + embed.id) }
                             } else {
-                                showEmbedImage(embed, commentId = id)
+                                interopRequests.openMedia(
+                                    embed = embed,
+                                    preferences = commentPreferences.mediaPreferences,
+                                ) {
+                                    viewStateStorage.update {
+                                        it.copy(
+                                            generalResource = Resource.error(
+                                                failedAction = FailedAction(
+                                                    cause = IllegalArgumentException("Unsupported image type. (${embed.id})"),
+                                                ),
+                                            ),
+                                        )
+                                    }
+                                }
                             }
                         },
                         hasNsfwOverlay = hasNsfwOverlay,
@@ -583,17 +599,6 @@ internal class GetLinkDetailsQuery @Inject constructor(
         viewStateStorage.update { it.copy(snackbar = copiedToClipboard) }
         delay(2500)
         viewStateStorage.update { it.copy(snackbar = null) }
-    }
-
-    private suspend fun showEmbedImage(embed: Embed, commentId: Long) {
-        when (embed.type) {
-            EmbedType.StaticImage -> TODO("Show image ${embed.id}")
-            EmbedType.AnimatedImage -> TODO("Show animated image ${embed.id}")
-            EmbedType.Video -> TODO("Show video ${embed.id}")
-            EmbedType.Unknown -> viewStateStorage.update {
-                it.copy(generalResource = Resource.error(FailedAction(IllegalArgumentException("Unsupported image type. ($commentId)"))))
-            }
-        }
     }
 
     private fun safeCallback(function: suspend CoroutineScope.() -> Unit): () -> Unit = {
@@ -664,4 +669,5 @@ private data class CommentPreferences(
     val hidePlus18Content: Boolean,
     val openSpoilersInDialog: Boolean,
     val showMinifiedImages: Boolean,
+    val mediaPreferences: MediaPlayerPreferences,
 )

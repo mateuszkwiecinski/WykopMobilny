@@ -10,7 +10,8 @@ data class EmbedResponse(
         message = "APIV2 is broken and sends invalid links for gifs",
         replaceWith = ReplaceWith("properUrl", imports = arrayOf("io.github.wykopmobilny.api.responses.properUrl")),
     )
-    @field:Json(name = "url") internal val invalidUrl: String,
+    @field:Json(name = "url")
+    internal val invalidUrl: String,
     @field:Json(name = "source") val source: String?,
     @field:Json(name = "preview") val preview: String,
     @field:Json(name = "plus18") val plus18: Boolean,
