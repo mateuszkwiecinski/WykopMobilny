@@ -1,14 +1,15 @@
 package io.github.wykopmobilny.links.details
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.github.wykopmobilny.ui.components.utils.dpToPx
@@ -16,6 +17,7 @@ import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.link_details.android.R
 import io.github.wykopmobilny.ui.link_details.android.databinding.FragmentLinkDetailsBinding
+import io.github.wykopmobilny.utils.InjectableViewModel
 import io.github.wykopmobilny.utils.bindings.collectErrorDialog
 import io.github.wykopmobilny.utils.bindings.collectInfoDialog
 import io.github.wykopmobilny.utils.bindings.collectMenuOptions
@@ -24,10 +26,9 @@ import io.github.wykopmobilny.utils.bindings.collectSnackbar
 import io.github.wykopmobilny.utils.bindings.collectSwipeRefresh
 import io.github.wykopmobilny.utils.bindings.setOnClick
 import io.github.wykopmobilny.utils.bindings.toColorInt
-import io.github.wykopmobilny.utils.destroyKeyedDependency
 import io.github.wykopmobilny.utils.longArgument
 import io.github.wykopmobilny.utils.longArgumentNullable
-import io.github.wykopmobilny.utils.requireKeyedDependency
+import io.github.wykopmobilny.utils.viewModelWrapperFactory
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
@@ -54,20 +55,17 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
             initialCommentId = commentId,
         )
 
-    private lateinit var getLinkDetails: GetLinkDetails
-
-    override fun onAttach(context: Context) {
-        getLinkDetails = context.requireKeyedDependency<LinkDetailsDependencies>(key = key).getLinkDetails()
-        super.onAttach(context)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val viewModel by viewModels<InjectableViewModel<LinkDetailsDependencies>> {
+            viewModelWrapperFactory<LinkDetailsKey, LinkDetailsDependencies>(key = key)
+        }
+        val getLinkDetails = viewModel.dependency.getLinkDetails()
         val binding = FragmentLinkDetailsBinding.bind(view)
         binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
         val adapter = LinkDetailsAdapter()
-        adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        adapter.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding.list.adapter = adapter
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             val shared = getLinkDetails()
@@ -135,10 +133,5 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
                     }
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        requireContext().destroyKeyedDependency<LinkDetailsDependencies>(key = key)
     }
 }
