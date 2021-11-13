@@ -3,21 +3,26 @@ package com.github.wykopmobilny.ui.components.utils
 import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.google.android.material.card.MaterialCardView
 import io.github.wykopmobilny.ui.components.widgets.EmbedMediaUi
 import io.github.wykopmobilny.ui.components.widgets.NSFW_PLACEHOLDER
 import io.github.wykopmobilny.ui.components.widgets.android.R
 import io.github.wykopmobilny.ui.components.widgets.android.databinding.ViewEmbedMediaBinding
 import io.github.wykopmobilny.utils.bindings.setOnClick
 
-class EmbedMediaView(context: Context, attrs: AttributeSet?) : ConstraintLayout(context, attrs) {
+class EmbedMediaView(context: Context, attrs: AttributeSet?) : MaterialCardView(context, attrs) {
 
     init {
         inflate(context, R.layout.view_embed_media, this)
-        foreground = ContextCompat.getDrawable(context, context.readAttr(R.attr.selectableItemBackground))
+        cardElevation = 0f
+        radius = context.readDimensionAttr(R.attr.cornerRadius).toFloat()
+        strokeWidth = context.readDimensionAttr(R.attr.outlineWidth)
+        setStrokeColor(context.readColorAttr(R.attr.colorOutline))
     }
 }
 
@@ -26,11 +31,11 @@ fun EmbedMediaView.bind(model: EmbedMediaUi?) {
     binding.root.setOnClick(model?.clickAction)
     binding.root.isVisible = model != null
 
-
     binding.fullOverlay.isVisible = model?.hasNsfwOverlay == true
     binding.imgPreview.isVisible = model?.hasNsfwOverlay != true
     if (model?.hasNsfwOverlay == true) {
         Glide.with(this).load(NSFW_PLACEHOLDER)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(binding.fullOverlay)
     }
 
@@ -39,7 +44,12 @@ fun EmbedMediaView.bind(model: EmbedMediaUi?) {
         is EmbedMediaUi.Content.PlayableMedia -> content.previewImage
         null -> null
     }
+    binding.imgPreview.updateLayoutParams<ConstraintLayout.LayoutParams> {
+        dimensionRatio = model?.widthToHeightRatio?.takeIf { it > 0 }?.let { 1 / it }.toString()
+    }
+
     Glide.with(this).load(url)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .transition(withCrossFade())
         .into(binding.imgPreview)
 
@@ -52,5 +62,5 @@ fun EmbedMediaView.bind(model: EmbedMediaUi?) {
     binding.txtPrompt.isVisible = prompt != null
     binding.txtPrompt.text = prompt
     binding.txtSize.isVisible = model?.size != null
-    binding.txtSize.text =  model?.size
+    binding.txtSize.text = model?.size
 }

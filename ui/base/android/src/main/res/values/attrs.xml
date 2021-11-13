@@ -4,5 +4,6 @@
     <attr name="colorControlHighlightOnPrimary" format="color|reference" />
     <attr name="colorOutline" format="color|reference" />
     <attr name="colorDivider" format="color|reference" />
-    <attr name="textColorOnDarkSurface" format="color|reference" />
+    <attr name="cornerRadius" format="dimension|reference" />
+    <attr name="outlineWidth" format="dimension|reference" />
 </resources>

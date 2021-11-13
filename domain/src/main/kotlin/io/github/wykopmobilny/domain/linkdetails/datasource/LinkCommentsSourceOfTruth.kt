@@ -96,6 +96,7 @@ private fun SelectByLinkId.toContent() =
                 preview = preview!!,
                 size = size,
                 hasAdultContent = hasAdultContent!!,
+                ratio = ratio!!,
             )
         },
     )

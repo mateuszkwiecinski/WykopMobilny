@@ -18,7 +18,7 @@ class LinkVoteButton(context: Context, attrs: AttributeSet?) : LinearLayout(cont
         inflate(context, R.layout.view_link_vote_button, this)
         orientation = HORIZONTAL
         gravity = Gravity.CENTER_VERTICAL
-        setBackgroundResource(R.drawable.ripple_rounded)
+        setBackgroundResource(R.drawable.ripple_outline)
     }
 }
 

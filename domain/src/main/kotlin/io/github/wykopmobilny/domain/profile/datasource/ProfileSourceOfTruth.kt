@@ -4,12 +4,9 @@ import com.dropbox.android.external.store4.SourceOfTruth
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import io.github.wykopmobilny.api.responses.AuthorResponse
-import io.github.wykopmobilny.api.responses.EmbedResponse
 import io.github.wykopmobilny.api.responses.EntryLinkResponse
 import io.github.wykopmobilny.api.responses.properUrl
 import io.github.wykopmobilny.data.cache.api.AppCache
-import io.github.wykopmobilny.data.cache.api.Embed
-import io.github.wykopmobilny.data.cache.api.EmbedType
 import io.github.wykopmobilny.data.cache.api.EntryEntity
 import io.github.wykopmobilny.data.cache.api.LinkEntity
 import io.github.wykopmobilny.data.cache.api.ProfileActionsEntity
@@ -181,27 +178,6 @@ internal fun ProfileQueries.upsert(author: AuthorResponse) {
         avatar = author.avatar,
         color = author.color.toColorEntity(),
         gender = author.sex.toGenderEntity(),
-    )
-}
-
-internal fun EmbedResponse.toEntity(): Embed {
-    val knownType = when (type) {
-        "image" -> if (animated) {
-            EmbedType.AnimatedImage
-        } else {
-            EmbedType.StaticImage
-        }
-        "video" -> EmbedType.Video
-        else -> EmbedType.Unknown
-    }
-
-    return Embed(
-        id = properUrl,
-        type = knownType,
-        fileName = source,
-        preview = preview,
-        size = size,
-        hasAdultContent = plus18,
     )
 }
 

@@ -552,6 +552,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                             }
                         },
                         hasNsfwOverlay = hasNsfwOverlay,
+                        widthToHeightRatio = embed.ratio,
                     )
                 },
                 moreAction = safeCallback {

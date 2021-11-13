@@ -17,6 +17,7 @@ data class EmbedResponse(
     @field:Json(name = "plus18") val plus18: Boolean,
     @field:Json(name = "size") val size: String?,
     @field:Json(name = "animated") val animated: Boolean,
+    @field:Json(name = "ratio") val ratio: Float,
 )
 
 val EmbedResponse.properUrl

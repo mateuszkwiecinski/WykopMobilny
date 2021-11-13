@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.github.wykopmobilny.ui.components.utils.dpToPx
@@ -66,6 +67,7 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
         binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
         val adapter = LinkDetailsAdapter()
+        adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding.list.adapter = adapter
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             val shared = getLinkDetails()

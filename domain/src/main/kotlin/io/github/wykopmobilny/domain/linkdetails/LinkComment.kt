@@ -30,19 +30,18 @@ internal fun Embed.toUi(
     useLowQualityImage: Boolean,
     hasNsfwOverlay: Boolean,
     clickAction: () -> Unit,
+    widthToHeightRatio: Float,
 ) = EmbedMediaUi(
     content = when (type) {
         EmbedType.AnimatedImage ->
             EmbedMediaUi.Content.PlayableMedia(
-                url = id,
                 previewImage = preview,
                 domain = "Gif",
             )
         EmbedType.Video ->
             EmbedMediaUi.Content.PlayableMedia(
-                url = id,
                 previewImage = preview,
-                domain = URL(id).host.split(".").dropLast(1).lastOrNull() ?: URL(id).host,
+                domain = URL(id).userFriendlyDomain(includeTopLevel = false),
             )
         EmbedType.StaticImage,
         EmbedType.Unknown,
@@ -52,10 +51,23 @@ internal fun Embed.toUi(
             } else {
                 preview
             },
-            fileName = fileName,
         )
     },
     size = size.takeIf { useLowQualityImage || type == EmbedType.AnimatedImage },
     hasNsfwOverlay = hasNsfwOverlay,
+    widthToHeightRatio = widthToHeightRatio,
     clickAction = clickAction,
 )
+
+internal fun URL.userFriendlyDomain(includeTopLevel: Boolean = true): String {
+    val parts = host.split(".")
+    return if (includeTopLevel) {
+        parts.takeLast(2).joinToString(separator = ".")
+    } else {
+        if (host.endsWith("youtu.be")) {
+            "Youtube"
+        } else {
+            parts.dropLast(1).lastOrNull() ?: host
+        }
+    }
+}

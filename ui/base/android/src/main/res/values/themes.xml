@@ -24,7 +24,8 @@
         <item name="colorOutline">#BFBFBF</item>
         <item name="colorDivider">#efefef</item>
         <item name="colorControlHighlightOnPrimary">#33ffffff</item>
-        <item name="textColorOnDarkSurface">?android:textColorPrimaryInverse</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="outlineWidth">1dp</item>
     </style>
 
     <style name="Theme.App.Dark"
@@ -54,7 +55,8 @@
         <item name="divider">@drawable/divider_dark</item>
         <item name="colorOutline">#3a3a3a</item>
         <item name="colorDivider">#393939</item>
-        <item name="textColorOnDarkSurface">?android:textColorPrimary</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="outlineWidth">1dp</item>
     </style>
 
     <style name="Theme.App.Amoled"
@@ -73,6 +75,7 @@
         parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="colorPrimary">?colorOnSurface</item>
     </style>
+
 
     <style name="ThemeOverlay.App.AlertDialog.Dark"
         parent="ThemeOverlay.MaterialComponents.Dialog.Alert">

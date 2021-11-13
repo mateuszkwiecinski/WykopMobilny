@@ -21,7 +21,7 @@ class FlatButton(context: Context, attrs: AttributeSet?) : LinearLayout(context,
         inflate(context, R.layout.view_flat_button, this)
         orientation = HORIZONTAL
         gravity = Gravity.CENTER_VERTICAL
-        setBackgroundResource(R.drawable.ripple_rounded)
+        setBackgroundResource(R.drawable.ripple_outline)
         val vertical = 4.dpToPx(resources)
         val horizontal = 6.dpToPx(resources)
         updatePadding(

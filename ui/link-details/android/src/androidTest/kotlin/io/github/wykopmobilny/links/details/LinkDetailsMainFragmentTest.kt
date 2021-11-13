@@ -273,10 +273,10 @@ private fun stubEmbedStatic(
 ) = EmbedMediaUi(
     content = EmbedMediaUi.Content.StaticImage(
         url = url,
-        fileName = "fixture-filename",
     ),
     size = size,
     hasNsfwOverlay = hasNsfwOverlay,
+    widthToHeightRatio = 1f,
     clickAction = {},
 )
 
@@ -288,10 +288,10 @@ private fun stubEmbedPlayable(
 ) = EmbedMediaUi(
     content = EmbedMediaUi.Content.PlayableMedia(
         previewImage = url,
-        url = "fixture-url",
         domain = domain,
     ),
     size = size,
     hasNsfwOverlay = hasNsfwOverlay,
+    widthToHeightRatio = 1f,
     clickAction = {},
 )
