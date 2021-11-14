@@ -7,8 +7,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -67,6 +67,9 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
         val adapter = LinkDetailsAdapter()
         adapter.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding.list.adapter = adapter
+        (binding.list.itemAnimator as DefaultItemAnimator).apply {
+            moveDuration = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+        }
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             val shared = getLinkDetails()
                 .flowOn(AppDispatchers.Default)

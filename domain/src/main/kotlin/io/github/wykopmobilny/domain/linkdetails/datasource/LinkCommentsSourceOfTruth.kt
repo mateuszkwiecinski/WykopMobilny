@@ -88,6 +88,7 @@ private fun SelectByLinkId.toContent() =
         minusCount = (voteCount - voteCountPlus).absoluteValue,
         userAction = userVote,
         app = app,
+        userFavorite = isFavorite,
         embed = embedId?.let {
             Embed(
                 id = it,

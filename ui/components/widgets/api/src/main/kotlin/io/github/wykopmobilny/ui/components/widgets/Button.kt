@@ -18,6 +18,6 @@ data class TwoActionsCounterUi(
 
 data class ToggleButtonUi(
     val isToggled: Boolean,
-    val clickAction: () -> Unit,
+    val clickAction: (() -> Unit)?,
     val isVisible: Boolean = true,
 )

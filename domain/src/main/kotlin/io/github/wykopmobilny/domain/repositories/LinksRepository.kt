@@ -27,6 +27,17 @@ internal class LinksRepository @Inject constructor(
         linkStore.fresh(linkId)
     }
 
+    suspend fun toggleCommentFavorite(linkId: Long, commentId: Long) {
+        val response = api.mutation { linksApi.toggleCommentFavorite(commentId) }
+        withContext(AppDispatchers.IO) {
+            appCache.linkCommentsQueries.favorite(
+                linkId = linkId,
+                id = commentId,
+                isFavorite = response.isFavorited,
+            )
+        }
+    }
+
     suspend fun voteUp(linkId: Long) {
         val response = api.mutation { linksApi.voteUp(linkId) }
         updateLinkVotes(linkId, response, userVote = UserVote.Up)

@@ -282,14 +282,14 @@ internal class GetLinkDetailsQuery @Inject constructor(
                     isRefreshing = viewState.generalResource.isLoading && link != null,
                     refreshAction = safeCallback {
                         coroutineScope {
-                            viewStateStorage.update { viewState.copy(generalResource = Resource.loading()) }
+                            viewStateStorage.update { it.copy(generalResource = Resource.loading()) }
                             val linkRefresh = async { linkStore.fresh(key = key.linkId) }
                             val commentsRefresh = async { commentsStore.fresh(key = key.linkId) }
 
                             runCatching { awaitAll(linkRefresh, commentsRefresh) }
                                 .onSuccess {
                                     viewStateStorage.update {
-                                        viewState.copy(
+                                        it.copy(
                                             generalResource = Resource.idle(),
                                             forciblyShownBlockedComments = emptySet(),
                                             allowedNsfwImages = emptySet(),
@@ -298,7 +298,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                                 }
                                 .onFailure { failure ->
                                     viewStateStorage.update {
-                                        viewState.copy(
+                                        it.copy(
                                             generalResource = Resource.error(FailedAction(cause = failure)),
                                             forciblyShownBlockedComments = emptySet(),
                                             allowedNsfwImages = emptySet(),
@@ -402,11 +402,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                         toggleExpansionStateAction = if (replies.isNotEmpty()) {
                             safeCallback {
                                 viewStateStorage.update {
-                                    val updated = if (isCollapsed) {
-                                        it.collapsedIds - key.id
-                                    } else {
-                                        it.collapsedIds + key.id
-                                    }
+                                    val updated = if (isCollapsed) it.collapsedIds - key.id else it.collapsedIds + key.id
                                     it.copy(collapsedIds = updated)
                                 }
                             }
@@ -554,6 +550,18 @@ internal class GetLinkDetailsQuery @Inject constructor(
                         hasNsfwOverlay = hasNsfwOverlay,
                         widthToHeightRatio = embed.ratio,
                     )
+                },
+                showsOption = viewState.optionsVisibleIds.contains(id),
+                favoriteButton = ToggleButtonUi(
+                    isToggled = userFavorite,
+                    clickAction = safeCallback { linksRepository.toggleCommentFavorite(linkId = link.id, commentId = id) },
+                ),
+                shareAction = safeCallback { interopRequests.request(InteropRequest.Share(url = wykopUrl(linkId = link.id))) },
+                clickAction = safeCallback {
+                    viewStateStorage.update {
+                        val updated = if (it.optionsVisibleIds.contains(id)) emptySet() else setOf(id)
+                        it.copy(optionsVisibleIds = updated)
+                    }
                 },
                 moreAction = safeCallback {
                     viewStateStorage.update { viewState ->

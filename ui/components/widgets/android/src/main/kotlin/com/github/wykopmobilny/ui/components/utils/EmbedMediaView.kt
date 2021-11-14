@@ -30,22 +30,22 @@ fun EmbedMediaView.bind(model: EmbedMediaUi?) {
     val binding = ViewEmbedMediaBinding.bind(this)
     binding.root.setOnClick(model?.clickAction)
     binding.root.isVisible = model != null
+    model ?: return
 
-    binding.fullOverlay.isVisible = model?.hasNsfwOverlay == true
-    binding.imgPreview.isVisible = model?.hasNsfwOverlay != true
-    if (model?.hasNsfwOverlay == true) {
+    binding.fullOverlay.isVisible = model.hasNsfwOverlay == true
+    binding.imgPreview.isVisible = model.hasNsfwOverlay != true
+    if (model.hasNsfwOverlay) {
         Glide.with(this).load(NSFW_PLACEHOLDER)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(binding.fullOverlay)
     }
 
-    val url = when (val content = model?.content) {
+    val url = when (val content = model.content) {
         is EmbedMediaUi.Content.StaticImage -> content.url
         is EmbedMediaUi.Content.PlayableMedia -> content.previewImage
-        null -> null
     }
     binding.imgPreview.updateLayoutParams<ConstraintLayout.LayoutParams> {
-        dimensionRatio = model?.widthToHeightRatio?.takeIf { it > 0 }?.let { 1 / it }.toString()
+        dimensionRatio = model.widthToHeightRatio.takeIf { it > 0 }?.let { 1 / it }.toString()
     }
 
     Glide.with(this).load(url)
@@ -53,14 +53,13 @@ fun EmbedMediaView.bind(model: EmbedMediaUi?) {
         .transition(withCrossFade())
         .into(binding.imgPreview)
 
-    val prompt = when (val content = model?.content) {
+    val prompt = when (val content = model.content) {
         is EmbedMediaUi.Content.StaticImage -> null
         is EmbedMediaUi.Content.PlayableMedia -> content.domain
-        null -> null
     }
     binding.imgPromptBackground.isVisible = prompt != null
     binding.txtPrompt.isVisible = prompt != null
     binding.txtPrompt.text = prompt
-    binding.txtSize.isVisible = model?.size != null
-    binding.txtSize.text = model?.size
+    binding.txtSize.isVisible = model.size != null
+    binding.txtSize.text = model.size
 }

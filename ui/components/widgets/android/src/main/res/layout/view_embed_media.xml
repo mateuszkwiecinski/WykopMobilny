@@ -21,7 +21,6 @@
             android:id="@+id/imgPreview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_favorite"
             tools:tint="#f0f"

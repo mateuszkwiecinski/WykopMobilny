@@ -20,7 +20,6 @@ import io.github.wykopmobilny.ui.link_details.android.databinding.LinkDetailsRel
 import io.github.wykopmobilny.ui.link_details.android.databinding.LinkDetailsReplyCommentBinding
 import io.github.wykopmobilny.ui.link_details.android.databinding.LinkDetailsReplyCommentHiddenBinding
 import io.github.wykopmobilny.utils.asyncDifferConfig
-import io.github.wykopmobilny.utils.fixTextIsSelectableWhenUnderRecyclerView
 
 internal class LinkDetailsAdapter : ListAdapter<ListItem, LinkDetailsAdapter.BindingViewHolder>(asyncDifferConfig(ListItem.Diff)) {
 
@@ -73,13 +72,6 @@ internal class LinkDetailsAdapter : ListAdapter<ListItem, LinkDetailsAdapter.Bin
     }
 
     data class BindingViewHolder(val binding: ViewBinding) : RecyclerView.ViewHolder(binding.root)
-
-    override fun onViewAttachedToWindow(holder: BindingViewHolder) {
-        when (val binding = holder.binding) {
-            is LinkDetailsParentCommentBinding -> binding.txtBody.fixTextIsSelectableWhenUnderRecyclerView()
-            is LinkDetailsReplyCommentBinding -> binding.txtBody.fixTextIsSelectableWhenUnderRecyclerView()
-        }
-    }
 }
 
 internal sealed class ListItem {
@@ -116,7 +108,9 @@ internal sealed class ListItem {
         override fun areContentsTheSame(oldItem: ListItem, newItem: ListItem) =
             oldItem == newItem
 
-        override fun getChangePayload(oldItem: ListItem, newItem: ListItem) = newItem
+        override fun getChangePayload(oldItem: ListItem, newItem: ListItem) = Change(oldItem, newItem)
+
+        data class Change(val old: ListItem, val new: ListItem)
     }
 }
 

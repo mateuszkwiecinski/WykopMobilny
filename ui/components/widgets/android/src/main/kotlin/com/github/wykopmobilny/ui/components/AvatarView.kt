@@ -13,7 +13,6 @@ import io.github.wykopmobilny.ui.components.widgets.android.databinding.ViewAvat
 import io.github.wykopmobilny.utils.bindings.setOnClick
 import io.github.wykopmobilny.utils.bindings.toColorInt
 
-
 class AvatarView(
     context: Context,
     attributeSet: AttributeSet?,
@@ -28,6 +27,12 @@ fun AvatarView.bind(model: AvatarUi?) {
     val binding = ViewAvatarSimpleBinding.bind(this)
     val transformation = CircleCrop()
 
+    binding.imgAvatar.setOnClick(model?.onClicked)
+
+
+    if (getTag(R.id.cache) == model.toString()) {
+        return
+    }
     val requestOptions = RequestOptions()
         .centerCrop()
         .transform(transformation)
@@ -41,10 +46,10 @@ fun AvatarView.bind(model: AvatarUi?) {
         .thumbnail(placeholder)
         .circleCrop()
         .into(binding.imgAvatar)
-    binding.imgAvatar.setOnClick(model?.onClicked)
     Glide.with(binding.imgGenderStrip)
         .load(model?.genderStrip.toColorInt(context).defaultColor.let(::ColorDrawable))
         .dontAnimate()
         .circleCrop()
         .into(binding.imgGenderStrip)
+    setTag(R.id.cache, model.toString())
 }

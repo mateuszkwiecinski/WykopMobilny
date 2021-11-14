@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="WykopAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="WykopAppTheme"
+        parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:scrollbarThumbVertical">@drawable/scrollbar_gradient</item>
         <item name="textColorGrey">@color/textColorGrey</item>
         <item name="textColorLight">@color/textColorLight</item>
@@ -13,6 +14,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:navigationBarColor">?colorPrimaryDark</item>
         <item name="android:windowBackground">@color/windowBackground</item>
         <item name="android:itemBackground">@color/windowBackground</item>
         <item name="backgroundColor">@color/windowBackground</item>
@@ -96,7 +98,8 @@
         </item>
     </style>
 
-    <style name="WykopAppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+    <style name="WykopAppTheme.Dark"
+        parent="Theme.AppCompat.NoActionBar">
         <item name="bottomSheetStyle">@style/WykopBottomSheet</item>
         <item name="android:scrollbarThumbVertical">@drawable/scrollbar_gradient</item>
         <item name="textColorGrey">@color/textColorGrey.Dark</item>
@@ -111,6 +114,7 @@
         <item name="colorAccent">@color/colorAccent.Dark</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:navigationBarColor">?colorPrimaryDark</item>
         <item name="backgroundColor">@color/windowBackground.Dark</item>
         <item name="itemBackgroundColor">@color/itemBackground.Dark</item>
         <item name="itemBackgroundColorSelected">@color/itemBackgroundSelected.Dark</item>
@@ -194,7 +198,8 @@
         <item name="alertDialogTheme">@android:style/Theme.DeviceDefault.Dialog.NoActionBar</item>
     </style>
 
-    <style name="WykopAppTheme.Amoled" parent="WykopAppTheme.Dark">
+    <style name="WykopAppTheme.Amoled"
+        parent="WykopAppTheme.Dark">
         <item name="textColorGrey">@color/textColorGrey.Amoled</item>
         <item name="textColorLight">@color/textColorLight.Amoled</item>
         <item name="android:textColor">@color/textColor.Amoled</item>
@@ -228,32 +233,37 @@
         <item name="alertDialogTheme">@android:style/Theme.DeviceDefault.Dialog.NoActionBar</item>
     </style>
 
-    <style name="NavigationDrawerStyle" parent="">
+    <style name="NavigationDrawerStyle"
+        parent="">
         <item name="android:fontFamily">sans-serif-normal</item>
         <item name="android:textSize">?attr/textSizeLarge</item>
     </style>
 
-    <style name="BaseCardView" parent="CardView">
+    <style name="BaseCardView"
+        parent="CardView">
         <item name="cardBackgroundColor">?attr/itemBackgroundColor</item>
         <item name="cardCornerRadius">@dimen/cardview_radius</item>
         <item name="cardElevation">@dimen/cardview_elevation</item>
     </style>
 
-    <style name="EntryCardView" parent="BaseCardView">
+    <style name="EntryCardView"
+        parent="BaseCardView">
         <item name="android:layout_marginRight">@dimen/cardview_margin_vertical</item>
         <item name="android:layout_marginLeft">@dimen/cardview_margin_vertical</item>
         <item name="android:layout_marginBottom">@dimen/cardview_margin_horizontal</item>
         <item name="android:layout_marginTop">@dimen/cardview_margin_horizontal</item>
     </style>
 
-    <style name="EntryCommentsCardView" parent="BaseCardView">
+    <style name="EntryCommentsCardView"
+        parent="BaseCardView">
         <item name="android:layout_marginRight">@dimen/cardview_margin_vertical</item>
         <item name="android:layout_marginLeft">@dimen/cardview_margin_vertical</item>
         <item name="android:layout_marginBottom">@dimen/cardview_margin_horizontal</item>
         <item name="android:layout_marginTop">@dimen/cardview_margin_horizontal</item>
     </style>
 
-    <style name="ContentTextView" parent="">
+    <style name="ContentTextView"
+        parent="">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">@dimen/padding_dp_small</item>
@@ -263,12 +273,14 @@
         <item name="android:textIsSelectable">true</item>
     </style>
 
-    <style name="ContentTextViewComment" parent="ContentTextView">
+    <style name="ContentTextViewComment"
+        parent="ContentTextView">
         <item name="android:paddingTop">2dp</item>
         <item name="android:paddingLeft">0dp</item>
     </style>
 
-    <style name="AuthorHeaderView" parent="">
+    <style name="AuthorHeaderView"
+        parent="">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">@dimen/padding_dp_small</item>
@@ -276,7 +288,8 @@
         <item name="android:paddingRight">@dimen/padding_dp_large</item>
     </style>
 
-    <style name="ButtonTextView" parent="">
+    <style name="ButtonTextView"
+        parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/buttontextview_height</item>
         <item name="android:paddingLeft">@dimen/padding_dp_small</item>
@@ -285,7 +298,8 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="CommentButtonTextView" parent="ButtonTextView">
+    <style name="CommentButtonTextView"
+        parent="ButtonTextView">
         <item name="android:paddingLeft">@dimen/padding_dp_tiny</item>
         <item name="android:paddingRight">@dimen/padding_dp_normal</item>
         <item name="android:drawablePadding">2dp</item>
@@ -293,13 +307,15 @@
         <item name="android:textColor">?attr/textColorButtonToolbar</item>
     </style>
 
-    <style name="VoteButtonTextView" parent="CommentButtonTextView">
+    <style name="VoteButtonTextView"
+        parent="CommentButtonTextView">
         <item name="android:paddingRight">@dimen/padding_dp_normal</item>
         <item name="android:paddingLeft">@dimen/padding_dp_mini</item>
         <item name="android:drawablePadding">-1dp</item>
     </style>
 
-    <style name="AvatarViewComment" parent="">
+    <style name="AvatarViewComment"
+        parent="">
         <item name="android:layout_width">@dimen/avatar_comment_width</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">@dimen/padding_dp_normal</item>
@@ -307,7 +323,8 @@
         <item name="android:paddingLeft">@dimen/padding_dp_large</item>
     </style>
 
-    <style name="AuthorTextViewComment" parent="">
+    <style name="AuthorTextViewComment"
+        parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">@dimen/margin_dp_normal</item>
@@ -321,7 +338,8 @@
         <item name="layout_constraintHorizontal_chainStyle">packed</item>
     </style>
 
-    <style name="DotTextViewComment" parent="">
+    <style name="DotTextViewComment"
+        parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">@dimen/padding_dp_tiny</item>
@@ -330,7 +348,8 @@
         <item name="android:text">•</item>
     </style>
 
-    <style name="DateTextViewComment" parent="">
+    <style name="DateTextViewComment"
+        parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/padding_dp_small</item>
@@ -345,13 +364,15 @@
         <item name="layout_constrainedWidth">true</item>
     </style>
 
-    <style name="AuthorBadgeStrip" parent="">
+    <style name="AuthorBadgeStrip"
+        parent="">
         <item name="android:layout_width">3dp</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:background">@color/colorBadgeAuthors</item>
     </style>
 
-    <style name="ButtonToolbar" parent="">
+    <style name="ButtonToolbar"
+        parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/mirko_button_height</item>
         <item name="android:paddingRight">@dimen/mirko_button_padding</item>
@@ -364,13 +385,15 @@
         <item name="android:background">?attr/buttonStatelist</item>
     </style>
 
-    <style name="WykopImageView" parent="">
+    <style name="WykopImageView"
+        parent="">
         <item name="android:layout_marginTop">@dimen/margin_dp_normal</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="WykopImageViewExpand" parent="">
+    <style name="WykopImageViewExpand"
+        parent="">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">@dimen/padding_dp_tiny</item>
@@ -380,12 +403,14 @@
         <item name="android:textSize">?attr/textSizeTiny</item>
     </style>
 
-    <style name="MarkdownButton" parent="">
+    <style name="MarkdownButton"
+        parent="">
         <item name="android:layout_height">28dp</item>
         <item name="android:layout_width">28dp</item>
     </style>
 
-    <style name="BottomSheetMenuItem" parent="">
+    <style name="BottomSheetMenuItem"
+        parent="">
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
         <item name="android:padding">16dp</item>
         <item name="android:orientation">horizontal</item>
@@ -395,7 +420,8 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
-    <style name="BottomSheetAuthor" parent="">
+    <style name="BottomSheetAuthor"
+        parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">@dimen/padding_dp_huge</item>
@@ -412,27 +438,33 @@
     </style>
 
 
-    <style name="CheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
+    <style name="CheckBoxStyle"
+        parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorControlNormal">#808080</item>
     </style>
 
-    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+    <style name="Toolbar.TitleText"
+        parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/toolbar_titletext_text_size</item>
     </style>
 
-    <style name="Toolbar.Subtitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+    <style name="Toolbar.Subtitle"
+        parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
         <item name="android:textSize">@dimen/toolbar_subtitle_text_size</item>
     </style>
 
-    <style name="Toolbar.TitleText.Messages" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+    <style name="Toolbar.TitleText.Messages"
+        parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/toolbar_titletext_messages_text_size</item>
     </style>
 
-    <style name="Toolbar.Subtitle.Messages" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+    <style name="Toolbar.Subtitle.Messages"
+        parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
         <item name="android:textSize">@dimen/toolbar_subtitle_messages_text_size</item>
     </style>
 
-    <style name="TabLayoutProfile" parent="Widget.Design.TabLayout">
+    <style name="TabLayoutProfile"
+        parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">?attr/colorPrimary</item>
         <item name="tabIndicatorHeight">0dp</item>
         <item name="tabPaddingStart">6dp</item>
@@ -441,13 +473,15 @@
         <item name="android:background">?attr/itemBackgroundColor</item>
     </style>
 
-    <style name="TabTextAppearanceProfile" parent="TextAppearance.Design.Tab">
+    <style name="TabTextAppearanceProfile"
+        parent="TextAppearance.Design.Tab">
         <item name="android:textSize">?attr/textSizeNormal</item>
         <item name="android:textStyle">normal</item>
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="TabLayoutProfileDetail" parent="Widget.Design.TabLayout">
+    <style name="TabLayoutProfileDetail"
+        parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">?attr/lineColor</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabPaddingStart">10dp</item>
@@ -456,13 +490,15 @@
         <item name="android:background">?attr/itemBackgroundColorSelected</item>
     </style>
 
-    <style name="TabTextAppearanceProfileDetail" parent="TextAppearance.Design.Tab">
+    <style name="TabTextAppearanceProfileDetail"
+        parent="TextAppearance.Design.Tab">
         <item name="android:textSize">13sp</item>
         <item name="android:textStyle">normal</item>
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="TabLayout" parent="Widget.Design.TabLayout">
+    <style name="TabLayout"
+        parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">?attr/colorAccent</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabMinWidth">100dp</item>
@@ -472,7 +508,8 @@
         <item name="tabTextAppearance">@style/TabTextAppearance</item>
     </style>
 
-    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+    <style name="TabTextAppearance"
+        parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="textAllCaps">false</item>
@@ -524,12 +561,14 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="FullscreenActivityTheme" parent="WykopAppTheme">
+    <style name="FullscreenActivityTheme"
+        parent="WykopAppTheme">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsTranslucent">false</item>
     </style>
 
-    <style name="WykopBottomSheet" parent="Widget.Design.BottomSheet.Modal">
+    <style name="WykopBottomSheet"
+        parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>

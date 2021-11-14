@@ -18,6 +18,7 @@ internal data class LinkComment(
     val minusCount: Int,
     val userAction: UserVote?,
     val embed: Embed?,
+    val userFavorite: Boolean,
 ) {
 
     val totalCount = plusCount - minusCount

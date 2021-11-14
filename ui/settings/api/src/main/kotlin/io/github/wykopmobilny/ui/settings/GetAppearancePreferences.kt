@@ -36,7 +36,6 @@ data class AppearancePreferencesUi(
         val showLinkThumbnail: Setting,
         val imagePosition: ListSetting<LinkImagePositionUi>,
         val showAuthor: Setting,
-        val cutLinkComments: Setting,
     )
 
     data class ImagesSectionUi(

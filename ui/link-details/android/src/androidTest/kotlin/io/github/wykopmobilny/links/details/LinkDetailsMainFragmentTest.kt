@@ -11,6 +11,7 @@ import io.github.wykopmobilny.ui.components.widgets.Button
 import io.github.wykopmobilny.ui.components.widgets.Color
 import io.github.wykopmobilny.ui.components.widgets.ColorConst
 import io.github.wykopmobilny.ui.components.widgets.EmbedMediaUi
+import io.github.wykopmobilny.ui.components.widgets.ToggleButtonUi
 import io.github.wykopmobilny.ui.components.widgets.UserInfoUi
 import org.junit.Test
 
@@ -66,30 +67,22 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                         ParentCommentUi(
                             collapsedCount = "+124",
                             toggleExpansionStateAction = {},
-                            data = LinkCommentUi.Normal(
+                            data = stubNormalComment(
                                 id = 123,
                                 author = stubUser("fixture-parent-user 1", color = ColorConst.UserClaret),
                                 postedAgo = "12 min. temu",
                                 app = null,
                                 body = "Comment body",
-                                badge = null,
-                                plusCount = stubPlusCounter(),
-                                minusCount = stubMinusCounter(),
-                                embed = null,
-                                moreAction = {},
                             ),
                         ) to listOf(
-                            LinkCommentUi.Normal(
+                            stubNormalComment(
                                 id = 124,
                                 author = stubUser("fixture-reply-user"),
                                 postedAgo = "24 godz. temu",
-                                app = null,
                                 body = "Comment body",
                                 badge = ColorConst.CommentOriginalPoster,
                                 plusCount = stubPlusCounter(count = 10),
                                 minusCount = stubMinusCounter(count = 10),
-                                embed = null,
-                                moreAction = {},
                             ),
                             LinkCommentUi.Hidden(
                                 id = 125,
@@ -107,23 +100,19 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                         ParentCommentUi(
                             collapsedCount = "1",
                             toggleExpansionStateAction = {},
-                            data = LinkCommentUi.Normal(
+                            data = stubNormalComment(
                                 id = 127,
                                 author = stubUser("very_long_user_name_most_likely_more_than_single_line"),
                                 postedAgo = "12 years 4 months ago",
                                 app = "Wykop the best app long name",
                                 body = "Comment body",
-                                badge = null,
-                                plusCount = stubPlusCounter(),
                                 minusCount = stubMinusCounter(clicked = true),
-                                embed = null,
-                                moreAction = {},
                             ),
                         ) to emptyList(),
                         ParentCommentUi(
                             collapsedCount = null,
                             toggleExpansionStateAction = {},
-                            data = LinkCommentUi.Normal(
+                            data = stubNormalComment(
                                 id = 128,
                                 author = stubUser("fixture-parent-user", color = ColorConst.UserBanned),
                                 postedAgo = "12 min. temu",
@@ -132,23 +121,18 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                                 badge = ColorConst.CommentCurrentUser,
                                 plusCount = stubPlusCounter(clicked = true),
                                 minusCount = stubMinusCounter(count = 0),
-                                moreAction = {},
-                                embed = null,
                             ),
                         ) to listOf(
-                            LinkCommentUi.Normal(
+                            stubNormalComment(
                                 id = 129,
                                 author = stubUser("fixture-reply-user 3"),
                                 postedAgo = "24 godziny temu",
-                                app = null,
                                 body = "Comment body",
                                 badge = ColorConst.CommentOriginalPoster,
                                 plusCount = stubPlusCounter(count = 123),
                                 minusCount = stubMinusCounter(count = 1, clicked = true),
-                                moreAction = {},
-                                embed = null,
                             ),
-                            LinkCommentUi.Normal(
+                            stubNormalComment(
                                 id = 130,
                                 author = stubUser("very_long_user_name_most_likely_more_than_single_line"),
                                 postedAgo = "6 years 4 months ago",
@@ -157,65 +141,52 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                                 badge = null,
                                 plusCount = stubPlusCounter(count = 9999),
                                 minusCount = stubMinusCounter(count = 9999, clicked = true),
-                                moreAction = {},
                                 embed = null,
                             ),
-                            LinkCommentUi.Normal(
+                            stubNormalComment(
                                 id = 131,
                                 author = stubUser("fixture-reply-user 3"),
                                 postedAgo = "24 godziny temu",
-                                app = null,
                                 body = "has gif image",
-                                badge = null,
                                 plusCount = stubPlusCounter(count = 123),
                                 minusCount = stubMinusCounter(count = 1, clicked = true),
-                                moreAction = {},
                                 embed = stubEmbedPlayable(
                                     domain = "fixture",
                                     size = "204KB",
                                     hasNsfwOverlay = false,
                                 ),
                             ),
-                            LinkCommentUi.Normal(
+                            stubNormalComment(
                                 id = 131,
                                 author = stubUser("fixture-reply-user 3"),
                                 postedAgo = "24 godziny temu",
-                                app = null,
                                 body = "has nsfw image",
-                                badge = null,
                                 plusCount = stubPlusCounter(count = 10, clicked = true),
                                 minusCount = stubMinusCounter(count = 10),
-                                moreAction = {},
                                 embed = stubEmbedStatic(
                                     size = null,
                                     hasNsfwOverlay = true,
                                 ),
                             ),
-                            LinkCommentUi.Normal(
+                            stubNormalComment(
                                 id = 131,
                                 author = stubUser("embed__only", color = ColorConst.UserClaret),
                                 postedAgo = "przed chwilą",
-                                app = null,
                                 body = null,
-                                badge = null,
                                 plusCount = stubPlusCounter(count = 10),
                                 minusCount = stubMinusCounter(count = 10, clicked = true),
-                                moreAction = {},
                                 embed = stubEmbedStatic(
                                     url = avatarUrl,
                                 ),
                             ),
-                            LinkCommentUi.Normal(
+                            stubNormalComment(
                                 id = 132,
                                 author = stubUser("fixture-reply-user 3"),
                                 postedAgo = "24 godziny temu",
-                                app = null,
                                 body = "Comment body",
                                 badge = ColorConst.CommentOriginalPoster,
                                 plusCount = stubPlusCounter(count = 123),
                                 minusCount = stubMinusCounter(count = 1, clicked = true),
-                                moreAction = {},
-                                embed = null,
                             ),
                         ),
                     ),
@@ -294,4 +265,44 @@ private fun stubEmbedPlayable(
     hasNsfwOverlay = hasNsfwOverlay,
     widthToHeightRatio = 1f,
     clickAction = {},
+)
+
+private fun stubNormalComment(
+    id: Long,
+    author: UserInfoUi = stubUser(text = "fixture_user"),
+    postedAgo: String = "12 min ago",
+    app: String? = null,
+    body: CharSequence? = "fixture body",
+    badge: Color? = null,
+    plusCount: Button = stubPlusCounter(),
+    minusCount: Button = stubMinusCounter(),
+    embed: EmbedMediaUi? = null,
+    showsOption: Boolean = false,
+    favoriteButton: ToggleButtonUi = stubToggleButton(),
+) = LinkCommentUi.Normal(
+    id = id,
+    author = author,
+    postedAgo = postedAgo,
+    app = app,
+    body = body,
+    badge = badge,
+    plusCount = plusCount,
+    minusCount = minusCount,
+    embed = embed,
+    showsOption = showsOption,
+    favoriteButton = favoriteButton,
+    clickAction = {},
+    moreAction = {},
+    profileAction = {},
+    shareAction = {},
+)
+
+fun stubToggleButton(
+    isToggled: Boolean = false,
+    isEnabled: Boolean = true,
+    isVisible: Boolean = true,
+) = ToggleButtonUi(
+    isToggled = isToggled,
+    clickAction = {}.takeIf { isEnabled },
+    isVisible = isVisible,
 )

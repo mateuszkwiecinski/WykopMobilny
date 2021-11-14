@@ -15,7 +15,6 @@ import io.github.wykopmobilny.utils.bindings.setImage
 import io.github.wykopmobilny.utils.bindings.setOnClick
 import io.github.wykopmobilny.utils.bindings.toColorInt
 
-
 class SimpleCounter(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
 
     init {

@@ -34,6 +34,12 @@ SET
   userVote = :userVote
 WHERE id = :id AND linkId = :linkId;
 
+favorite:
+UPDATE linkCommentsEntity
+SET
+  isFavorite = :isFavorite
+WHERE id = :id AND linkId = :linkId;
+
 selectByLinkId:
 SELECT
   linkCommentsEntity.*,

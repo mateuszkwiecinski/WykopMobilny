@@ -21,8 +21,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import io.github.wykopmobilny.R;
@@ -39,7 +37,6 @@ public class EllipsizingTextView extends AppCompatTextView {
     private static final SpannableString ELLIPSIS = new SpannableString("\u0020[pokaż\u00A0całość]");
 
     private static final Pattern DEFAULT_END_PUNCTUATION = Pattern.compile("[.!?,;:…]*$", Pattern.DOTALL);
-    private final List<EllipsizeListener> ellipsizeListeners = new ArrayList<>();
     private EllipsizeStrategy ellipsizeStrategy;
     private boolean isEllipsized;
     private boolean isStale;
@@ -52,7 +49,7 @@ public class EllipsizingTextView extends AppCompatTextView {
     /**
      * The end punctuation which will be removed when appending {@link #ELLIPSIS}.
      */
-    private Pattern endPunctPattern;
+    private final Pattern endPunctPattern = DEFAULT_END_PUNCTUATION;
 
     public EllipsizingTextView(Context context) {
         this(context, null);
@@ -68,7 +65,6 @@ public class EllipsizingTextView extends AppCompatTextView {
             new int[]{android.R.attr.maxLines, android.R.attr.ellipsize}, defStyle, 0);
         setMaxLines(a.getInt(0, Integer.MAX_VALUE));
         a.recycle();
-        setEndPunctuationPattern(DEFAULT_END_PUNCTUATION);
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
         theme.resolveAttribute(R.attr.colorAccent, typedValue, true);
@@ -76,21 +72,6 @@ public class EllipsizingTextView extends AppCompatTextView {
         ELLIPSIS.setSpan(new ForegroundColorSpan(color), 0, ELLIPSIS.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
-    public void setEndPunctuationPattern(Pattern pattern) {
-        endPunctPattern = pattern;
-    }
-
-    @SuppressWarnings("unused")
-    public void addEllipsizeListener(@NonNull EllipsizeListener listener) {
-        ellipsizeListeners.add(listener);
-    }
-
-    @SuppressWarnings("unused")
-    public void removeEllipsizeListener(@NonNull EllipsizeListener listener) {
-        ellipsizeListeners.remove(listener);
-    }
-
-    @SuppressWarnings("unused")
     public boolean isEllipsized() {
         return isEllipsized;
     }
@@ -187,9 +168,6 @@ public class EllipsizingTextView extends AppCompatTextView {
         isStale = false;
         if (ellipsized != isEllipsized) {
             isEllipsized = ellipsized;
-            for (EllipsizeListener listener : ellipsizeListeners) {
-                listener.ellipsizeStateChanged(ellipsized);
-            }
         }
     }
 

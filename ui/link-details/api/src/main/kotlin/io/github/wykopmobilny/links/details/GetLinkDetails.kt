@@ -110,6 +110,11 @@ sealed class LinkCommentUi {
         val plusCount: Button,
         val minusCount: Button,
         val embed: EmbedMediaUi?,
+        val showsOption: Boolean,
+        val favoriteButton: ToggleButtonUi,
         val moreAction: () -> Unit,
+        val clickAction: () -> Unit,
+        val profileAction: () -> Unit = author.avatar.onClicked ?: {},
+        val shareAction: () -> Unit,
     ) : LinkCommentUi()
 }

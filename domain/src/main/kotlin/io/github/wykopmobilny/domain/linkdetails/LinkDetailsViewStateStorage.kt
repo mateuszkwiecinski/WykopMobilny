@@ -24,6 +24,7 @@ data class LinkDetailsViewState(
     val spoilerDialog: CharSequence? = null,
     val expandedSpoilers: Map<Long, Set<ExpandedSpoiler>> = emptyMap(),
     val collapsedIds: Set<Long> = emptySet(),
+    val optionsVisibleIds: Set<Long> = emptySet(),
     val picker: OptionPickerUi? = null,
     val snackbar: String? = null,
     val forciblyShownBlockedComments: Set<Long> = emptySet(),

@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.rule.GrantPermissionRule
+import com.facebook.testing.screenshot.Screenshot
+import com.facebook.testing.screenshot.internal.TestNameDetector
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.resources.MaterialAttributes
 import com.karumi.shot.ScreenshotTest
@@ -66,18 +68,27 @@ abstract class BaseScreenshotTest : ScreenshotTest {
                         0,
                         ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT),
                     )
+                    disableFlakyComponentsAndWaitForIdle(view = container)
                     container.doLayout(size)
 
                     container
                 }
 
-            compareScreenshot(
+            recordScreenshot(
                 name = "$testName[$theme] - $size",
                 view = container,
-                widthInPx = container.measuredWidth,
-                heightInPx = container.measuredHeight,
             )
         }
+    }
+
+    private fun recordScreenshot(view: View, name: String) {
+        val snapshotName = "${TestNameDetector.getTestClass()}_$name"
+        Screenshot
+            .snap(view)
+            .setIncludeAccessibilityInfo(false)
+            .setMaxPixels(0)
+            .setName(snapshotName)
+            .record()
     }
 
     inline fun <reified T : Any> registerDependencies(dependency: T, scopeId: String? = null) {
