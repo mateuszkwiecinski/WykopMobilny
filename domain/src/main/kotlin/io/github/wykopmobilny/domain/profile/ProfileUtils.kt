@@ -85,14 +85,22 @@ internal fun DateTimePeriod.toPrettyString(
 
     return buildString {
         yearsPart.takeIf(String::isNotEmpty)?.let(::append)
-        append(" ")
-        monthsPart.takeIf(String::isNotEmpty)?.let(::append)
-        append(" ")
-        daysPart.takeIf(String::isNotEmpty)?.let(::append)
-        append(" ")
-        hoursPart.takeIf(String::isNotEmpty)?.let(::append)
-        append(" ")
-        minutesPart.takeIf(String::isNotEmpty)?.let(::append)
+        monthsPart.takeIf(String::isNotEmpty)?.let {
+            append(" ")
+            append(it)
+        }
+        daysPart.takeIf(String::isNotEmpty)?.let {
+            append(" ")
+            append(it)
+        }
+        hoursPart.takeIf(String::isNotEmpty)?.let {
+            append(" ")
+            append(it)
+        }
+        minutesPart.takeIf(String::isNotEmpty)?.let {
+            append(" ")
+            append(it)
+        }
         append(" ")
         append(suffix)
     }.trim()

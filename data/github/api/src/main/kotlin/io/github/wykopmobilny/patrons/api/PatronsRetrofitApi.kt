@@ -4,6 +4,6 @@ import retrofit2.http.GET
 
 interface PatronsRetrofitApi {
 
-    @GET("alufers/owm-patrons/master/patrons.json")
+    @GET("otwarty-wykop-mobilny/owm-patrons/master/patrons.json")
     suspend fun getPatrons(): PatronsResponse
 }

@@ -32,8 +32,7 @@ internal fun LinkDetailsReplyCommentBinding.bindReplyComment(comment: LinkCommen
     txtUser.setUserNick(comment.author)
     txtTimestamp.text = comment.postedAgo
     txtApp.text = comment.app?.let { "via $it" }
-    txtBody.isVisible = comment.body != null
-    txtBody.text = comment.body
+    txtBody.bind(comment.body)
     imgEmbed.bind(comment.embed)
     val badgeColor = (comment.badge?.toColorInt(context = root.context) ?: root.context.readColorAttr(R.attr.colorDivider)).defaultColor
     lineCommentMiddle.setBackgroundColor(badgeColor)

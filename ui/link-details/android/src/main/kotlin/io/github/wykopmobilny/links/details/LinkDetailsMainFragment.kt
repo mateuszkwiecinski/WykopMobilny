@@ -68,7 +68,7 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
         adapter.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding.list.adapter = adapter
         (binding.list.itemAnimator as DefaultItemAnimator).apply {
-            moveDuration = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+            moveDuration = (resources.getInteger(android.R.integer.config_shortAnimTime) / 1.5).toLong()
         }
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             val shared = getLinkDetails()

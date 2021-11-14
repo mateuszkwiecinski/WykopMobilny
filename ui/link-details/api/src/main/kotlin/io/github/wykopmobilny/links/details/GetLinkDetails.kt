@@ -9,6 +9,7 @@ import io.github.wykopmobilny.ui.base.components.SwipeRefreshUi
 import io.github.wykopmobilny.ui.components.widgets.Button
 import io.github.wykopmobilny.ui.components.widgets.Color
 import io.github.wykopmobilny.ui.components.widgets.EmbedMediaUi
+import io.github.wykopmobilny.ui.components.widgets.MessageBodyUi
 import io.github.wykopmobilny.ui.components.widgets.TagUi
 import io.github.wykopmobilny.ui.components.widgets.ToggleButtonUi
 import io.github.wykopmobilny.ui.components.widgets.TwoActionsCounterUi
@@ -105,7 +106,7 @@ sealed class LinkCommentUi {
         val author: UserInfoUi,
         val postedAgo: String,
         val app: String?,
-        val body: CharSequence?,
+        val body: MessageBodyUi,
         val badge: Color?,
         val plusCount: Button,
         val minusCount: Button,

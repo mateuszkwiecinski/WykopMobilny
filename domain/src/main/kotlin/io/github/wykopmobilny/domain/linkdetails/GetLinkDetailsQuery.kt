@@ -54,6 +54,7 @@ import io.github.wykopmobilny.ui.base.components.OptionPickerUi
 import io.github.wykopmobilny.ui.base.components.SwipeRefreshUi
 import io.github.wykopmobilny.ui.components.widgets.Button
 import io.github.wykopmobilny.ui.components.widgets.ColorConst
+import io.github.wykopmobilny.ui.components.widgets.MessageBodyUi
 import io.github.wykopmobilny.ui.components.widgets.TagUi
 import io.github.wykopmobilny.ui.components.widgets.ToggleButtonUi
 import io.github.wykopmobilny.ui.components.widgets.TwoActionsCounterUi
@@ -293,6 +294,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                                             generalResource = Resource.idle(),
                                             forciblyShownBlockedComments = emptySet(),
                                             allowedNsfwImages = emptySet(),
+                                            expandedComments = emptySet(),
                                         )
                                     }
                                 }
@@ -302,6 +304,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                                             generalResource = Resource.error(FailedAction(cause = failure)),
                                             forciblyShownBlockedComments = emptySet(),
                                             allowedNsfwImages = emptySet(),
+                                            expandedComments = emptySet(),
                                         )
                                     }
                                 }
@@ -438,6 +441,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
             hidePlus18Content = filtering.hidePlus18Content,
             sort = links.commentsSort,
             openSpoilersInDialog = mikroblog.openSpoilersInDialog,
+            cutLongComments = mikroblog.cutLongEntries,
             showMinifiedImages = image.showMinifiedImages,
             mediaPreferences = media,
         )
@@ -489,21 +493,25 @@ internal class GetLinkDetailsQuery @Inject constructor(
                 id = id,
                 postedAgo = postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(suffix = "temu"),
                 app = app,
-                body = body.toCommentBody(
-                    textUtils = textUtils,
-                    showsSpoilersInDialog = commentPreferences.openSpoilersInDialog,
-                    expandedSpoilers = viewState.expandedSpoilers[id].orEmpty(),
-                    showSpoilerDialog = safeCallback { content ->
-                        val contentParsed = content()
-                        viewStateStorage.update { it.copy(spoilerDialog = contentParsed) }
-                    },
-                    saveExpandedSpoiler = safeCallback { spoilerId ->
-                        viewStateStorage.update {
-                            val spoilersInComment = it.expandedSpoilers[id].orEmpty() + spoilerId
-                            it.copy(expandedSpoilers = it.expandedSpoilers + (id to spoilersInComment))
-                        }
-                    },
-                    onNavigation = safeCallback { request -> interopRequests.request(request) },
+                body = MessageBodyUi(
+                    content = body.toCommentBody(
+                        textUtils = textUtils,
+                        showsSpoilersInDialog = commentPreferences.openSpoilersInDialog,
+                        expandedSpoilers = viewState.expandedSpoilers[id].orEmpty(),
+                        showSpoilerDialog = safeCallback { content ->
+                            val contentParsed = content()
+                            viewStateStorage.update { it.copy(spoilerDialog = contentParsed) }
+                        },
+                        saveExpandedSpoiler = safeCallback { spoilerId ->
+                            viewStateStorage.update {
+                                val spoilersInComment = it.expandedSpoilers[id].orEmpty() + spoilerId
+                                it.copy(expandedSpoilers = it.expandedSpoilers + (id to spoilersInComment))
+                            }
+                        },
+                        onNavigation = safeCallback { request -> interopRequests.request(request) },
+                    ),
+                    maxLines = if (commentPreferences.cutLongComments && !viewState.expandedComments.contains(id)) 8 else Int.MAX_VALUE,
+                    viewMoreAction = safeCallback { viewStateStorage.update { it.copy(expandedComments = it.expandedComments + id) } },
                 ),
                 author = author.toUi(
                     onClicked = safeCallback { interopRequests.request(InteropRequest.Profile(profileId = author.profileId)) },
@@ -582,6 +590,13 @@ internal class GetLinkDetailsQuery @Inject constructor(
                                         clickAction = safeCallback {
                                             clipboardService.copy(body.copyableText(textUtils))
                                             showSnackbar(Strings.COPIED_TO_CLIPBOARD)
+                                        },
+                                    ),
+                                    OptionPickerUi.Option(
+                                        label = Strings.Link.MORE_OPTION_OPEN_IN_BROWSER,
+                                        icon = Drawable.Browser,
+                                        clickAction = safeCallback {
+                                            interopRequests.request(InteropRequest.WebBrowser(wykopUrl(linkId = link.id), force = true))
                                         },
                                     ),
                                 ),
@@ -675,5 +690,6 @@ private data class CommentPreferences(
     val hidePlus18Content: Boolean,
     val openSpoilersInDialog: Boolean,
     val showMinifiedImages: Boolean,
+    val cutLongComments: Boolean,
     val mediaPreferences: MediaPlayerPreferences,
 )

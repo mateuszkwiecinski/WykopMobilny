@@ -37,8 +37,7 @@ internal fun LinkDetailsParentCommentBinding.bindParentComment(
     txtUser.setUserNick(data.author)
     txtTimestamp.text = data.postedAgo
     txtApp.text = data.app?.let { "via $it" }
-    txtBody.isVisible = data.body != null
-    txtBody.text = data.body
+    txtBody.bind(data.body)
     imgEmbed.bind(data.embed)
     imgBadge.setBackgroundColor(data.badge.toColorInt(context = root.context).defaultColor)
     plusButton.bind(data.plusCount)

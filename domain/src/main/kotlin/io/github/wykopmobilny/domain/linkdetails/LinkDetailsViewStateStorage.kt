@@ -23,6 +23,7 @@ data class LinkDetailsViewState(
     val relatedResource: Resource = Resource.idle(),
     val spoilerDialog: CharSequence? = null,
     val expandedSpoilers: Map<Long, Set<ExpandedSpoiler>> = emptyMap(),
+    val expandedComments: Set<Long> = emptySet(),
     val collapsedIds: Set<Long> = emptySet(),
     val optionsVisibleIds: Set<Long> = emptySet(),
     val picker: OptionPickerUi? = null,

@@ -205,13 +205,6 @@ public class EllipsizingTextView extends AppCompatTextView {
     }
 
     /**
-     * A listener that notifies when the ellipsize state has changed.
-     */
-    public interface EllipsizeListener {
-        void ellipsizeStateChanged(boolean ellipsized);
-    }
-
-    /**
      * A base class for an ellipsize strategy.
      */
     private abstract class EllipsizeStrategy {

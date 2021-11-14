@@ -11,6 +11,7 @@ import io.github.wykopmobilny.ui.components.widgets.Button
 import io.github.wykopmobilny.ui.components.widgets.Color
 import io.github.wykopmobilny.ui.components.widgets.ColorConst
 import io.github.wykopmobilny.ui.components.widgets.EmbedMediaUi
+import io.github.wykopmobilny.ui.components.widgets.MessageBodyUi
 import io.github.wykopmobilny.ui.components.widgets.ToggleButtonUi
 import io.github.wykopmobilny.ui.components.widgets.UserInfoUi
 import org.junit.Test
@@ -276,6 +277,7 @@ private fun stubNormalComment(
     badge: Color? = null,
     plusCount: Button = stubPlusCounter(),
     minusCount: Button = stubMinusCounter(),
+    maxLines: Int = 8,
     embed: EmbedMediaUi? = null,
     showsOption: Boolean = false,
     favoriteButton: ToggleButtonUi = stubToggleButton(),
@@ -284,7 +286,11 @@ private fun stubNormalComment(
     author = author,
     postedAgo = postedAgo,
     app = app,
-    body = body,
+    body = MessageBodyUi(
+        content = body,
+        maxLines = maxLines,
+        viewMoreAction = {},
+    ),
     badge = badge,
     plusCount = plusCount,
     minusCount = minusCount,
