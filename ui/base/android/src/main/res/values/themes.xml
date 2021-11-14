@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.App.Light"
+    <style name="Base.Theme.App.Light"
         parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">#ffffff</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -26,6 +26,12 @@
         <item name="colorControlHighlightOnPrimary">#33ffffff</item>
         <item name="cornerRadius">16dp</item>
         <item name="outlineWidth">1dp</item>
+    </style>
+
+    <style name="Theme.App.Light"
+        parent="Base.Theme.App.Light">
+
+        <item name="android:navigationBarColor">?colorPrimaryDark</item>
     </style>
 
     <style name="Theme.App.Dark"
