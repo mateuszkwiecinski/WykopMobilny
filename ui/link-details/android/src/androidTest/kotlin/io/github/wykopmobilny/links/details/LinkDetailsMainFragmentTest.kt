@@ -106,7 +106,7 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                                 author = stubUser("very_long_user_name_most_likely_more_than_single_line"),
                                 postedAgo = "12 years 4 months ago",
                                 app = "Wykop the best app long name",
-                                body = "Comment body",
+                                body = "Comment body 1",
                                 minusCount = stubMinusCounter(clicked = true),
                             ),
                         ) to emptyList(),
@@ -118,7 +118,7 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                                 author = stubUser("fixture-parent-user", color = ColorConst.UserBanned),
                                 postedAgo = "12 min. temu",
                                 app = "Random app",
-                                body = "Comment body",
+                                body = "Comment body 2",
                                 badge = ColorConst.CommentCurrentUser,
                                 plusCount = stubPlusCounter(clicked = true),
                                 minusCount = stubMinusCounter(count = 0),
@@ -177,7 +177,7 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
                                 plusCount = stubPlusCounter(count = 10),
                                 minusCount = stubMinusCounter(count = 10, clicked = true),
                                 embed = stubEmbedStatic(
-                                    url = avatarUrl,
+                                    url = commentImageUrl,
                                 ),
                             ),
                             stubNormalComment(
@@ -239,7 +239,7 @@ private fun stubMinusCounter(
 )
 
 private fun stubEmbedStatic(
-    url: String = BaseScreenshotTest.avatarUrl,
+    url: String = BaseScreenshotTest.commentImageUrl,
     size: String? = null,
     hasNsfwOverlay: Boolean = false,
 ) = EmbedMediaUi(
@@ -253,7 +253,7 @@ private fun stubEmbedStatic(
 )
 
 private fun stubEmbedPlayable(
-    url: String = BaseScreenshotTest.avatarUrl,
+    url: String = BaseScreenshotTest.commentImageUrl,
     domain: String = "fixture-domain",
     size: String? = null,
     hasNsfwOverlay: Boolean = false,

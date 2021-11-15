@@ -1,5 +1,6 @@
 plugins {
     id("com.starter.library.android")
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -20,6 +21,7 @@ dependencies {
     implementation("com.facebook.testing.screenshot:core:0.13.0")
     implementation(libs.bundles.espresso)
     implementation(libs.glide.core)
+    kapt(libs.glide.compiler)
     api("com.thedeanda:lorem:2.1")
     api("junit:junit:4.13.2")
 }

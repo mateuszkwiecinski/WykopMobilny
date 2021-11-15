@@ -69,13 +69,17 @@ abstract class BaseScreenshotTest : ScreenshotTest {
                         ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT),
                     )
                     disableFlakyComponentsAndWaitForIdle(view = container)
-                    container.doLayout(size)
+                    do {
+                        container.doLayout(size)
+                    } while (container.isLayoutRequested)
+                    container.allViews.forEach { it.viewTreeObserver.dispatchOnGlobalLayout() }
+                    container.allViews.forEach { it.viewTreeObserver.dispatchOnPreDraw() }
 
                     container
                 }
 
             recordScreenshot(
-                name = "$testName[$theme] - $size",
+                name = "$testName[$theme]-${size.width}x${size.height.takeIf { it > 0 } ?: "Wrap"}",
                 view = container,
             )
         }
@@ -114,7 +118,8 @@ abstract class BaseScreenshotTest : ScreenshotTest {
     }
 
     companion object {
-        const val avatarUrl = "file:///android_asset/responses/avatar.png"
+        const val commentImageUrl = "https://www.wykop.pl/cdn/c3201142/comment_1636958437mADXviOOciVItzVex4z9wm.jpg"
+        const val avatarUrl = "https://www.wykop.pl/cdn/c3397992/avatar_def,q150.png"
     }
 }
 
