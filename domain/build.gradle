@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.store.core)
     implementation(libs.paging.common)
     implementation(libs.dagger.core)
+    implementation(libs.jetbrains.markdown)
     kapt(libs.dagger.compiler)
 }
 

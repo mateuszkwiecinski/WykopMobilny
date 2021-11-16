@@ -144,10 +144,6 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
                     isEnabled = !it.useSimpleList && it.showLinkThumbnail,
                     onClicked = { updateUserSetting(UserSettings.showAuthor, !it.showAuthor) },
                 ),
-                cutLinkComments = Setting(
-                    currentValue = it.cutLinkComments,
-                    onClicked = { updateUserSetting(UserSettings.cutLinkComments, !it.cutLinkComments) },
-                ),
             )
         }
 

@@ -5,3 +5,9 @@ data class ErrorDialogUi(
     val retryAction: (() -> Unit)?,
     val dismissAction: () -> Unit,
 )
+
+data class InfoDialogUi(
+    val title: String,
+    val message: CharSequence,
+    val dismissAction: () -> Unit,
+)

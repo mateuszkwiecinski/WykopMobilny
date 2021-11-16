@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.App.Light"
+    <style name="Base.Theme.App.Light"
         parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">#ffffff</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -15,14 +15,23 @@
         <item name="colorPrimaryDark">#3677ae</item>
         <item name="colorError">#c0392b</item>
         <item name="colorOnError">#ffffff</item>
-        <item name="colorControlHighlightOnPrimary">#33ffffff</item>
         <item name="android:navigationBarColor">?colorPrimaryDark</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
         <item name="tabStyle">@style/Widget.App.Tab</item>
         <item name="android:textColorPrimary">@color/text_color_primary_light</item>
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="divider">@drawable/divider_light</item>
-        <item name="outlineColor">#BFBFBF</item>
+        <item name="colorOutline">#BFBFBF</item>
+        <item name="colorDivider">#efefef</item>
+        <item name="colorControlHighlightOnPrimary">#33ffffff</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="outlineWidth">1dp</item>
+    </style>
+
+    <style name="Theme.App.Light"
+        parent="Base.Theme.App.Light">
+
+        <item name="android:navigationBarColor">?colorPrimaryDark</item>
     </style>
 
     <style name="Theme.App.Dark"
@@ -50,7 +59,10 @@
         <item name="android:textColorPrimary">@color/text_color_primary_dark</item>
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="divider">@drawable/divider_dark</item>
-        <item name="outlineColor">#3a3a3a</item>
+        <item name="colorOutline">#3a3a3a</item>
+        <item name="colorDivider">#393939</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="outlineWidth">1dp</item>
     </style>
 
     <style name="Theme.App.Amoled"
@@ -69,6 +81,7 @@
         parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="colorPrimary">?colorOnSurface</item>
     </style>
+
 
     <style name="ThemeOverlay.App.AlertDialog.Dark"
         parent="ThemeOverlay.MaterialComponents.Dialog.Alert">

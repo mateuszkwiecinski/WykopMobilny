@@ -147,9 +147,13 @@ jobs:
           api-level: 28
           profile: pixel_xl
           target: google_apis
-          arch: x86_64
+          arch: x86
           disable-spellchecker: true
-          script: ./gradlew executeScreenshotTests
+          script: |
+            adb shell settings put global hidden_api_policy_p_apps 1
+            adb shell settings put global hidden_api_policy_pre_p_apps 1
+            adb shell settings put global hidden_api_policy 1
+            ./gradlew executeScreenshotTests
 
       - name: Upload ui tests result
         uses: actions/upload-artifact@v2

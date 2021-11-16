@@ -18,7 +18,8 @@ class Link(
     val relatedCount: Int,
     val author: Author?,
     val fullDate: Instant,
-    val preview: String?,
+    val fullImage: String?,
+    val previewImage: String?,
     val plus18: Boolean,
     val canVote: Boolean,
     val isHot: Boolean,
@@ -45,6 +46,7 @@ class Link(
         parcel.readParcelable(Author::class.java.classLoader),
         parcel.readLong().let(Instant::fromEpochMilliseconds),
         parcel.readString(),
+        parcel.readString(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
@@ -68,7 +70,8 @@ class Link(
         parcel.writeInt(relatedCount)
         parcel.writeParcelable(author, flags)
         parcel.writeLong(fullDate.toEpochMilliseconds())
-        parcel.writeString(preview)
+        parcel.writeString(fullImage)
+        parcel.writeString(previewImage)
         parcel.writeByte(if (plus18) 1 else 0)
         parcel.writeByte(if (canVote) 1 else 0)
         parcel.writeByte(if (isHot) 1 else 0)

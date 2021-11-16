@@ -11,7 +11,7 @@ import io.github.wykopmobilny.api.endpoints.LoginRetrofitApi
 import io.github.wykopmobilny.api.responses.LoginResponse
 import io.github.wykopmobilny.blacklist.api.ScraperRetrofitApi
 import io.github.wykopmobilny.data.storage.api.AppStorage
-import io.github.wykopmobilny.domain.api.apiFetcher
+import io.github.wykopmobilny.domain.api.apiCall
 import io.github.wykopmobilny.storage.api.Blacklist
 import io.github.wykopmobilny.storage.api.LoggedUserInfo
 import io.github.wykopmobilny.storage.api.UserInfoStorage
@@ -75,7 +75,12 @@ internal class StoresModule {
         storage: UserInfoStorage,
         appScopes: AppScopes,
     ) = StoreBuilder.from(
-        fetcher = apiFetcher<UserSession, LoginResponse> { request -> retrofitApi.getUserSessionToken(request.login, request.token) },
+        fetcher = Fetcher.ofResult { request: UserSession ->
+            apiCall(
+                rawCall = { retrofitApi.getUserSessionToken(login = request.login, accountKey = request.token) },
+                onUnauthorized = null,
+            )
+        },
         sourceOfTruth = SourceOfTruth.of(
             reader = { storage.loggedUser },
             writer = { _, newValue -> storage.updateLoggedUser(newValue.toLoggedUserInfo()) },

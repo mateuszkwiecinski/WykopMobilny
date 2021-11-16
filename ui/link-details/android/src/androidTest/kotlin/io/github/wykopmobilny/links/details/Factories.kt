@@ -1,17 +1,16 @@
 package io.github.wykopmobilny.links.details
 
 import io.github.wykopmobilny.screenshots.BaseScreenshotTest
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 internal fun BaseScreenshotTest.registerLinkDetails(
     scopeId: Long = 1,
-    blacklist: () -> LinkDetailsUi = { error("unsupported") },
+    block: () -> LinkDetailsUi = { error("unsupported") },
 ) = registerDependencies<LinkDetailsDependencies>(
-    scopeId = scopeId.toString(),
+    scopeId = LinkDetailsKey(linkId = scopeId, initialCommentId = null).toString(),
     dependency = object : LinkDetailsDependencies {
-        override fun getLinkDetails(): GetLinkDetails = object: GetLinkDetails {
-            override fun invoke(): Flow<LinkDetailsUi> = flowOf(blacklist())
+        override fun getLinkDetails(): GetLinkDetails = object : GetLinkDetails {
+            override fun invoke() = flowOf(block())
         }
     },
 )

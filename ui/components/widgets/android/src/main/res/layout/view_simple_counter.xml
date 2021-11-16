@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:minWidth="15dp"
-        android:textAppearance="@style/TextAppearance.MaterialScale.Body2"
+        android:textAppearance="@style/TextAppearance.MaterialScale.Body1"
         tools:text="1"
         />
 </merge>

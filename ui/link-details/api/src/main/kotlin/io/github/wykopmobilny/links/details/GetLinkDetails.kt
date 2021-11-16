@@ -3,11 +3,13 @@ package io.github.wykopmobilny.links.details
 import io.github.wykopmobilny.ui.base.Query
 import io.github.wykopmobilny.ui.base.components.ContextMenuOptionUi
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
+import io.github.wykopmobilny.ui.base.components.InfoDialogUi
 import io.github.wykopmobilny.ui.base.components.OptionPickerUi
 import io.github.wykopmobilny.ui.base.components.SwipeRefreshUi
 import io.github.wykopmobilny.ui.components.widgets.Button
 import io.github.wykopmobilny.ui.components.widgets.Color
 import io.github.wykopmobilny.ui.components.widgets.EmbedMediaUi
+import io.github.wykopmobilny.ui.components.widgets.MessageBodyUi
 import io.github.wykopmobilny.ui.components.widgets.TagUi
 import io.github.wykopmobilny.ui.components.widgets.ToggleButtonUi
 import io.github.wykopmobilny.ui.components.widgets.TwoActionsCounterUi
@@ -22,6 +24,7 @@ class LinkDetailsUi(
     val contextMenuOptions: List<ContextMenuOptionUi>,
     val commentsSection: CommentsSectionUi,
     val errorDialog: ErrorDialogUi?,
+    val infoDialog: InfoDialogUi?,
     val picker: OptionPickerUi?,
     val snackbar: String?,
 )
@@ -103,11 +106,16 @@ sealed class LinkCommentUi {
         val author: UserInfoUi,
         val postedAgo: String,
         val app: String?,
-        val body: String?,
+        val body: MessageBodyUi,
         val badge: Color?,
         val plusCount: Button,
         val minusCount: Button,
         val embed: EmbedMediaUi?,
+        val showsOption: Boolean,
+        val favoriteButton: ToggleButtonUi,
         val moreAction: () -> Unit,
+        val clickAction: () -> Unit,
+        val profileAction: () -> Unit = author.avatar.onClicked ?: {},
+        val shareAction: () -> Unit,
     ) : LinkCommentUi()
 }

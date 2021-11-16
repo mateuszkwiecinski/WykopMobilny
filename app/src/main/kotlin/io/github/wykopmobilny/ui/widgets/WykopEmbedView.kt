@@ -86,8 +86,9 @@ class WykopEmbedView(context: Context, attrs: AttributeSet) : FrameLayout(contex
         val domain = url.host.replace("www.", "").substringBeforeLast(".")
             .substringAfterLast(".")
         when (domain) {
-            "youtube" -> binding.imageIcon.setBackgroundResource(R.mipmap.ic_youtube)
-            "youtu" -> binding.imageIcon.setBackgroundResource(R.mipmap.ic_youtube)
+            "youtube",
+            "youtu",
+            -> binding.imageIcon.setBackgroundResource(R.mipmap.ic_youtube)
             "gfycat" -> binding.imageIcon.setBackgroundResource(R.mipmap.ic_gfycat)
             "vimeo" -> binding.imageIcon.setBackgroundResource(R.mipmap.ic_vimeo)
             "streamable" -> binding.imageIcon.setBackgroundResource(R.mipmap.ic_streamable)

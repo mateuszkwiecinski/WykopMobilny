@@ -39,7 +39,6 @@ internal class GeneralPreferencesFragmentTest : BaseScreenshotTest() {
                         showLinkThumbnail = stubSetting(value = true),
                         imagePosition = stubListSetting(value = LinkImagePositionUi.Left),
                         showAuthor = stubSetting(value = true),
-                        cutLinkComments = stubSetting(value = true),
                     ),
                     imagesSection = AppearancePreferencesUi.ImagesSectionUi(
                         showMinifiedImages = stubSetting(value = true),

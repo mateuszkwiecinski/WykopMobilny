@@ -17,7 +17,6 @@ interface SettingsPreferencesApi {
     val hideContentWithoutTags: Boolean
     val cutImageProportion: Int?
     val fontSize: String?
-    val hideLinkCommentsByDefault: Boolean
     val hideBlacklistedViews: Boolean
     val enableYoutubePlayer: Boolean
     val enableEmbedPlayer: Boolean

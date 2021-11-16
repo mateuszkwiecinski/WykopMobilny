@@ -32,6 +32,7 @@ internal fun linkDetailsSourceOfTruth(
                     tags = link.tags.split(" ").map { it.removePrefix("#") },
                     sourceUrl = link.sourceUrl,
                     previewImageUrl = link.previewImageUrl,
+                    fullImageUrl = link.fullImageUrl,
                     author = UserInfo(
                         profileId = link.profileId,
                         avatarUrl = link.avatar,
@@ -61,6 +62,7 @@ internal fun linkDetailsSourceOfTruth(
                     tags = link.tags,
                     sourceUrl = link.sourceUrl,
                     previewImageUrl = link.preview?.stripImageCompression(),
+                    fullImageUrl = link.preview?.stripImageCompression(),
                     voteCount = link.voteCount,
                     buryCount = link.buryCount,
                     commentsCount = link.commentsCount,
@@ -81,7 +83,7 @@ internal fun linkDetailsSourceOfTruth(
     delete = { linkId -> cache.linksQueries.deleteById(linkId) },
 )
 
-private fun String.stripImageCompression(): String {
+internal fun String.stripImageCompression(): String {
     val extension = substringAfterLast(".")
     val baseUrl = substringBeforeLast(",")
     return baseUrl + if (!baseUrl.endsWith(extension)) ".$extension" else ""

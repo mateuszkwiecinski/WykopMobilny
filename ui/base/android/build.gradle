@@ -16,6 +16,7 @@ dependencies {
     api(libs.coroutines.android)
     api(libs.lifecycle.livedata)
     api(libs.lifecycle.common)
+    api(libs.lifecycle.viewmodel)
     api(libs.activity.core)
     api(libs.fragment.core)
     api(libs.swiperefreshlayout.core)

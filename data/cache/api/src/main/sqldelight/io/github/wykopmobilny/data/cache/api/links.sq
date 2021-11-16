@@ -8,6 +8,7 @@ CREATE TABLE linkEntity (
     tags TEXT NOT NULL,
     sourceUrl TEXT NOT NULL,
     previewImageUrl TEXT,
+    fullImageUrl TEXT,
     voteCount INTEGER AS Int NOT NULL,
     buryCount INTEGER AS Int NOT NULL,
     commentsCount INTEGER AS Int NOT NULL,

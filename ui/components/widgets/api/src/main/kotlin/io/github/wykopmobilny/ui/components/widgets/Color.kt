@@ -6,6 +6,7 @@ enum class ColorConst(val hexValue: String) : Color {
 
     CommentCurrentUser("#3498db"),
     CommentOriginalPoster("#F75616"),
+    CommentLinked("#27AE60"),
     Male("#46ABF2"),
     Female("#f246d0"),
     Transparent("#00000000"),

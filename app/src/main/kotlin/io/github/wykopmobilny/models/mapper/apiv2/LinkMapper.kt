@@ -23,7 +23,8 @@ object LinkMapper {
                 relatedCount = value.relatedCount,
                 author = value.author.let(AuthorMapper::map),
                 fullDate = value.date,
-                preview = value.preview?.stripImageCompression(),
+                previewImage = value.preview,
+                fullImage = value.preview?.stripImageCompression(),
                 plus18 = value.plus18,
                 canVote = value.canVote,
                 isHot = value.isHot,
@@ -32,6 +33,6 @@ object LinkMapper {
                 app = value.app,
                 gotSelected = false,
                 isBlocked = false,
-            )
+            ),
         )
 }

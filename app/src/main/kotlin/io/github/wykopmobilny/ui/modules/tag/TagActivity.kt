@@ -43,7 +43,8 @@ class TagActivity : BaseActivity(), TagActivityView {
     private val binding by viewBinding(ActivityTagBinding::inflate)
 
     override val enableSwipeBackLayout: Boolean = true
-    private val tagString by lazy { intent.getStringExtra(EXTRA_TAG)!! }
+    private val tagString
+        get() = intent.getStringExtra(EXTRA_TAG)!!
     private var tagMeta: TagMetaResponse? = null
     private val tagPagerAdapter by lazy { TagPagerAdapter(tagString, resources, supportFragmentManager) }
 

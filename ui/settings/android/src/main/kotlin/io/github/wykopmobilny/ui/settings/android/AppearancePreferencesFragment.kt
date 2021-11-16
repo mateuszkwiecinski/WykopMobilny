@@ -41,7 +41,6 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
                 bindCheckbox("linkShowImage", it.linksSection.showLinkThumbnail)
                 bindList("linkImagePosition", it.linksSection.imagePosition, imagePositionMapping)
                 bindCheckbox("linkShowAuthor", it.linksSection.showAuthor)
-                bindCheckbox("hideLinkCommentsByDefault", it.linksSection.cutLinkComments)
                 bindCheckbox("showMinifiedImages", it.imagesSection.showMinifiedImages)
                 bindCheckbox("cutImages", it.imagesSection.cutImages)
                 bindSlider("cutImageProportion", it.imagesSection.cutImagesProportion)

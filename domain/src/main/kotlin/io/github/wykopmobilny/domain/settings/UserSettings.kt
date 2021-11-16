@@ -67,7 +67,6 @@ internal object UserSettings {
     val useSimpleList = booleanMapping(preferencesKey = "settings.links.use_simple_list")
     val showLinkThumbnail = booleanMapping(preferencesKey = "settings.links.show_thumbnails")
     val showAuthor = booleanMapping(preferencesKey = "settings.links.show_author")
-    val cutLinkComments = booleanMapping(preferencesKey = "settings.links.cut_link_comments")
 
     val showMinifiedImages = booleanMapping("settings.images.show_minified_images")
     val cutImages = booleanMapping("settings.images.cut_images")

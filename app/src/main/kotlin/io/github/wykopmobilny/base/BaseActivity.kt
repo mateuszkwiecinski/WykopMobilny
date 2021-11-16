@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.r0adkll.slidr.attachSlidr
 import com.r0adkll.slidr.model.SlidrConfig
@@ -118,7 +117,6 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
             AppThemeUi.DarkAmoled -> R.style.WykopAppTheme_Amoled to R.color.colorPrimaryDark_Amoled
         }
         setTheme(appTheme)
-        window.navigationBarColor = ContextCompat.getColor(this@BaseActivity, navColor)
     }
 
     fun showErrorDialog(e: Throwable) {

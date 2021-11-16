@@ -7,6 +7,7 @@ import io.github.wykopmobilny.api.responses.LinkCommentResponse
 import io.github.wykopmobilny.api.responses.LinkResponse
 import io.github.wykopmobilny.api.responses.LinkVoteResponse
 import io.github.wykopmobilny.api.responses.RelatedResponse
+import io.github.wykopmobilny.api.responses.ToggleFavoriteResponse
 import io.github.wykopmobilny.api.responses.UpvoterResponse
 import io.github.wykopmobilny.api.responses.VoteResponse
 import io.github.wykopmobilny.api.responses.WykopApiResponse
@@ -135,4 +136,7 @@ interface LinksRetrofitApi {
 
     @GET("/links/favorite/{linkId}/appkey/$APP_KEY")
     suspend fun toggleFavorite(@Path("linkId") linkId: Long): WykopApiResponse<List<Boolean>>
+
+    @GET("/favorites/toggle/comment/{commentId}/appkey/$APP_KEY")
+    suspend fun toggleCommentFavorite(@Path("commentId") commentId: Long): WykopApiResponse<ToggleFavoriteResponse>
 }

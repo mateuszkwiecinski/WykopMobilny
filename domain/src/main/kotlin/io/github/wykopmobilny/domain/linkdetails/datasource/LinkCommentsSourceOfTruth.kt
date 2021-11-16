@@ -4,6 +4,7 @@ import com.dropbox.android.external.store4.SourceOfTruth
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import io.github.wykopmobilny.api.responses.LinkCommentResponse
+import io.github.wykopmobilny.api.responses.properUrl
 import io.github.wykopmobilny.data.cache.api.AppCache
 import io.github.wykopmobilny.data.cache.api.Embed
 import io.github.wykopmobilny.data.cache.api.LinkCommentsEntity
@@ -60,7 +61,7 @@ internal fun linkCommentsSourceOfTruth(
                         isBlocked = comment.blocked,
                         isFavorite = comment.favorite,
                         linkId = comment.linkId,
-                        embedId = comment.embed?.url,
+                        embedId = comment.embed?.properUrl,
                         app = comment.app,
                         violationUrl = comment.violationUrl,
                     ),
@@ -87,6 +88,7 @@ private fun SelectByLinkId.toContent() =
         minusCount = (voteCount - voteCountPlus).absoluteValue,
         userAction = userVote,
         app = app,
+        userFavorite = isFavorite,
         embed = embedId?.let {
             Embed(
                 id = it,
@@ -95,6 +97,7 @@ private fun SelectByLinkId.toContent() =
                 preview = preview!!,
                 size = size,
                 hasAdultContent = hasAdultContent!!,
+                ratio = ratio!!,
             )
         },
     )

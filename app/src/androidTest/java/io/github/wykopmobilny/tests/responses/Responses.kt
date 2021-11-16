@@ -14,7 +14,7 @@ fun MockWebServerRule.hashtagsCountEmpty() =
     enqueue("/notifications/HashTagsCount") { successfulResponse("hashtagscount_empty.json") }
 
 fun MockWebServerRule.githubPatronsEmpty() =
-    enqueue("/alufers/owm-patrons/master/patrons.json") { successfulResponse("githubpatrons_empty.json") }
+    enqueue("/otwarty-wykop-mobilny/owm-patrons/master/patrons.json") { successfulResponse("githubpatrons_empty.json") }
 
 fun MockWebServerRule.profile() =
     enqueue("/login/index") { successfulResponse("login.json") }

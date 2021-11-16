@@ -35,6 +35,11 @@ sealed class InteropRequest {
             TextPlain
         }
     }
+
+    class ShowImage(val url: String) : InteropRequest()
+    class ShowGif(val url: String) : InteropRequest()
+    class OpenYoutube(val url: String) : InteropRequest()
+    class OpenPlayer(val url: String) : InteropRequest()
 }
 
 @Singleton

@@ -111,13 +111,6 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
         binding.videoView.player?.release()
     }
 
-    override fun checkEmbedSettings() {
-        if (settingsPreferencesApi.enableEmbedPlayer) {
-            openBrowser(extraUrl)
-            finish()
-        }
-    }
-
     override fun playUrl(url: String) {
         val mediaItem: MediaItem = MediaItem.fromUri(url)
 

@@ -10,6 +10,7 @@ import androidx.annotation.AnyRes
 import androidx.annotation.AttrRes
 import androidx.annotation.Dimension
 import androidx.core.content.ContextCompat
+import io.github.aakira.napier.Napier
 
 @Dimension(unit = Dimension.PX)
 fun Number.dpToPx(
@@ -25,6 +26,19 @@ fun Context.readColorAttr(@AttrRes attrColor: Int): ColorStateList {
             ?: ColorStateList.valueOf(ContextCompat.getColor(this, typedValue.resourceId))
     } else {
         ColorStateList.valueOf(typedValue.data)
+    }
+}
+
+@Dimension(unit = Dimension.PX)
+fun Context.readDimensionAttr(@AttrRes dimensionAttr: Int): Int {
+    val dimensionValue = TypedValue()
+    theme.resolveAttribute(dimensionAttr, dimensionValue, true)
+
+    return if (dimensionValue.type != TypedValue.TYPE_DIMENSION) {
+        Napier.w("Invalid dimension resource $dimensionAttr", Throwable("generate_stacktrace"))
+        0
+    } else {
+        dimensionValue.getDimension(resources.displayMetrics).toInt()
     }
 }
 

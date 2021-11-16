@@ -5,5 +5,5 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class FavoriteResponse(
-    @field:Json(name = "user_favorite") val userFavorite: Boolean
+    @field:Json(name = "user_favorite") val userFavorite: Boolean,
 )

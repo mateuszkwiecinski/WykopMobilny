@@ -83,7 +83,27 @@ internal fun DateTimePeriod.toPrettyString(
         else -> return nowFallback
     }
 
-    return "$yearsPart $monthsPart $daysPart $hoursPart $minutesPart $suffix".replace("\\s+".toRegex(), " ").trim()
+    return buildString {
+        yearsPart.takeIf(String::isNotEmpty)?.let(::append)
+        monthsPart.takeIf(String::isNotEmpty)?.let {
+            append(" ")
+            append(it)
+        }
+        daysPart.takeIf(String::isNotEmpty)?.let {
+            append(" ")
+            append(it)
+        }
+        hoursPart.takeIf(String::isNotEmpty)?.let {
+            append(" ")
+            append(it)
+        }
+        minutesPart.takeIf(String::isNotEmpty)?.let {
+            append(" ")
+            append(it)
+        }
+        append(" ")
+        append(suffix)
+    }.trim()
 }
 
 internal fun LoggedUserInfo.toUi(onClicked: (() -> Unit)?) = UserInfoUi(

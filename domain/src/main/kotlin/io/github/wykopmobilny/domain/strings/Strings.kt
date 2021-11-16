@@ -41,8 +41,12 @@ object Strings {
 
         fun upvotesPercentage(value: Int) = "$value% wykopało"
         fun moreOptionUpvotersList(count: Int) = "Lista wykopujących ($count)"
-        fun moreOptioDownvotersList(count: Int) = "Lista zakopujących ($count)"
+        fun moreOptionDownvotersList(count: Int) = "Lista zakopujących ($count)"
         fun commentsSortOption(key: String) = "$key komentarze"
+    }
+
+    object Comment {
+        const val SPOILER_DIALOG_TITLE = "Spoiler"
     }
 
     object Profile {

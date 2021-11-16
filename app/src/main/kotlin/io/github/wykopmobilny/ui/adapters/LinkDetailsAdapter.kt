@@ -85,6 +85,7 @@ class LinkDetailsAdapter @Inject constructor(
                 navigator,
                 linkHandler,
                 linkHeaderActionListener,
+                settingsPreferencesApi,
             )
             TopLinkCommentViewHolder.TYPE_TOP_EMBED, TopLinkCommentViewHolder.TYPE_TOP_NORMAL -> TopLinkCommentViewHolder.inflateView(
                 parent,

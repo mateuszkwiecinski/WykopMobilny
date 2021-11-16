@@ -23,27 +23,38 @@ internal class LinksRepository @Inject constructor(
 ) {
 
     suspend fun toggleFavorite(linkId: Long) {
-        api.fetch { linksApi.toggleFavorite(linkId) }
+        api.mutation { linksApi.toggleFavorite(linkId) }
         linkStore.fresh(linkId)
     }
 
+    suspend fun toggleCommentFavorite(linkId: Long, commentId: Long) {
+        val response = api.mutation { linksApi.toggleCommentFavorite(commentId) }
+        withContext(AppDispatchers.IO) {
+            appCache.linkCommentsQueries.favorite(
+                linkId = linkId,
+                id = commentId,
+                isFavorite = response.isFavorited,
+            )
+        }
+    }
+
     suspend fun voteUp(linkId: Long) {
-        val response = api.fetch { linksApi.voteUp(linkId) }
+        val response = api.mutation { linksApi.voteUp(linkId) }
         updateLinkVotes(linkId, response, userVote = UserVote.Up)
     }
 
     suspend fun removeVote(linkId: Long) {
-        val response = api.fetch { linksApi.voteRemove(linkId) }
+        val response = api.mutation { linksApi.voteRemove(linkId) }
         updateLinkVotes(linkId, response, userVote = null)
     }
 
     suspend fun voteDown(linkId: Long, reason: VoteDownReason) {
-        val response = api.fetch { linksApi.voteDown(linkId, reason.apiValue) }
+        val response = api.mutation { linksApi.voteDown(linkId, reason.apiValue) }
         updateLinkVotes(linkId, response, userVote = UserVote.Down)
     }
 
     suspend fun commentVoteUp(linkId: Long, commentId: Long) {
-        val response = api.fetch { linksApi.commentVoteUp(linkId = linkId, commentId = commentId) }
+        val response = api.mutation { linksApi.commentVoteUp(linkId = linkId, commentId = commentId) }
         updateCommentVotes(
             linkId = linkId,
             commentId = commentId,
@@ -53,7 +64,7 @@ internal class LinksRepository @Inject constructor(
     }
 
     suspend fun commentVoteDown(linkId: Long, commentId: Long) {
-        val response = api.fetch { linksApi.commentVoteDown(linkId = linkId, commentId = commentId) }
+        val response = api.mutation { linksApi.commentVoteDown(linkId = linkId, commentId = commentId) }
         updateCommentVotes(
             linkId = linkId,
             commentId = commentId,
@@ -63,7 +74,7 @@ internal class LinksRepository @Inject constructor(
     }
 
     suspend fun removeCommentVote(linkId: Long, commentId: Long) {
-        val response = api.fetch { linksApi.commentVoteCancel(linkId = linkId, commentId = commentId) }
+        val response = api.mutation { linksApi.commentVoteCancel(linkId = linkId, commentId = commentId) }
         updateCommentVotes(
             linkId = linkId,
             commentId = commentId,
@@ -73,7 +84,7 @@ internal class LinksRepository @Inject constructor(
     }
 
     suspend fun relatedVoteUp(linkId: Long, relatedId: Long) {
-        val response = api.fetch { linksApi.relatedVoteDown(linkId = linkId, relatedId = relatedId) }
+        val response = api.mutation { linksApi.relatedVoteDown(linkId = linkId, relatedId = relatedId) }
         updateRelatedLinks(
             linkId = linkId,
             relatedId = relatedId,
@@ -83,7 +94,7 @@ internal class LinksRepository @Inject constructor(
     }
 
     suspend fun relatedVoteDown(linkId: Long, relatedId: Long) {
-        val response = api.fetch { linksApi.relatedVoteDown(linkId = linkId, relatedId = relatedId) }
+        val response = api.mutation { linksApi.relatedVoteDown(linkId = linkId, relatedId = relatedId) }
         updateRelatedLinks(
             linkId = linkId,
             relatedId = relatedId,

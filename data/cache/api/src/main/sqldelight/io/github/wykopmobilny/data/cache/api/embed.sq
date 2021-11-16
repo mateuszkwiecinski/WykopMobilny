@@ -6,7 +6,8 @@ CREATE TABLE embed (
     fileName TEXT,
     preview TEXT NOT NULL,
     size TEXT,
-    hasAdultContent INTEGER AS Boolean NOT NULL
+    hasAdultContent INTEGER AS Boolean NOT NULL,
+    ratio REAL AS Float NOT NULL
 );
 
 insertOrReplace:

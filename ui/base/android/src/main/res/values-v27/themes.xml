@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.App.Light"
+        parent="Base.Theme.App.Light">
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:navigationBarColor"
+            tools:ignore="PrivateResource">@color/background_material_light
+        </item>
+    </style>
+</resources>

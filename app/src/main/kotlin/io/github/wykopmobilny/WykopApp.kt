@@ -33,6 +33,7 @@ import io.github.wykopmobilny.domain.styles.di.StylesScope
 import io.github.wykopmobilny.domain.work.di.WorkScope
 import io.github.wykopmobilny.initializers.RemoteConfigKeys
 import io.github.wykopmobilny.links.details.LinkDetailsDependencies
+import io.github.wykopmobilny.links.details.LinkDetailsKey
 import io.github.wykopmobilny.notification.AppNotification.Type.Notifications
 import io.github.wykopmobilny.notification.NotificationDependencies
 import io.github.wykopmobilny.notification.di.DaggerNotificationsComponent
@@ -45,11 +46,14 @@ import io.github.wykopmobilny.ui.blacklist.BlacklistDependencies
 import io.github.wykopmobilny.ui.login.LoginDependencies
 import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.modules.blacklist.BlacklistActivity
+import io.github.wykopmobilny.ui.modules.embedview.EmbedViewActivity
+import io.github.wykopmobilny.ui.modules.embedview.YoutubeActivity
 import io.github.wykopmobilny.ui.modules.input.entry.add.AddEntryActivity
 import io.github.wykopmobilny.ui.modules.links.downvoters.DownvotersActivity
 import io.github.wykopmobilny.ui.modules.links.upvoters.UpvotersActivity
 import io.github.wykopmobilny.ui.modules.mainnavigation.MainNavigationActivity
 import io.github.wykopmobilny.ui.modules.notificationslist.NotificationsListActivity
+import io.github.wykopmobilny.ui.modules.photoview.PhotoViewActivity
 import io.github.wykopmobilny.ui.modules.pm.conversation.ConversationActivity
 import io.github.wykopmobilny.ui.modules.profile.ProfileActivity
 import io.github.wykopmobilny.ui.modules.tag.TagActivity
@@ -251,16 +255,12 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             SearchDependencies::class -> getOrPutScope<SearchScope>(scopeId) { domainComponent.search() }
             NotificationDependencies::class -> getOrPutScope<NotificationsScope>(scopeId) { domainComponent.notifications() }
             LinkDetailsDependencies::class -> {
-                scopeId as Long
-                getOrPutScope<LinkDetailsScope>(scopeId) {
-                    domainComponent.linkDetails().create(linkId = scopeId)
-                }
+                scopeId as LinkDetailsKey
+                getOrPutScope<LinkDetailsScope>(scopeId) { domainComponent.linkDetails().create(key = scopeId) }
             }
             ProfileDependencies::class -> {
                 scopeId as String
-                getOrPutScope<ProfileScope>(scopeId) {
-                    domainComponent.profile().create(profileId = scopeId)
-                }
+                getOrPutScope<ProfileScope>(scopeId) { domainComponent.profile().create(profileId = scopeId) }
             }
             else -> error("Unknown dependency type $clazz")
         }.dependencyContainer as T
@@ -387,6 +387,10 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                     }
                     is InteropRequest.DownvotersList -> context.startActivity(DownvotersActivity.createIntent(it.linkId, context))
                     is InteropRequest.UpvotersList -> context.startActivity(UpvotersActivity.createIntent(it.linkId, context))
+                    is InteropRequest.OpenPlayer -> context.startActivity(EmbedViewActivity.createIntent(context, it.url))
+                    is InteropRequest.OpenYoutube -> context.startActivity(YoutubeActivity.createIntent(context, it.url))
+                    is InteropRequest.ShowGif -> context.startActivity(PhotoViewActivity.createIntent(context, it.url))
+                    is InteropRequest.ShowImage -> context.startActivity(PhotoViewActivity.createIntent(context, it.url))
                 }
                     .run { }
             }
