@@ -7,7 +7,6 @@ dependencies {
     api(projects.data.wykop.api)
     api(libs.okhttp.core)
     implementation(projects.common.kotlinHelpers)
-    implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.moshi)
     implementation(libs.dagger.core)
     kapt((libs.dagger.compiler))

@@ -9,46 +9,49 @@ import io.github.wykopmobilny.storage.api.LoggedUserInfo
 import io.github.wykopmobilny.storage.api.SessionStorage
 import io.github.wykopmobilny.storage.api.UserSession
 import kotlinx.coroutines.flow.first
+import retrofit2.HttpException
 import javax.inject.Inject
 
-suspend fun <T> apiCall(
+internal suspend fun <T : Any> apiCall(
     rawCall: suspend () -> ApiResponse<T>,
     onUnauthorized: (suspend () -> Unit)?,
-) = runCatching { rawCall() }
-    .mapCatching { response ->
-        val data = response.data
-        if (data == null) {
-            val error = response.error
-            if (error == null) {
-                FetcherResult.Error.Message("Invalid response. API's fault")
-            } else {
-                when (error.code) {
-                    WykopApiCodes.InvalidUserKey, WykopApiCodes.WrongUserSessionKey -> {
-                        onUnauthorized?.invoke() ?: error("[${error.code}] ${error.messagePl}")
-                        val newResponse = rawCall()
-                        newResponse.data?.let { FetcherResult.Data(it) }
-                            ?: newResponse.error?.let { FetcherResult.Error.Message("[${it.code}] ${it.messagePl}") }
-                            ?: FetcherResult.Error.Message("Invalid response. API's fault")
+): FetcherResult<T> {
+    val retry = suspend {
+        val newResponse = rawCall()
+        newResponse.data?.let { FetcherResult.Data(it) }
+            ?: newResponse.error?.let { FetcherResult.Error.Message("[${it.code}] ${it.messagePl}") }
+            ?: FetcherResult.Error.Message("Invalid response. API's fault")
+    }
+
+    return runCatching { rawCall() }
+        .mapCatching { response ->
+            val data = response.data
+            if (data == null) {
+                val error = response.error
+                if (error == null) {
+                    FetcherResult.Error.Message("Invalid response. API's fault")
+                } else {
+                    when (error.code) {
+                        WykopApiCodes.InvalidUserKey, WykopApiCodes.WrongUserSessionKey -> {
+                            onUnauthorized?.invoke() ?: error("[${error.code}] ${error.messagePl}")
+                            retry()
+                        }
+                        else -> FetcherResult.Error.Message("[${error.code}] ${error.messagePl}")
                     }
-                    else -> FetcherResult.Error.Message("[${error.code}] ${error.messagePl}")
                 }
+            } else {
+                FetcherResult.Data(data)
             }
-        } else {
-            FetcherResult.Data(data)
         }
-    }
-    .getOrElse(FetcherResult.Error::Exception)
-
-internal suspend fun <T : Any> apiCallNoRetry(rawCall: suspend () -> ApiResponse<T>): FetcherResult<T> {
-    val response = runCatching { rawCall() }
-        .getOrElse { return FetcherResult.Error.Exception(it) }
-    val error = response.error
-
-    return if (error == null) {
-        response.data?.let { FetcherResult.Data(it) } ?: FetcherResult.Error.Message("Invalid response. Api's fault")
-    } else {
-        FetcherResult.Error.Message("[${error.code}] ${error.messagePl}")
-    }
+        .recoverCatching { failure ->
+            if (failure is HttpException && failure.code() == 401) {
+                onUnauthorized?.invoke() ?: error("[${failure.code()}] ${failure.message()}")
+                retry()
+            } else {
+                FetcherResult.Error.Exception(failure)
+            }
+        }
+        .getOrElse(FetcherResult.Error::Exception)
 }
 
 internal class ApiClient @Inject constructor(
@@ -56,7 +59,7 @@ internal class ApiClient @Inject constructor(
     private val userInfoStore: Store<UserSession, LoggedUserInfo>,
 ) {
 
-    suspend fun <T> mutation(rawCall: suspend () -> ApiResponse<T>): T {
+    suspend fun <T : Any> mutation(rawCall: suspend () -> ApiResponse<T>): T {
         val result = apiCall(
             rawCall = { rawCall() },
             onUnauthorized = {
