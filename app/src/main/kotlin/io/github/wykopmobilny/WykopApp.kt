@@ -79,7 +79,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import okhttp3.Cache
+import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.reflect.KClass
 import kotlin.time.Duration
@@ -99,7 +101,17 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
 
     override val applicationScope = CoroutineScope(Job() + Dispatchers.Default)
 
-    private val okHttpClient = OkHttpClient()
+    private val okHttpClient = OkHttpClient.Builder()
+        .retryOnConnectionFailure(true)
+        // https://github.com/square/okhttp/issues/3146
+        .connectionPool(
+            ConnectionPool(
+                maxIdleConnections = 0,
+                keepAliveDuration = 1,
+                timeUnit = TimeUnit.NANOSECONDS,
+            ),
+        )
+        .build()
 
     override fun onCreate() {
         super.onCreate()

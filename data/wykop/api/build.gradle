@@ -6,7 +6,7 @@ plugins {
 dependencies {
     api(libs.coroutines.core)
     api(libs.kotlinx.datetime)
-    implementation(libs.retrofit.core)
+    api(libs.retrofit.core)
     implementation(libs.moshi.core)
     kapt(libs.moshi.compiler)
 }
