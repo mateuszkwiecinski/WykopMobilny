@@ -8,7 +8,6 @@ import io.github.wykopmobilny.R
 import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.databinding.SimpleLinkLayoutBinding
 import io.github.wykopmobilny.models.dataclass.Link
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.fragments.links.LinkActionListener
 import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.utils.layoutInflater
@@ -17,7 +16,6 @@ import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 
 class SimpleLinkViewHolder(
     private val binding: SimpleLinkLayoutBinding,
-    private val settingsApi: SettingsPreferencesApi,
     private val navigator: NewNavigator,
     private val userManagerApi: UserManagerApi,
     private val linkActionListener: LinkActionListener,
@@ -36,13 +34,11 @@ class SimpleLinkViewHolder(
         fun inflateView(
             parent: ViewGroup,
             userManagerApi: UserManagerApi,
-            settingsPreferencesApi: SettingsPreferencesApi,
             navigator: NewNavigator,
             linkActionListener: LinkActionListener,
             appStorage: AppStorage,
         ) = SimpleLinkViewHolder(
             binding = SimpleLinkLayoutBinding.inflate(parent.layoutInflater, parent, false),
-            settingsApi = settingsPreferencesApi,
             navigator = navigator,
             userManagerApi = userManagerApi,
             linkActionListener = linkActionListener,
@@ -57,17 +53,16 @@ class SimpleLinkViewHolder(
             }
     }
 
-    private val showMinifiedImages by lazy { settingsApi.showMinifiedImages }
     private val digCountDrawable by lazy {
         itemView.context.obtainStyledAttributes(arrayOf(R.attr.digCountDrawable).toIntArray())
             .use { it.getDrawable(0) }
     }
 
-    fun bindView(link: Link) {
-        setupBody(link)
+    fun bindView(link: Link, showMinifiedImages: Boolean, linkShowImage: Boolean) {
+        setupBody(link, showMinifiedImages = showMinifiedImages, linkShowImage = linkShowImage)
     }
 
-    private fun setupBody(link: Link) {
+    private fun setupBody(link: Link, showMinifiedImages: Boolean, linkShowImage: Boolean) {
         if (link.gotSelected) {
             setWidgetAlpha(ALPHA_VISITED)
         } else {
@@ -84,9 +79,8 @@ class SimpleLinkViewHolder(
         binding.hotBadgeStripSimple.isVisible = link.isHot
         binding.simpleDiggHot.isVisible = link.isHot
 
-        val shouldShowSimpleImages = settingsApi.linkShowImage
-        binding.simpleImage.isVisible = link.fullImage != null && shouldShowSimpleImages
-        if (shouldShowSimpleImages) {
+        binding.simpleImage.isVisible = link.fullImage != null && linkShowImage
+        if (linkShowImage) {
             if (showMinifiedImages) {
                 link.previewImage
             } else {

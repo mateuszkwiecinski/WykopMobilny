@@ -6,7 +6,6 @@ import androidx.core.view.isVisible
 import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.databinding.LinkLayoutBinding
 import io.github.wykopmobilny.models.dataclass.Link
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.fragments.links.LinkActionListener
 import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.utils.layoutInflater
@@ -15,7 +14,6 @@ import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 
 class LinkViewHolder(
     private val binding: LinkLayoutBinding,
-    settingsApi: SettingsPreferencesApi,
     private val navigator: NewNavigator,
     private val userManagerApi: UserManagerApi,
     private val linkActionListener: LinkActionListener,
@@ -36,33 +34,36 @@ class LinkViewHolder(
             parent: ViewGroup,
             viewType: Int,
             userManagerApi: UserManagerApi,
-            settingsPreferencesApi: SettingsPreferencesApi,
             navigator: NewNavigator,
             linkActionListener: LinkActionListener,
             appStorage: AppStorage,
+            linkImagePosition: String,
+            linkShowAuthor: Boolean,
         ): LinkViewHolder {
             val view = LinkViewHolder(
                 LinkLayoutBinding.inflate(parent.layoutInflater, parent, false),
-                settingsPreferencesApi,
                 navigator,
                 userManagerApi,
                 linkActionListener,
                 appStorage,
             )
             if (viewType == TYPE_IMAGE) {
-                view.inflateCorrectImageView()
+                view.inflateCorrectImageView(
+                    linkImagePosition = linkImagePosition,
+                    linkShowAuthor = linkShowAuthor,
+                )
             }
             view.type = viewType
             return view
         }
 
-        fun getViewTypeForLink(link: Link, settingsPreferencesApi: SettingsPreferencesApi): Int {
-            return if (settingsPreferencesApi.linkSimpleList) {
+        fun getViewTypeForLink(link: Link, linkSimpleList: Boolean, linkShowImage: Boolean): Int {
+            return if (linkSimpleList) {
                 SimpleLinkViewHolder.getViewTypeForLink(link)
             } else {
                 if (link.isBlocked) {
                     TYPE_BLOCKED
-                } else if (link.fullImage == null || !settingsPreferencesApi.linkShowImage) {
+                } else if (link.fullImage == null || !linkShowImage) {
                     TYPE_NOIMAGE
                 } else {
                     TYPE_IMAGE
@@ -71,14 +72,11 @@ class LinkViewHolder(
         }
     }
 
-    private val linkImagePosition by lazy { settingsApi.linkImagePosition }
-    private val linkShowAuthor by lazy { settingsApi.linkShowAuthor }
-    private val showMinifiedImages by lazy { settingsApi.showMinifiedImages }
 
     private var type: Int = TYPE_IMAGE
     private lateinit var previewImageView: ImageView
 
-    fun inflateCorrectImageView() {
+    fun inflateCorrectImageView(linkImagePosition: String, linkShowAuthor: Boolean) {
         previewImageView = when (linkImagePosition) {
             "top" -> {
                 val img = binding.imageTop.inflate() as ImageView
@@ -94,8 +92,18 @@ class LinkViewHolder(
         }
     }
 
-    fun bindView(link: Link) {
-        setupBody(link)
+    fun bindView(
+        link: Link,
+        linkImagePosition: String,
+        showMinifiedImages: Boolean,
+        linkShowAuthor: Boolean,
+    ) {
+        setupBody(
+            link = link,
+            linkImagePosition = linkImagePosition,
+            showMinifiedImages = showMinifiedImages,
+            linkShowAuthor = linkShowAuthor,
+        )
         setupButtons(link)
     }
 
@@ -108,7 +116,12 @@ class LinkViewHolder(
         }
     }
 
-    private fun setupBody(link: Link) {
+    private fun setupBody(
+        link: Link,
+        linkImagePosition: String,
+        showMinifiedImages: Boolean,
+        linkShowAuthor: Boolean,
+    ) {
         if (link.gotSelected) {
             setWidgetAlpha(ALPHA_VISITED)
         } else {

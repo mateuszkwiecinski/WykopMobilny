@@ -8,18 +8,23 @@ import io.github.wykopmobilny.databinding.PmmessageSentLayoutBinding
 import io.github.wykopmobilny.glide.GlideApp
 import io.github.wykopmobilny.models.dataclass.PMMessage
 import io.github.wykopmobilny.ui.modules.NewNavigator
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.utils.textview.prepareBody
 import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
+import io.github.wykopmobilny.utils.textview.prepareBody
 
 class PMMessageViewHolder(
     private val binding: PmmessageSentLayoutBinding,
     private val linkHandler: WykopLinkHandler,
-    private val settingsPreferencesApi: SettingsPreferencesApi,
-    private val navigator: NewNavigator
+    private val navigator: NewNavigator,
 ) : RecyclableViewHolder(binding.root) {
 
-    fun bindView(message: PMMessage) {
+    fun bindView(
+        message: PMMessage,
+        openSpoilersDialog: Boolean,
+        enableYoutubePlayer: Boolean,
+        enableEmbedPlayer: Boolean,
+        showAdultContent: Boolean,
+        hideNsfw: Boolean,
+    ) {
         flipMessage(message.isSentFromUser)
         binding.apply {
             date.text = message.date
@@ -28,9 +33,17 @@ class PMMessageViewHolder(
                 date.text = message.date
             }
 
-            body.prepareBody(message.body, { linkHandler.handleUrl(it) }, null, settingsPreferencesApi.openSpoilersDialog)
+            body.prepareBody(message.body, { linkHandler.handleUrl(it) }, null, openSpoilersDialog)
             embedImage.forceDisableMinimizedMode = true
-            embedImage.setEmbed(message.embed, settingsPreferencesApi, navigator)
+            embedImage.setEmbed(
+                embed = message.embed,
+                enableYoutubePlayer = enableYoutubePlayer,
+                enableEmbedPlayer = enableEmbedPlayer,
+                showAdultContent = showAdultContent,
+                hideNsfw = hideNsfw,
+                navigator = navigator,
+                isNsfw = false,
+            )
         }
     }
 

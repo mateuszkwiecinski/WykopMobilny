@@ -31,7 +31,6 @@ class LinkHeaderViewHolder(
     private val navigator: NewNavigator,
     private val linkHandler: WykopLinkHandler,
     private val userManagerApi: UserManagerApi,
-    settingsApi: SettingsPreferencesApi,
 ) : RecyclableViewHolder(binding.root) {
 
     companion object {
@@ -46,7 +45,6 @@ class LinkHeaderViewHolder(
             navigator: NewNavigator,
             linkHandler: WykopLinkHandler,
             linkHeaderActionListener: LinkHeaderActionListener,
-            settingsApi: SettingsPreferencesApi,
         ): LinkHeaderViewHolder {
             return LinkHeaderViewHolder(
                 LinkDetailsHeaderLayoutBinding.inflate(parent.layoutInflater, parent, false),
@@ -54,13 +52,11 @@ class LinkHeaderViewHolder(
                 navigator,
                 linkHandler,
                 userManagerApi,
-                settingsApi,
             )
         }
     }
 
-    private val showMinifiedImages by lazy { settingsApi.showMinifiedImages }
-    fun bindView(link: Link) {
+    fun bindView(link: Link, showMinifiedImages: Boolean) {
         when (link.userVote) {
             "dig" -> showDigged(link)
             "bury" -> showBurried(link)
@@ -68,7 +64,7 @@ class LinkHeaderViewHolder(
         }
         setupHeader(link)
         setupButtons(link)
-        setupBody(link)
+        setupBody(link, showMinifiedImages = showMinifiedImages)
     }
 
     private fun setupHeader(link: Link) {
@@ -115,7 +111,7 @@ class LinkHeaderViewHolder(
         }
     }
 
-    private fun setupBody(link: Link) {
+    private fun setupBody(link: Link, showMinifiedImages: Boolean) {
         binding.titleTextView.text = link.title.removeHtml()
         binding.image.isVisible = link.fullImage != null
         if (showMinifiedImages) {

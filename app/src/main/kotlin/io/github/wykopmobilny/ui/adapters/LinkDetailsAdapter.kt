@@ -24,8 +24,16 @@ class LinkDetailsAdapter @Inject constructor(
     private val userManagerApi: UserManagerApi,
     private val navigator: NewNavigator,
     private val linkHandler: WykopLinkHandler,
-    private val settingsPreferencesApi: SettingsPreferencesApi,
+    settingsPreferencesApi: SettingsPreferencesApi,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val showMinifiedImages by lazy { settingsPreferencesApi.showMinifiedImages }
+    private val hideBlacklistedViews by lazy { settingsPreferencesApi.hideBlacklistedViews }
+    private val openSpoilersDialog by lazy { settingsPreferencesApi.openSpoilersDialog }
+    private val enableYoutubePlayer by lazy { settingsPreferencesApi.enableYoutubePlayer }
+    private val enableEmbedPlayer by lazy { settingsPreferencesApi.enableEmbedPlayer }
+    private val showAdultContent by lazy { settingsPreferencesApi.showAdultContent }
+    private val hideNsfw by lazy { settingsPreferencesApi.hideNsfw }
 
     var link: Link? = null
     var highlightCommentId = -1L
@@ -34,19 +42,32 @@ class LinkDetailsAdapter @Inject constructor(
     lateinit var linkHeaderActionListener: LinkHeaderActionListener
     private val commentsList: List<LinkComment>
         get() = link?.comments
-            ?.filterNot { it.isParentCollapsed || (it.isBlocked && settingsPreferencesApi.hideBlacklistedViews) }
+            ?.filterNot { it.isParentCollapsed || (it.isBlocked && hideBlacklistedViews) }
             .orEmpty()
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         try { // Suppresing, need more information to reproduce this crash.
             if (holder.itemViewType == LinkHeaderViewHolder.TYPE_HEADER) {
-                link?.let { (holder as LinkHeaderViewHolder).bindView(it) }
+                link?.let {
+                    (holder as LinkHeaderViewHolder).bindView(
+                        link = it, showMinifiedImages = showMinifiedImages,
+                    )
+                }
             } else if (holder is BlockedViewHolder) {
                 holder.bindView(commentsList[position - 1])
             } else {
                 val comment = commentsList[position - 1]
                 if (holder is TopLinkCommentViewHolder) {
-                    holder.bindView(comment, link!!.author?.nick == comment.author.nick, highlightCommentId)
+                    holder.bindView(
+                        linkComment = comment,
+                        isAuthorComment = link!!.author?.nick == comment.author.nick,
+                        commentId = highlightCommentId,
+                        openSpoilersDialog = openSpoilersDialog,
+                        enableYoutubePlayer = enableYoutubePlayer,
+                        enableEmbedPlayer = enableEmbedPlayer,
+                        showAdultContent = showAdultContent,
+                        hideNsfw = hideNsfw,
+                    )
                     holder.itemView.tag =
                         if (comment.childCommentCount > 0 && !comment.isCollapsed) {
                             RecyclableViewHolder.SEPARATOR_SMALL
@@ -56,7 +77,16 @@ class LinkDetailsAdapter @Inject constructor(
                 } else if (holder is LinkCommentViewHolder) {
                     val parent = commentsList.first { it.id == comment.parentId }
                     val index = commentsList.subList(commentsList.indexOf(parent), position - 1).size
-                    holder.bindView(comment, link!!.author?.nick == comment.author.nick, highlightCommentId)
+                    holder.bindView(
+                        linkComment = comment,
+                        isAuthorComment = link!!.author?.nick == comment.author.nick,
+                        commentId = highlightCommentId,
+                        openSpoilersDialog = openSpoilersDialog,
+                        enableYoutubePlayer = enableYoutubePlayer,
+                        enableEmbedPlayer = enableEmbedPlayer,
+                        showAdultContent = showAdultContent,
+                        hideNsfw = hideNsfw,
+                    )
                     holder.itemView.tag =
                         if (parent.childCommentCount == index) {
                             RecyclableViewHolder.SEPARATOR_NORMAL
@@ -85,13 +115,11 @@ class LinkDetailsAdapter @Inject constructor(
                 navigator,
                 linkHandler,
                 linkHeaderActionListener,
-                settingsPreferencesApi,
             )
             TopLinkCommentViewHolder.TYPE_TOP_EMBED, TopLinkCommentViewHolder.TYPE_TOP_NORMAL -> TopLinkCommentViewHolder.inflateView(
                 parent,
                 viewType,
                 userManagerApi,
-                settingsPreferencesApi,
                 navigator,
                 linkHandler,
                 linkCommentActionListener,
@@ -101,7 +129,6 @@ class LinkDetailsAdapter @Inject constructor(
                 parent,
                 viewType,
                 userManagerApi,
-                settingsPreferencesApi,
                 navigator,
                 linkHandler,
                 linkCommentActionListener,

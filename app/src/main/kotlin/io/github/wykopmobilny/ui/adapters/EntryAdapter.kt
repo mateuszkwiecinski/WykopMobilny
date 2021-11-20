@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 class EntryAdapter @Inject constructor(
     private val userManagerApi: UserManagerApi,
-    private val settingsPreferencesApi: SettingsPreferencesApi,
+    settingsPreferencesApi: SettingsPreferencesApi,
     private val navigator: NewNavigator,
     private val linkHandler: WykopLinkHandler,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -31,16 +31,40 @@ class EntryAdapter @Inject constructor(
 
     var entry: Entry? = null
     var commentId: Long? = null
+
     private val hideBlacklistedViews by lazy { settingsPreferencesApi.hideBlacklistedViews }
+    private val cutLongEntries by lazy { settingsPreferencesApi.cutLongEntries }
+    private val openSpoilersDialog by lazy { settingsPreferencesApi.openSpoilersDialog }
+    private val enableYoutubePlayer by lazy { settingsPreferencesApi.enableYoutubePlayer }
+    private val enableEmbedPlayer by lazy { settingsPreferencesApi.enableEmbedPlayer }
+    private val showAdultContent by lazy { settingsPreferencesApi.showAdultContent }
+    private val hideNsfw by lazy { settingsPreferencesApi.hideNsfw }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is EntryViewHolder -> {
-                holder.bindView(entry!!)
+                holder.bindView(
+                    entry = entry!!,
+                    cutLongEntries = cutLongEntries,
+                    openSpoilersDialog = openSpoilersDialog,
+                    enableYoutubePlayer = enableYoutubePlayer,
+                    enableEmbedPlayer = enableEmbedPlayer,
+                    showAdultContent = showAdultContent,
+                    hideNsfw = hideNsfw,
+                )
             }
             is EntryCommentViewHolder -> {
                 val comment = entry!!.comments.filterNot { hideBlacklistedViews && it.isBlocked }[position - 1]
-                holder.bindView(comment, entry?.author, commentId ?: 0)
+                holder.bindView(
+                    comment = comment,
+                    entryAuthor = entry?.author,
+                    highlightCommentId = commentId ?: 0,
+                    openSpoilersDialog = openSpoilersDialog,
+                    enableYoutubePlayer = enableYoutubePlayer,
+                    enableEmbedPlayer = enableEmbedPlayer,
+                    showAdultContent = showAdultContent,
+                    hideNsfw = hideNsfw,
+                )
             }
             is BlockedViewHolder -> {
                 if (position == 0) {
@@ -72,25 +96,23 @@ class EntryAdapter @Inject constructor(
             EntryCommentViewHolder.TYPE_NORMAL,
             EntryCommentViewHolder.TYPE_EMBED,
             -> EntryCommentViewHolder.inflateView(
-                parent,
-                viewType,
-                userManagerApi,
-                settingsPreferencesApi,
-                navigator,
-                linkHandler,
-                commentActionListener,
-                commentViewListener,
-                false,
+                parent = parent,
+                viewType = viewType,
+                userManagerApi = userManagerApi,
+                navigator = navigator,
+                linkHandler = linkHandler,
+                commentActionListener = commentActionListener,
+                commentViewListener = commentViewListener,
+                enableClickListener = false,
             )
             else -> EntryViewHolder.inflateView(
-                parent,
-                viewType,
-                userManagerApi,
-                settingsPreferencesApi,
-                navigator,
-                linkHandler,
-                entryActionListener,
-                replyListener,
+                parent = parent,
+                viewType = viewType,
+                userManagerApi = userManagerApi,
+                navigator = navigator,
+                linkHandler = linkHandler,
+                entryActionListener = entryActionListener,
+                replyListener = replyListener,
             )
         }
     }

@@ -14,7 +14,6 @@ import io.github.wykopmobilny.databinding.EntryCommentMenuBottomsheetBinding
 import io.github.wykopmobilny.models.dataclass.Author
 import io.github.wykopmobilny.models.dataclass.EntryComment
 import io.github.wykopmobilny.models.dataclass.drawBadge
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.dialogs.confirmationDialog
 import io.github.wykopmobilny.ui.fragments.entrycomments.EntryCommentActionListener
 import io.github.wykopmobilny.ui.fragments.entrycomments.EntryCommentViewListener
@@ -32,7 +31,6 @@ import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 class EntryCommentViewHolder(
     private val binding: CommentListItemBinding,
     private val userManagerApi: UserManagerApi,
-    private val settingsPreferencesApi: SettingsPreferencesApi,
     private val navigator: NewNavigator,
     private val linkHandler: WykopLinkHandler,
     private val commentActionListener: EntryCommentActionListener,
@@ -52,7 +50,6 @@ class EntryCommentViewHolder(
             parent: ViewGroup,
             viewType: Int,
             userManagerApi: UserManagerApi,
-            settingsPreferencesApi: SettingsPreferencesApi,
             navigator: NewNavigator,
             linkHandler: WykopLinkHandler,
             commentActionListener: EntryCommentActionListener,
@@ -62,7 +59,6 @@ class EntryCommentViewHolder(
             val view = EntryCommentViewHolder(
                 CommentListItemBinding.inflate(parent.layoutInflater, parent, false),
                 userManagerApi,
-                settingsPreferencesApi,
                 navigator,
                 linkHandler,
                 commentActionListener,
@@ -87,7 +83,6 @@ class EntryCommentViewHolder(
     }
 
     private val userCredentials = userManagerApi.getUserCredentials()
-    private val openSpoilersDialog = settingsPreferencesApi.openSpoilersDialog
     private val isUserAuthorized = userCredentials != null
     var type: Int = TYPE_NORMAL
     private var isAuthorComment: Boolean = false
@@ -97,10 +92,26 @@ class EntryCommentViewHolder(
     private val isEmbedViewResized: Boolean
         get() = ::embedView.isInitialized && embedView.resized
 
-    fun bindView(comment: EntryComment, entryAuthor: Author? = null, highlightCommentId: Long = 0) {
+    fun bindView(
+        comment: EntryComment,
+        entryAuthor: Author? = null,
+        highlightCommentId: Long = 0,
+        openSpoilersDialog: Boolean,
+        enableYoutubePlayer: Boolean,
+        enableEmbedPlayer: Boolean,
+        showAdultContent: Boolean,
+        hideNsfw: Boolean,
+    ) {
         setupHeader(comment)
         setupButtons(comment)
-        setupBody(comment)
+        setupBody(
+            comment = comment,
+            openSpoilersDialog = openSpoilersDialog,
+            enableYoutubePlayer = enableYoutubePlayer,
+            enableEmbedPlayer = enableEmbedPlayer,
+            showAdultContent = showAdultContent,
+            hideNsfw = hideNsfw,
+        )
         isOwnEntry = entryAuthor?.nick == userCredentials?.login
         isAuthorComment = entryAuthor?.nick == comment.author.nick
         setStyleForComment(comment, highlightCommentId)
@@ -164,7 +175,14 @@ class EntryCommentViewHolder(
         }
     }
 
-    private fun setupBody(comment: EntryComment) {
+    private fun setupBody(
+        comment: EntryComment,
+        openSpoilersDialog: Boolean,
+        enableYoutubePlayer: Boolean,
+        enableEmbedPlayer: Boolean,
+        showAdultContent: Boolean,
+        hideNsfw: Boolean,
+    ) {
         // Add URL and click handler if body is not empty
         binding.replyTextView.isVisible = isUserAuthorized
         binding.replyTextView.setOnClickListener { commentViewListener?.addReply(comment.author) }
@@ -181,7 +199,15 @@ class EntryCommentViewHolder(
         } else binding.entryContentTextView.isVisible = false
 
         if (comment.embed != null && type == TYPE_EMBED) {
-            embedView.setEmbed(comment.embed, settingsPreferencesApi, navigator, comment.isNsfw)
+            embedView.setEmbed(
+                embed = comment.embed,
+                enableYoutubePlayer = enableYoutubePlayer,
+                enableEmbedPlayer = enableEmbedPlayer,
+                showAdultContent = showAdultContent,
+                hideNsfw = hideNsfw,
+                navigator = navigator,
+                isNsfw = comment.isNsfw,
+            )
         }
 
         if (enableClickListener) {

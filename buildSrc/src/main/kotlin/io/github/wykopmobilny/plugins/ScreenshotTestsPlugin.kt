@@ -9,7 +9,6 @@ class ScreenshotTestsPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("shot")
-        pluginManager.apply("pl.droidsonroids.animation-disabler")
 
         (extensions.findByName("android") as BaseExtension).apply {
             defaultConfig {
