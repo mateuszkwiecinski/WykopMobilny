@@ -18,26 +18,23 @@ import io.github.wykopmobilny.ui.widgets.buttons.MinusVoteButton
 import io.github.wykopmobilny.ui.widgets.buttons.PlusVoteButton
 import io.github.wykopmobilny.utils.api.getGroupColor
 import io.github.wykopmobilny.utils.layoutInflater
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
+import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 
 class LinkCommentViewHolder(
     private val binding: LinkCommentLayoutBinding,
     userManagerApi: UserManagerApi,
-    settingsPreferencesApi: SettingsPreferencesApi,
     navigator: NewNavigator,
     linkHandler: WykopLinkHandler,
     commentActionListener: LinkCommentActionListener,
-    commentViewListener: LinkCommentViewListener
+    commentViewListener: LinkCommentViewListener,
 ) : BaseLinkCommentViewHolder(
     binding.root,
     userManagerApi,
-    settingsPreferencesApi,
     navigator,
     linkHandler,
     commentViewListener,
-    commentActionListener
+    commentActionListener,
 ) {
 
     companion object {
@@ -52,20 +49,18 @@ class LinkCommentViewHolder(
             parent: ViewGroup,
             viewType: Int,
             userManagerApi: UserManagerApi,
-            settingsPreferencesApi: SettingsPreferencesApi,
             navigator: NewNavigator,
             linkHandler: WykopLinkHandler,
             commentActionListener: LinkCommentActionListener,
-            commentViewListener: LinkCommentViewListener
+            commentViewListener: LinkCommentViewListener,
         ): LinkCommentViewHolder {
             val view = LinkCommentViewHolder(
                 LinkCommentLayoutBinding.inflate(parent.layoutInflater, parent, false),
                 userManagerApi,
-                settingsPreferencesApi,
                 navigator,
                 linkHandler,
                 commentActionListener,
-                commentViewListener
+                commentViewListener,
             )
 
             view.type = viewType
@@ -89,8 +84,26 @@ class LinkCommentViewHolder(
     override var moreOptionsButton: TextView = binding.moreOptionsTextView
     override var shareButton: TextView = binding.shareTextView
 
-    override fun bindView(linkComment: LinkComment, isAuthorComment: Boolean, commentId: Long) {
-        super.bindView(linkComment, isAuthorComment, commentId)
+    override fun bindView(
+        linkComment: LinkComment,
+        isAuthorComment: Boolean,
+        commentId: Long,
+        openSpoilersDialog: Boolean,
+        enableYoutubePlayer: Boolean,
+        enableEmbedPlayer: Boolean,
+        showAdultContent: Boolean,
+        hideNsfw: Boolean,
+    ) {
+        super.bindView(
+            linkComment = linkComment,
+            isAuthorComment = isAuthorComment,
+            commentId = commentId,
+            openSpoilersDialog = openSpoilersDialog,
+            enableYoutubePlayer = enableYoutubePlayer,
+            enableEmbedPlayer = enableEmbedPlayer,
+            showAdultContent = showAdultContent,
+            hideNsfw = hideNsfw,
+        )
 
         // setup header
         linkComment.author.apply {

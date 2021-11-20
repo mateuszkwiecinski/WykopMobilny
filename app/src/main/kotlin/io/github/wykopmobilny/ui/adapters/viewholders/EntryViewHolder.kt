@@ -11,7 +11,6 @@ import io.github.wykopmobilny.R
 import io.github.wykopmobilny.databinding.EntryListItemBinding
 import io.github.wykopmobilny.databinding.EntryMenuBottomsheetBinding
 import io.github.wykopmobilny.models.dataclass.Entry
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.dialogs.confirmationDialog
 import io.github.wykopmobilny.ui.fragments.entries.EntryActionListener
 import io.github.wykopmobilny.ui.modules.NewNavigator
@@ -35,7 +34,6 @@ typealias EntryListener = (Entry) -> Unit
 class EntryViewHolder(
     private val binding: EntryListItemBinding,
     private val userManagerApi: UserManagerApi,
-    private val settingsPreferencesApi: SettingsPreferencesApi,
     private val navigator: NewNavigator,
     private val linkHandler: WykopLinkHandler,
     private val entryActionListener: EntryActionListener,
@@ -56,7 +54,6 @@ class EntryViewHolder(
             parent: ViewGroup,
             viewType: Int,
             userManagerApi: UserManagerApi,
-            settingsPreferencesApi: SettingsPreferencesApi,
             navigator: NewNavigator,
             linkHandler: WykopLinkHandler,
             entryActionListener: EntryActionListener,
@@ -65,7 +62,6 @@ class EntryViewHolder(
             val view = EntryViewHolder(
                 EntryListItemBinding.inflate(parent.layoutInflater, parent, false),
                 userManagerApi,
-                settingsPreferencesApi,
                 navigator,
                 linkHandler,
                 entryActionListener,
@@ -106,10 +102,26 @@ class EntryViewHolder(
     private val enableClickListener: Boolean
         get() = replyListener == null
 
-    fun bindView(entry: Entry) {
+    fun bindView(
+        entry: Entry,
+        cutLongEntries: Boolean,
+        openSpoilersDialog: Boolean,
+        enableYoutubePlayer: Boolean,
+        enableEmbedPlayer: Boolean,
+        showAdultContent: Boolean,
+        hideNsfw: Boolean,
+    ) {
         setupHeader(entry)
         setupButtons(entry)
-        setupBody(entry)
+        setupBody(
+            entry = entry,
+            cutLongEntries = cutLongEntries,
+            openSpoilersDialog = openSpoilersDialog,
+            enableYoutubePlayer = enableYoutubePlayer,
+            enableEmbedPlayer = enableEmbedPlayer,
+            showAdultContent = showAdultContent,
+            hideNsfw = hideNsfw,
+        )
     }
 
     private fun setupHeader(entry: Entry) {
@@ -167,12 +179,20 @@ class EntryViewHolder(
         }
     }
 
-    private fun setupBody(entry: Entry) {
+    private fun setupBody(
+        entry: Entry,
+        cutLongEntries: Boolean,
+        openSpoilersDialog: Boolean,
+        enableYoutubePlayer: Boolean,
+        enableEmbedPlayer: Boolean,
+        showAdultContent: Boolean,
+        hideNsfw: Boolean,
+    ) {
         // Add URL and click handler if body is not empty
         if (entry.body.isNotEmpty()) {
             with(binding.entryContentTextView) {
                 isVisible = true
-                if (replyListener == null && settingsPreferencesApi.cutLongEntries && entry.collapsed) {
+                if (replyListener == null && cutLongEntries && entry.collapsed) {
                     maxLines = EllipsizingTextView.MAX_LINES
                     ellipsize = TextUtils.TruncateAt.END
                 }
@@ -189,7 +209,7 @@ class EntryViewHolder(
                             ellipsize = null
                         }
                     },
-                    settingsPreferencesApi.openSpoilersDialog,
+                    openSpoilersDialog,
                 )
             }
         } else {
@@ -199,7 +219,15 @@ class EntryViewHolder(
         itemView.setOnClickListener { handleClick(entry) }
 
         if (type == TYPE_EMBED_SURVEY || type == TYPE_EMBED) {
-            embedView.setEmbed(entry.embed!!, settingsPreferencesApi, navigator, entry.isNsfw)
+            embedView.setEmbed(
+                embed = entry.embed!!,
+                enableYoutubePlayer = enableYoutubePlayer,
+                enableEmbedPlayer = enableEmbedPlayer,
+                showAdultContent = showAdultContent,
+                hideNsfw = hideNsfw,
+                navigator = navigator,
+                isNsfw = entry.isNsfw
+            )
         }
 
         // Show survey

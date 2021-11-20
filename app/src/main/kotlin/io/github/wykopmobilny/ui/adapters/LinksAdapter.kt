@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class LinksAdapter @Inject constructor(
     private val userManagerApi: UserManagerApi,
-    private val settingsPreferencesApi: SettingsPreferencesApi,
+    settingsPreferencesApi: SettingsPreferencesApi,
     private val navigator: NewNavigator,
     private val appStorage: AppStorage,
 ) : EndlessProgressAdapter<RecyclerView.ViewHolder, Link>() {
@@ -24,11 +24,18 @@ class LinksAdapter @Inject constructor(
     // Required field, interacts with presenter. Otherwise will throw exception
     lateinit var linksActionListener: LinkActionListener
 
+    private val showMinifiedImages by lazy { settingsPreferencesApi.showMinifiedImages }
+    private val linkSimpleList by lazy { settingsPreferencesApi.linkSimpleList }
+    private val linkShowImage by lazy { settingsPreferencesApi.linkShowImage }
+    private val linkImagePosition by lazy { settingsPreferencesApi.linkImagePosition }
+    private val linkShowAuthor by lazy { settingsPreferencesApi.linkShowAuthor }
+    private val hideBlacklistedViews by lazy { settingsPreferencesApi.linkShowAuthor }
+
     override fun getViewType(position: Int): Int {
-        return if (settingsPreferencesApi.linkSimpleList) {
+        return if (linkSimpleList) {
             SimpleLinkViewHolder.getViewTypeForLink(dataset[position]!!)
         } else {
-            LinkViewHolder.getViewTypeForLink(dataset[position]!!, settingsPreferencesApi)
+            LinkViewHolder.getViewTypeForLink(dataset[position]!!, linkSimpleList = linkSimpleList, linkShowImage = linkShowImage)
         }
     }
 
@@ -38,7 +45,6 @@ class LinksAdapter @Inject constructor(
                 SimpleLinkViewHolder.inflateView(
                     parent = parent,
                     userManagerApi = userManagerApi,
-                    settingsPreferencesApi = settingsPreferencesApi,
                     navigator = navigator,
                     linkActionListener = linksActionListener,
                     appStorage = appStorage,
@@ -49,28 +55,38 @@ class LinksAdapter @Inject constructor(
                 parent = parent,
                 viewType = viewType,
                 userManagerApi = userManagerApi,
-                settingsPreferencesApi = settingsPreferencesApi,
                 navigator = navigator,
                 linkActionListener = linksActionListener,
                 appStorage = appStorage,
+                linkImagePosition = linkImagePosition,
+                linkShowAuthor = linkShowAuthor,
             )
         }
     }
 
     override fun addData(items: List<Link>, shouldClearAdapter: Boolean) {
-        super.addData(items.filterNot { settingsPreferencesApi.hideBlacklistedViews && it.isBlocked }, shouldClearAdapter)
+        super.addData(items.filterNot { hideBlacklistedViews && it.isBlocked }, shouldClearAdapter)
     }
 
     override fun bindHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is LinkViewHolder -> holder.bindView(dataset[position]!!)
-            is SimpleLinkViewHolder -> holder.bindView(dataset[position]!!)
+            is LinkViewHolder -> holder.bindView(
+                link = dataset[position]!!,
+                linkImagePosition = linkImagePosition,
+                showMinifiedImages = showMinifiedImages,
+                linkShowAuthor = linkShowAuthor,
+            )
+            is SimpleLinkViewHolder -> holder.bindView(
+                dataset[position]!!,
+                showMinifiedImages = showMinifiedImages,
+                linkShowImage = linkShowImage,
+            )
             is BlockedViewHolder -> holder.bindView(dataset[position]!!)
         }
     }
 
     fun updateLink(link: Link) {
-        val position = dataset.indexOf(link)
+        val position = dataset.indexOf(link).takeIf { it >= 0 } ?: return
         dataset[position] = link
         notifyItemChanged(position)
     }

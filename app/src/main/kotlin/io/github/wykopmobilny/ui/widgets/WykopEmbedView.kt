@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.databinding.WykopembedviewBinding
 import io.github.wykopmobilny.models.dataclass.Embed
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.utils.getActivityContext
 import io.github.wykopmobilny.utils.layoutInflater
@@ -46,15 +45,18 @@ class WykopEmbedView(context: Context, attrs: AttributeSet) : FrameLayout(contex
 
     fun setEmbed(
         embed: Embed?,
-        settingsPreferencesApi: SettingsPreferencesApi,
+        enableYoutubePlayer: Boolean,
+        enableEmbedPlayer: Boolean,
+        showAdultContent: Boolean,
+        hideNsfw: Boolean,
         navigator: NewNavigator,
-        isNsfw: Boolean = false,
+        isNsfw: Boolean,
     ) {
         hiddenPreview = null
         binding.image.isVisible = true
         resized = false
-        enableYoutubePlayer = settingsPreferencesApi.enableYoutubePlayer
-        enableEmbedPlayer = settingsPreferencesApi.enableEmbedPlayer
+        this.enableYoutubePlayer = enableYoutubePlayer
+        this.enableEmbedPlayer = enableEmbedPlayer
         this.navigator = navigator
         if (embed == null || !Patterns.WEB_URL.matcher(embed.url.replace("\\", "")).matches()) {
             isVisible = false
@@ -65,9 +67,10 @@ class WykopEmbedView(context: Context, attrs: AttributeSet) : FrameLayout(contex
                 binding.image.isResized = embed.isResize
                 binding.imageExpand.isVisible = false
                 isVisible = true
+                @Suppress("ComplexCondition")
                 if (
                     !embed.isRevealed &&
-                    (plus18 && !settingsPreferencesApi.showAdultContent || isNsfw && settingsPreferencesApi.hideNsfw)
+                    (plus18 && !showAdultContent || isNsfw && hideNsfw)
                 ) {
                     binding.image.loadImageFromUrl(NSFW_IMAGE_PLACEHOLDER)
                     hiddenPreview = preview

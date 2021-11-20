@@ -14,14 +14,12 @@ import io.github.wykopmobilny.ui.widgets.WykopEmbedView
 import io.github.wykopmobilny.ui.widgets.buttons.MinusVoteButton
 import io.github.wykopmobilny.ui.widgets.buttons.PlusVoteButton
 import io.github.wykopmobilny.utils.layoutInflater
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
+import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 
 class TopLinkCommentViewHolder(
     private val binding: TopLinkCommentLayoutBinding,
     userManagerApi: UserManagerApi,
-    settingsPreferencesApi: SettingsPreferencesApi,
     navigator: NewNavigator,
     linkHandler: WykopLinkHandler,
     commentActionListener: LinkCommentActionListener,
@@ -29,7 +27,6 @@ class TopLinkCommentViewHolder(
 ) : BaseLinkCommentViewHolder(
     binding.root,
     userManagerApi,
-    settingsPreferencesApi,
     navigator,
     linkHandler,
     commentViewListener,
@@ -60,7 +57,6 @@ class TopLinkCommentViewHolder(
             parent: ViewGroup,
             viewType: Int,
             userManagerApi: UserManagerApi,
-            settingsPreferencesApi: SettingsPreferencesApi,
             navigator: NewNavigator,
             linkHandler: WykopLinkHandler,
             commentActionListener: LinkCommentActionListener,
@@ -69,7 +65,6 @@ class TopLinkCommentViewHolder(
             val view = TopLinkCommentViewHolder(
                 TopLinkCommentLayoutBinding.inflate(parent.layoutInflater, parent, false),
                 userManagerApi,
-                settingsPreferencesApi,
                 navigator,
                 linkHandler,
                 commentActionListener,
@@ -85,8 +80,24 @@ class TopLinkCommentViewHolder(
         }
     }
 
-    override fun bindView(linkComment: LinkComment, isAuthorComment: Boolean, commentId: Long) {
-        super.bindView(linkComment, isAuthorComment, commentId)
+    override fun bindView(
+        linkComment: LinkComment,
+        isAuthorComment: Boolean,
+        commentId: Long,
+        openSpoilersDialog: Boolean,
+        enableYoutubePlayer: Boolean,
+        enableEmbedPlayer: Boolean,
+        showAdultContent: Boolean,
+        hideNsfw: Boolean
+    ) {
+        super.bindView(linkComment,
+            isAuthorComment,
+            commentId,
+            openSpoilersDialog,
+            enableYoutubePlayer,
+            enableEmbedPlayer,
+            showAdultContent,
+            hideNsfw)
 
         binding.authorHeaderView.setAuthorData(linkComment.author, linkComment.date, linkComment.app)
         if (linkComment.isCollapsed) {

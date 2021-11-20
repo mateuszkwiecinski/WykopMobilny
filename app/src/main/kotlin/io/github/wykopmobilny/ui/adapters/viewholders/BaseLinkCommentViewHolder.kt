@@ -13,7 +13,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.databinding.LinkCommentMenuBottomsheetBinding
 import io.github.wykopmobilny.models.dataclass.LinkComment
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.dialogs.confirmationDialog
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentActionListener
 import io.github.wykopmobilny.ui.fragments.linkcomments.LinkCommentViewListener
@@ -38,7 +37,6 @@ import kotlin.math.absoluteValue
 abstract class BaseLinkCommentViewHolder(
     view: View,
     private val userManagerApi: UserManagerApi,
-    private val settingsPreferencesApi: SettingsPreferencesApi,
     protected val navigator: NewNavigator,
     private val linkHandler: WykopLinkHandler,
     protected val commentViewListener: LinkCommentViewListener?,
@@ -63,7 +61,6 @@ abstract class BaseLinkCommentViewHolder(
         }
     }
 
-    private val shouldOpenSpoilerDialog by lazy { settingsPreferencesApi.openSpoilersDialog }
     private val userAuthorized by lazy { userManagerApi.isUserAuthorized() }
     private val userCredentials by lazy { userManagerApi.getUserCredentials() }
 
@@ -89,24 +86,55 @@ abstract class BaseLinkCommentViewHolder(
     abstract var shareButton: TextView
     open var collapsedCommentsTextView: TextView? = null
 
-    open fun bindView(linkComment: LinkComment, isAuthorComment: Boolean, commentId: Long = -1) {
-        setupBody(linkComment)
+    open fun bindView(
+        linkComment: LinkComment,
+        isAuthorComment: Boolean,
+        commentId: Long = -1,
+        openSpoilersDialog: Boolean,
+        enableYoutubePlayer: Boolean,
+        enableEmbedPlayer: Boolean,
+        showAdultContent: Boolean,
+        hideNsfw: Boolean,
+    ) {
+        setupBody(
+            comment = linkComment,
+            openSpoilersDialog = openSpoilersDialog,
+            enableYoutubePlayer = enableYoutubePlayer,
+            enableEmbedPlayer = enableEmbedPlayer,
+            showAdultContent = showAdultContent,
+            hideNsfw = hideNsfw,
+        )
         setupButtons(linkComment)
         setStyleForComment(linkComment, isAuthorComment, commentId)
     }
 
-    private fun setupBody(comment: LinkComment) {
+    private fun setupBody(
+        comment: LinkComment,
+        openSpoilersDialog: Boolean,
+        enableYoutubePlayer: Boolean,
+        enableEmbedPlayer: Boolean,
+        showAdultContent: Boolean,
+        hideNsfw: Boolean,
+    ) {
         replyButton.isVisible = userAuthorized && commentViewListener != null
         if (type == LinkCommentViewHolder.TYPE_EMBED || type == TopLinkCommentViewHolder.TYPE_TOP_EMBED) {
-            embedView.setEmbed(comment.embed, settingsPreferencesApi, navigator, comment.isNsfw)
+            embedView.setEmbed(
+                embed = comment.embed,
+                enableYoutubePlayer = enableYoutubePlayer,
+                enableEmbedPlayer = enableEmbedPlayer,
+                showAdultContent = showAdultContent,
+                hideNsfw = hideNsfw,
+                navigator = navigator,
+                isNsfw = comment.isNsfw,
+            )
         }
 
         comment.body?.let { body ->
             commentContent.prepareBody(
-                body,
-                linkHandler::handleUrl,
-                { handleClick(comment) },
-                shouldOpenSpoilerDialog,
+                html = body,
+                urlClickListener = linkHandler::handleUrl,
+                clickListener = { handleClick(comment) },
+                openSpoilersDialog = openSpoilersDialog,
             )
         }
 

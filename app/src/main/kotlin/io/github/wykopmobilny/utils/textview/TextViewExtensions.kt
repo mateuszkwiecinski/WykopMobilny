@@ -25,7 +25,7 @@ fun TextView.prepareBody(
     html: String,
     urlClickListener: (String) -> Unit,
     clickListener: (() -> Unit)? = null,
-    shouldOpenSpoilerDialog: Boolean
+    openSpoilersDialog: Boolean
 ) {
     text = SpannableStringBuilder(html.toSpannable())
     val method = BetterLinkMovementMethod.linkifyHtml(this)
@@ -36,7 +36,7 @@ fun TextView.prepareBody(
     }
     method.setOnLinkClickListener { _, url ->
         if (url.text().startsWith("spoiler:")) {
-            if (!shouldOpenSpoilerDialog) {
+            if (!openSpoilersDialog) {
                 openSpoilers(url.span(), url.text())
             } else {
                 val spoiler = SpannableString(

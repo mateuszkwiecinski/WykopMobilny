@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class NoProgressLinkAdapter @Inject constructor(
     private val userManagerApi: UserManagerApi,
-    private val settingsPreferencesApi: SettingsPreferencesApi,
+    settingsPreferencesApi: SettingsPreferencesApi,
     private val navigator: NewNavigator,
     private val appStorage: AppStorage,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -24,11 +24,18 @@ class NoProgressLinkAdapter @Inject constructor(
     val items = mutableListOf<Link>()
     lateinit var linksActionListener: LinkActionListener
 
+
+    private val linkShowImage by lazy { settingsPreferencesApi.linkShowImage }
+    private val showMinifiedImages by lazy { settingsPreferencesApi.showMinifiedImages }
+    private val linkSimpleList by lazy { settingsPreferencesApi.linkSimpleList }
+    private val linkImagePosition by lazy { settingsPreferencesApi.linkImagePosition }
+    private val linkShowAuthor by lazy { settingsPreferencesApi.linkShowAuthor }
+
     override fun getItemViewType(position: Int): Int {
-        return if (settingsPreferencesApi.linkSimpleList) {
+        return if (linkSimpleList) {
             SimpleLinkViewHolder.getViewTypeForLink(items[position])
         } else {
-            LinkViewHolder.getViewTypeForLink(items[position], settingsPreferencesApi)
+            LinkViewHolder.getViewTypeForLink(items[position], linkSimpleList = linkSimpleList, linkShowImage = linkShowImage)
         }
     }
 
@@ -38,7 +45,6 @@ class NoProgressLinkAdapter @Inject constructor(
                 SimpleLinkViewHolder.inflateView(
                     parent = parent,
                     userManagerApi = userManagerApi,
-                    settingsPreferencesApi = settingsPreferencesApi,
                     navigator = navigator,
                     linkActionListener = linksActionListener,
                     appStorage = appStorage,
@@ -50,18 +56,28 @@ class NoProgressLinkAdapter @Inject constructor(
                 parent = parent,
                 viewType = viewType,
                 userManagerApi = userManagerApi,
-                settingsPreferencesApi = settingsPreferencesApi,
                 navigator = navigator,
                 linkActionListener = linksActionListener,
                 appStorage = appStorage,
+                linkImagePosition = linkImagePosition,
+                linkShowAuthor = linkShowAuthor,
             )
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is LinkViewHolder -> holder.bindView(items[position])
-            is SimpleLinkViewHolder -> holder.bindView(items[position])
+            is LinkViewHolder -> holder.bindView(
+                link = items[position],
+                linkImagePosition = linkImagePosition,
+                showMinifiedImages = showMinifiedImages,
+                linkShowAuthor = linkShowAuthor,
+            )
+            is SimpleLinkViewHolder -> holder.bindView(
+                link = items[position],
+                showMinifiedImages = showMinifiedImages,
+                linkShowImage = linkShowImage,
+            )
             is BlockedViewHolder -> holder.bindView(items[position])
         }
     }
@@ -69,7 +85,7 @@ class NoProgressLinkAdapter @Inject constructor(
     override fun getItemCount() = items.size
 
     fun updateLink(link: Link) {
-        val position = items.indexOf(link)
+        val position = items.indexOf(link).takeIf { it >= 0 } ?: return
         items[position] = link
         notifyItemChanged(position)
     }
