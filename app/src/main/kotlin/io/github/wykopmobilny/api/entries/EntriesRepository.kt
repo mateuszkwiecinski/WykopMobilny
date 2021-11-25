@@ -6,13 +6,13 @@ import io.github.wykopmobilny.api.endpoints.EntriesRetrofitApi
 import io.github.wykopmobilny.api.errorhandler.ErrorHandlerTransformer
 import io.github.wykopmobilny.api.filters.OWMContentFilter
 import io.github.wykopmobilny.api.patrons.PatronsApi
+import io.github.wykopmobilny.api.toRequestBody
 import io.github.wykopmobilny.models.dataclass.EntryVotePublishModel
 import io.github.wykopmobilny.models.mapper.apiv2.EntryMapper
 import io.github.wykopmobilny.models.mapper.apiv2.SurveyMapper
 import io.github.wykopmobilny.models.mapper.apiv2.VoterMapper
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.rx2.rxSingle
-import toRequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
 

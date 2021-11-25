@@ -6,11 +6,11 @@ import io.github.wykopmobilny.api.endpoints.PMRetrofitApi
 import io.github.wykopmobilny.api.errorhandler.ErrorHandler
 import io.github.wykopmobilny.api.errorhandler.ErrorHandlerTransformer
 import io.github.wykopmobilny.api.patrons.PatronsApi
+import io.github.wykopmobilny.api.toRequestBody
 import io.github.wykopmobilny.models.mapper.apiv2.ConversationMapper
 import io.github.wykopmobilny.models.mapper.apiv2.FullConversationMapper
 import io.github.wykopmobilny.models.mapper.apiv2.PMMessageMapper
 import kotlinx.coroutines.rx2.rxSingle
-import toRequestBody
 import javax.inject.Inject
 
 class PMRepository @Inject constructor(

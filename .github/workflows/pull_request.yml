@@ -23,8 +23,8 @@ jobs:
       - name: set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
-          java-version: 11
+          distribution: 'temurin'
+          java-version: 17
 
       - name: Gradle Wrapper Validation
         uses: gradle/wrapper-validation-action@v1
@@ -86,8 +86,8 @@ jobs:
       - name: set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
-          java-version: 11
+          distribution: 'temurin'
+          java-version: 17
 
       - name: compile ui tests
         uses: gradle/gradle-build-action@v2
@@ -133,7 +133,7 @@ jobs:
       - name: set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: 11
 
       - name: compile screenshot tests

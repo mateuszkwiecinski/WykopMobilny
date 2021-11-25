@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 internal fun <T> AppStorage.get(key: UserSetting<T>): Flow<T?> =
     preferencesQueries.getPreference(key.preferencesKey).asFlow()
@@ -53,7 +53,7 @@ internal fun durationMapping(
     preferencesKey: String,
 ) = UserSetting(
     preferencesKey = preferencesKey,
-    mapping = { it.toLongOrNull()?.let(Duration.Companion::milliseconds) },
+    mapping = { it.toLongOrNull()?.milliseconds },
     reverseMapping = { it.inWholeMilliseconds.toString() },
 )
 

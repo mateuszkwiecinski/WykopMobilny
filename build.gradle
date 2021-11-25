@@ -49,4 +49,11 @@ allprojects {
             setMatchingFallbacks("debug")
         }
     }
+    pluginManager.withPlugin("java") {
+        java {
+            toolchain {
+                languageVersion.set(JavaLanguageVersion.of(17))
+            }
+        }
+    }
 }

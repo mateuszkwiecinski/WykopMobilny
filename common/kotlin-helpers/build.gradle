@@ -4,6 +4,6 @@ plugins {
 
 dependencies {
     api(libs.coroutines.core)
-    api("io.github.aakira:napier:2.0.0")
-    api("androidx.annotation:annotation:1.2.0")
+    api(libs.napier.core)
+    api(libs.annotation.core)
 }
