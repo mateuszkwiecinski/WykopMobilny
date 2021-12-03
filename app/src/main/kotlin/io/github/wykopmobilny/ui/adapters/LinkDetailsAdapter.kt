@@ -50,7 +50,8 @@ class LinkDetailsAdapter @Inject constructor(
             if (holder.itemViewType == LinkHeaderViewHolder.TYPE_HEADER) {
                 link?.let {
                     (holder as LinkHeaderViewHolder).bindView(
-                        link = it, showMinifiedImages = showMinifiedImages,
+                        link = it,
+                        showMinifiedImages = false, // always use original version on details
                     )
                 }
             } else if (holder is BlockedViewHolder) {

@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id("com.starter.library.android")
     id("org.jetbrains.kotlin.kapt")
