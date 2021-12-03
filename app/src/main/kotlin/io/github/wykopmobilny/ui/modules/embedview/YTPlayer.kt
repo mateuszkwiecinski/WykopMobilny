@@ -19,6 +19,7 @@ import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayer.ErrorReason
 import com.google.android.youtube.player.YouTubePlayerView
 import io.github.aakira.napier.Napier
+import io.github.wykopmobilny.BuildConfig
 import io.github.wykopmobilny.GOOGLE_KEY
 import io.github.wykopmobilny.utils.youtubeTimestampToMsOrNull
 import java.net.URLDecoder
@@ -102,7 +103,6 @@ class YTPlayer :
     YouTubePlayer.OnFullscreenListener,
     YouTubePlayer.PlayerStateChangeListener {
 
-    private var googleApiKey: String? = null
     private var videoId: String? = null
     private var timestampMs: Int? = null
 
@@ -121,7 +121,7 @@ class YTPlayer :
         initialize()
 
         playerView = YouTubePlayerView(this)
-        playerView.initialize(googleApiKey, this)
+        playerView.initialize(BuildConfig.GOOGLE_KEY, this)
 
         addContentView(playerView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
 
@@ -131,16 +131,6 @@ class YTPlayer :
     }
 
     private fun initialize() {
-        try {
-            googleApiKey = GOOGLE_KEY
-        } catch (notFound: PackageManager.NameNotFoundException) {
-            Napier.i("Failed to initialize YTplayer", notFound)
-        }
-
-        if (googleApiKey == null) {
-            throw NullPointerException("Google API key must not be null. Set your api key as meta data in AndroidManifest.xml file.")
-        }
-
         videoId = intent.getStringExtra(EXTRA_VIDEO_ID)
         if (videoId == null) {
             throw NullPointerException("Video ID must not be null")
