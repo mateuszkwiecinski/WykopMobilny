@@ -53,10 +53,7 @@ class UpcomingFragment : BaseLinksFragment(), UpcomingView {
             R.id.sortByComments -> {
                 presenter.sortBy = UpcomingPresenter.SORTBY_COMMENTS
                 appStorage.preferencesQueries.insertOrReplace(
-                    PreferenceEntity(
-                        key = "settings.links.upcoming_sort",
-                        value = UpcomingPresenter.SORTBY_COMMENTS,
-                    ),
+                    preferenceEntity = PreferenceEntity(key = "settings.links.upcoming_sort", UpcomingPresenter.SORTBY_COMMENTS),
                 )
                 setSubtitle()
                 binding.swipeRefresh.isRefreshing = true
@@ -65,10 +62,7 @@ class UpcomingFragment : BaseLinksFragment(), UpcomingView {
             R.id.sortByVotes -> {
                 presenter.sortBy = UpcomingPresenter.SORTBY_VOTES
                 appStorage.preferencesQueries.insertOrReplace(
-                    PreferenceEntity(
-                        key = "settings.links.upcoming_sort",
-                        value = UpcomingPresenter.SORTBY_VOTES,
-                    ),
+                    preferenceEntity = PreferenceEntity(key = "settings.links.upcoming_sort", UpcomingPresenter.SORTBY_VOTES),
                 )
                 setSubtitle()
                 binding.swipeRefresh.isRefreshing = true
@@ -77,10 +71,7 @@ class UpcomingFragment : BaseLinksFragment(), UpcomingView {
             R.id.sortByDate -> {
                 presenter.sortBy = UpcomingPresenter.SORTBY_DATE
                 appStorage.preferencesQueries.insertOrReplace(
-                    PreferenceEntity(
-                        key = "settings.links.upcoming_sort",
-                        value = UpcomingPresenter.SORTBY_DATE,
-                    ),
+                    preferenceEntity = PreferenceEntity(key = "settings.links.upcoming_sort", UpcomingPresenter.SORTBY_DATE),
                 )
                 setSubtitle()
                 binding.swipeRefresh.isRefreshing = true
@@ -89,10 +80,7 @@ class UpcomingFragment : BaseLinksFragment(), UpcomingView {
             R.id.sortByActive -> {
                 presenter.sortBy = UpcomingPresenter.SORTBY_ACTIVE
                 appStorage.preferencesQueries.insertOrReplace(
-                    PreferenceEntity(
-                        key = "settings.links.upcoming_sort",
-                        value = UpcomingPresenter.SORTBY_ACTIVE,
-                    ),
+                    preferenceEntity = PreferenceEntity(key = "settings.links.upcoming_sort", UpcomingPresenter.SORTBY_ACTIVE),
                 )
                 setSubtitle()
                 binding.swipeRefresh.isRefreshing = true

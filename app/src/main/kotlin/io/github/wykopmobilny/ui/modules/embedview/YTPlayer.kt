@@ -20,7 +20,6 @@ import com.google.android.youtube.player.YouTubePlayer.ErrorReason
 import com.google.android.youtube.player.YouTubePlayerView
 import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.BuildConfig
-import io.github.wykopmobilny.GOOGLE_KEY
 import io.github.wykopmobilny.utils.youtubeTimestampToMsOrNull
 import java.net.URLDecoder
 
@@ -211,7 +210,7 @@ class YTPlayer :
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RECOVERY_DIALOG_REQUEST) {
             // Retry initialization if user performed a recovery action
-            playerView.initialize(googleApiKey, this)
+            playerView.initialize(BuildConfig.GOOGLE_KEY, this)
         }
     }
 

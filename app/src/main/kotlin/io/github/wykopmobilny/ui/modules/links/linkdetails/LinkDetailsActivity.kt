@@ -170,22 +170,21 @@ class LinkDetailsActivity :
             R.id.refresh -> onRefresh()
             R.id.sortbyBest -> {
                 presenter.sortBy = "best"
-                appStorage.preferencesQueries.insertOrReplace(PreferenceEntity(key = "settings.links.comments_sort", value = "best"))
+                appStorage.preferencesQueries.insertOrReplace(PreferenceEntity(key = "settings.links.comments_sort", value_ = "best"))
                 setSubtitle()
                 presenter.loadComments()
                 binding.swiperefresh.isRefreshing = true
             }
             R.id.sortbyNewest -> {
                 presenter.sortBy = "new"
-                appStorage.preferencesQueries.insertOrReplace(PreferenceEntity(key = "settings.links.comments_sort", value = "new"))
+                appStorage.preferencesQueries.insertOrReplace(PreferenceEntity(key = "settings.links.comments_sort", value_ = "new"))
                 setSubtitle()
                 presenter.loadComments()
                 binding.swiperefresh.isRefreshing = true
             }
-
             R.id.sortbyOldest -> {
                 presenter.sortBy = "old"
-                appStorage.preferencesQueries.insertOrReplace(PreferenceEntity(key = "settings.links.comments_sort", value = "old"))
+                appStorage.preferencesQueries.insertOrReplace(PreferenceEntity(key = "settings.links.comments_sort", value_ = "old"))
                 setSubtitle()
                 presenter.loadComments()
                 binding.swiperefresh.isRefreshing = true
