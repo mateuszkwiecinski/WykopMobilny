@@ -18,7 +18,7 @@ dependencies {
     implementation("com.google.firebase:perf-plugin:1.4.0")
     implementation("com.squareup.sqldelight:gradle-plugin:1.5.3")
     implementation("com.android.tools:common:30.0.3")
-    implementation("com.karumi:shot:5.11.2")
+    implementation("com.karumi:shot:5.12.0")
     implementation("pl.droidsonroids.gradle:plugin:1.0.9")
 }
 
