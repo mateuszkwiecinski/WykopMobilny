@@ -1,0 +1,9 @@
+{
+  "includeForks": true,
+  "reviewers": [
+    "mateuszkwiecinski"
+  ],
+  "extends": [
+    "config:base"
+  ]
+}
