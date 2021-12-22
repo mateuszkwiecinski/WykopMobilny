@@ -16,7 +16,7 @@ android {
 dependencies {
     implementation(project(":ui:base:android"))
     implementation("androidx.fragment:fragment-testing:1.4.0")
-    implementation("com.karumi:shot-android:5.12.0")
+    implementation("com.karumi:shot-android:5.12.2")
     //noinspection GradleDependency https://github.com/pedrovgs/Shot/issues/254
     implementation("com.facebook.testing.screenshot:core:0.13.0")
     implementation(libs.bundles.espresso)
