@@ -5,7 +5,7 @@ import io.github.wykopmobilny.ui.base.Query
 interface GetAppStyle : Query<StyleUi>
 
 data class StyleUi(
-    val theme: AppliedStyleUi,
+    val style: AppliedStyleUi,
     val edgeSlidingBehaviorEnabled: Boolean,
 )
 

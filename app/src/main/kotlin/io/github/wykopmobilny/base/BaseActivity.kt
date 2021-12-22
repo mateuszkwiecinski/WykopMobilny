@@ -38,15 +38,14 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
     @Inject
     lateinit var themeSettingsPreferences: SettingsPreferencesApi
 
-    private val getAppStyle by lazy { application.requireDependency<StylesDependencies>().getAppStyle() }
-
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
-        val initialTheme = runBlocking { getAppStyle().first() }.theme
-        initTheme(initialTheme)
+        val getAppStyle = application.requireDependency<StylesDependencies>().getAppStyle()
+        val initialStyle = runBlocking { getAppStyle().first() }.style
+        initTheme(initialStyle)
         super.onCreate(savedInstanceState)
 
         val slidr = if (enableSwipeBackLayout) {
@@ -58,9 +57,9 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
             val shared = getAppStyle().stateIn(this)
             launch {
                 shared
-                    .map { it.theme }
+                    .map { it.style }
                     .distinctUntilChanged()
-                    .dropWhile { it == initialTheme }
+                    .dropWhile { it == initialStyle }
                     .collect {
                         updateTheme(it)
                         recreate()
@@ -92,8 +91,8 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
     }
 
     // This function initializes activity theme based on settings
-    private fun initTheme(initialTheme: AppliedStyleUi) {
-        updateTheme(initialTheme)
+    private fun initTheme(style: AppliedStyleUi) {
+        updateTheme(style)
         if (isActivityTransfluent || enableSwipeBackLayout) {
             theme.applyStyle(R.style.TransparentActivityTheme, true)
             window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

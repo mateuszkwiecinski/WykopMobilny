@@ -22,11 +22,11 @@ import kotlinx.coroutines.runBlocking
 
 internal abstract class ThemableActivity : AppCompatActivity() {
 
-    private val getAppStyle by lazy { requireDependency<StylesDependencies>().getAppStyle() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val initialTheme = runBlocking { getAppStyle().first() }.theme
-        updateTheme(initialTheme)
+        val getAppStyle = requireDependency<StylesDependencies>().getAppStyle()
+        val initialStyle = runBlocking { getAppStyle().first() }.style
+        updateTheme(initialStyle)
         super.onCreate(savedInstanceState ?: intent.getBundleExtra("saved_State"))
 
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -36,9 +36,9 @@ internal abstract class ThemableActivity : AppCompatActivity() {
             val shared = getAppStyle().stateIn(this)
             launch {
                 shared
-                    .map { it.theme }
+                    .map { it.style }
                     .distinctUntilChanged()
-                    .dropWhile { it == initialTheme }
+                    .dropWhile { it == initialStyle }
                     .collect {
                         updateTheme(it)
                         recreate()

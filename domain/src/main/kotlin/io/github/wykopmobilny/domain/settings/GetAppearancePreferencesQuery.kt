@@ -71,6 +71,12 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
                 ),
                 useAmoledTheme = Setting(
                     currentValue = appearance.isAmoledTheme,
+                    isEnabled = when (appearance.appTheme) {
+                        SavedAppTheme.Auto,
+                        SavedAppTheme.Dark,
+                        -> true
+                        SavedAppTheme.Light -> false
+                    },
                     onClicked = { updateUserSetting(UserSettings.useAmoledTheme, !appearance.isAmoledTheme) },
                 ),
                 fontSize = ListSetting(

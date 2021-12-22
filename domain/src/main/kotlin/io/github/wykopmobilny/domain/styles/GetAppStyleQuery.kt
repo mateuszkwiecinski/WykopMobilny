@@ -19,26 +19,26 @@ internal class GetAppStyleQuery @Inject constructor(
         getAppearanceSectionPreferences()
             .map { appearance ->
                 StyleUi(
-                    theme = mapTheme(appearance.appTheme, appearance.isAmoledTheme),
+                    style = findAppStyle(appearance.appTheme, appearance.isAmoledTheme),
                     edgeSlidingBehaviorEnabled = !appearance.disableEdgeSlide,
                 )
             }
             .distinctUntilChanged()
 
-    private suspend fun mapTheme(appTheme: SavedAppTheme, amoledTheme: Boolean) =
+    private suspend fun findAppStyle(appTheme: SavedAppTheme, isAmoledTheme: Boolean) =
         when (appTheme) {
             SavedAppTheme.Auto ->
                 if (isSystemDark()) {
-                    findDarkMode(amoledTheme)
+                    findDarkMode(isAmoledTheme)
                 } else {
                     AppliedStyleUi.Light
                 }
             SavedAppTheme.Light -> AppliedStyleUi.Light
-            SavedAppTheme.Dark -> findDarkMode(amoledTheme)
+            SavedAppTheme.Dark -> findDarkMode(isAmoledTheme)
         }
 
-    private fun findDarkMode(useAmoledTheme: Boolean) =
-        if (useAmoledTheme) {
+    private fun findDarkMode(isAmoledTheme: Boolean) =
+        if (isAmoledTheme) {
             AppliedStyleUi.DarkAmoled
         } else {
             AppliedStyleUi.Dark
