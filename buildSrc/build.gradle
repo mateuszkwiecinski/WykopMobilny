@@ -13,12 +13,11 @@ dependencies {
     implementation("com.project.starter:android:0.41.0")
     implementation("com.gradleup:auto-manifest-plugin:1.0.4")
     implementation("com.google.gms:google-services:4.3.10")
-    implementation("com.android.tools.build:gradle:7.2.0-alpha06")
     implementation("com.google.firebase:firebase-crashlytics-gradle:2.8.1")
     implementation("com.slack.keeper:keeper:0.11.1")
     implementation("com.google.firebase:perf-plugin:1.4.0")
     implementation("com.squareup.sqldelight:gradle-plugin:1.5.3")
-    implementation("com.android.tools:common:30.2.0-alpha06")
+    implementation("com.android.tools:common:30.0.4")
     implementation("com.karumi:shot:5.12.2")
     implementation("pl.droidsonroids.gradle:plugin:1.0.9")
 }
