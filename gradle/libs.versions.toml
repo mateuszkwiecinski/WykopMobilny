@@ -22,6 +22,7 @@ google-exifinterface = "1.3.3"
 google-startup = "1.1.0"
 google-exoplayer = "2.16.1"
 google-espresso = "3.4.0"
+google-annotation = "1.3.0"
 mavencentral-coroutines = "1.5.2"
 mavencentral-okhttp = "4.9.3"
 mavencentral-dagger = "2.40.5"
@@ -30,7 +31,7 @@ mavencentral-shimmer = "0.5.0"
 mavencentral-datetime = "0.3.1"
 mavencentral-store = "4.0.4-KT15"
 mavencentral-retrofit = "2.9.0"
-mavencentral-moshi = "1.12.0"
+mavencentral-moshi = "1.13.0"
 mavencentral-sqldelight = "1.5.3"
 mavencentral-jspoon = "1.3.2"
 mavencentral-jsoup = "1.14.3"
@@ -38,6 +39,7 @@ mavencentral-slidr = "3.0.0"
 mavencentral-leakcanary = "2.7"
 mavencentral-markdown = "0.2.4"
 mavencentral-junit = "5.8.1"
+mavencentral-napier = "2.2.0"
 jitpack-photoview = "2.3.0"
 jitpack-subsampling-scale-image-view = "3.10.0"
 
@@ -59,6 +61,7 @@ androidx-core = { module = "androidx.core:core-ktx", version.ref = "google-andro
 activity-core = { module = "androidx.activity:activity-ktx", version.ref = "google-activity" }
 fragment-core = { module = "androidx.fragment:fragment-ktx", version.ref = "google-fragment" }
 cardview-core = { module = "androidx.cardview:cardview", version.ref = "google-cardview" }
+annotation-core = { module = "androidx.annotation:annotation", version.ref = "google-annotation" }
 exifinterface-core = { module = "androidx.exifinterface:exifinterface", version.ref = "google-exifinterface" }
 startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "google-startup" }
 store-core = { module = "com.dropbox.mobile.store:store4", version.ref = "mavencentral-store" }
@@ -69,6 +72,7 @@ chrisbanes-photoview = { module = "com.github.chrisbanes:PhotoView", version.ref
 davemorrissey-subsamplingimageview = { module = "com.davemorrissey.labs:subsampling-scale-image-view-androidx", version.ref = "jitpack-subsampling-scale-image-view" }
 leakcanary-core = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "mavencentral.leakcanary" }
 jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "mavencentral.markdown" }
+napier-core = { module = "io.github.aakira:napier", version.ref = "mavencentral.napier" }
 
 exoplayer-core = { module = "com.google.android.exoplayer:exoplayer", version.ref = "google-exoplayer" }
 exoplayer-okhttp = { module = "com.google.android.exoplayer:extension-okhttp", version.ref = "google-exoplayer" }

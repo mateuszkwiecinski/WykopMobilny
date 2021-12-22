@@ -61,8 +61,7 @@ public class EllipsizingTextView extends AppCompatTextView {
 
     public EllipsizingTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        TypedArray a = context.obtainStyledAttributes(attrs,
-            new int[]{android.R.attr.maxLines, android.R.attr.ellipsize}, defStyle, 0);
+        TypedArray a = context.obtainStyledAttributes(attrs, new int[]{android.R.attr.maxLines, android.R.attr.ellipsize}, defStyle, 0);
         setMaxLines(a.getInt(0, Integer.MAX_VALUE));
         a.recycle();
         TypedValue typedValue = new TypedValue();

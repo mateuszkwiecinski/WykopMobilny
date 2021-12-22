@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
 
 internal class GetNotificationPreferences @Inject constructor(
     private val appStorage: AppStorage,
@@ -42,11 +44,11 @@ internal data class NotificationsPreferences(
 
     @Suppress("MagicNumber")
     enum class RefreshPeriod(val duration: Duration) {
-        FifteenMinutes(Duration.minutes(15)),
-        ThirtyMinutes(Duration.minutes(30)),
-        OneHour(Duration.hours(1)),
-        TwoHours(Duration.hours(2)),
-        FourHours(Duration.hours(4)),
-        EightHours(Duration.hours(8)),
+        FifteenMinutes(15.minutes),
+        ThirtyMinutes(30.minutes),
+        OneHour(1.hours),
+        TwoHours(2.hours),
+        FourHours(4.hours),
+        EightHours(8.hours),
     }
 }

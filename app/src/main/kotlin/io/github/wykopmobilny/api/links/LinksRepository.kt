@@ -6,6 +6,7 @@ import io.github.wykopmobilny.api.endpoints.LinksRetrofitApi
 import io.github.wykopmobilny.api.errorhandler.ErrorHandlerTransformer
 import io.github.wykopmobilny.api.filters.OWMContentFilter
 import io.github.wykopmobilny.api.patrons.PatronsApi
+import io.github.wykopmobilny.api.toRequestBody
 import io.github.wykopmobilny.models.dataclass.LinkVoteResponsePublishModel
 import io.github.wykopmobilny.models.mapper.apiv2.DownvoterMapper
 import io.github.wykopmobilny.models.mapper.apiv2.LinkCommentMapper
@@ -14,7 +15,6 @@ import io.github.wykopmobilny.models.mapper.apiv2.RelatedMapper
 import io.github.wykopmobilny.models.mapper.apiv2.UpvoterMapper
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.rx2.rxSingle
-import toRequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
 
