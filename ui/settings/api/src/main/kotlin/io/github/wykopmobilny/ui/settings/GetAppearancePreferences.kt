@@ -13,7 +13,7 @@ data class AppearancePreferencesUi(
 ) {
 
     data class AppearanceSectionUi(
-        val useDarkTheme: Setting,
+        val userThemeSetting: ListSetting<AppThemeUi>,
         val useAmoledTheme: Setting,
         val startScreen: ListSetting<MainScreenUi>,
         val fontSize: ListSetting<FontSizeUi>,
@@ -43,6 +43,12 @@ data class AppearancePreferencesUi(
         val cutImages: Setting,
         val cutImagesProportion: SliderSetting,
     )
+}
+
+enum class AppThemeUi {
+    Automatic,
+    Light,
+    Dark
 }
 
 enum class MainScreenUi {

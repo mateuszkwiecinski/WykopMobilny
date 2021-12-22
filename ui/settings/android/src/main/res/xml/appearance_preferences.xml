@@ -8,10 +8,10 @@
         app:iconSpaceReserved="false"
         >
 
-        <androidx.preference.CheckBoxPreference
-            android:key="useDarkTheme"
+        <androidx.preference.ListPreference
+            android:key="appTheme"
             android:persistent="false"
-            android:title="@string/pref_dark_style"
+            android:title="@string/app_theme"
             app:iconSpaceReserved="false"
             />
 
