@@ -2,7 +2,6 @@ package io.github.wykopmobilny.domain.settings
 
 import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.settings.di.SettingsScope
-import io.github.wykopmobilny.domain.settings.prefs.AppearanceSection
 import io.github.wykopmobilny.domain.settings.prefs.GetAppearanceSectionPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetImagesPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetImagesPreferences.Companion.CUT_IMAGES_RANGE_FROM
@@ -12,15 +11,24 @@ import io.github.wykopmobilny.domain.settings.prefs.GetMediaPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetMikroblogPreferences
 import io.github.wykopmobilny.domain.settings.prefs.MainScreen
 import io.github.wykopmobilny.domain.settings.prefs.MikroblogScreen
-import io.github.wykopmobilny.domain.styles.AppTheme
+import io.github.wykopmobilny.domain.styles.SavedAppTheme
 import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.ui.base.AppScopes
-import io.github.wykopmobilny.ui.settings.*
+import io.github.wykopmobilny.ui.settings.AppThemeUi
+import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.AppearanceSectionUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.ImagesSectionUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.LinksSectionUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.MediaPlayerSectionUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.MikroblogSectionUi
+import io.github.wykopmobilny.ui.settings.FontSizeUi
+import io.github.wykopmobilny.ui.settings.GetAppearancePreferences
+import io.github.wykopmobilny.ui.settings.LinkImagePositionUi
+import io.github.wykopmobilny.ui.settings.ListSetting
+import io.github.wykopmobilny.ui.settings.MainScreenUi
+import io.github.wykopmobilny.ui.settings.MikroblogScreenUi
+import io.github.wykopmobilny.ui.settings.Setting
+import io.github.wykopmobilny.ui.settings.SliderSetting
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -166,18 +174,18 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
     }
 }
 
-private fun AppTheme.toUi() =
+private fun SavedAppTheme.toUi() =
     when (this) {
-        AppTheme.Auto -> AppThemeUi.Automatic
-        AppTheme.Light -> AppThemeUi.Light
-        AppTheme.Dark -> AppThemeUi.Dark
+        SavedAppTheme.Auto -> AppThemeUi.Automatic
+        SavedAppTheme.Light -> AppThemeUi.Light
+        SavedAppTheme.Dark -> AppThemeUi.Dark
     }
 
 private fun AppThemeUi.toDomain() =
     when (this) {
-        AppThemeUi.Automatic -> AppTheme.Auto
-        AppThemeUi.Light -> AppTheme.Light
-        AppThemeUi.Dark -> AppTheme.Dark
+        AppThemeUi.Automatic -> SavedAppTheme.Auto
+        AppThemeUi.Light -> SavedAppTheme.Light
+        AppThemeUi.Dark -> SavedAppTheme.Dark
     }
 
 private fun MainScreen.toUi() =

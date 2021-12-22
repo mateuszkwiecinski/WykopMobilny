@@ -3,7 +3,7 @@ package io.github.wykopmobilny.domain.styles
 import io.github.wykopmobilny.domain.navigation.NightModeState
 import io.github.wykopmobilny.domain.navigation.SystemSettingsDetector
 import io.github.wykopmobilny.domain.settings.prefs.GetAppearanceSectionPreferences
-import io.github.wykopmobilny.styles.AppThemeUi
+import io.github.wykopmobilny.styles.AppliedStyleUi
 import io.github.wykopmobilny.styles.GetAppStyle
 import io.github.wykopmobilny.styles.StyleUi
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -22,20 +22,27 @@ internal class GetAppStyleQuery @Inject constructor(
                     theme = mapTheme(appearance.appTheme, appearance.isAmoledTheme),
                     edgeSlidingBehaviorEnabled = !appearance.disableEdgeSlide,
                 )
-            }.distinctUntilChanged()
+            }
+            .distinctUntilChanged()
 
-    private suspend fun mapTheme(appTheme: AppTheme, amoledTheme: Boolean) =
+    private suspend fun mapTheme(appTheme: SavedAppTheme, amoledTheme: Boolean) =
         when (appTheme) {
-            AppTheme.Auto ->
-                if (isSystemDark()) maybeAmoledDark(amoledTheme)
-                else AppThemeUi.Light
-            AppTheme.Light -> AppThemeUi.Light
-            AppTheme.Dark -> maybeAmoledDark(amoledTheme)
+            SavedAppTheme.Auto ->
+                if (isSystemDark()) {
+                    findDarkMode(amoledTheme)
+                } else {
+                    AppliedStyleUi.Light
+                }
+            SavedAppTheme.Light -> AppliedStyleUi.Light
+            SavedAppTheme.Dark -> findDarkMode(amoledTheme)
         }
 
-    private fun maybeAmoledDark(useAmoledTheme: Boolean) =
-        if (useAmoledTheme) AppThemeUi.DarkAmoled
-        else AppThemeUi.Dark
+    private fun findDarkMode(useAmoledTheme: Boolean) =
+        if (useAmoledTheme) {
+            AppliedStyleUi.DarkAmoled
+        } else {
+            AppliedStyleUi.Dark
+        }
 
     private suspend fun isSystemDark() =
         when (systemSettingsDetector.getNightModeState()) {

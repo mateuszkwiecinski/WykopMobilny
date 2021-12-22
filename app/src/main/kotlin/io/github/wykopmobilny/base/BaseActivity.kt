@@ -12,7 +12,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.styles.AppThemeUi
+import io.github.wykopmobilny.styles.AppliedStyleUi
 import io.github.wykopmobilny.styles.StylesDependencies
 import io.github.wykopmobilny.ui.dialogs.showExceptionDialog
 import io.github.wykopmobilny.utils.requireDependency
@@ -92,7 +92,7 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
     }
 
     // This function initializes activity theme based on settings
-    private fun initTheme(initialTheme: AppThemeUi) {
+    private fun initTheme(initialTheme: AppliedStyleUi) {
         updateTheme(initialTheme)
         if (isActivityTransfluent || enableSwipeBackLayout) {
             theme.applyStyle(R.style.TransparentActivityTheme, true)
@@ -110,11 +110,11 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
         }
     }
 
-    private fun updateTheme(newTheme: AppThemeUi) {
+    private fun updateTheme(newTheme: AppliedStyleUi) {
         val appTheme = when (newTheme) {
-            AppThemeUi.Light -> R.style.WykopAppTheme
-            AppThemeUi.Dark -> R.style.WykopAppTheme_Dark
-            AppThemeUi.DarkAmoled -> R.style.WykopAppTheme_Amoled
+            AppliedStyleUi.Light -> R.style.WykopAppTheme
+            AppliedStyleUi.Dark -> R.style.WykopAppTheme_Dark
+            AppliedStyleUi.DarkAmoled -> R.style.WykopAppTheme_Amoled
         }
         setTheme(appTheme)
     }

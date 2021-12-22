@@ -1,6 +1,6 @@
 package io.github.wykopmobilny.domain.styles
 
-enum class AppTheme {
+enum class SavedAppTheme {
     Auto,
     Light,
     Dark,

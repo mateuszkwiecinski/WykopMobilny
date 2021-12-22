@@ -2,20 +2,18 @@ package io.github.wykopmobilny.domain.settings
 
 import io.github.wykopmobilny.domain.settings.prefs.MainScreen
 import io.github.wykopmobilny.domain.settings.prefs.MikroblogScreen
-import io.github.wykopmobilny.domain.styles.AppTheme
+import io.github.wykopmobilny.domain.styles.SavedAppTheme
 
 internal object UserSettings {
 
     val appTheme = enumMapping(
         preferencesKey = "settings.appearance.app_theme",
         mapOf(
-            AppTheme.Auto to "auto",
-            AppTheme.Light to "light",
-            AppTheme.Dark to "dark",
+            SavedAppTheme.Auto to "auto",
+            SavedAppTheme.Light to "light",
+            SavedAppTheme.Dark to "dark",
         ),
     )
-    @Deprecated("Legacy setting. Replaced by appTheme.")
-    val darkTheme = booleanMapping(preferencesKey = "settings.appearance.dark_theme")
     val useAmoledTheme = booleanMapping(preferencesKey = "settings.appearance.amoled_theme")
     val defaultScreen = enumMapping(
         preferencesKey = "settings.appearance.default_screen",

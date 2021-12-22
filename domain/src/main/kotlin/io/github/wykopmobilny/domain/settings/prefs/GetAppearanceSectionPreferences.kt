@@ -6,9 +6,13 @@ import io.github.wykopmobilny.domain.navigation.SystemSettingsDetector
 import io.github.wykopmobilny.domain.settings.FontSize
 import io.github.wykopmobilny.domain.settings.UserSettings
 import io.github.wykopmobilny.domain.settings.get
-import io.github.wykopmobilny.domain.styles.AppTheme
+import io.github.wykopmobilny.domain.styles.SavedAppTheme
 import io.github.wykopmobilny.ui.base.AppScopes
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
 import javax.inject.Inject
 
 internal class GetAppearanceSectionPreferences @Inject constructor(
@@ -18,7 +22,7 @@ internal class GetAppearanceSectionPreferences @Inject constructor(
 ) {
 
     operator fun invoke(): SharedFlow<AppearanceSection> = combine(
-        appThemeFlow(),
+        appStorage.get(UserSettings.appTheme).map { it ?: SavedAppTheme.Auto },
         appStorage.get(UserSettings.useAmoledTheme).map { it ?: false },
         appStorage.get(UserSettings.font).map { it ?: FontSize.Normal },
         appStorage.get(UserSettings.defaultScreen).map { it ?: MainScreen.Promoted },
@@ -38,17 +42,6 @@ internal class GetAppearanceSectionPreferences @Inject constructor(
             replay = 0,
         )
 
-    private fun appThemeFlow() = appStorage.get(UserSettings.appTheme)
-        .flatMapLatest {
-            it?.let { return@flatMapLatest flowOf(it) }
-            // Fallback to legacy setting if not present.
-            @Suppress("deprecation")
-            appStorage.get(UserSettings.darkTheme).map { useLegacyDarkMode ->
-                if (useLegacyDarkMode == true) AppTheme.Dark
-                else AppTheme.Auto
-            }
-        }
-
     private suspend fun findDefaultEdgeSlide() =
         when (systemSettingsDetector.getNavigationMode()) {
             NavigationMode.ThreeButtons,
@@ -61,7 +54,7 @@ internal class GetAppearanceSectionPreferences @Inject constructor(
 }
 
 internal data class AppearanceSection(
-    val appTheme: AppTheme,
+    val appTheme: SavedAppTheme,
     val isAmoledTheme: Boolean,
     val defaultScreen: MainScreen,
     val defaultFont: FontSize,

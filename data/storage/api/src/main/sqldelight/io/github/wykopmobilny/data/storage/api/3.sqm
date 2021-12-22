@@ -1,0 +1,21 @@
+INSERT OR IGNORE INTO preferenceEntity (key, value)
+VALUES (
+    "settings.appearance.app_theme",
+    (
+        SELECT "dark"
+        FROM preferenceEntity
+        WHERE key = "settings.appearance.dark_theme" AND value = "true"
+    )
+);
+
+INSERT OR IGNORE INTO preferenceEntity (key, value)
+VALUES (
+    "settings.appearance.app_theme",
+    (
+        SELECT "light"
+        FROM preferenceEntity
+        WHERE key = "settings.appearance.dark_theme" AND value = "false"
+    )
+);
+
+DELETE FROM preferenceEntity WHERE key = "settings.appearance.dark_theme";
