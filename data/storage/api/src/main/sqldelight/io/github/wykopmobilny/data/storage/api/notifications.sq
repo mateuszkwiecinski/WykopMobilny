@@ -2,7 +2,7 @@ import kotlinx.datetime.Instant;
 
 CREATE TABLE readNotificationEntity (
   notificationId INTEGER NOT NULL PRIMARY KEY,
-  dismissedAt INTEGER AS Instant NOT NULL
+  dismissedAt INTEGER AS Instant NOT NULL DEFAULT 0
 );
 
 insertOrReplace:
