@@ -11,7 +11,7 @@ import io.github.wykopmobilny.domain.settings.prefs.GetMediaPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetMikroblogPreferences
 import io.github.wykopmobilny.domain.settings.prefs.MainScreen
 import io.github.wykopmobilny.domain.settings.prefs.MikroblogScreen
-import io.github.wykopmobilny.domain.styles.SavedAppTheme
+import io.github.wykopmobilny.domain.styles.AppThemePreference
 import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.ui.base.AppScopes
 import io.github.wykopmobilny.ui.settings.AppThemeUi
@@ -66,16 +66,16 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
             AppearanceSectionUi(
                 userThemeSetting = ListSetting(
                     values = AppThemeUi.values().toList(),
-                    currentValue = appearance.appTheme.toUi(),
+                    currentValue = appearance.appThemePreference.toUi(),
                     onSelected = { updateUserSetting(UserSettings.appTheme, it.toDomain()) },
                 ),
                 useAmoledTheme = Setting(
                     currentValue = appearance.isAmoledTheme,
-                    isEnabled = when (appearance.appTheme) {
-                        SavedAppTheme.Auto,
-                        SavedAppTheme.Dark,
+                    isEnabled = when (appearance.appThemePreference) {
+                        AppThemePreference.Auto,
+                        AppThemePreference.Dark,
                         -> true
-                        SavedAppTheme.Light -> false
+                        AppThemePreference.Light -> false
                     },
                     onClicked = { updateUserSetting(UserSettings.useAmoledTheme, !appearance.isAmoledTheme) },
                 ),
@@ -180,18 +180,18 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
     }
 }
 
-private fun SavedAppTheme.toUi() =
+private fun AppThemePreference.toUi() =
     when (this) {
-        SavedAppTheme.Auto -> AppThemeUi.Automatic
-        SavedAppTheme.Light -> AppThemeUi.Light
-        SavedAppTheme.Dark -> AppThemeUi.Dark
+        AppThemePreference.Auto -> AppThemeUi.Automatic
+        AppThemePreference.Light -> AppThemeUi.Light
+        AppThemePreference.Dark -> AppThemeUi.Dark
     }
 
 private fun AppThemeUi.toDomain() =
     when (this) {
-        AppThemeUi.Automatic -> SavedAppTheme.Auto
-        AppThemeUi.Light -> SavedAppTheme.Light
-        AppThemeUi.Dark -> SavedAppTheme.Dark
+        AppThemeUi.Automatic -> AppThemePreference.Auto
+        AppThemeUi.Light -> AppThemePreference.Light
+        AppThemeUi.Dark -> AppThemePreference.Dark
     }
 
 private fun MainScreen.toUi() =

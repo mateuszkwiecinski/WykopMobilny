@@ -6,7 +6,7 @@ import io.github.wykopmobilny.domain.navigation.SystemSettingsDetector
 import io.github.wykopmobilny.domain.settings.FontSize
 import io.github.wykopmobilny.domain.settings.UserSettings
 import io.github.wykopmobilny.domain.settings.get
-import io.github.wykopmobilny.domain.styles.SavedAppTheme
+import io.github.wykopmobilny.domain.styles.AppThemePreference
 import io.github.wykopmobilny.ui.base.AppScopes
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,14 +22,14 @@ internal class GetAppearanceSectionPreferences @Inject constructor(
 ) {
 
     operator fun invoke(): SharedFlow<AppearanceSection> = combine(
-        appStorage.get(UserSettings.appTheme).map { it ?: SavedAppTheme.Auto },
+        appStorage.get(UserSettings.appTheme).map { it ?: AppThemePreference.Auto },
         appStorage.get(UserSettings.useAmoledTheme).map { it ?: false },
         appStorage.get(UserSettings.font).map { it ?: FontSize.Normal },
         appStorage.get(UserSettings.defaultScreen).map { it ?: MainScreen.Promoted },
         appStorage.get(UserSettings.disableEdgeSlide).map { it ?: findDefaultEdgeSlide() },
     ) { appTheme, useAmoledTheme, fontSize, defaultScreen, disableEdgeSlide ->
         AppearanceSection(
-            appTheme = appTheme,
+            appThemePreference = appTheme,
             isAmoledTheme = useAmoledTheme,
             defaultScreen = defaultScreen,
             defaultFont = fontSize,
@@ -54,7 +54,7 @@ internal class GetAppearanceSectionPreferences @Inject constructor(
 }
 
 internal data class AppearanceSection(
-    val appTheme: SavedAppTheme,
+    val appThemePreference: AppThemePreference,
     val isAmoledTheme: Boolean,
     val defaultScreen: MainScreen,
     val defaultFont: FontSize,

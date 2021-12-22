@@ -12,11 +12,10 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.styles.AppliedStyleUi
+import io.github.wykopmobilny.styles.ApplicableStyleUi
 import io.github.wykopmobilny.styles.StylesDependencies
 import io.github.wykopmobilny.ui.dialogs.showExceptionDialog
 import io.github.wykopmobilny.utils.requireDependency
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.first
@@ -91,7 +90,7 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
     }
 
     // This function initializes activity theme based on settings
-    private fun initTheme(style: AppliedStyleUi) {
+    private fun initTheme(style: ApplicableStyleUi) {
         updateTheme(style)
         if (isActivityTransfluent || enableSwipeBackLayout) {
             theme.applyStyle(R.style.TransparentActivityTheme, true)
@@ -109,11 +108,11 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
         }
     }
 
-    private fun updateTheme(newTheme: AppliedStyleUi) {
+    private fun updateTheme(newTheme: ApplicableStyleUi) {
         val appTheme = when (newTheme) {
-            AppliedStyleUi.Light -> R.style.WykopAppTheme
-            AppliedStyleUi.Dark -> R.style.WykopAppTheme_Dark
-            AppliedStyleUi.DarkAmoled -> R.style.WykopAppTheme_Amoled
+            ApplicableStyleUi.Light -> R.style.WykopAppTheme
+            ApplicableStyleUi.Dark -> R.style.WykopAppTheme_Dark
+            ApplicableStyleUi.DarkAmoled -> R.style.WykopAppTheme_Amoled
         }
         setTheme(appTheme)
     }

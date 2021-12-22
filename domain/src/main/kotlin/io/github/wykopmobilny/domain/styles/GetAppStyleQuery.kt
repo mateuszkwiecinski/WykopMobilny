@@ -3,7 +3,7 @@ package io.github.wykopmobilny.domain.styles
 import io.github.wykopmobilny.domain.navigation.NightModeState
 import io.github.wykopmobilny.domain.navigation.SystemSettingsDetector
 import io.github.wykopmobilny.domain.settings.prefs.GetAppearanceSectionPreferences
-import io.github.wykopmobilny.styles.AppliedStyleUi
+import io.github.wykopmobilny.styles.ApplicableStyleUi
 import io.github.wykopmobilny.styles.GetAppStyle
 import io.github.wykopmobilny.styles.StyleUi
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -19,29 +19,29 @@ internal class GetAppStyleQuery @Inject constructor(
         getAppearanceSectionPreferences()
             .map { appearance ->
                 StyleUi(
-                    style = findAppStyle(appearance.appTheme, appearance.isAmoledTheme),
+                    style = findAppStyle(appearance.appThemePreference, appearance.isAmoledTheme),
                     edgeSlidingBehaviorEnabled = !appearance.disableEdgeSlide,
                 )
             }
             .distinctUntilChanged()
 
-    private suspend fun findAppStyle(appTheme: SavedAppTheme, isAmoledTheme: Boolean) =
-        when (appTheme) {
-            SavedAppTheme.Auto ->
+    private suspend fun findAppStyle(appThemePreference: AppThemePreference, isAmoledTheme: Boolean) =
+        when (appThemePreference) {
+            AppThemePreference.Auto ->
                 if (isSystemDark()) {
                     findDarkMode(isAmoledTheme)
                 } else {
-                    AppliedStyleUi.Light
+                    ApplicableStyleUi.Light
                 }
-            SavedAppTheme.Light -> AppliedStyleUi.Light
-            SavedAppTheme.Dark -> findDarkMode(isAmoledTheme)
+            AppThemePreference.Light -> ApplicableStyleUi.Light
+            AppThemePreference.Dark -> findDarkMode(isAmoledTheme)
         }
 
     private fun findDarkMode(isAmoledTheme: Boolean) =
         if (isAmoledTheme) {
-            AppliedStyleUi.DarkAmoled
+            ApplicableStyleUi.DarkAmoled
         } else {
-            AppliedStyleUi.Dark
+            ApplicableStyleUi.Dark
         }
 
     private suspend fun isSystemDark() =

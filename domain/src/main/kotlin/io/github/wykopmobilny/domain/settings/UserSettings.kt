@@ -2,16 +2,16 @@ package io.github.wykopmobilny.domain.settings
 
 import io.github.wykopmobilny.domain.settings.prefs.MainScreen
 import io.github.wykopmobilny.domain.settings.prefs.MikroblogScreen
-import io.github.wykopmobilny.domain.styles.SavedAppTheme
+import io.github.wykopmobilny.domain.styles.AppThemePreference
 
 internal object UserSettings {
 
     val appTheme = enumMapping(
         preferencesKey = "settings.appearance.app_theme",
         mapOf(
-            SavedAppTheme.Auto to "auto",
-            SavedAppTheme.Light to "light",
-            SavedAppTheme.Dark to "dark",
+            AppThemePreference.Auto to "auto",
+            AppThemePreference.Light to "light",
+            AppThemePreference.Dark to "dark",
         ),
     )
     val useAmoledTheme = booleanMapping(preferencesKey = "settings.appearance.amoled_theme")

@@ -8,10 +8,9 @@ import androidx.lifecycle.lifecycleScope
 import com.r0adkll.slidr.attachSlidr
 import com.r0adkll.slidr.model.SlidrConfig
 import io.github.wykopmobilny.R
-import io.github.wykopmobilny.styles.AppliedStyleUi
+import io.github.wykopmobilny.styles.ApplicableStyleUi
 import io.github.wykopmobilny.styles.StylesDependencies
 import io.github.wykopmobilny.utils.requireDependency
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.first
@@ -59,11 +58,11 @@ internal abstract class ThemableActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateTheme(theme: AppliedStyleUi) {
+    private fun updateTheme(theme: ApplicableStyleUi) {
         val themeRes = when (theme) {
-            AppliedStyleUi.Light -> R.style.Theme_App_Light
-            AppliedStyleUi.Dark -> R.style.Theme_App_Dark
-            AppliedStyleUi.DarkAmoled -> R.style.Theme_App_Amoled
+            ApplicableStyleUi.Light -> R.style.Theme_App_Light
+            ApplicableStyleUi.Dark -> R.style.Theme_App_Dark
+            ApplicableStyleUi.DarkAmoled -> R.style.Theme_App_Amoled
         }
         setTheme(themeRes)
     }
