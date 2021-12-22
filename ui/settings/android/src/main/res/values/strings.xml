@@ -6,6 +6,7 @@
     <string name="pref_appearance">Wygląd</string>
     <string name="pref_dark_style">Styl nocny</string>
     <string name="useAmoledTheme">Tryb AMOLED dla stylu nocnego</string>
+    <string name="app_theme">Styl aplikacji</string>
     <string name="defaultScreen">Domyślny ekran aplikacji</string>
     <string name="defaultHotScreen">Domyślny ekran w mikroblogu</string>
     <string name="open_spoilers_in_dialog">Otwieraj spoilery w okienku</string>
@@ -33,6 +34,10 @@
     <string name="link_show_author">Pokaż autora znaleziska</string>
     <string name="link_show_image">Pokaż miniaturkę znaleziska</string>
     <string name="linkImagePosition">Styl miniaturki znaleziska</string>
+
+    <string name="automatic">Automatycznie</string>
+    <string name="light_mode">Styl dzienny</string>
+    <string name="dark_mode">Styl nocny</string>
 
     <string name="main_page">Strona Główna</string>
     <string name="wykopalisko">Wykopalisko</string>

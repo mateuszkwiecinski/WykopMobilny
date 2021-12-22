@@ -2,6 +2,7 @@ package io.github.wykopmobilny.domain.settings
 
 import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.settings.di.SettingsScope
+import io.github.wykopmobilny.domain.settings.prefs.AppearanceSection
 import io.github.wykopmobilny.domain.settings.prefs.GetAppearanceSectionPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetImagesPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetImagesPreferences.Companion.CUT_IMAGES_RANGE_FROM
@@ -11,22 +12,15 @@ import io.github.wykopmobilny.domain.settings.prefs.GetMediaPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetMikroblogPreferences
 import io.github.wykopmobilny.domain.settings.prefs.MainScreen
 import io.github.wykopmobilny.domain.settings.prefs.MikroblogScreen
+import io.github.wykopmobilny.domain.styles.AppTheme
 import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.ui.base.AppScopes
-import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi
+import io.github.wykopmobilny.ui.settings.*
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.AppearanceSectionUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.ImagesSectionUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.LinksSectionUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.MediaPlayerSectionUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.MikroblogSectionUi
-import io.github.wykopmobilny.ui.settings.FontSizeUi
-import io.github.wykopmobilny.ui.settings.GetAppearancePreferences
-import io.github.wykopmobilny.ui.settings.LinkImagePositionUi
-import io.github.wykopmobilny.ui.settings.ListSetting
-import io.github.wykopmobilny.ui.settings.MainScreenUi
-import io.github.wykopmobilny.ui.settings.MikroblogScreenUi
-import io.github.wykopmobilny.ui.settings.Setting
-import io.github.wykopmobilny.ui.settings.SliderSetting
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -62,13 +56,13 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
     private fun appearanceFlow(): Flow<AppearanceSectionUi> =
         getAppearanceSectionPreferences().map { appearance ->
             AppearanceSectionUi(
-                useDarkTheme = Setting(
-                    currentValue = appearance.isDarkTheme,
-                    onClicked = { updateUserSetting(UserSettings.darkTheme, !appearance.isDarkTheme) },
+                userThemeSetting = ListSetting(
+                    values = AppThemeUi.values().toList(),
+                    currentValue = appearance.appTheme.toUi(),
+                    onSelected = { updateUserSetting(UserSettings.appTheme, it.toDomain()) },
                 ),
                 useAmoledTheme = Setting(
                     currentValue = appearance.isAmoledTheme,
-                    isEnabled = appearance.isDarkTheme,
                     onClicked = { updateUserSetting(UserSettings.useAmoledTheme, !appearance.isAmoledTheme) },
                 ),
                 fontSize = ListSetting(
@@ -171,6 +165,20 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
         appScopes.safe<SettingsScope> { appStorage.update(key, value) }
     }
 }
+
+private fun AppTheme.toUi() =
+    when (this) {
+        AppTheme.Auto -> AppThemeUi.Automatic
+        AppTheme.Light -> AppThemeUi.Light
+        AppTheme.Dark -> AppThemeUi.Dark
+    }
+
+private fun AppThemeUi.toDomain() =
+    when (this) {
+        AppThemeUi.Automatic -> AppTheme.Auto
+        AppThemeUi.Light -> AppTheme.Light
+        AppThemeUi.Dark -> AppTheme.Dark
+    }
 
 private fun MainScreen.toUi() =
     when (this) {

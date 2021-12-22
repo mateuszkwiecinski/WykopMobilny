@@ -4,12 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceFragmentCompat
-import io.github.wykopmobilny.ui.settings.FontSizeUi
-import io.github.wykopmobilny.ui.settings.GetAppearancePreferences
-import io.github.wykopmobilny.ui.settings.LinkImagePositionUi
-import io.github.wykopmobilny.ui.settings.MainScreenUi
-import io.github.wykopmobilny.ui.settings.MikroblogScreenUi
-import io.github.wykopmobilny.ui.settings.SettingsDependencies
+import io.github.wykopmobilny.ui.settings.*
 import io.github.wykopmobilny.utils.requireDependency
 import kotlinx.coroutines.flow.collect
 
@@ -27,7 +22,7 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
 
         lifecycleScope.launchWhenCreated {
             getAppearancePreferences().collect {
-                bindCheckbox("useDarkTheme", it.appearance.useDarkTheme)
+                bindList("appTheme", it.appearance.userThemeSetting, themeSettingMapping)
                 bindCheckbox("useAmoledTheme", it.appearance.useAmoledTheme)
                 bindList("defaultScreen", it.appearance.startScreen, defaultScreenMapping)
                 bindList("fontSize", it.appearance.fontSize, fontMapping)
@@ -45,6 +40,17 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
                 bindCheckbox("cutImages", it.imagesSection.cutImages)
                 bindSlider("cutImageProportion", it.imagesSection.cutImagesProportion)
             }
+        }
+    }
+
+    private val themeSettingMapping by lazy {
+        AppThemeUi.values().associateWith { screen ->
+            when (screen) {
+                AppThemeUi.Automatic -> R.string.automatic
+                AppThemeUi.Light -> R.string.light_mode
+                AppThemeUi.Dark -> R.string.dark_mode
+            }
+                .let { resources.getString(it) }
         }
     }
 
