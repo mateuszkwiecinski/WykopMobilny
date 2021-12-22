@@ -23,12 +23,6 @@ dependencies {
     implementation("pl.droidsonroids.gradle:plugin:1.0.9")
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
-}
-
 gradlePlugin {
     plugins {
         screenshotsPlugin {
