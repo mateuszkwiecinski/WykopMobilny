@@ -36,8 +36,8 @@
     <string name="linkImagePosition">Styl miniaturki znaleziska</string>
 
     <string name="automatic">Automatyczny</string>
-    <string name="light_mode">Styl dzienny</string>
-    <string name="dark_mode">Styl nocny</string>
+    <string name="light_mode">Dzienny</string>
+    <string name="dark_mode">Nocny</string>
 
     <string name="main_page">Strona Główna</string>
     <string name="wykopalisko">Wykopalisko</string>
