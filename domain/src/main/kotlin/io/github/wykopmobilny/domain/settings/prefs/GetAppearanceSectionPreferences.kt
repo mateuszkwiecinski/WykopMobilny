@@ -6,9 +6,9 @@ import io.github.wykopmobilny.domain.navigation.SystemSettingsDetector
 import io.github.wykopmobilny.domain.settings.FontSize
 import io.github.wykopmobilny.domain.settings.UserSettings
 import io.github.wykopmobilny.domain.settings.get
-import io.github.wykopmobilny.domain.styles.AppTheme
-import io.github.wykopmobilny.domain.styles.GetAppTheme
+import io.github.wykopmobilny.domain.styles.AppThemePreference
 import io.github.wykopmobilny.ui.base.AppScopes
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -17,20 +17,20 @@ import javax.inject.Inject
 
 internal class GetAppearanceSectionPreferences @Inject constructor(
     private val appStorage: AppStorage,
-    private val getAppTheme: GetAppTheme,
     private val systemSettingsDetector: SystemSettingsDetector,
     private val appScopes: AppScopes,
 ) {
 
-    operator fun invoke() = combine(
-        darkThemeFlow(),
+    operator fun invoke(): SharedFlow<AppearanceSection> = combine(
+        appStorage.get(UserSettings.appTheme).map { it ?: AppThemePreference.Auto },
+        appStorage.get(UserSettings.useAmoledTheme).map { it ?: false },
         appStorage.get(UserSettings.font).map { it ?: FontSize.Normal },
         appStorage.get(UserSettings.defaultScreen).map { it ?: MainScreen.Promoted },
         appStorage.get(UserSettings.disableEdgeSlide).map { it ?: findDefaultEdgeSlide() },
-    ) { (isDarkTheme, isAmoledTheme), fontSize, defaultScreen, disableEdgeSlide ->
+    ) { appTheme, useAmoledTheme, fontSize, defaultScreen, disableEdgeSlide ->
         AppearanceSection(
-            isDarkTheme = isDarkTheme,
-            isAmoledTheme = isAmoledTheme,
+            appThemePreference = appTheme,
+            isAmoledTheme = useAmoledTheme,
             defaultScreen = defaultScreen,
             defaultFont = fontSize,
             disableEdgeSlide = disableEdgeSlide,
@@ -41,20 +41,6 @@ internal class GetAppearanceSectionPreferences @Inject constructor(
             started = SharingStarted.Lazily,
             replay = 0,
         )
-
-    private fun darkThemeFlow() = combine(
-        getAppTheme(),
-        appStorage.get(UserSettings.useAmoledTheme),
-    ) { currentAppTheme, amoledTheme ->
-        val isDarkTheme = when (currentAppTheme) {
-            AppTheme.Light -> false
-            AppTheme.Dark -> true
-            AppTheme.DarkAmoled -> true
-        }
-        val isAmoledTheme = amoledTheme == true
-
-        isDarkTheme to isAmoledTheme
-    }
 
     private suspend fun findDefaultEdgeSlide() =
         when (systemSettingsDetector.getNavigationMode()) {
@@ -68,7 +54,7 @@ internal class GetAppearanceSectionPreferences @Inject constructor(
 }
 
 internal data class AppearanceSection(
-    val isDarkTheme: Boolean,
+    val appThemePreference: AppThemePreference,
     val isAmoledTheme: Boolean,
     val defaultScreen: MainScreen,
     val defaultFont: FontSize,

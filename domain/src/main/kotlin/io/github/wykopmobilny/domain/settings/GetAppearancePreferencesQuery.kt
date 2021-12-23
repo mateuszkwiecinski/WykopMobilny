@@ -11,8 +11,10 @@ import io.github.wykopmobilny.domain.settings.prefs.GetMediaPreferences
 import io.github.wykopmobilny.domain.settings.prefs.GetMikroblogPreferences
 import io.github.wykopmobilny.domain.settings.prefs.MainScreen
 import io.github.wykopmobilny.domain.settings.prefs.MikroblogScreen
+import io.github.wykopmobilny.domain.styles.AppThemePreference
 import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.ui.settings.AppThemeUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.AppearanceSectionUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.ImagesSectionUi
@@ -62,13 +64,19 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
     private fun appearanceFlow(): Flow<AppearanceSectionUi> =
         getAppearanceSectionPreferences().map { appearance ->
             AppearanceSectionUi(
-                useDarkTheme = Setting(
-                    currentValue = appearance.isDarkTheme,
-                    onClicked = { updateUserSetting(UserSettings.darkTheme, !appearance.isDarkTheme) },
+                userThemeSetting = ListSetting(
+                    values = AppThemeUi.values().toList(),
+                    currentValue = appearance.appThemePreference.toUi(),
+                    onSelected = { updateUserSetting(UserSettings.appTheme, it.toDomain()) },
                 ),
                 useAmoledTheme = Setting(
                     currentValue = appearance.isAmoledTheme,
-                    isEnabled = appearance.isDarkTheme,
+                    isEnabled = when (appearance.appThemePreference) {
+                        AppThemePreference.Auto,
+                        AppThemePreference.Dark,
+                        -> true
+                        AppThemePreference.Light -> false
+                    },
                     onClicked = { updateUserSetting(UserSettings.useAmoledTheme, !appearance.isAmoledTheme) },
                 ),
                 fontSize = ListSetting(
@@ -171,6 +179,20 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
         appScopes.safe<SettingsScope> { appStorage.update(key, value) }
     }
 }
+
+private fun AppThemePreference.toUi() =
+    when (this) {
+        AppThemePreference.Auto -> AppThemeUi.Automatic
+        AppThemePreference.Light -> AppThemeUi.Light
+        AppThemePreference.Dark -> AppThemeUi.Dark
+    }
+
+private fun AppThemeUi.toDomain() =
+    when (this) {
+        AppThemeUi.Automatic -> AppThemePreference.Auto
+        AppThemeUi.Light -> AppThemePreference.Light
+        AppThemeUi.Dark -> AppThemePreference.Dark
+    }
 
 private fun MainScreen.toUi() =
     when (this) {

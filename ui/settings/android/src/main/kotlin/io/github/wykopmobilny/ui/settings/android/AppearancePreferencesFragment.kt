@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceFragmentCompat
+import io.github.wykopmobilny.ui.settings.AppThemeUi
 import io.github.wykopmobilny.ui.settings.FontSizeUi
 import io.github.wykopmobilny.ui.settings.GetAppearancePreferences
 import io.github.wykopmobilny.ui.settings.LinkImagePositionUi
@@ -27,7 +28,7 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
 
         lifecycleScope.launchWhenCreated {
             getAppearancePreferences().collect {
-                bindCheckbox("useDarkTheme", it.appearance.useDarkTheme)
+                bindList("appTheme", it.appearance.userThemeSetting, themeSettingMapping)
                 bindCheckbox("useAmoledTheme", it.appearance.useAmoledTheme)
                 bindList("defaultScreen", it.appearance.startScreen, defaultScreenMapping)
                 bindList("fontSize", it.appearance.fontSize, fontMapping)
@@ -48,6 +49,17 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
         }
     }
 
+    private val themeSettingMapping by lazy {
+        AppThemeUi.values().associateWith { screen ->
+            when (screen) {
+                AppThemeUi.Automatic -> R.string.automatic
+                AppThemeUi.Light -> R.string.light_mode
+                AppThemeUi.Dark -> R.string.dark_mode
+            }
+                .let(resources::getString)
+        }
+    }
+
     private val defaultScreenMapping by lazy {
         MainScreenUi.values().associateWith { screen ->
             when (screen) {
@@ -56,7 +68,7 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
                 MainScreenUi.MyWykop -> R.string.mywykop
                 MainScreenUi.Hits -> R.string.hits
             }
-                .let { resources.getString(it) }
+                .let(resources::getString)
         }
     }
 
@@ -69,7 +81,7 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
                 FontSizeUi.Large -> R.string.fontsize_large
                 FontSizeUi.VeryLarge -> R.string.fontsize_huge
             }
-                .let { resources.getString(it) }
+                .let(resources::getString)
         }
     }
 
@@ -81,20 +93,20 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
                 LinkImagePositionUi.Top -> R.string.link_image_position_top
                 LinkImagePositionUi.Bottom -> R.string.link_image_position_bottom
             }
-                .let { resources.getString(it) }
+                .let(resources::getString)
         }
     }
 
     private val defaultMikroblogScreenMapping by lazy {
-        MikroblogScreenUi.values().associateWith {
-            when (it) {
+        MikroblogScreenUi.values().associateWith { screen ->
+            when (screen) {
                 MikroblogScreenUi.Active -> R.string.active_entries
                 MikroblogScreenUi.Newest -> R.string.newest_entries
                 MikroblogScreenUi.SixHours -> R.string.period6
                 MikroblogScreenUi.TwelveHours -> R.string.period12
                 MikroblogScreenUi.TwentyFourHours -> R.string.period24
             }
-                .let { resources.getString(it) }
+                .let(resources::getString)
         }
     }
 }

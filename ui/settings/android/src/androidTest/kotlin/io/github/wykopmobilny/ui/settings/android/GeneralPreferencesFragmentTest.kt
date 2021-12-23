@@ -2,11 +2,7 @@ package io.github.wykopmobilny.ui.settings.android
 
 import io.github.wykopmobilny.screenshots.BaseScreenshotTest
 import io.github.wykopmobilny.screenshots.unboundedHeight
-import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi
-import io.github.wykopmobilny.ui.settings.FontSizeUi
-import io.github.wykopmobilny.ui.settings.LinkImagePositionUi
-import io.github.wykopmobilny.ui.settings.MainScreenUi
-import io.github.wykopmobilny.ui.settings.MikroblogScreenUi
+import io.github.wykopmobilny.ui.settings.*
 import org.junit.Test
 
 internal class GeneralPreferencesFragmentTest : BaseScreenshotTest() {
@@ -19,7 +15,7 @@ internal class GeneralPreferencesFragmentTest : BaseScreenshotTest() {
             appearance = {
                 AppearancePreferencesUi(
                     appearance = AppearancePreferencesUi.AppearanceSectionUi(
-                        useDarkTheme = stubSetting(value = true),
+                        userThemeSetting = stubListSetting(value = AppThemeUi.Light),
                         useAmoledTheme = stubSetting(value = true),
                         startScreen = stubListSetting(value = MainScreenUi.Mikroblog),
                         fontSize = stubListSetting(value = FontSizeUi.Large),

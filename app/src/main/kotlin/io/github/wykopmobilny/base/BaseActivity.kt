@@ -12,11 +12,10 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.styles.AppThemeUi
+import io.github.wykopmobilny.styles.ApplicableStyleUi
 import io.github.wykopmobilny.styles.StylesDependencies
 import io.github.wykopmobilny.ui.dialogs.showExceptionDialog
 import io.github.wykopmobilny.utils.requireDependency
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.first
@@ -38,15 +37,14 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
     @Inject
     lateinit var themeSettingsPreferences: SettingsPreferencesApi
 
-    private val getAppStyle by lazy { application.requireDependency<StylesDependencies>().getAppStyle() }
-
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
-        val initialTheme = runBlocking { getAppStyle().first() }.theme
-        initTheme(initialTheme)
+        val getAppStyle = application.requireDependency<StylesDependencies>().getAppStyle()
+        val initialStyle = runBlocking { getAppStyle().first() }.style
+        initTheme(initialStyle)
         super.onCreate(savedInstanceState)
 
         val slidr = if (enableSwipeBackLayout) {
@@ -58,9 +56,9 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
             val shared = getAppStyle().stateIn(this)
             launch {
                 shared
-                    .map { it.theme }
+                    .map { it.style }
                     .distinctUntilChanged()
-                    .dropWhile { it == initialTheme }
+                    .dropWhile { it == initialStyle }
                     .collect {
                         updateTheme(it)
                         recreate()
@@ -92,8 +90,8 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
     }
 
     // This function initializes activity theme based on settings
-    private fun initTheme(initialTheme: AppThemeUi) {
-        updateTheme(initialTheme)
+    private fun initTheme(style: ApplicableStyleUi) {
+        updateTheme(style)
         if (isActivityTransfluent || enableSwipeBackLayout) {
             theme.applyStyle(R.style.TransparentActivityTheme, true)
             window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -110,11 +108,11 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
         }
     }
 
-    private fun updateTheme(newTheme: AppThemeUi) {
+    private fun updateTheme(newTheme: ApplicableStyleUi) {
         val appTheme = when (newTheme) {
-            AppThemeUi.Light -> R.style.WykopAppTheme
-            AppThemeUi.Dark -> R.style.WykopAppTheme_Dark
-            AppThemeUi.DarkAmoled -> R.style.WykopAppTheme_Amoled
+            ApplicableStyleUi.Light -> R.style.WykopAppTheme
+            ApplicableStyleUi.Dark -> R.style.WykopAppTheme_Dark
+            ApplicableStyleUi.DarkAmoled -> R.style.WykopAppTheme_Amoled
         }
         setTheme(appTheme)
     }
