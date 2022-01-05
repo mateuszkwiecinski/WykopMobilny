@@ -8,7 +8,7 @@ import org.hamcrest.Matchers.startsWith
 
 object AboutDialog : Page {
 
-    private val appInfo = withText(startsWith("Wykop Mobilny"))
+    private val appInfo = withText(startsWith("Wypok"))
 
     fun tapAppInfo() {
         onView(appInfo).perform(click())

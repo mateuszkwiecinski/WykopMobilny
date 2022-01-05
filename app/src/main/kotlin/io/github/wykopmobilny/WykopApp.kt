@@ -434,10 +434,11 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun Context.isAppInstalled(appId: String): Boolean = try {
         packageManager.getPackageInfo(appId, PackageManager.GET_ACTIVITIES)
         true
-    } catch (notFound: PackageManager.NameNotFoundException) {
+    } catch (ignored: PackageManager.NameNotFoundException) {
         false
     } catch (throwable: Throwable) {
         Napier.w(message = "Unexpected error when checking if app is installed", throwable)
