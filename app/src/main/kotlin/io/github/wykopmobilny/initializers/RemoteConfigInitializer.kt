@@ -9,7 +9,7 @@ import io.github.wykopmobilny.initializers.RemoteConfigKeys.API_APP_SECRET
 import io.github.wykopmobilny.initializers.RemoteConfigKeys.BLACKLIST_FLEX_INTERVAL
 import io.github.wykopmobilny.initializers.RemoteConfigKeys.BLACKLIST_REFRESH_INTERVAL
 import io.github.wykopmobilny.initializers.RemoteConfigKeys.NOTIFICATIONS_ENABLED
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
 
 internal class RemoteConfigInitializer : Initializer<FirebaseRemoteConfig> {
 
@@ -18,8 +18,8 @@ internal class RemoteConfigInitializer : Initializer<FirebaseRemoteConfig> {
             mapOf(
                 API_APP_KEY to BuildConfig.APP_KEY,
                 API_APP_SECRET to BuildConfig.APP_SECRET,
-                BLACKLIST_REFRESH_INTERVAL to Duration.days(7).inWholeMilliseconds,
-                BLACKLIST_FLEX_INTERVAL to Duration.days(1).inWholeMilliseconds,
+                BLACKLIST_REFRESH_INTERVAL to 7.days.inWholeMilliseconds,
+                BLACKLIST_FLEX_INTERVAL to 1.days.inWholeMilliseconds,
                 NOTIFICATIONS_ENABLED to false,
             ),
         )

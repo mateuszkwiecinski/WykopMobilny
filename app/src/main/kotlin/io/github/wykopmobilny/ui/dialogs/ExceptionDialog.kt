@@ -6,30 +6,44 @@ import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.api.errorhandler.WykopExceptionParser
 import io.github.wykopmobilny.base.BaseActivity
+import io.github.wykopmobilny.domain.errorhandling.KnownError
+import io.github.wykopmobilny.ui.modules.twofactor.TwoFactorAuthorizationActivity
 import okio.IOException
 import javax.net.ssl.SSLException
 
-fun Context.showExceptionDialog(ex: Throwable) {
+fun Context.showExceptionDialog(throwable: Throwable) {
     if (this is BaseActivity && isRunning) {
-        exceptionDialog(this, ex)?.show()
+        if (throwable is KnownError.TwoFactorAuthorizationRequired) {
+            exceptionDialog(
+                throwable = throwable,
+                onPositive = R.string.open_2fa to { startActivity(TwoFactorAuthorizationActivity.createIntent(this)) },
+            )
+        } else {
+            exceptionDialog(throwable = throwable)
+        }
+            .show()
     }
-    when (ex) {
-        is SSLException -> Napier.e("SSL error", ex)
-        is IOException -> Napier.w("IO error", ex)
-        else -> Napier.e("Unknown error", ex)
+    when (throwable) {
+        is SSLException -> Napier.e("SSL error", throwable)
+        is IOException -> Napier.w("IO error", throwable)
+        else -> Napier.e("Unknown error", throwable)
     }
 }
 
-private fun exceptionDialog(context: Context, e: Throwable): AlertDialog? {
+private fun Context.exceptionDialog(
+    throwable: Throwable,
+    onPositive: Pair<Int, () -> Unit> = android.R.string.ok to { },
+): AlertDialog {
     val message = when {
-        e is WykopExceptionParser.WykopApiException -> "${e.message} (${e.code})"
-        e.message.isNullOrEmpty() -> e.toString()
-        else -> e.message
+        throwable is WykopExceptionParser.WykopApiException -> "${throwable.message} (${throwable.code})"
+        throwable.message.isNullOrEmpty() -> throwable.toString()
+        else -> throwable.message
     }
-    AlertDialog.Builder(context).run {
+    val builder = AlertDialog.Builder(this).apply {
         setTitle(context.getString(R.string.error_occured))
         setMessage(message)
-        setPositiveButton(android.R.string.ok, null)
-        return create()
+        setPositiveButton(onPositive.first) { _, _ -> onPositive.second() }
     }
+
+    return builder.create()
 }

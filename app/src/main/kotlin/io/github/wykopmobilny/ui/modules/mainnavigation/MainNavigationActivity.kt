@@ -361,7 +361,7 @@ class MainNavigationActivity :
             }
 
             appObserveTag.setOnClickListener {
-                navigator.openTagActivity("otwartywykopmobilny")
+                navigator.openTagActivity("otwartywykopmobilny2")
                 dialog.dismiss()
             }
 

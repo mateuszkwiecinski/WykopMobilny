@@ -123,6 +123,7 @@ dependencies {
     implementation(projects.ui.search.android)
     implementation(projects.ui.settings.android)
     implementation(projects.ui.notifications.android)
+    implementation(projects.ui.twoFactor.android)
     implementation(projects.domain)
     implementation(libs.recyclerview.core)
     implementation(libs.appcompat.core)

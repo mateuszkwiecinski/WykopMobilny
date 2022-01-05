@@ -22,6 +22,7 @@ dependencies {
     implementation(projects.ui.blacklist.api)
     implementation(projects.ui.profile.api)
     implementation(projects.ui.search.api)
+    implementation(projects.ui.twoFactor.api)
     implementation(libs.coroutines.core)
     implementation(libs.kotlinx.datetime)
     implementation(libs.store.core)

@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">Wykop Mobilny</string>
+    <string name="app_name">Wypok Mobilny</string>
 
     <string name="search">Wyszukiwarka</string>
     <string name="your_profile">Twój profil</string>
@@ -24,8 +24,8 @@
     <string name="license">Publikacja aplikacji na licencji MIT</string>
     <string name="privacy_policy">Privacy policy/Licencja prywatności</string>
     <string name="report_bug">Zgłoś błąd pod tagiem #owmbugi</string>
-    <string name="observe_otwartywykopmobilny">Obserwuj tag #otwartywykopmobilny</string>
-    <string name="app_version">Wykop Mobilny (%1$s)</string>
+    <string name="observe_otwartywykopmobilny">Obserwuj tag #otwartywykopmobilny2</string>
+    <string name="app_version">Wypok (%1$s)</string>
 
     <string name="badges">Osiągnięcia</string>
 
@@ -175,6 +175,7 @@
     <string name="link_image_position_top">Duża nad tekstem</string>
     <string name="link_image_position_bottom">Duża pod tekstem</string>
     <string name="open_in">Otwórz w …</string>
+    <string name="open_2fa">Otwórz 2FA</string>
     <string name="save_as_mp4">Zapisz do mp4</string>
     <string name="save_file_ok">Zapisano plik</string>
     <string name="save_file_failed">"Błąd podczas zapisu pliku"</string>

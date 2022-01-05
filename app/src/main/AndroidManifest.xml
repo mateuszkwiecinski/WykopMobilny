@@ -110,6 +110,11 @@
             android:theme="@style/Theme.App.Dark"
             />
         <activity
+            android:name="io.github.wykopmobilny.ui.modules.twofactor.TwoFactorAuthorizationActivity"
+            android:theme="@style/Theme.App.Dark"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity
             android:name=".ui.modules.links.upvoters.UpvotersActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/TransparentActivityTheme"

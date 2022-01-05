@@ -21,6 +21,7 @@ import io.github.wykopmobilny.domain.settings.di.SettingsDomainComponent
 import io.github.wykopmobilny.domain.startup.AppConfig
 import io.github.wykopmobilny.domain.startup.InitializeApp
 import io.github.wykopmobilny.domain.styles.di.StylesDomainComponent
+import io.github.wykopmobilny.domain.twofactor.di.TwoFactorAuthDomainComponent
 import io.github.wykopmobilny.domain.work.di.WorkDomainComponent
 import io.github.wykopmobilny.notification.NotificationsApi
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
@@ -64,7 +65,7 @@ interface DomainComponent {
             framework: Framework,
             applicationCache: ApplicationCache,
             work: WorkApi,
-            notifications: NotificationsApi
+            notifications: NotificationsApi,
         ): DomainComponent
     }
 
@@ -89,6 +90,8 @@ interface DomainComponent {
     fun work(): WorkDomainComponent
 
     fun notifications(): NotificationsDomainComponent
+
+    fun twoFactor(): TwoFactorAuthDomainComponent
 
     fun initializeApp(): InitializeApp
 }

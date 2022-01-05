@@ -15,3 +15,14 @@ class ErrorHandlerTransformer<T : Any> : SingleTransformer<WykopApiResponse<T>, 
         }
     }
 }
+
+suspend fun <T> unwrapping(block: suspend () -> WykopApiResponse<T>): T {
+    val response = block()
+    val exception = WykopExceptionParser.getException(response)
+
+    return if (exception != null) {
+        throw exception
+    } else {
+        response.data!!
+    }
+}

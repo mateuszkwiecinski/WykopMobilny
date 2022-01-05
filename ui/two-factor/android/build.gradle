@@ -1,0 +1,19 @@
+plugins {
+    id("com.starter.library.android")
+    id("org.jetbrains.kotlin.kapt")
+}
+
+android {
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    api(projects.ui.base.android)
+    api(projects.ui.twoFactor.api)
+
+    implementation(projects.common.kotlinHelpers)
+    implementation(libs.dagger.core)
+    kapt(libs.dagger.compiler)
+}

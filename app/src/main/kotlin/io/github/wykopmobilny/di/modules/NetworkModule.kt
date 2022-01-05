@@ -28,10 +28,6 @@ class NetworkModule {
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     @Provides
-    fun provideUserTokenRefresher(userApi: LoginApi, userManagerApi: UserManagerApi) =
-        UserTokenRefresher(userApi, userManagerApi)
-
-    @Provides
     fun provideNavigatorApi(): NavigatorApi = Navigator()
 
     @Provides
