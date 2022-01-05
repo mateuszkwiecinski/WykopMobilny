@@ -140,7 +140,7 @@ class LinkDetailsAdapter @Inject constructor(
     }
 
     fun updateLinkComment(comment: LinkComment) {
-        val position = link!!.comments.indexOf(comment)
+        val position = link?.comments?.indexOf(comment)?.takeIf { it >= 0 } ?: return
         link!!.comments[position] = comment
         notifyItemChanged(commentsList.indexOf(comment) + 1)
     }

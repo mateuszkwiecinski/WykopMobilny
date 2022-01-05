@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.App.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+    <style name="Widget.App.Toolbar"
+        parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
     </style>
 
@@ -9,11 +10,13 @@
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar.Dark</item>
     </style>
 
-    <style name="Widget.App.Toolbar.Amoled" parent="Widget.App.Toolbar.Dark">
+    <style name="Widget.App.Toolbar.Amoled"
+        parent="Widget.App.Toolbar.Dark">
         <item name="android:elevation">0dp</item>
     </style>
 
-    <style name="ThemeOverlay.App.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+    <style name="ThemeOverlay.App.Toolbar"
+        parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
         <item name="colorControlHighlight">?colorControlHighlightOnPrimary</item>
         <item name="popupTheme">@style/ThemeOverlay.MaterialComponents.Light</item>
     </style>
@@ -26,25 +29,52 @@
         <item name="colorPrimary">#00000000</item>
     </style>
 
-    <style name="ThemeOverlay.App.ImageOverlay" parent="ThemeOverlay.MaterialComponents">
+    <style name="ThemeOverlay.App.ImageOverlay"
+        parent="ThemeOverlay.MaterialComponents">
         <item name="colorOnSurface">#80000000</item>
         <item name="colorOutline">#BFBFBF</item>
     </style>
 
-    <style name="Widget.App.Tab" parent="Widget.MaterialComponents.TabLayout">
+    <style name="Widget.App.Tab"
+        parent="Widget.MaterialComponents.TabLayout">
         <item name="tabTextAppearance">@style/TextAppearance.App.TabButton</item>
     </style>
 
-    <style name="Widget.App.Tab.Dark" parent="Widget.MaterialComponents.TabLayout">
+    <style name="Widget.App.Tab.Dark"
+        parent="Widget.MaterialComponents.TabLayout">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Tab.Dark</item>
         <item name="tabTextAppearance">@style/TextAppearance.App.TabButton</item>
     </style>
 
-    <style name="ThemeOverlay.App.Tab.Dark" parent="">
+    <style name="ThemeOverlay.App.Tab.Dark"
+        parent="">
         <item name="colorPrimary">?colorOnSurface</item>
     </style>
 
-    <style name="TextAppearance.App.TabButton" parent="TextAppearance.MaterialComponents.Button">
+    <style name="TextAppearance.App.TabButton"
+        parent="TextAppearance.MaterialComponents.Button">
         <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="Widget.App.TextInputLayout"
+        parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TextInputLayout</item>
+        <item name="hintTextColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="ThemeOverlay.App.TextInputLayout"
+        parent="">
+        <item name="colorPrimary">#ffff00</item>
+        <item name="colorOnSurface">?colorOnPrimary</item>
+    </style>
+
+    <style name="Widget.App.Button.TextButton"
+        parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button.TextButton</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Button.TextButton"
+        parent="">
+        <item name="colorPrimary">?colorOnPrimary</item>
     </style>
 </resources>

@@ -28,8 +28,7 @@ import io.github.wykopmobilny.utils.bindings.setOnClick
 import io.github.wykopmobilny.utils.bindings.toColorInt
 import io.github.wykopmobilny.utils.longArgument
 import io.github.wykopmobilny.utils.longArgumentNullable
-import io.github.wykopmobilny.utils.viewModelWrapperFactory
-import kotlinx.coroutines.flow.collect
+import io.github.wykopmobilny.utils.viewModelWrapperFactoryKeyed
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -58,7 +57,7 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val viewModel by viewModels<InjectableViewModel<LinkDetailsDependencies>> {
-            viewModelWrapperFactory<LinkDetailsKey, LinkDetailsDependencies>(key = key)
+            viewModelWrapperFactoryKeyed<LinkDetailsKey, LinkDetailsDependencies>(key = key)
         }
         val getLinkDetails = viewModel.dependency.getLinkDetails()
         val binding = FragmentLinkDetailsBinding.bind(view)

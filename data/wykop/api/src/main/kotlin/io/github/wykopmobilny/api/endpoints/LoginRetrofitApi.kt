@@ -20,10 +20,9 @@ interface LoginRetrofitApi {
         @Field("accountkey", encoded = true) accountKey: String,
     ): WykopApiResponse<LoginResponse>
 
-
     @FormUrlEncoded
     @POST("/login/2fa/appkey/$APP_KEY")
     suspend fun autorizeWith2FA(
         @Field("code") code: String,
-    ): WykopApiResponse<TwoFactorAuthorizationResponse>
+    ): WykopApiResponse<List<TwoFactorAuthorizationResponse>>
 }

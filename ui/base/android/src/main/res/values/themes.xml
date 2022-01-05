@@ -63,6 +63,8 @@
         <item name="colorDivider">#393939</item>
         <item name="cornerRadius">16dp</item>
         <item name="outlineWidth">1dp</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+        <item name="borderlessButtonStyle">@style/Widget.App.Button.TextButton</item>
     </style>
 
     <style name="Theme.App.Amoled"

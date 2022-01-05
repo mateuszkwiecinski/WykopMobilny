@@ -24,6 +24,7 @@ fun Context.showExceptionDialog(throwable: Throwable) {
             .show()
     }
     when (throwable) {
+        is KnownError -> Napier.i("Known error", throwable)
         is SSLException -> Napier.e("SSL error", throwable)
         is IOException -> Napier.w("IO error", throwable)
         else -> Napier.e("Unknown error", throwable)

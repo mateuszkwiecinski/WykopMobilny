@@ -1,3 +1,6 @@
 package io.github.wykopmobilny.ui.twofactor
 
-interface TwoFactorAuthDependencies
+interface TwoFactorAuthDependencies {
+
+    fun getTwoFactorAuthDetails(): GetTwoFactorAuthDetails
+}

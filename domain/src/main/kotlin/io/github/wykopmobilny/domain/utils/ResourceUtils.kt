@@ -17,7 +17,7 @@ internal suspend fun <T> withResource(
                 Resource.error(
                     FailedAction(
                         cause = failure,
-                        retryAction = { launch { withResource(refresh, update) } },
+                        retryAction = { launch { withResource(refresh, update, launch) } },
                     ),
                 ),
             )

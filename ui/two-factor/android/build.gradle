@@ -1,6 +1,7 @@
 plugins {
     id("com.starter.library.android")
     id("org.jetbrains.kotlin.kapt")
+    id("io.github.wykopmobilny.screenshots")
 }
 
 android {

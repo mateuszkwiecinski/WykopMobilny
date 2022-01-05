@@ -1,11 +1,15 @@
 package io.github.wykopmobilny
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.webkit.CookieManager
 import android.widget.Toast
 import androidx.core.app.ShareCompat
+import androidx.core.net.toUri
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -407,9 +411,36 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                     is InteropRequest.OpenYoutube -> context.startActivity(YoutubeActivity.createIntent(context, it.url))
                     is InteropRequest.ShowGif -> context.startActivity(PhotoViewActivity.createIntent(context, it.url))
                     is InteropRequest.ShowImage -> context.startActivity(PhotoViewActivity.createIntent(context, it.url))
+                    InteropRequest.OpenGoogleAuthenticator -> context.openApp("com.google.android.apps.authenticator2")
                 }
                     .run { }
             }
         }
+    }
+
+    private fun Activity.openApp(appId: String) {
+        if (isAppInstalled(appId)) {
+            startActivity(packageManager.getLaunchIntentForPackage(appId))
+        } else {
+            openStoreListing(appId)
+        }
+    }
+
+    private fun Activity.openStoreListing(appId: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, "market://details?id=$appId".toUri()))
+        } catch (ignored: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, "https://play.google.com/store/apps/details?id=$appId".toUri()))
+        }
+    }
+
+    private fun Context.isAppInstalled(appId: String): Boolean = try {
+        packageManager.getPackageInfo(appId, PackageManager.GET_ACTIVITIES)
+        true
+    } catch (notFound: PackageManager.NameNotFoundException) {
+        false
+    } catch (throwable: Throwable) {
+        Napier.w(message = "Unexpected error when checking if app is installed", throwable)
+        false
     }
 }
