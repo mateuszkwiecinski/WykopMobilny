@@ -7,6 +7,8 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import dagger.Module
 import dagger.Provides
+import io.github.aakira.napier.Napier
+import io.github.wykopmobilny.api.ErrorBodyParser
 import io.github.wykopmobilny.api.endpoints.LoginRetrofitApi
 import io.github.wykopmobilny.api.responses.LoginResponse
 import io.github.wykopmobilny.blacklist.api.ScraperRetrofitApi
@@ -74,9 +76,12 @@ internal class StoresModule {
         retrofitApi: LoginRetrofitApi,
         storage: UserInfoStorage,
         appScopes: AppScopes,
+        errorBodyParser: ErrorBodyParser,
     ) = StoreBuilder.from(
         fetcher = Fetcher.ofResult { request: UserSession ->
             apiCall(
+                errorBodyParser = errorBodyParser,
+                onTwoFactorAuthorizationRequired = { Napier.e("2FA not handled") },
                 rawCall = { retrofitApi.getUserSessionToken(login = request.login, accountKey = request.token) },
                 onUnauthorized = null,
             )

@@ -14,6 +14,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.tests.matchers.onPreference
 import io.github.wykopmobilny.tests.matchers.tapPreference
+import io.github.wykopmobilny.utils.waitVisible
 
 object SettingsPage {
 
@@ -30,18 +31,19 @@ object SettingsPage {
 
     fun tapBlacklistSettings() {
         onView(withId(R.id.recycler_view))
+            .waitVisible()
             .perform(actionOnItem<ViewHolder>(hasDescendant(manageBlacklistOption), click()))
     }
 
     fun assertConfirmationOptionChecked() {
-        onPreference(confirmationOption).check(matches(isChecked()))
+        onPreference(confirmationOption).waitVisible().check(matches(isChecked()))
     }
 
     fun assertConfirmationOptionNotChecked() {
-        onPreference(confirmationOption).check(matches(isNotChecked()))
+        onPreference(confirmationOption).waitVisible().check(matches(isNotChecked()))
     }
 
     fun assertVisible() {
-        onView(withText("Ustawienia")).check(matches(isDisplayed()))
+        onView(withText("Ustawienia")).waitVisible().check(matches(isDisplayed()))
     }
 }

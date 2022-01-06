@@ -23,6 +23,7 @@ import com.facebook.testing.screenshot.Screenshot
 import com.facebook.testing.screenshot.internal.TestNameDetector
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.resources.MaterialAttributes
+import com.google.android.material.textfield.TextInputLayout
 import com.karumi.shot.ScreenshotTest
 import org.junit.Rule
 
@@ -68,7 +69,7 @@ abstract class BaseScreenshotTest : ScreenshotTest {
                         0,
                         ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT),
                     )
-                    disableFlakyComponentsAndWaitForIdle(view = container)
+                    container.disableFlakyComponents()
                     do {
                         container.doLayout(size)
                     } while (container.isLayoutRequested)
@@ -83,6 +84,11 @@ abstract class BaseScreenshotTest : ScreenshotTest {
                 view = container,
             )
         }
+    }
+
+    private fun View.disableFlakyComponents() {
+        disableFlakyComponentsAndWaitForIdle(view = this)
+        allViews.filterIsInstance<TextInputLayout>().forEach { it.isHintAnimationEnabled = false }
     }
 
     private fun recordScreenshot(view: View, name: String) {
@@ -101,7 +107,7 @@ abstract class BaseScreenshotTest : ScreenshotTest {
     }
 
     private fun View.doLayout(deviceSize: Size) {
-        disableFlakyComponentsAndWaitForIdle(this)
+        disableFlakyComponents()
 
         if (deviceSize.height <= 0) {
             guessUnboundedHeight(deviceSize.width)

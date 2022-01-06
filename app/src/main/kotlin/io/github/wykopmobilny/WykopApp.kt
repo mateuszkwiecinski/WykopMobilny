@@ -1,11 +1,15 @@
 package io.github.wykopmobilny
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.webkit.CookieManager
 import android.widget.Toast
 import androidx.core.app.ShareCompat
+import androidx.core.net.toUri
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -30,6 +34,7 @@ import io.github.wykopmobilny.domain.search.di.SearchScope
 import io.github.wykopmobilny.domain.settings.di.SettingsScope
 import io.github.wykopmobilny.domain.startup.AppConfig
 import io.github.wykopmobilny.domain.styles.di.StylesScope
+import io.github.wykopmobilny.domain.twofactor.di.TwoFactorAuthScope
 import io.github.wykopmobilny.domain.work.di.WorkScope
 import io.github.wykopmobilny.initializers.RemoteConfigKeys
 import io.github.wykopmobilny.links.details.LinkDetailsDependencies
@@ -60,6 +65,7 @@ import io.github.wykopmobilny.ui.modules.tag.TagActivity
 import io.github.wykopmobilny.ui.profile.ProfileDependencies
 import io.github.wykopmobilny.ui.search.SearchDependencies
 import io.github.wykopmobilny.ui.settings.SettingsDependencies
+import io.github.wykopmobilny.ui.twofactor.TwoFactorAuthDependencies
 import io.github.wykopmobilny.utils.ApplicationInjector
 import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 import io.github.wykopmobilny.utils.requireDependency
@@ -73,7 +79,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -85,6 +90,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.reflect.KClass
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
 
@@ -161,9 +167,9 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         private val firebase
             get() = FirebaseRemoteConfig.getInstance()
         override val blacklistRefreshInterval: Duration
-            get() = Duration.milliseconds(firebase.getLong(RemoteConfigKeys.BLACKLIST_REFRESH_INTERVAL))
+            get() = firebase.getLong(RemoteConfigKeys.BLACKLIST_REFRESH_INTERVAL).milliseconds
         override val blacklistFlexInterval: Duration
-            get() = Duration.milliseconds(firebase.getLong(RemoteConfigKeys.BLACKLIST_FLEX_INTERVAL))
+            get() = firebase.getLong(RemoteConfigKeys.BLACKLIST_FLEX_INTERVAL).milliseconds
         override val notificationsEnabled: Boolean
             get() = firebase.getBoolean(RemoteConfigKeys.NOTIFICATIONS_ENABLED)
     }
@@ -266,6 +272,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             WorkDependencies::class -> getOrPutScope<WorkScope>(scopeId) { domainComponent.work() }
             SearchDependencies::class -> getOrPutScope<SearchScope>(scopeId) { domainComponent.search() }
             NotificationDependencies::class -> getOrPutScope<NotificationsScope>(scopeId) { domainComponent.notifications() }
+            TwoFactorAuthDependencies::class -> getOrPutScope<TwoFactorAuthScope>(scopeId) { domainComponent.twoFactor() }
             LinkDetailsDependencies::class -> {
                 scopeId as LinkDetailsKey
                 getOrPutScope<LinkDetailsScope>(scopeId) { domainComponent.linkDetails().create(key = scopeId) }
@@ -306,6 +313,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             LinkDetailsDependencies::class -> scopes.remove(scopeKey<LinkDetailsScope>(scopeId))
             ProfileDependencies::class -> scopes.remove(scopeKey<ProfileScope>(scopeId))
             NotificationDependencies::class -> scopes.remove(scopeKey<NotificationsScope>(scopeId))
+            TwoFactorAuthDependencies::class -> scopes.remove(scopeKey<TwoFactorAuthScope>(scopeId))
             else -> error("Unknown dependency type $clazz")
         }?.coroutineScope?.cancel()
     }
@@ -403,9 +411,37 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                     is InteropRequest.OpenYoutube -> context.startActivity(YoutubeActivity.createIntent(context, it.url))
                     is InteropRequest.ShowGif -> context.startActivity(PhotoViewActivity.createIntent(context, it.url))
                     is InteropRequest.ShowImage -> context.startActivity(PhotoViewActivity.createIntent(context, it.url))
+                    InteropRequest.OpenGoogleAuthenticator -> context.openApp("com.google.android.apps.authenticator2")
                 }
                     .run { }
             }
         }
+    }
+
+    private fun Activity.openApp(appId: String) {
+        if (isAppInstalled(appId)) {
+            startActivity(packageManager.getLaunchIntentForPackage(appId))
+        } else {
+            openStoreListing(appId)
+        }
+    }
+
+    private fun Activity.openStoreListing(appId: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, "market://details?id=$appId".toUri()))
+        } catch (ignored: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, "https://play.google.com/store/apps/details?id=$appId".toUri()))
+        }
+    }
+
+    @Suppress("TooGenericExceptionCaught")
+    private fun Context.isAppInstalled(appId: String): Boolean = try {
+        packageManager.getPackageInfo(appId, PackageManager.GET_ACTIVITIES)
+        true
+    } catch (ignored: PackageManager.NameNotFoundException) {
+        false
+    } catch (throwable: Throwable) {
+        Napier.w(message = "Unexpected error when checking if app is installed", throwable)
+        false
     }
 }

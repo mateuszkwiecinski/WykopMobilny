@@ -8,7 +8,7 @@ import io.github.wykopmobilny.utils.intoComposite
 
 class HotPresenter(
     val schedulers: Schedulers,
-    val entriesApi: EntriesApi
+    val entriesApi: EntriesApi,
 ) : BasePresenter<HotView>() {
 
     var page = 1
@@ -22,7 +22,9 @@ class HotPresenter(
                 view?.showHotEntries(it, shouldRefresh)
             } else view?.disableLoading()
         }
-        val failure: (Throwable) -> Unit = { view?.showErrorDialog(it) }
+        val failure: (Throwable) -> Unit = {
+            view?.showErrorDialog(it)
+        }
 
         when (period) {
             "24", "12", "6" -> {

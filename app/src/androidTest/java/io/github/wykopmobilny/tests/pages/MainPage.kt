@@ -9,6 +9,7 @@ import androidx.test.espresso.contrib.NavigationViewActions.navigateTo
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import com.google.android.material.navigation.NavigationView
 import io.github.wykopmobilny.tests.base.Page
+import io.github.wykopmobilny.utils.waitVisible
 
 object MainPage : Page {
 
@@ -17,14 +18,14 @@ object MainPage : Page {
     private val navigationView = isAssignableFrom(NavigationView::class.java)
 
     fun tapDrawerOption(@IdRes option: Int) {
-        onView(navigationView).perform(navigateTo(option))
+        onView(navigationView).waitVisible().perform(navigateTo(option))
     }
 
     fun openDrawer() {
-        onView(drawer).perform(open())
+        onView(drawer).waitVisible().perform(open())
     }
 
     fun closeDrawer() {
-        onView(drawer).perform(close())
+        onView(drawer).waitVisible().perform(close())
     }
 }

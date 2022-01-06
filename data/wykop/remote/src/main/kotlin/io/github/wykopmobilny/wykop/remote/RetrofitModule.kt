@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import io.github.wykopmobilny.api.ErrorBodyParser
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -50,6 +51,11 @@ internal class RetrofitModule {
             .baseUrl(apiUrl)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
+
+    @Provides
+    fun errorBodyParser(
+        errorBodyParser: MoshiErrorBodyParser,
+    ): ErrorBodyParser = errorBodyParser
 
     companion object {
 

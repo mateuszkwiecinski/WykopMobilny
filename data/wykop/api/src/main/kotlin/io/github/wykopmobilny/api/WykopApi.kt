@@ -41,4 +41,6 @@ interface WykopApi {
     fun suggestRetrofitApi(): SuggestRetrofitApi
 
     fun tagRetrofitApi(): TagRetrofitApi
+
+    fun errorBodyParser(): ErrorBodyParser
 }

@@ -110,6 +110,11 @@
             android:theme="@style/Theme.App.Dark"
             />
         <activity
+            android:name="io.github.wykopmobilny.ui.modules.twofactor.TwoFactorAuthorizationActivity"
+            android:theme="@style/Theme.App.Dark"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity
             android:name=".ui.modules.links.upvoters.UpvotersActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/TransparentActivityTheme"
@@ -372,11 +377,16 @@
             android:screenOrientation="sensor"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             />
+
+        <meta-data android:name="firebase_analytics_collection_deactivated" android:value="@bool/disable_firebase_analytics" />
     </application>
+
     <queries>
         <intent>
             <action android:name="android.intent.action.GET_CONTENT" />
             <data android:mimeType="image/*" />
         </intent>
+
+        <package android:name="com.google.android.apps.authenticator2" />
     </queries>
 </manifest>
