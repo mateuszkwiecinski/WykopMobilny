@@ -74,7 +74,7 @@ class MarkdownToolbar(context: Context, attrs: AttributeSet?) : LinearLayout(con
         markdownDialogs.apply {
             binding.formatBold.setOnClickListener { insertFormat("**", "**") }
             binding.formatQuote.setOnClickListener { insertFormat("\n>", "") }
-            binding.formatItalic.setOnClickListener { insertFormat("__", "__") }
+            binding.formatItalic.setOnClickListener { insertFormat("_", "_") }
             binding.insertLink.setOnClickListener { insertFormat("[", "](www.wykop.pl)") }
             binding.insertCode.setOnClickListener { insertFormat("`", "`") }
             binding.insertSpoiler.setOnClickListener { insertFormat("\n!", "") }
