@@ -1,5 +1,7 @@
 package io.github.wykopmobilny.domain.strings
 
+import io.github.wykopmobilny.domain.navigation.AuthenticatorApp
+
 object Strings {
 
     const val APP_NAME = "Wykop"
@@ -58,5 +60,17 @@ object Strings {
         const val UNBLOCK_USER = "Odblokuj"
         const val BADGES = "Osiągnięcia"
         const val REPORT = "Zgłoś"
+    }
+
+    object TwoFactorAuth {
+
+        const val Cta = "Weryfikuj"
+
+        fun openAuthenticator(externalApp: AuthenticatorApp) =
+            when(externalApp) {
+                AuthenticatorApp.Google -> "Otwórz Google Authenticator"
+                AuthenticatorApp.Microsoft -> "Otwórz Microsoft Authenticator"
+                AuthenticatorApp.Authy -> "Otwórz Authy"
+            }
     }
 }

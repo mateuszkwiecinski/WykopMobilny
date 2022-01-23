@@ -2,9 +2,10 @@ package io.github.wykopmobilny.domain.twofactor
 
 import io.github.wykopmobilny.api.endpoints.LoginRetrofitApi
 import io.github.wykopmobilny.domain.api.ApiClient
+import io.github.wykopmobilny.domain.navigation.AppGateway
 import io.github.wykopmobilny.domain.navigation.AppRestarter
-import io.github.wykopmobilny.domain.navigation.InteropRequest
-import io.github.wykopmobilny.domain.navigation.InteropRequestsProvider
+import io.github.wykopmobilny.domain.navigation.AuthenticatorApp
+import io.github.wykopmobilny.domain.strings.Strings
 import io.github.wykopmobilny.domain.twofactor.di.TwoFactorAuthScope
 import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.domain.utils.withResource
@@ -17,7 +18,7 @@ import io.github.wykopmobilny.ui.base.components.TextInputUi
 import io.github.wykopmobilny.ui.twofactor.GetTwoFactorAuthDetails
 import io.github.wykopmobilny.ui.twofactor.TwoFactorAuthDetailsUi
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 internal class GetTwoFactorAuthDetailsQuery @Inject constructor(
@@ -25,12 +26,21 @@ internal class GetTwoFactorAuthDetailsQuery @Inject constructor(
     private val viewStateStorage: TwoFactorAuthViewStateStorage,
     private val api: ApiClient,
     private val loginApi: LoginRetrofitApi,
-    private val interopRequestsProvider: InteropRequestsProvider,
     private val appRestarter: AppRestarter,
+    private val appGateway: AppGateway,
 ) : GetTwoFactorAuthDetails {
 
     override fun invoke() =
-        viewStateStorage.state.map { viewState ->
+        combine(
+            viewStateStorage.state,
+            appGateway.getInstalledAuthenticatorApps(),
+        ) { viewState, authenticatorApps ->
+            val authenticatorApp = authenticatorApps.firstOrNull() ?: AuthenticatorApp.Google
+            val authenticatorButton = ProgressButtonUi.Default(
+                label = Strings.TwoFactorAuth.openAuthenticator(authenticatorApp),
+                onClicked = safeCallback { appGateway.openApp(authenticatorApp) },
+            )
+
             TwoFactorAuthDetailsUi(
                 code = TextInputUi(
                     text = viewState.code,
@@ -40,6 +50,7 @@ internal class GetTwoFactorAuthDetailsQuery @Inject constructor(
                     ProgressButtonUi.Loading
                 } else {
                     ProgressButtonUi.Default(
+                        label = Strings.TwoFactorAuth.Cta,
                         onClicked = safeCallback {
                             withResource(
                                 refresh = { send2FACode(viewState.code) },
@@ -49,7 +60,7 @@ internal class GetTwoFactorAuthDetailsQuery @Inject constructor(
                         },
                     )
                 },
-                onOpenGoogleAuthenticatorClicked = safeCallback { interopRequestsProvider.request(InteropRequest.OpenGoogleAuthenticator) },
+                authenticatorButton = authenticatorButton,
                 errorDialog = viewState.generalResource.failedAction?.let { error ->
                     ErrorDialogUi(
                         error = error.cause,

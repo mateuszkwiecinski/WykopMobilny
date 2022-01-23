@@ -40,7 +40,6 @@ sealed class InteropRequest {
     class ShowGif(val url: String) : InteropRequest()
     class OpenYoutube(val url: String) : InteropRequest()
     class OpenPlayer(val url: String) : InteropRequest()
-    object OpenGoogleAuthenticator : InteropRequest()
 }
 
 @Singleton

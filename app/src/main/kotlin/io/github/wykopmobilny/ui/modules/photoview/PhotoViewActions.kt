@@ -120,7 +120,7 @@ class PhotoViewActions(val context: Context) : PhotoViewCallbacks {
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                     SAVED_FOLDER,
                 )
-                val targetFile = File(directory, photoView.url.substringAfterLast('/'))
+                val targetFile = File(directory, url.substringAfterLast('/'))
                 source.copyTo(targetFile, true)
                 addImageToGallery(targetFile.path, context)
             }

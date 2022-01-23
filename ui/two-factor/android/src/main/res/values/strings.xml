@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="two_factor_auth_toolbar">Wymagane uwierzytelnienie</string>
-    <string name="two_factor_auth_message">Wyglada na to że Twoje konto korzysta z uwierzytenienia dwuskładnikowego (2FA).\nAby korzystać z aplikacji konieczne jest wprowadzenie kodu z aplikacji Google Authenticator</string>
+    <string name="two_factor_auth_message">Wyglada na to że Twoje konto korzysta z uwierzytenienia dwuskładnikowego (2FA).\nAby korzystać z aplikacji konieczne jest wprowadzenie kodu z aplikacji Authenticator</string>
     <string name="two_factor_auth_hint">6 cyfrowy kod</string>
-    <string name="two_factor_auth_cta">Weryfikuj</string>
-    <string name="two_factor_auth_open_google_authenticator">Otwórz Authenticator</string>
 </resources>

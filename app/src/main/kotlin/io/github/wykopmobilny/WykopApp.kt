@@ -26,6 +26,7 @@ import io.github.wykopmobilny.domain.di.HasScopeInitializer
 import io.github.wykopmobilny.domain.linkdetails.di.LinkDetailsScope
 import io.github.wykopmobilny.domain.login.ConnectConfig
 import io.github.wykopmobilny.domain.login.di.LoginScope
+import io.github.wykopmobilny.domain.navigation.ExternalApp
 import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.android.DaggerFrameworkComponent
 import io.github.wykopmobilny.domain.notifications.di.NotificationsScope
@@ -411,37 +412,11 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
                     is InteropRequest.OpenYoutube -> context.startActivity(YoutubeActivity.createIntent(context, it.url))
                     is InteropRequest.ShowGif -> context.startActivity(PhotoViewActivity.createIntent(context, it.url))
                     is InteropRequest.ShowImage -> context.startActivity(PhotoViewActivity.createIntent(context, it.url))
-                    InteropRequest.OpenGoogleAuthenticator -> context.openApp("com.google.android.apps.authenticator2")
                 }
                     .run { }
             }
         }
     }
 
-    private fun Activity.openApp(appId: String) {
-        if (isAppInstalled(appId)) {
-            startActivity(packageManager.getLaunchIntentForPackage(appId))
-        } else {
-            openStoreListing(appId)
-        }
-    }
 
-    private fun Activity.openStoreListing(appId: String) {
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW, "market://details?id=$appId".toUri()))
-        } catch (ignored: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, "https://play.google.com/store/apps/details?id=$appId".toUri()))
-        }
-    }
-
-    @Suppress("TooGenericExceptionCaught")
-    private fun Context.isAppInstalled(appId: String): Boolean = try {
-        packageManager.getPackageInfo(appId, PackageManager.GET_ACTIVITIES)
-        true
-    } catch (ignored: PackageManager.NameNotFoundException) {
-        false
-    } catch (throwable: Throwable) {
-        Napier.w(message = "Unexpected error when checking if app is installed", throwable)
-        false
-    }
 }

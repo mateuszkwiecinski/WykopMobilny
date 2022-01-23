@@ -7,5 +7,9 @@
     <queries>
         <package android:name="com.google.android.youtube" />
         <package android:name="com.vanced.android.youtube" />
+
+        <package android:name="com.google.android.apps.authenticator2" />
+        <package android:name="com.authy.authy" />
+        <package android:name="com.azure.authenticator" />
     </queries>
 </manifest>

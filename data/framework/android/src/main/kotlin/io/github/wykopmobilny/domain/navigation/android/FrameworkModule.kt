@@ -8,7 +8,7 @@ import io.github.wykopmobilny.domain.navigation.AppRestarter
 import io.github.wykopmobilny.domain.navigation.ClipboardService
 import io.github.wykopmobilny.domain.navigation.WykopTextUtils
 import io.github.wykopmobilny.domain.navigation.SystemSettingsDetector
-import io.github.wykopmobilny.domain.navigation.YoutubeAppDetector
+import io.github.wykopmobilny.domain.navigation.AppGateway
 
 @Module
 internal abstract class FrameworkModule {
@@ -23,7 +23,7 @@ internal abstract class FrameworkModule {
     abstract fun AndroidSystemSettingsDetector.nightModeDetector(): SystemSettingsDetector
 
     @Binds
-    abstract fun AndroidYoutubeAppDetector.youtubeDetector(): YoutubeAppDetector
+    abstract fun AndroidAppGateway.youtubeDetector(): AppGateway
 
     @Binds
     abstract fun AndroidWykopTextUtils.htmlUtils(): WykopTextUtils
