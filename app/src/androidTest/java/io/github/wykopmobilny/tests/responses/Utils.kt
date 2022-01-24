@@ -8,6 +8,11 @@ internal fun successfulResponse(filename: String) =
         .setResponseCode(200)
         .setBody(Reader.readResource(filename).use(Buffer()::readFrom))
 
+internal fun response(filename: String, httpCode: Int) =
+    MockResponse()
+        .setResponseCode(httpCode)
+        .setBody(Reader.readResource(filename).use(Buffer()::readFrom))
+
 private object Reader
 
 private fun Reader.readResource(name: String) =

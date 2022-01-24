@@ -20,7 +20,7 @@ class AddlinkActivity : BaseActivity() {
         fun createIntent(context: Context) = Intent(context, AddlinkActivity::class.java)
     }
 
-    lateinit var draft: NewLinkResponse
+    var draft: NewLinkResponse? = null
 
     private val binding by viewBinding(ActivityAddlinkBinding::inflate)
 

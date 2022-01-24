@@ -4,6 +4,13 @@ import io.github.wykopmobilny.tests.rules.MockWebServerRule
 import io.github.wykopmobilny.tests.rules.enqueue
 import okhttp3.mockwebserver.MockResponse
 
+fun MockWebServerRule.callsOnAppStart() {
+    promoted()
+    notificationsCountEmpty()
+    hashtagsCountEmpty()
+    githubPatronsEmpty()
+}
+
 fun MockWebServerRule.promoted() =
     enqueue("/links/promoted/page/1") { successfulResponse("promoted.json") }
 
@@ -41,9 +48,13 @@ fun MockWebServerRule.connectPage() {
     }
 }
 
-fun MockWebServerRule.callsOnAppStart() {
-    promoted()
-    notificationsCountEmpty()
-    hashtagsCountEmpty()
-    githubPatronsEmpty()
+fun MockWebServerRule.promotedErrorTwoFactorNeeded() {
+    enqueue(TODO()) { response("", httpCode = 200) }
+}
+
+fun MockWebServerRule.twoFactorAuthSuccess() {
+    enqueue("2da_success.json") { successfulResponse("2fa_success.json") }
+}
+fun MockWebServerRule.twoFactorAuthErrorWrongCode() {
+    enqueue("2fa_error.json") { TODO() }
 }

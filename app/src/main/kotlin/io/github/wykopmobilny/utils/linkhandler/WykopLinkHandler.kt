@@ -3,12 +3,10 @@ package io.github.wykopmobilny.utils.linkhandler
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.modules.embedview.EmbedViewActivity
 import io.github.wykopmobilny.ui.modules.embedview.YouTubeUrlParser
 import io.github.wykopmobilny.ui.modules.links.linkdetails.LinkDetailsActivity
-import io.github.wykopmobilny.ui.modules.mainnavigation.MainNavigationActivity
 import io.github.wykopmobilny.ui.modules.mikroblog.entry.EntryActivity
 import io.github.wykopmobilny.ui.modules.pm.conversation.ConversationActivity
 import io.github.wykopmobilny.ui.modules.profile.ProfileActivity
@@ -37,7 +35,9 @@ class WykopLinkHandler @Inject constructor(
         private const val DELIMITER = "/"
 
         fun getLinkIntent(url: String, context: Context): Intent? {
-            val parsedUrl = URI(url.replace("\\", ""))
+            val parsedUrl = runCatching { URI(url.replace("\\", "")) }
+                .recoverCatching { URI(url.replace("\\", "").replace("[", "").replace("]", "")) }
+                .getOrElse { return null }
             val domain = parsedUrl.host
                 .replace("www.", "")
                 .substringBeforeLast(".")
