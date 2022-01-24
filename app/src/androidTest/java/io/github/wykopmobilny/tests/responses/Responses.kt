@@ -12,28 +12,28 @@ fun MockWebServerRule.callsOnAppStart() {
 }
 
 fun MockWebServerRule.promoted() =
-    enqueue("/links/promoted/page/1") { successfulResponse("promoted.json") }
+    enqueue("/links/promoted/page/1") { jsonResponse("promoted.json") }
 
 fun MockWebServerRule.notificationsCountEmpty() =
-    enqueue("/notifications/Count") { successfulResponse("notificationscount_empty.json") }
+    enqueue("/notifications/Count") { jsonResponse("notificationscount_empty.json") }
 
 fun MockWebServerRule.hashtagsCountEmpty() =
-    enqueue("/notifications/HashTagsCount") { successfulResponse("hashtagscount_empty.json") }
+    enqueue("/notifications/HashTagsCount") { jsonResponse("hashtagscount_empty.json") }
 
 fun MockWebServerRule.githubPatronsEmpty() =
-    enqueue("/otwarty-wykop-mobilny/owm-patrons/master/patrons.json") { successfulResponse("githubpatrons_empty.json") }
+    enqueue("/otwarty-wykop-mobilny/owm-patrons/master/patrons.json") { jsonResponse("githubpatrons_empty.json") }
 
 fun MockWebServerRule.profile() =
-    enqueue("/login/index") { successfulResponse("login.json") }
+    enqueue("/login/index") { jsonResponse("login.json") }
 
 fun MockWebServerRule.blacklist() =
-    enqueue("/ustawienia/czarne-listy/") { successfulResponse("blacklist.html") }
+    enqueue("/ustawienia/czarne-listy/") { jsonResponse("blacklist.html") }
 
 fun MockWebServerRule.unblockTag(tag: String) =
-    enqueue("/tags/unblock/$tag") { successfulResponse("tagsunblock.json") }
+    enqueue("/tags/unblock/$tag") { jsonResponse("tagsunblock.json") }
 
 fun MockWebServerRule.unblockUser(user: String) =
-    enqueue("/profiles/unblock/$user") { successfulResponse("profileunblock.json") }
+    enqueue("/profiles/unblock/$user") { jsonResponse("profileunblock.json") }
 
 fun MockWebServerRule.connectPage() {
     enqueue("/Login/Connect") {
@@ -48,13 +48,11 @@ fun MockWebServerRule.connectPage() {
     }
 }
 
-fun MockWebServerRule.promotedErrorTwoFactorNeeded() {
-    enqueue(TODO()) { response("", httpCode = 200) }
-}
+fun MockWebServerRule.upcomingErrorTwoFactorNeeded() =
+    enqueue("/links/upcoming/page/1/sort/comments") { jsonResponse("2fa_required.json", httpCode = 401) }
 
-fun MockWebServerRule.twoFactorAuthSuccess() {
-    enqueue("2da_success.json") { successfulResponse("2fa_success.json") }
-}
-fun MockWebServerRule.twoFactorAuthErrorWrongCode() {
-    enqueue("2fa_error.json") { TODO() }
-}
+fun MockWebServerRule.twoFactorAuthSuccess() =
+    enqueue("/login/2fa") { jsonResponse("2fa_success.json") }
+
+fun MockWebServerRule.twoFactorAuthErrorWrongCode() =
+    enqueue("/login/2fa") { jsonResponse("2fa_invalid_code.json") }

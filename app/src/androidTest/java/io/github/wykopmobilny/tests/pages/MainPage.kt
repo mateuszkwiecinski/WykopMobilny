@@ -17,6 +17,10 @@ object MainPage : Page {
 
     private val navigationView = isAssignableFrom(NavigationView::class.java)
 
+    fun assertVisible() {
+        onView(drawer).waitVisible()
+    }
+
     fun tapDrawerOption(@IdRes option: Int) {
         onView(navigationView).waitVisible().perform(navigateTo(option))
     }

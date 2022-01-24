@@ -1,0 +1,9 @@
+{
+  "data": null,
+  "error": {
+    "code": 1101,
+    "field": null,
+    "message_en": "2FA required",
+    "message_pl": "Wymagana dwustopniowa autoryzacja, sprawdź czy nie jest dostępna aktualizacja aplikacji"
+  }
+}

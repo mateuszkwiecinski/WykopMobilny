@@ -40,11 +40,7 @@ class DrawerHeaderWidget(context: Context, attrs: AttributeSet?) : ConstraintLay
                 val context = getActivityContext()!!
                 context.startActivity(ProfileActivity.createIntent(context, credentials.login))
             }
-            if (credentials.backgroundUrl != null) {
-                binding.backgroundImage.loadImage(credentials.backgroundUrl)
-            } else {
-                binding.backgroundImage.loadImage(PLACEHOLDER_IMAGE_URL)
-            }
+            binding.backgroundImage.loadImage(credentials.backgroundUrl ?: PLACEHOLDER_IMAGE_URL)
         } else {
             isVisible = false
         }

@@ -1,19 +1,41 @@
 package io.github.wykopmobilny.tests
 
-import io.github.wykopmobilny.tests.responses.promotedErrorTwoFactorNeeded
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import io.github.wykopmobilny.R
+import io.github.wykopmobilny.tests.pages.ErrorDialogRegion
+import io.github.wykopmobilny.tests.pages.MainPage
+import io.github.wykopmobilny.tests.pages.TwoFactorAuthPage
+import io.github.wykopmobilny.tests.responses.callsOnAppStart
 import io.github.wykopmobilny.tests.responses.twoFactorAuthErrorWrongCode
 import io.github.wykopmobilny.tests.responses.twoFactorAuthSuccess
-import org.junit.Before
+import io.github.wykopmobilny.tests.responses.upcomingErrorTwoFactorNeeded
+import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class TwoFactorAuthTest : BaseActivityTest() {
 
-    @Before
-    fun setUp() {
+    @Test
+    fun goesThroughTwoFactorAuthFlow() {
         launchLoggedInApp()
-        mockWebServerRule.promotedErrorTwoFactorNeeded()
+        MainPage.openDrawer()
+
+        mockWebServerRule.upcomingErrorTwoFactorNeeded()
+        MainPage.tapDrawerOption(R.id.nav_wykopalisko)
+        ErrorDialogRegion.assertVisible("[1101] Wymagana dwustopniowa autoryzacja, sprawdź czy nie jest dostępna aktualizacja aplikacji")
+
+        ErrorDialogRegion.tapButton("Uwierzytelnij")
+        TwoFactorAuthPage.assertVisible()
 
         mockWebServerRule.twoFactorAuthErrorWrongCode()
+        TwoFactorAuthPage.typeCode("123456")
+        TwoFactorAuthPage.tapCtaButton()
+        ErrorDialogRegion.assertVisible("[1102] Niepoprawny kod autoryzacji")
+        ErrorDialogRegion.tapButton()
 
         mockWebServerRule.twoFactorAuthSuccess()
+        mockWebServerRule.callsOnAppStart()
+        TwoFactorAuthPage.tapCtaButton()
+        MainPage.assertVisible()
     }
 }

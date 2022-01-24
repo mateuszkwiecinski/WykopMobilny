@@ -4,7 +4,7 @@ import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.wykopmobilny.R
-import io.github.wykopmobilny.tests.pages.AboutDialog
+import io.github.wykopmobilny.tests.pages.AboutDialogRegion
 import io.github.wykopmobilny.tests.pages.AppearanceSettingsPage
 import io.github.wykopmobilny.tests.pages.MainPage
 import io.github.wykopmobilny.tests.pages.SettingsPage
@@ -28,7 +28,7 @@ class NavigationTest : BaseActivityTest() {
         MainPage.tapDrawerOption(R.id.about)
 
         interceptingIntents {
-            AboutDialog.tapAppInfo()
+            AboutDialogRegion.tapAppInfo()
 
             assertLinkHandled("https://github.com/otwarty-wykop-mobilny/wykop-android")
         }

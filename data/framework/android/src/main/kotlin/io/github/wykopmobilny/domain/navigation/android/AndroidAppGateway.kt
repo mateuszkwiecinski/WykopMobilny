@@ -48,7 +48,10 @@ internal class AndroidAppGateway @Inject constructor(
         with(application) {
             val appId = knownAppId(app)
             if (isPackageInstalled(appId)) {
-                startActivity(packageManager.getLaunchIntentForPackage(appId))
+                startActivity(
+                    packageManager.getLaunchIntentForPackage(appId)
+                        ?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                )
             } else {
                 openStoreListing(appId)
             }
@@ -58,9 +61,15 @@ internal class AndroidAppGateway @Inject constructor(
 
 private fun Context.openStoreListing(appId: String) {
     try {
-        startActivity(Intent(Intent.ACTION_VIEW, "market://details?id=$appId".toUri()))
+        startActivity(
+            Intent(Intent.ACTION_VIEW, "market://details?id=$appId".toUri())
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+        )
     } catch (ignored: ActivityNotFoundException) {
-        startActivity(Intent(Intent.ACTION_VIEW, "https://play.google.com/store/apps/details?id=$appId".toUri()))
+        startActivity(
+            Intent(Intent.ACTION_VIEW, "https://play.google.com/store/apps/details?id=$appId".toUri())
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+        )
     }
 }
 

@@ -67,7 +67,7 @@ object Strings {
         const val Cta = "Weryfikuj"
 
         fun openAuthenticator(externalApp: AuthenticatorApp) =
-            when(externalApp) {
+            when (externalApp) {
                 AuthenticatorApp.Google -> "Otwórz Google Authenticator"
                 AuthenticatorApp.Microsoft -> "Otwórz Microsoft Authenticator"
                 AuthenticatorApp.Authy -> "Otwórz Authy"

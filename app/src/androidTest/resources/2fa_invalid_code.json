@@ -1,0 +1,9 @@
+{
+  "data": null,
+  "error": {
+    "code": 1102,
+    "field": null,
+    "message_en": "2FA code invalid",
+    "message_pl": "Niepoprawny kod autoryzacji"
+  }
+}

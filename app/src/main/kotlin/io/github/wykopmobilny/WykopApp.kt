@@ -1,15 +1,11 @@
 package io.github.wykopmobilny
 
 import android.app.Activity
-import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.webkit.CookieManager
 import android.widget.Toast
 import androidx.core.app.ShareCompat
-import androidx.core.net.toUri
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -26,7 +22,6 @@ import io.github.wykopmobilny.domain.di.HasScopeInitializer
 import io.github.wykopmobilny.domain.linkdetails.di.LinkDetailsScope
 import io.github.wykopmobilny.domain.login.ConnectConfig
 import io.github.wykopmobilny.domain.login.di.LoginScope
-import io.github.wykopmobilny.domain.navigation.ExternalApp
 import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.android.DaggerFrameworkComponent
 import io.github.wykopmobilny.domain.notifications.di.NotificationsScope
@@ -108,7 +103,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
 
     override val applicationScope = CoroutineScope(Job() + Dispatchers.Default)
 
-    private val okHttpClient = OkHttpClient.Builder()
+    val okHttpClient = OkHttpClient.Builder()
         .retryOnConnectionFailure(true)
         // https://github.com/square/okhttp/issues/3146
         .connectionPool(
