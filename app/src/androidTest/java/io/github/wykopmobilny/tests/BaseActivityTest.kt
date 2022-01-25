@@ -32,7 +32,7 @@ abstract class BaseActivityTest {
             LoggedUserInfo(
                 id = "Fixture name",
                 userToken = "fixture_token",
-                avatarUrl = "",
+                avatarUrl = "https://wykop.pl/cdn/avatarfixture-avatar.png",
                 backgroundUrl = null,
             ),
         )

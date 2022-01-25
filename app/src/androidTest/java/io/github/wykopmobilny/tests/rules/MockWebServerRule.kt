@@ -22,7 +22,7 @@ class MockWebServerRule : TestRule {
                 mockWebServer.start(port = PORT)
                 try {
                     val result = runCatching { base.evaluate() }
-                    dispatcher.unmatchedRequest?.let { error("Failed to match response at path=${dispatcher.unmatchedRequest?.requestUrl?.toString()}") }
+                    dispatcher.unmatchedRequest?.let { error("Failed to match response=${dispatcher.unmatchedRequest?.requestUrl}") }
                     result.getOrThrow()
                 } finally {
                     mockWebServer.shutdown()
@@ -49,7 +49,6 @@ private class MockDispatcher : Dispatcher() {
     private val predefinedRequests = listOf(
         pathMatcher("/favicon.ico") to { fileResponse("avatar.png") },
         cdnMatcher() to { fileResponse("avatar.png") },
-        pathMatcher("/") to { MockResponse().setResponseCode(500) },
     )
 
     override fun dispatch(request: RecordedRequest): MockResponse {
