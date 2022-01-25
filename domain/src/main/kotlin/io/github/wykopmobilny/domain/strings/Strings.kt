@@ -68,8 +68,8 @@ object Strings {
 
         fun openAuthenticator(externalApp: AuthenticatorApp) =
             when (externalApp) {
-                AuthenticatorApp.Google -> "Otwórz Google Authenticator"
-                AuthenticatorApp.Microsoft -> "Otwórz Microsoft Authenticator"
+                AuthenticatorApp.Google -> "Otwórz Authenticator"
+                AuthenticatorApp.Microsoft -> "Otwórz Authenticator"
                 AuthenticatorApp.Authy -> "Otwórz Authy"
             }
     }
