@@ -7,9 +7,8 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.util.HumanReadables
 import junit.framework.AssertionFailedError
-import java.util.concurrent.TimeoutException
 
-internal fun ViewInteraction.waitVisible(timeout: Long = 2000L): ViewInteraction {
+internal fun ViewInteraction.waitVisible(timeout: Long = 3000L): ViewInteraction {
     val startTime = System.currentTimeMillis()
     val endTime = startTime + timeout
 
@@ -24,10 +23,10 @@ internal fun ViewInteraction.waitVisible(timeout: Long = 2000L): ViewInteraction
         }
     } while (System.currentTimeMillis() < endTime)
 
-    throw TimeoutException()
+    return check(matches(isDisplayed()))
 }
 
-internal fun ViewInteraction.waitNotVisible(timeout: Long = 2000L): ViewInteraction {
+internal fun ViewInteraction.waitNotVisible(timeout: Long = 3000L): ViewInteraction {
     val startTime = System.currentTimeMillis()
     val endTime = startTime + timeout
 
@@ -42,7 +41,7 @@ internal fun ViewInteraction.waitNotVisible(timeout: Long = 2000L): ViewInteract
         }
     } while (System.currentTimeMillis() < endTime)
 
-    throw TimeoutException()
+    return check(isNotDisplayed())
 }
 
 fun isNotDisplayed() = ViewAssertion { view, _ ->

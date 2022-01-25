@@ -46,7 +46,6 @@ class TagActivity : BaseActivity(), TagActivityView {
     private val tagString
         get() = intent.getStringExtra(EXTRA_TAG)!!
     private var tagMeta: TagMetaResponse? = null
-    private val tagPagerAdapter by lazy { TagPagerAdapter(tagString, resources, supportFragmentManager) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +62,8 @@ class TagActivity : BaseActivity(), TagActivityView {
             title = "\n#$tagString"
         }
 
-        binding.pager.adapter = tagPagerAdapter
+        val adapter = TagPagerAdapter(tagString, resources, supportFragmentManager)
+        binding.pager.adapter = adapter
         tagMeta?.let {
             setMeta(tagMeta!!)
         }
@@ -102,6 +102,7 @@ class TagActivity : BaseActivity(), TagActivityView {
             R.id.action_unblock -> presenter.unblockTag()
             android.R.id.home -> finish()
             R.id.refresh -> {
+                val tagPagerAdapter = binding.pager.adapter as TagPagerAdapter
                 for (i in 0 until tagPagerAdapter.registeredFragments.size()) {
                     (tagPagerAdapter.registeredFragments.valueAt(i) as? SwipeRefreshLayout.OnRefreshListener)?.onRefresh()
                 }

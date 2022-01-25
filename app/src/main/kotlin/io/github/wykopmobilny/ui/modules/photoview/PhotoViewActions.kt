@@ -16,7 +16,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
-import com.google.android.exoplayer2.util.MimeTypes
 import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.base.WykopSchedulers
 import io.reactivex.Completable
@@ -107,7 +106,7 @@ class PhotoViewActions(val context: Context) : PhotoViewCallbacks {
                 val source = Glide.with(context).downloadOnly().load(url).submit().get()
                 val values = ContentValues().apply {
                     put(Images.Media.DISPLAY_NAME, url.substringAfterLast('/'))
-                    put(Images.Media.MIME_TYPE, MimeTypes.IMAGE_JPEG)
+                    put(Images.Media.MIME_TYPE, getMimeType(url))
                     put(Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + SAVED_FOLDER)
                     put(Images.Media.DATE_TAKEN, System.currentTimeMillis())
                 }
@@ -120,7 +119,7 @@ class PhotoViewActions(val context: Context) : PhotoViewCallbacks {
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                     SAVED_FOLDER,
                 )
-                val targetFile = File(directory, photoView.url.substringAfterLast('/'))
+                val targetFile = File(directory, url.substringAfterLast('/'))
                 source.copyTo(targetFile, true)
                 addImageToGallery(targetFile.path, context)
             }

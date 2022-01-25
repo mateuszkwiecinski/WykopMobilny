@@ -12,7 +12,6 @@ import io.github.wykopmobilny.utils.InjectableViewModel
 import io.github.wykopmobilny.utils.bindings.collectErrorDialog
 import io.github.wykopmobilny.utils.bindings.collectProgressInput
 import io.github.wykopmobilny.utils.bindings.collectUserInput
-import io.github.wykopmobilny.utils.bindings.setOnClick
 import io.github.wykopmobilny.utils.viewModelWrapperFactory
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -36,7 +35,7 @@ internal class TwoFactorMainFragment : Fragment(R.layout.fragment_two_factor) {
 
             launch { shared.map { it.code }.collectUserInput(binding.code) }
             launch { shared.map { it.verifyButton }.collectProgressInput(binding.buttonVerify, binding.progress) }
-            launch { shared.map { it.onOpenGoogleAuthenticatorClicked }.setOnClick(binding.butonOpenApp) }
+            launch { shared.map { it.authenticatorButton }.collectProgressInput(binding.butonOpenApp, progress = null) }
             launch { shared.map { it.errorDialog }.collectErrorDialog(binding.root.context) }
         }
     }

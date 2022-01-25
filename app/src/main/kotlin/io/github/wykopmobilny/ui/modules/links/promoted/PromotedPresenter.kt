@@ -12,7 +12,7 @@ import io.reactivex.Single
 class PromotedPresenter(
     val schedulers: Schedulers,
     private val linksApi: LinksApi,
-    val linksInteractor: LinksInteractor
+    val linksInteractor: LinksInteractor,
 ) : BasePresenter<PromotedView>(), LinkActionListener {
 
     var page = 1
@@ -29,7 +29,9 @@ class PromotedPresenter(
                         view?.addItems(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                {
+                    view?.showErrorDialog(it)
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -46,7 +48,7 @@ class PromotedPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateLink(link)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

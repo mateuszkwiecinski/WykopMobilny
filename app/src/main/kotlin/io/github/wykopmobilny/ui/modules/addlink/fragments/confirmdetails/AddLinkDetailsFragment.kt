@@ -31,7 +31,8 @@ class AddLinkDetailsFragment : BaseFragment(R.layout.addlink_details_fragment), 
     private val binding by viewBinding(AddlinkDetailsFragmentBinding::bind)
 
     private var imageKey: String = ""
-    private val draftInformation by lazy { (activity as AddlinkActivity).draft.data }
+    private val draftInformation
+        get() = (activity as? AddlinkActivity)?.draft?.data
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -85,15 +86,20 @@ class AddLinkDetailsFragment : BaseFragment(R.layout.addlink_details_fragment), 
             binding.inputTagsLayout.error = getString(R.string.add_link_no_tags)
             return
         }
+        val draftInformation = draftInformation
+        if (draftInformation == null) {
+            binding.inputTagsLayout.error = "Coś poszło nie tak"
+            return
+        }
 
         presenter.publishLink(
-            draftInformation!!.key,
+            draftInformation.key,
             binding.inputLinkTitle.text.toString(),
-            draftInformation!!.sourceUrl,
+            draftInformation.sourceUrl,
             binding.inputDescription.text.toString(),
             binding.inputTags.text.toString(),
             binding.plus18Checkbox.isChecked,
-            imageKey
+            imageKey,
         )
     }
 

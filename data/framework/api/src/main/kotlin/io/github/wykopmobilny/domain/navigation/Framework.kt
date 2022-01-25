@@ -6,7 +6,7 @@ interface Framework {
 
     fun nightModeDetector(): SystemSettingsDetector
 
-    fun youtubeAppDetector(): YoutubeAppDetector
+    fun youtubeAppDetector(): AppGateway
 
     fun htmlUtils(): WykopTextUtils
 

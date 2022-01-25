@@ -1,6 +1,6 @@
 package io.github.wykopmobilny.tests.rules
 
-import io.github.wykopmobilny.tests.responses.successfulResponse
+import io.github.wykopmobilny.tests.responses.fileResponse
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -19,10 +19,10 @@ class MockWebServerRule : TestRule {
         object : Statement() {
             override fun evaluate() {
                 mockWebServer.dispatcher = dispatcher
-                mockWebServer.start(port = 8000)
+                mockWebServer.start(port = PORT)
                 try {
                     val result = runCatching { base.evaluate() }
-                    dispatcher.unmatchedRequest?.let { error("Failed to match response at path=${dispatcher.unmatchedRequest?.path}") }
+                    dispatcher.unmatchedRequest?.let { error("Failed to match response=${dispatcher.unmatchedRequest?.requestUrl}") }
                     result.getOrThrow()
                 } finally {
                     mockWebServer.shutdown()
@@ -36,14 +36,19 @@ class MockWebServerRule : TestRule {
     ) {
         dispatcher.requests.add(requestMatcher to response)
     }
+
+    companion object {
+        const val PORT = 8000
+    }
 }
 
 private class MockDispatcher : Dispatcher() {
     val requests = mutableListOf<Pair<(RecordedRequest) -> Boolean, () -> MockResponse>>()
     var unmatchedRequest: RecordedRequest? = null
 
-    private val predefinedRequests = listOf<Pair<(RecordedRequest) -> Boolean, () -> MockResponse>>(
-        pathMatcher("/favicon.ico") to { successfulResponse("avatar.png") },
+    private val predefinedRequests = listOf(
+        pathMatcher("/favicon.ico") to { fileResponse("avatar.png") },
+        cdnMatcher() to { fileResponse("avatar.png") },
     )
 
     override fun dispatch(request: RecordedRequest): MockResponse {
@@ -58,6 +63,9 @@ private class MockDispatcher : Dispatcher() {
 
 private fun pathMatcher(path: String): (RecordedRequest) -> Boolean =
     { it.path?.substringBefore("/appkey/") == path }
+
+private fun cdnMatcher(): (RecordedRequest) -> Boolean =
+    { it.path?.startsWith("/cdn/") == true }
 
 fun MockWebServerRule.enqueue(
     path: String,

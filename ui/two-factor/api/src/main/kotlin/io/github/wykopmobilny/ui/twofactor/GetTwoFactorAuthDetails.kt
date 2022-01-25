@@ -10,6 +10,6 @@ fun interface GetTwoFactorAuthDetails : Query<TwoFactorAuthDetailsUi>
 data class TwoFactorAuthDetailsUi(
     val code: TextInputUi,
     val verifyButton: ProgressButtonUi,
-    val onOpenGoogleAuthenticatorClicked: () -> Unit,
+    val authenticatorButton: ProgressButtonUi?,
     val errorDialog: ErrorDialogUi?,
 )

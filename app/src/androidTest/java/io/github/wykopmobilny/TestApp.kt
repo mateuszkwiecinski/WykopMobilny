@@ -10,11 +10,9 @@ import io.github.wykopmobilny.storage.android.StoragesComponent
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import kotlinx.coroutines.asExecutor
 import kotlinx.datetime.Clock
-import okhttp3.OkHttpClient
 
 internal class TestApp : WykopApp() {
 
-    val okHttpClient = OkHttpClient()
     val cookieProvider = FakeCookieProvider()
 
     override fun onCreate() {

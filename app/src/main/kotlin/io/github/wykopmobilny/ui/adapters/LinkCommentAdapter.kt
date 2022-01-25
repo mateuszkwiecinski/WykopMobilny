@@ -68,7 +68,7 @@ class LinkCommentAdapter @Inject constructor(
     }
 
     fun updateComment(comment: LinkComment) {
-        val position = data.indexOf(comment)
+        val position = data.indexOf(comment).takeIf { it >= 0 } ?: return
         dataset[position] = comment
         notifyItemChanged(position)
     }

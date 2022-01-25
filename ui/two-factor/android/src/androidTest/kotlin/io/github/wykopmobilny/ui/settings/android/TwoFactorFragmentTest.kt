@@ -22,9 +22,13 @@ internal class TwoFactorFragmentTest : BaseScreenshotTest() {
                         onChanged = {},
                     ),
                     verifyButton = ProgressButtonUi.Default(
+                        label = "Weryfikuj",
                         onClicked = {},
                     ),
-                    onOpenGoogleAuthenticatorClicked = {},
+                    authenticatorButton = ProgressButtonUi.Default(
+                        label = "Otwórz Google Authenticator",
+                        onClicked = {},
+                    ),
                     errorDialog = null,
                 )
             },
@@ -42,7 +46,10 @@ internal class TwoFactorFragmentTest : BaseScreenshotTest() {
                         onChanged = {},
                     ),
                     verifyButton = ProgressButtonUi.Loading,
-                    onOpenGoogleAuthenticatorClicked = {},
+                    authenticatorButton = ProgressButtonUi.Default(
+                        label = "Otwórz Microsoft Authenticator",
+                        onClicked = {},
+                    ),
                     errorDialog = null,
                 )
             },

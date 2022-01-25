@@ -23,9 +23,9 @@ class OkHttp3IdlingResource(private val dispatcher: Dispatcher) : IdlingResource
         return isIdle
     }
 
-    private fun transitionToIdle() = callbacks.forEach { it.onTransitionToIdle() }
+    private fun transitionToIdle() = callbacks.forEach(IdlingResource.ResourceCallback::onTransitionToIdle)
 
     init {
-        dispatcher.idleCallback = Runnable { transitionToIdle() }
+        dispatcher.idleCallback = Runnable(::transitionToIdle)
     }
 }

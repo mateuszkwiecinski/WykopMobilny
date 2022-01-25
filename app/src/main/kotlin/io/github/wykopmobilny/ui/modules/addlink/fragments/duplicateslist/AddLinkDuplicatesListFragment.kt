@@ -8,10 +8,10 @@ import io.github.wykopmobilny.base.BaseFragment
 import io.github.wykopmobilny.databinding.AddlinkDuplicatesFragmentBinding
 import io.github.wykopmobilny.models.dataclass.Link
 import io.github.wykopmobilny.models.mapper.apiv2.LinkMapper
+import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.adapters.LinksAdapter
 import io.github.wykopmobilny.ui.fragments.links.LinkActionListener
 import io.github.wykopmobilny.ui.modules.addlink.AddlinkActivity
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.utils.prepare
 import io.github.wykopmobilny.utils.viewBinding
 import javax.inject.Inject
@@ -39,7 +39,7 @@ class AddLinkDuplicatesListFragment : BaseFragment(R.layout.addlink_duplicates_f
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val duplicates = (activity as AddlinkActivity).draft.duplicates?.map { LinkMapper.map(it, owmContentFilter) } ?: emptyList()
+        val duplicates = (activity as? AddlinkActivity)?.draft?.duplicates?.map { LinkMapper.map(it, owmContentFilter) }.orEmpty()
         binding.duplicatesList.run {
             prepare()
             adapter = linksAdapter

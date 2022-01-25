@@ -386,7 +386,5 @@
             <action android:name="android.intent.action.GET_CONTENT" />
             <data android:mimeType="image/*" />
         </intent>
-
-        <package android:name="com.google.android.apps.authenticator2" />
     </queries>
 </manifest>
