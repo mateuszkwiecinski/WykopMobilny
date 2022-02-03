@@ -71,6 +71,7 @@ object Strings {
                 AuthenticatorApp.Google -> "Otwórz Authenticator"
                 AuthenticatorApp.Microsoft -> "Otwórz Authenticator"
                 AuthenticatorApp.Authy -> "Otwórz Authy"
+                AuthenticatorApp.AuthenticatorPro -> "Otwórz Authenticator Pro"
             }
     }
 }

@@ -80,6 +80,7 @@ private fun knownAppId(app: ExternalApp) =
         AuthenticatorApp.Google -> "com.google.android.apps.authenticator2"
         AuthenticatorApp.Microsoft -> "com.azure.authenticator"
         AuthenticatorApp.Authy -> "com.authy.authy"
+        AuthenticatorApp.AuthenticatorPro -> "me.jmh.authenticatorpro"
     }
 
 private fun Context.isPackageInstalled(packageName: String): Boolean {
