@@ -22,4 +22,5 @@ enum class AuthenticatorApp : ExternalApp {
     Google,
     Microsoft,
     Authy,
+    AuthenticatorPro,
 }
