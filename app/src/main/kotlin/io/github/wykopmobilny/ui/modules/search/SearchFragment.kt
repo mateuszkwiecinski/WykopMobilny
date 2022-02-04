@@ -83,7 +83,7 @@ class SearchFragment : BaseFragment(R.layout.activity_search) {
 
                     callback()
                     searchView.clearFocus()
-                    querySubject.onNext(query)
+                    querySubject.onNext(URLEncoder.encode(query, "UTF-8"))
                     activity?.hideKeyboard()
 
                     return true
@@ -92,7 +92,7 @@ class SearchFragment : BaseFragment(R.layout.activity_search) {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     val results = runBlocking {
                         val searchDetails = getSearchDetails().first()
-                        searchDetails.onQueryChanged(URLEncoder.encode(newText, "UTF-8"))
+                        searchDetails.onQueryChanged(newText.orEmpty())
                         getSearchDetails().first().searchResults.map { it.text }
                     }
                     suggestionsAdapter.clear()
