@@ -18,7 +18,7 @@ dependencies {
     implementation("androidx.fragment:fragment-testing:1.4.1")
     implementation("com.karumi:shot-android:5.13.0")
     //noinspection GradleDependency https://github.com/pedrovgs/Shot/issues/254
-    implementation("com.facebook.testing.screenshot:core:0.13.0")
+    implementation("com.facebook.testing.screenshot:core:0.15.0")
     implementation(libs.bundles.espresso)
     implementation(libs.glide.core)
     kapt(libs.glide.compiler)
