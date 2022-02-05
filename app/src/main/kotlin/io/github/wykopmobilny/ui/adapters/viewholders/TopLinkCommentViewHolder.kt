@@ -90,14 +90,16 @@ class TopLinkCommentViewHolder(
         showAdultContent: Boolean,
         hideNsfw: Boolean
     ) {
-        super.bindView(linkComment,
+        super.bindView(
+            linkComment,
             isAuthorComment,
             commentId,
             openSpoilersDialog,
             enableYoutubePlayer,
             enableEmbedPlayer,
             showAdultContent,
-            hideNsfw)
+            hideNsfw
+        )
 
         binding.authorHeaderView.setAuthorData(linkComment.author, linkComment.date, linkComment.app)
         if (linkComment.isCollapsed) {

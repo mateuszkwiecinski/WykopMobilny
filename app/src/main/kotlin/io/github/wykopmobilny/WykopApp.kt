@@ -257,7 +257,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         val coroutineScope: CoroutineScope,
     )
 
-    // TODO @mk : 25/07/2021 I don't know where I'm going here yet. Will figure something out 👀 
+    // TODO @mk : 25/07/2021 I don't know where I'm going here yet. Will figure something out 👀
     @Suppress("UNCHECKED_CAST")
     override fun <T : Any> getDependency(clazz: KClass<T>, scopeId: Any?): T =
         when (clazz) {
@@ -412,6 +412,4 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             }
         }
     }
-
-
 }

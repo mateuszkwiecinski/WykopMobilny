@@ -77,6 +77,7 @@ private fun knownAppId(app: ExternalApp) =
     when (app) {
         YoutubeApp.Official -> "com.google.android.youtube"
         YoutubeApp.Vanced -> "com.vanced.android.youtube"
+        YoutubeApp.NewPipe -> "org.schabi.newpipe"
         AuthenticatorApp.Google -> "com.google.android.apps.authenticator2"
         AuthenticatorApp.Microsoft -> "com.azure.authenticator"
         AuthenticatorApp.Authy -> "com.authy.authy"

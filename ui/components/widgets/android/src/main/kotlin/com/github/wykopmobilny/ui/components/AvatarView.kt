@@ -29,7 +29,6 @@ fun AvatarView.bind(model: AvatarUi?) {
 
     binding.imgAvatar.setOnClick(model?.onClicked)
 
-
     if (getTag(R.id.cache) == model.toString()) {
         return
     }

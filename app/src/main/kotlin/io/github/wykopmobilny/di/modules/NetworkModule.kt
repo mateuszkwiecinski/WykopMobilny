@@ -4,8 +4,6 @@ import android.app.NotificationManager
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import io.github.wykopmobilny.api.UserTokenRefresher
-import io.github.wykopmobilny.api.user.LoginApi
 import io.github.wykopmobilny.base.WykopSchedulers
 import io.github.wykopmobilny.ui.modules.Navigator
 import io.github.wykopmobilny.ui.modules.NavigatorApi

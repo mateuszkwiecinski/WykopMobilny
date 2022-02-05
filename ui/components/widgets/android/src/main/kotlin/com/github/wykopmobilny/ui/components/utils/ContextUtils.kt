@@ -50,6 +50,5 @@ fun Context.readAttr(@AttrRes attrColor: Int): Int {
     return typedValue.resourceId
 }
 
-
 val View.layoutInflater: LayoutInflater
     get() = LayoutInflater.from(context)

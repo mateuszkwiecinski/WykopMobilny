@@ -1,5 +1,6 @@
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask
+import com.slack.keeper.KeeperVariantMarker
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 
 plugins {
@@ -12,13 +13,6 @@ plugins {
     id("com.slack.keeper")
     // id("com.google.firebase.firebase-perf")
     id("pl.droidsonroids.animation-disabler")
-}
-
-keeper {
-    variantFilter {
-        setIgnore(name != "releaseTest")
-    }
-    traceReferences {}
 }
 
 projectConfig {
@@ -94,14 +88,33 @@ android {
         exclude '*.properties'
         exclude 'DebugProbesKt.bin'
     }
-    lintOptions {
-        disable("UnknownNullness")
-        disable("Range")
+    lint {
+        disable += "UnknownNullness"
+        disable += "Range"
     }
+}
+
+
+androidComponents {
+    beforeVariants(selector().withBuildType("releaseTest")) { builder ->
+        builder.registerExtension(KeeperVariantMarker.class, KeeperVariantMarker.INSTANCE)
+    }
+}
+
+keeper {
+    traceReferences {}
 }
 
 kotlinter {
     experimentalRules = false
+}
+
+easylauncher {
+    buildTypes {
+        debug {
+            filters = customRibbon(ribbonColor: "#2F4F4F", position: "bottom")
+        }
+    }
 }
 
 repositories {
@@ -203,13 +216,5 @@ tasks.withType(DeviceProviderInstrumentTestTask).configureEach {
 
     doLast {
         LoggerWrapper.Switch.shouldShowInfoLogsAsLifecycle = false
-    }
-}
-
-easylauncher {
-    buildTypes {
-        debug {
-            filters = customRibbon(ribbonColor: "#2F4F4F", position: "bottom")
-        }
     }
 }

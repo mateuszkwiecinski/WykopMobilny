@@ -51,8 +51,6 @@ suspend fun Flow<InfoDialogUi?>.collectInfoDialog(context: Context) {
                     .show().also {
                         it?.findViewById<TextView>(android.R.id.message)?.movementMethod = LinkMovementMethod.getInstance()
                     }
-
-
             } else {
                 null
             }

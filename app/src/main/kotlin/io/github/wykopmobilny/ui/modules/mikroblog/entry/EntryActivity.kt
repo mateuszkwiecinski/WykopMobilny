@@ -1,7 +1,6 @@
 package io.github.wykopmobilny.ui.modules.mikroblog.entry
 
 import android.app.Activity
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -206,7 +205,7 @@ class EntryActivity :
     }
 
     override fun openGalleryImageChooser() {
-        contract.launch( "image/*")
+        contract.launch("image/*")
     }
 
     override fun onBackPressed() {

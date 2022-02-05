@@ -3,10 +3,6 @@ package io.github.wykopmobilny.models.mapper.apiv2
 import io.github.wykopmobilny.api.filters.OWMContentFilter
 import io.github.wykopmobilny.api.responses.LinkCommentResponse
 import io.github.wykopmobilny.models.dataclass.LinkComment
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.Month
 
 object LinkCommentMapper {
 

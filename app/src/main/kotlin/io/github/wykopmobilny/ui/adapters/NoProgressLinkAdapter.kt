@@ -24,7 +24,6 @@ class NoProgressLinkAdapter @Inject constructor(
     val items = mutableListOf<Link>()
     lateinit var linksActionListener: LinkActionListener
 
-
     private val linkShowImage by lazy { settingsPreferencesApi.linkShowImage }
     private val showMinifiedImages by lazy { settingsPreferencesApi.showMinifiedImages }
     private val linkSimpleList by lazy { settingsPreferencesApi.linkSimpleList }

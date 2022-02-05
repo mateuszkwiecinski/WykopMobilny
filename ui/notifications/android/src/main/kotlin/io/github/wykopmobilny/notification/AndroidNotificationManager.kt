@@ -52,7 +52,6 @@ internal class AndroidNotificationManager @Inject constructor(
                         ),
                     )
                     .build()
-
             }
         }
 
@@ -103,4 +102,3 @@ internal class NotificationDismissedReceiver : BroadcastReceiver() {
         runBlocking { dependencies.handleNotificationDismissed().invoke() }
     }
 }
-

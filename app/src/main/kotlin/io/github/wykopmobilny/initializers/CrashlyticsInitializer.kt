@@ -16,5 +16,3 @@ internal class CrashlyticsInitializer : Initializer<FirebaseCrashlytics> {
 
     override fun dependencies() = emptyList<Class<out Initializer<*>>>()
 }
-
-

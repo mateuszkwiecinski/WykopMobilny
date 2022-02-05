@@ -2,7 +2,12 @@ package io.github.wykopmobilny.ui.settings.android
 
 import io.github.wykopmobilny.screenshots.BaseScreenshotTest
 import io.github.wykopmobilny.screenshots.unboundedHeight
-import io.github.wykopmobilny.ui.settings.*
+import io.github.wykopmobilny.ui.settings.AppThemeUi
+import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi
+import io.github.wykopmobilny.ui.settings.FontSizeUi
+import io.github.wykopmobilny.ui.settings.LinkImagePositionUi
+import io.github.wykopmobilny.ui.settings.MainScreenUi
+import io.github.wykopmobilny.ui.settings.MikroblogScreenUi
 import org.junit.Test
 
 internal class GeneralPreferencesFragmentTest : BaseScreenshotTest() {

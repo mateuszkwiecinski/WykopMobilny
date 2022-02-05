@@ -10,7 +10,6 @@ import io.github.wykopmobilny.databinding.LinkBuryMenuBottomsheetBinding
 import io.github.wykopmobilny.databinding.LinkDetailsHeaderLayoutBinding
 import io.github.wykopmobilny.databinding.LinkMenuBottomsheetBinding
 import io.github.wykopmobilny.models.dataclass.Link
-import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.ui.fragments.link.LinkHeaderActionListener
 import io.github.wykopmobilny.ui.fragments.link.LinkInteractor
 import io.github.wykopmobilny.ui.modules.NewNavigator

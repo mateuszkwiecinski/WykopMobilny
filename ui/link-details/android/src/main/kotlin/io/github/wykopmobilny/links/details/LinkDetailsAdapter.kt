@@ -120,7 +120,6 @@ private val LinkCommentUi.id
         is LinkCommentUi.Normal -> id
     }
 
-
 @OptIn(ExperimentalStdlibApi::class)
 internal fun LinkDetailsUi.toAdapterList(): List<ListItem> = buildList {
     add(ListItem.Header(header))

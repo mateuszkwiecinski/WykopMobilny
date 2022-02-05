@@ -10,7 +10,6 @@ import io.github.wykopmobilny.utils.viewBinding
 
 internal class TwoFactorAuthorizationActivity : ThemableActivity() {
 
-
     private val binding by viewBinding(ActivityContainerBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {

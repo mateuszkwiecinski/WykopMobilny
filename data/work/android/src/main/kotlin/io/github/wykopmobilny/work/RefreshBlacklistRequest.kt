@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.flow.first
 
 internal class RefreshBlacklistRequest(
     context: Context,
