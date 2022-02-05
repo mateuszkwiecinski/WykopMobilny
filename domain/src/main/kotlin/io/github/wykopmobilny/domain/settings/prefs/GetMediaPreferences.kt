@@ -30,7 +30,8 @@ internal class GetMediaPreferences @Inject constructor(
         appStorage.get(UserSettings.useYoutubePlayer)
             .flatMapLatest { savedValue ->
                 if (savedValue == null) {
-                    appGateway.getInstalledYoutubeApps().map { it.contains(YoutubeApp.Official) }
+                    appGateway.getInstalledYoutubeApps()
+                        .map { apps -> apps.singleOrNull() == YoutubeApp.Official }
                 } else {
                     flowOf(savedValue)
                 }

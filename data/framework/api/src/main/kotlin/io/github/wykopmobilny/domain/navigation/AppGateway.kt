@@ -16,6 +16,7 @@ sealed interface ExternalApp
 enum class YoutubeApp : ExternalApp {
     Official,
     Vanced,
+    NewPipe,
 }
 
 enum class AuthenticatorApp : ExternalApp {
