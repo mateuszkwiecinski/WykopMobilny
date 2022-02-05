@@ -72,7 +72,6 @@ class LinkViewHolder(
         }
     }
 
-
     private var type: Int = TYPE_IMAGE
     private lateinit var previewImageView: ImageView
 

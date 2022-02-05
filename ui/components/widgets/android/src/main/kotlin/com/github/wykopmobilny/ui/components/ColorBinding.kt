@@ -17,4 +17,3 @@ fun DomainColor?.toColorInt(context: Context): ColorStateList =
         }.let(context::readColorAttr)
         null -> ColorStateList.valueOf(Color.TRANSPARENT)
     }
-

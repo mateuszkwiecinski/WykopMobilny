@@ -20,7 +20,6 @@ import androidx.core.view.isVisible
 import io.github.wykopmobilny.ui.components.widgets.MessageBodyUi
 import java.util.regex.Pattern
 
-
 class BodyContentView(context: Context, attrs: AttributeSet?) : AppCompatTextView(context, attrs) {
 
     private val ellipsis = SpannableString("\u0020[rozwiń]")
@@ -151,7 +150,6 @@ private object SelectableLinkMovement : LinkMovementMethod() {
         return Touch.onTouchEvent(widget, buffer, event)
     }
 }
-
 
 fun BodyContentView.bind(body: MessageBodyUi) {
     isVisible = body.content != null

@@ -232,5 +232,5 @@ class LinksRepository @Inject constructor(
         rxSingle { linksApi.toggleFavorite(linkId) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
-            .map {  }
+            .map { }
 }

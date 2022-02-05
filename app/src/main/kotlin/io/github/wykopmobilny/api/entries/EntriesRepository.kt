@@ -104,7 +104,6 @@ class EntriesRepository @Inject constructor(
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
 
-
     override fun deleteEntryComment(commentId: Long) = rxSingle { entriesApi.deleteEntryComment(commentId) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())

@@ -93,6 +93,5 @@ private class PickerListAdapter : ListAdapter<OptionPickerUi.Option, PickerListA
 
         override fun areContentsTheSame(oldItem: OptionPickerUi.Option, newItem: OptionPickerUi.Option) =
             oldItem.label == newItem.label && oldItem.icon == newItem.icon
-
     }
 }

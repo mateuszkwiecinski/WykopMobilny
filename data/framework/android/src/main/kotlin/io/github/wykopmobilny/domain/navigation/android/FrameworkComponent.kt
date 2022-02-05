@@ -4,7 +4,6 @@ import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
 import io.github.wykopmobilny.domain.navigation.Framework
-import io.github.wykopmobilny.ui.base.AppScopes
 import kotlinx.coroutines.CoroutineScope
 
 @Component(modules = [FrameworkModule::class])

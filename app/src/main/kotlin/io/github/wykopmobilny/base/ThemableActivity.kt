@@ -21,7 +21,6 @@ import kotlinx.coroutines.runBlocking
 
 internal abstract class ThemableActivity : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         val getAppStyle = requireDependency<StylesDependencies>().getAppStyle()
         val initialStyle = runBlocking { getAppStyle().first() }.style

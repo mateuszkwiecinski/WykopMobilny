@@ -16,5 +16,4 @@ class LoginRepository @Inject constructor(
         val session = apiPreferences.session.first().let(::checkNotNull)
         loginApi.getUserSessionToken(login = session.login, accountKey = session.token)
     }
-
 }
