@@ -52,9 +52,9 @@ jobs:
         uses: usefulness/diffuse-action@master
         with:
           old-file-path: diffuse-source-file-release
-          old-mapping-path: diffuse-mapping-file-release
+          #          old-mapping-path: diffuse-mapping-file-release
           new-file-path: app/build/outputs/apk/release/app-release.apk
-          new-mapping-path: app/build/outputs/mapping/release/mapping.txt
+          #          new-mapping-path: app/build/outputs/mapping/release/mapping.txt
 
       - uses: peter-evans/find-comment@v1
         id: find_comment
