@@ -82,6 +82,10 @@ private fun knownAppId(app: ExternalApp) =
         AuthenticatorApp.Microsoft -> "com.azure.authenticator"
         AuthenticatorApp.Authy -> "com.authy.authy"
         AuthenticatorApp.AuthenticatorPro -> "me.jmh.authenticatorpro"
+        AuthenticatorApp.Bitwarden -> "com.x8bit.bitwarden"
+        AuthenticatorApp.Pixplicity -> "com.pixplicity.auth"
+        AuthenticatorApp.Salesforce -> "com.salesforce.authenticator"
+        AuthenticatorApp.Lastpass -> "com.lastpass.authenticator"
     }
 
 private fun Context.isPackageInstalled(packageName: String): Boolean {

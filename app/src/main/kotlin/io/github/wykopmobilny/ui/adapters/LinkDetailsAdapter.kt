@@ -27,7 +27,6 @@ class LinkDetailsAdapter @Inject constructor(
     settingsPreferencesApi: SettingsPreferencesApi,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val showMinifiedImages by lazy { settingsPreferencesApi.showMinifiedImages }
     private val hideBlacklistedViews by lazy { settingsPreferencesApi.hideBlacklistedViews }
     private val openSpoilersDialog by lazy { settingsPreferencesApi.openSpoilersDialog }
     private val enableYoutubePlayer by lazy { settingsPreferencesApi.enableYoutubePlayer }

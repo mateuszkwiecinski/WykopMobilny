@@ -24,4 +24,8 @@ enum class AuthenticatorApp : ExternalApp {
     Microsoft,
     Authy,
     AuthenticatorPro,
+    Bitwarden,
+    Pixplicity,
+    Salesforce,
+    Lastpass,
 }

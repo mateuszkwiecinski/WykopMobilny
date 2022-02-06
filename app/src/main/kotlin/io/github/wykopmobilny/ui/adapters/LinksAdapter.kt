@@ -73,7 +73,6 @@ class LinksAdapter @Inject constructor(
             is LinkViewHolder -> holder.bindView(
                 link = dataset[position]!!,
                 linkImagePosition = linkImagePosition,
-                showMinifiedImages = showMinifiedImages,
                 linkShowAuthor = linkShowAuthor,
             )
             is SimpleLinkViewHolder -> holder.bindView(

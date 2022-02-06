@@ -13,5 +13,9 @@
         <package android:name="com.authy.authy" />
         <package android:name="com.azure.authenticator" />
         <package android:name="me.jmh.authenticatorpro" />
+        <package android:name="com.x8bit.bitwarden" />
+        <package android:name="com.pixplicity.auth" />
+        <package android:name="com.salesforce.authenticator" />
+        <package android:name="com.lastpass.authenticator" />
     </queries>
 </manifest>
