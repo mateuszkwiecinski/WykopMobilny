@@ -94,13 +94,11 @@ class LinkViewHolder(
     fun bindView(
         link: Link,
         linkImagePosition: String,
-        showMinifiedImages: Boolean,
         linkShowAuthor: Boolean,
     ) {
         setupBody(
             link = link,
             linkImagePosition = linkImagePosition,
-            showMinifiedImages = showMinifiedImages,
             linkShowAuthor = linkShowAuthor,
         )
         setupButtons(link)
@@ -118,7 +116,6 @@ class LinkViewHolder(
     private fun setupBody(
         link: Link,
         linkImagePosition: String,
-        showMinifiedImages: Boolean,
         linkShowAuthor: Boolean,
     ) {
         if (link.gotSelected) {
@@ -136,12 +133,7 @@ class LinkViewHolder(
         }
 
         if (type == TYPE_IMAGE) {
-            if (showMinifiedImages) {
-                link.previewImage
-            } else {
-                link.fullImage
-            }
-                ?.let(previewImageView::loadImage)
+            link.fullImage?.let(previewImageView::loadImage)
         }
         if (linkShowAuthor && link.author != null) {
             binding.authorHeaderView.setAuthorData(link.author, link.date, link.app)

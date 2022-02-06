@@ -43,7 +43,6 @@ class EntryLinkAdapter @Inject constructor(
             else (holder as? LinkViewHolder)?.bindView(
                 link = item.link!!,
                 linkImagePosition = linkImagePosition,
-                showMinifiedImages = showMinifiedImages,
                 linkShowAuthor = linkShowAuthor,
             )
         }

@@ -69,7 +69,6 @@ class NoProgressLinkAdapter @Inject constructor(
             is LinkViewHolder -> holder.bindView(
                 link = items[position],
                 linkImagePosition = linkImagePosition,
-                showMinifiedImages = showMinifiedImages,
                 linkShowAuthor = linkShowAuthor,
             )
             is SimpleLinkViewHolder -> holder.bindView(
