@@ -78,7 +78,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        apiVersion: [ 25, 28 ]
+        apiVersion: [ 25, 28, 30, 31 ]
 
     steps:
       - uses: actions/checkout@v2
