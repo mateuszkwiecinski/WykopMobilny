@@ -16,7 +16,7 @@ class ScreenshotTestsPlugin : Plugin<Project> {
                 it.testApplicationId = project.path.replaceFirstChar { "" }.replace(":", ".").replace("-", "_")
             }
             packagingOptions {
-                it.excludes += "META-INF/*"
+                it.resources.excludes += "META-INF/*"
             }
         }
 
