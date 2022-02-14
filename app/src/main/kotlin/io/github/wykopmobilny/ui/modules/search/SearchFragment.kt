@@ -22,7 +22,6 @@ import io.github.wykopmobilny.utils.viewBinding
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import java.net.URLEncoder
 
 class SearchFragment : BaseFragment(R.layout.activity_search) {
 
@@ -83,7 +82,7 @@ class SearchFragment : BaseFragment(R.layout.activity_search) {
 
                     callback()
                     searchView.clearFocus()
-                    querySubject.onNext(URLEncoder.encode(query, "UTF-8"))
+                    querySubject.onNext(query)
                     activity?.hideKeyboard()
 
                     return true
