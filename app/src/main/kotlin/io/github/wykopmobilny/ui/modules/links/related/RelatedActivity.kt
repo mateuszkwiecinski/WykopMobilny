@@ -93,7 +93,7 @@ class RelatedActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener, Re
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.add_related_menu, menu)
-        menu?.findItem(R.id.add_related)?.isVisible = userManager.isUserAuthorized()
+        menu.findItem(R.id.add_related)?.isVisible = userManager.isUserAuthorized()
         return true
     }
 

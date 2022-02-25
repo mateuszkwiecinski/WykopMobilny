@@ -76,7 +76,7 @@ class EntriesAdapter @Inject constructor(
     }
 
     fun updateEntry(entry: Entry) {
-        val position = dataset.indexOf(entry)
+        val position = dataset.indexOf(entry).takeIf { it >= 0 } ?: return
         dataset[position] = entry
         notifyItemChanged(position)
     }
