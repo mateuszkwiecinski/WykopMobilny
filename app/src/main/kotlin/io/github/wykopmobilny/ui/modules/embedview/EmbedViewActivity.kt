@@ -17,9 +17,12 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
+import com.google.android.exoplayer2.C.CONTENT_TYPE_MOVIE
+import com.google.android.exoplayer2.C.USAGE_MEDIA
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ui.StyledPlayerView.SHOW_BUFFERING_WHEN_PLAYING
 import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
@@ -82,20 +85,28 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
         if (savedInstanceState == null) {
             presenter.playUrl(extraUrl)
         }
-        binding.videoView.player = SimpleExoPlayer.Builder(this).build().apply {
-            addListener(
-                object : Player.Listener {
-
-                    override fun onIsLoadingChanged(isLoading: Boolean) {
-                        binding.videoView.keepScreenOn = isPlaying || isLoading
-                    }
-
-                    override fun onIsPlayingChanged(isPlaying: Boolean) {
-                        binding.videoView.keepScreenOn = isPlaying || isLoading
-                    }
-                },
+        binding.videoView.player = ExoPlayer.Builder(this)
+            .setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(USAGE_MEDIA)
+                    .setContentType(CONTENT_TYPE_MOVIE)
+                    .build(),
+                true,
             )
-        }
+            .build().apply {
+                addListener(
+                    object : Player.Listener {
+
+                        override fun onIsLoadingChanged(isLoading: Boolean) {
+                            binding.videoView.keepScreenOn = isPlaying || isLoading
+                        }
+
+                        override fun onIsPlayingChanged(isPlaying: Boolean) {
+                            binding.videoView.keepScreenOn = isPlaying || isLoading
+                        }
+                    },
+                )
+            }
         binding.videoView.controllerAutoShow = false
         binding.videoView.setShowBuffering(SHOW_BUFFERING_WHEN_PLAYING)
     }
