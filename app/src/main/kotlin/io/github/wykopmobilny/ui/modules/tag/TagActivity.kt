@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.R
 import io.github.wykopmobilny.api.responses.ObserveStateResponse
 import io.github.wykopmobilny.api.responses.TagMetaResponse
@@ -43,14 +44,15 @@ class TagActivity : BaseActivity(), TagActivityView {
     private val binding by viewBinding(ActivityTagBinding::inflate)
 
     override val enableSwipeBackLayout: Boolean = true
-    private val tagString
-        get() = intent.getStringExtra(EXTRA_TAG)!!
     private var tagMeta: TagMetaResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(binding.toolbar.toolbar)
         presenter.subscribe(this)
+        val tagString = intent.getStringExtra(EXTRA_TAG) ?: return finish().also {
+            Napier.e(message = "Couldn't launch TagActivity ${savedInstanceState == null}")
+        }
         presenter.tag = tagString
         binding.fab.setOnClickListener {
             navigator.openAddEntryActivity(this, null, "#$tagString")
