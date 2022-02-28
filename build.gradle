@@ -49,4 +49,12 @@ allprojects {
             setMatchingFallbacks("debug")
         }
     }
+    configurations.configureEach {
+        resolutionStrategy.eachDependency {
+            if (requested.group == "org.checkerframework" && requested.name != "checker-compat-qual") {
+                useVersion(libs.versions.mavencentral.checker.get())
+                because("https://github.com/google/ExoPlayer/issues/10007")
+            }
+        }
+    }
 }
