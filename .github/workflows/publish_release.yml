@@ -31,7 +31,7 @@ jobs:
           WYKOP_SECRETKEY: ${{ secrets.WYKOP_SECRETKEY }}
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
         with:
-          arguments: bundleRelease -PuploadMapping=true
+          arguments: assembleRelease bundleRelease -PuploadMapping=true
 
       - uses: r0adkll/upload-google-play@v1.0.15
         with:
@@ -40,3 +40,12 @@ jobs:
           releaseFiles: app/build/outputs/bundle/release/*.aab
           track: internal
           mappingFile: app/build/outputs/mapping/release/mapping.txt
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: apk
+          path: app/build/outputs/apk/release/*.apk
+
+      - uses: softprops/action-gh-release@v0.1.14
+        with:
+          files: app/build/outputs/apk/release/*.apk
