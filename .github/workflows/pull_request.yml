@@ -60,7 +60,7 @@ jobs:
 
       - run: ./gradlew verifySqlDelightMigration
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: ${{ always() }}
         with:
           name: lint-results
@@ -112,14 +112,14 @@ jobs:
             ./gradlew app:connectedReleaseTestAndroidTest -PtestBuildType=releaseTest
 
       - name: Upload ui tests result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: uitests-report${{ matrix.apiVersion }}
           path: "${{ github.workspace }}/**/build/**/connected/"
 
       - name: Save logcat output
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: logcat${{ matrix.apiVersion }}
@@ -158,7 +158,7 @@ jobs:
             ./gradlew executeScreenshotTests
 
       - name: Upload ui tests result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: ${{ always() }}
         with:
           name: screenshots-report
