@@ -49,7 +49,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - run: ./gradlew projectLint
+      - run: ./gradlew projectLint -x :app:lintRelease -x :app:lintReleaseTest
 
       - run: ./gradlew verifySqlDelightMigration
 
@@ -96,7 +96,8 @@ jobs:
           profile: pixel_xl
           target: google_apis
           arch: x86_64
-          disk-size: 4G
+          sdcard-path-or-size: 4G
+          disk-size: 6G
           disable-spellchecker: true
           script: |
             adb logcat -c
@@ -144,7 +145,6 @@ jobs:
           profile: pixel_xl
           target: google_apis
           arch: x86
-          disk-size: 4G
           disable-spellchecker: true
           script: |
             adb shell settings put global hidden_api_policy_p_apps 1
