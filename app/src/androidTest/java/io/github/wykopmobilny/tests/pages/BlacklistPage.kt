@@ -8,10 +8,10 @@ import androidx.test.espresso.matcher.ViewMatchers.isSelected
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import io.github.wykopmobilny.R
 import io.github.wykopmobilny.utils.waitNotVisible
 import io.github.wykopmobilny.utils.waitVisible
 import org.hamcrest.CoreMatchers.allOf
+import io.github.wykopmobilny.ui.blacklist.android.R as BlacklistR
 
 object BlacklistPage {
 
@@ -19,7 +19,7 @@ object BlacklistPage {
     private val usersTab = withText("Użytkownicy")
     private fun lockIcon(label: String) =
         allOf(
-            withId(R.id.btnAction),
+            withId(BlacklistR.id.btnAction),
             withParent(hasSibling(withText(label))),
         )
 

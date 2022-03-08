@@ -21,7 +21,7 @@ import io.github.wykopmobilny.screenshots.FragmentScenarioIHateGoogle.EmptyFragm
 
 inline fun <reified F : Fragment> launchFragmentInContainer(
     fragmentArgs: Bundle? = null,
-    @StyleRes themeResId: Int = R.style.FragmentScenarioEmptyFragmentActivityTheme,
+    @StyleRes themeResId: Int = androidx.fragment.testing.R.style.FragmentScenarioEmptyFragmentActivityTheme,
     initialState: Lifecycle.State = Lifecycle.State.RESUMED,
     crossinline instantiate: () -> F,
 ): FragmentScenarioIHateGoogle<F> = FragmentScenarioIHateGoogle.launchInContainer(
@@ -74,7 +74,7 @@ class FragmentScenarioIHateGoogle<F : Fragment>(
             setTheme(
                 intent.getIntExtra(
                     THEME_EXTRAS_BUNDLE_KEY,
-                    R.style.FragmentScenarioEmptyFragmentActivityTheme,
+                    androidx.fragment.testing.R.style.FragmentScenarioEmptyFragmentActivityTheme,
                 ),
             )
 
@@ -129,7 +129,7 @@ class FragmentScenarioIHateGoogle<F : Fragment>(
         fun <F : Fragment> launchInContainer(
             fragmentClass: Class<F>,
             fragmentArgs: Bundle? = null,
-            @StyleRes themeResId: Int = R.style.FragmentScenarioEmptyFragmentActivityTheme,
+            @StyleRes themeResId: Int = androidx.fragment.testing.R.style.FragmentScenarioEmptyFragmentActivityTheme,
             initialState: Lifecycle.State = Lifecycle.State.RESUMED,
             factory: FragmentFactory? = null,
         ): FragmentScenarioIHateGoogle<F> = internalLaunch(

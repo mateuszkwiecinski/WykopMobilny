@@ -30,6 +30,7 @@ import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.utils.viewBinding
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
+import io.github.wykopmobilny.ui.base.android.R as BaseR
 
 class LinkDetailsActivity :
     BaseActivity(),
@@ -111,7 +112,7 @@ class LinkDetailsActivity :
             title = null
             setDisplayHomeAsUpEnabled(true)
         }
-        binding.toolbar.toolbar.overflowIcon = ContextCompat.getDrawable(this, R.drawable.ic_sort)
+        binding.toolbar.toolbar.overflowIcon = ContextCompat.getDrawable(this, BaseR.drawable.ic_sort)
 
         // Prepare RecyclerView
         binding.recyclerView.apply {

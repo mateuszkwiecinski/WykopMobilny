@@ -14,6 +14,7 @@ import io.github.wykopmobilny.base.BaseLinksFragment
 import io.github.wykopmobilny.ui.dialogs.MonthYearPickerDialog
 import io.github.wykopmobilny.ui.dialogs.YearPickerDialog
 import javax.inject.Inject
+import io.github.wykopmobilny.ui.settings.android.R as SettingsR
 
 class HitsFragment : BaseLinksFragment(), HitsView {
 
@@ -89,7 +90,7 @@ class HitsFragment : BaseLinksFragment(), HitsView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.subscribe(this)
-        (activity as BaseActivity).supportActionBar?.setTitle(R.string.hits)
+        (activity as BaseActivity).supportActionBar?.setTitle(SettingsR.string.hits)
         linksAdapter.linksActionListener = presenter
         linksAdapter.loadNewDataListener = { loadDataListener(false) }
         setTitle()

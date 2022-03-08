@@ -13,7 +13,7 @@ import io.github.wykopmobilny.ui.components.widgets.android.R
 import io.github.wykopmobilny.ui.components.widgets.android.databinding.ViewSimpleCounterBinding
 import io.github.wykopmobilny.utils.bindings.setImage
 import io.github.wykopmobilny.utils.bindings.setOnClick
-import io.github.wykopmobilny.utils.bindings.toColorInt
+import androidx.appcompat.R as AppcompatR
 
 class SimpleCounter(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
 
@@ -23,7 +23,7 @@ class SimpleCounter(context: Context, attrs: AttributeSet?) : LinearLayout(conte
         gravity = Gravity.CENTER
         val vertical = 4.dpToPx(resources)
         val horizontal = 2.dpToPx(resources)
-        setBackgroundResource(context.readAttr(R.attr.selectableItemBackgroundBorderless))
+        setBackgroundResource(context.readAttr(AppcompatR.attr.selectableItemBackgroundBorderless))
         updatePadding(
             left = horizontal,
             right = horizontal,
@@ -35,7 +35,7 @@ class SimpleCounter(context: Context, attrs: AttributeSet?) : LinearLayout(conte
 
 fun SimpleCounter.bind(value: Button) {
     val binding = ViewSimpleCounterBinding.bind(this)
-    val color = value.color?.toColorInt(context) ?: context.readColorAttr(R.attr.colorControlNormal)
+    val color = value.color?.toColorInt(context) ?: context.readColorAttr(AppcompatR.attr.colorControlNormal)
 
     setOnClick(value.clickAction)
     binding.txtCount.setTextColor(color)

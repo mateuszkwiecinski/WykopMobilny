@@ -21,6 +21,7 @@ import io.github.wykopmobilny.utils.KotlinGlideRequestListener
 import io.github.wykopmobilny.utils.viewBinding
 import java.io.File
 import javax.inject.Inject
+import io.github.wykopmobilny.ui.base.android.R as BaseR
 
 internal class PhotoViewActivity : BaseActivity() {
 
@@ -48,7 +49,7 @@ internal class PhotoViewActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(binding.toolbar.toolbar)
-        binding.toolbar.toolbar.setBackgroundResource(R.drawable.gradient_toolbar_up)
+        binding.toolbar.toolbar.setBackgroundResource(BaseR.drawable.gradient_toolbar_up)
         binding.loadingView.isIndeterminate = true
         title = null
         url = intent.getStringExtra(URL_EXTRA) ?: return finish()

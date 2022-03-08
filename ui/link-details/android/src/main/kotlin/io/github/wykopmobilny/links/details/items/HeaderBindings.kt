@@ -10,13 +10,14 @@ import androidx.core.view.isVisible
 import com.github.wykopmobilny.ui.components.StandaloneTagView
 import com.github.wykopmobilny.ui.components.bind
 import com.github.wykopmobilny.ui.components.setUserNick
+import com.github.wykopmobilny.ui.components.toColorInt
 import com.github.wykopmobilny.ui.components.utils.readColorAttr
 import io.github.wykopmobilny.links.details.LinkDetailsHeaderUi
 import io.github.wykopmobilny.ui.components.widgets.TagUi
-import io.github.wykopmobilny.ui.link_details.android.R
 import io.github.wykopmobilny.ui.link_details.android.databinding.LinkDetailsHeaderBinding
 import io.github.wykopmobilny.utils.bindings.setOnClick
-import io.github.wykopmobilny.utils.bindings.toColorInt
+import androidx.appcompat.R as AppcompatR
+import io.github.wykopmobilny.ui.base.android.R as BaseR
 
 internal fun LinkDetailsHeaderBinding.bindHeader(header: LinkDetailsHeaderUi) =
     when (header) {
@@ -40,15 +41,15 @@ internal fun LinkDetailsHeaderBinding.bindHeader(header: LinkDetailsHeaderUi) =
             favoriteButton.setOnClick(header.favoriteButton.clickAction)
             favoriteButton.setImageResource(
                 if (header.favoriteButton.isToggled) {
-                    R.drawable.ic_favorite
+                    BaseR.drawable.ic_favorite
                 } else {
-                    R.drawable.ic_favorite_outlined
+                    BaseR.drawable.ic_favorite_outlined
                 },
             )
             favoriteButton.imageTintList = if (header.favoriteButton.isToggled) {
-                ColorStateList.valueOf(ContextCompat.getColor(favoriteButton.context, R.color.favorite_enabled))
+                ColorStateList.valueOf(ContextCompat.getColor(favoriteButton.context, BaseR.color.favorite_enabled))
             } else {
-                favoriteButton.context.readColorAttr(R.attr.colorControlNormal)
+                favoriteButton.context.readColorAttr(AppcompatR.attr.colorControlNormal)
             }
             commentButton.bind(header.commentsCount)
             voteButton.bind(header.voteCount)

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.github.wykopmobilny.ui.components.toColorInt
 import com.github.wykopmobilny.ui.components.utils.dpToPx
 import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.ui.base.AppDispatchers
@@ -25,7 +26,6 @@ import io.github.wykopmobilny.utils.bindings.collectOptionPicker
 import io.github.wykopmobilny.utils.bindings.collectSnackbar
 import io.github.wykopmobilny.utils.bindings.collectSwipeRefresh
 import io.github.wykopmobilny.utils.bindings.setOnClick
-import io.github.wykopmobilny.utils.bindings.toColorInt
 import io.github.wykopmobilny.utils.longArgument
 import io.github.wykopmobilny.utils.longArgumentNullable
 import io.github.wykopmobilny.utils.viewModelWrapperFactoryKeyed

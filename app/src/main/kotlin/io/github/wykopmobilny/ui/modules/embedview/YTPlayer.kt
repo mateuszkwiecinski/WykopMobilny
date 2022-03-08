@@ -181,6 +181,7 @@ class YTPlayer :
                     YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI or YouTubePlayer.FULLSCREEN_FLAG_CUSTOM_LAYOUT
                 player.setFullscreen(true)
             }
+            else -> Unit
         }
 
         when (playerStyle) {
@@ -243,6 +244,7 @@ class YTPlayer :
                     PORTRAIT_ORIENTATION
                 }
             Orientation.ONLY_LANDSCAPE, Orientation.ONLY_PORTRAIT -> Unit
+            else -> Unit
         }
     }
 

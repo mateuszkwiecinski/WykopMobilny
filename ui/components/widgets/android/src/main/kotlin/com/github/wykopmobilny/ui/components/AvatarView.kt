@@ -11,7 +11,7 @@ import io.github.wykopmobilny.ui.components.widgets.AvatarUi
 import io.github.wykopmobilny.ui.components.widgets.android.R
 import io.github.wykopmobilny.ui.components.widgets.android.databinding.ViewAvatarSimpleBinding
 import io.github.wykopmobilny.utils.bindings.setOnClick
-import io.github.wykopmobilny.utils.bindings.toColorInt
+import io.github.wykopmobilny.ui.base.android.R as BaseR
 
 class AvatarView(
     context: Context,
@@ -29,7 +29,7 @@ fun AvatarView.bind(model: AvatarUi?) {
 
     binding.imgAvatar.setOnClick(model?.onClicked)
 
-    if (getTag(R.id.cache) == model.toString()) {
+    if (getTag(BaseR.id.cache) == model.toString()) {
         return
     }
     val requestOptions = RequestOptions()
@@ -37,7 +37,7 @@ fun AvatarView.bind(model: AvatarUi?) {
         .transform(transformation)
 
     val placeholder = Glide.with(context)
-        .load(R.drawable.avatar)
+        .load(BaseR.drawable.avatar)
         .apply(requestOptions)
     Glide.with(binding.imgAvatar)
         .load(model?.avatarUrl)
@@ -50,5 +50,5 @@ fun AvatarView.bind(model: AvatarUi?) {
         .dontAnimate()
         .circleCrop()
         .into(binding.imgGenderStrip)
-    setTag(R.id.cache, model.toString())
+    setTag(BaseR.id.cache, model.toString())
 }
