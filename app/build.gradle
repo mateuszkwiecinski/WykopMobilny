@@ -11,7 +11,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.slack.keeper")
-    // id("com.google.firebase.firebase-perf")
+    id("com.google.firebase.firebase-perf")
     id("pl.droidsonroids.animation-disabler")
 }
 
@@ -85,6 +85,9 @@ android {
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
         exclude 'META-INF/*.version'
+        exclude 'META-INF/*.version'
+        exclude 'META-INF/CHANGES'
+        exclude 'META-INF/README.md'
         exclude '*.properties'
         exclude 'DebugProbesKt.bin'
     }
