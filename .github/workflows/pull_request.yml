@@ -29,13 +29,12 @@ jobs:
       - name: Gradle Wrapper Validation
         uses: gradle/wrapper-validation-action@v1
 
-      - name: Code style check
+      - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
-        with:
-          arguments: projectCodestyle
 
-      - name: Assemble
-        uses: gradle/gradle-build-action@v2
+      - run: ./gradlew projectCodestyle
+
+      - run: ./gradlew assembleRelease
         env:
           WYKOP_KEYSTORE_KEY_PASSWORD: ${{ secrets.WYKOP_KEYSTORE_KEY_PASSWORD }}
           WYKOP_KEYSTORE_KEY_NAME: ${{ secrets.WYKOP_KEYSTORE_KEY_NAME }}
@@ -43,20 +42,14 @@ jobs:
           WYKOP_APPKEY: ${{ secrets.WYKOP_APPKEY }}
           WYKOP_SECRETKEY: ${{ secrets.WYKOP_SECRETKEY }}
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
-        with:
-          arguments: assembleRelease
 
-      - name: Unit tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: projectCoverage
+      - run: ./gradlew projectCoverage
 
       - uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Android Lint
-        run: ./gradlew projectLint
+      - run: ./gradlew projectLint
 
       - run: ./gradlew verifySqlDelightMigration
 
@@ -91,10 +84,10 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - name: compile ui tests
+      - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
-        with:
-          arguments: app:assembleReleaseTestAndroidTest -PtestBuildType=releaseTest
+
+      - run: ./gradlew app:assembleReleaseTestAndroidTest -PtestBuildType=releaseTest
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2

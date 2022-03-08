@@ -27,8 +27,10 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - name: Assemble
+      - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+
+      - run: ./gradlew assembleRelease
         env:
           WYKOP_KEYSTORE_KEY_PASSWORD: ${{ secrets.WYKOP_KEYSTORE_KEY_PASSWORD }}
           WYKOP_KEYSTORE_KEY_NAME: ${{ secrets.WYKOP_KEYSTORE_KEY_NAME }}
@@ -36,8 +38,6 @@ jobs:
           WYKOP_APPKEY: ${{ secrets.WYKOP_APPKEY }}
           WYKOP_SECRETKEY: ${{ secrets.WYKOP_SECRETKEY }}
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
-        with:
-          arguments: assembleRelease
 
       - uses: actions/cache@v2
         name: Download base
