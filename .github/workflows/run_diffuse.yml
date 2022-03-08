@@ -27,15 +27,6 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - uses: actions/cache@v2
-        name: Download base
-        with:
-          path: |
-            diffuse-source-file-release
-            diffuse-mapping-file-release
-          key: diffuse-${{ github.event.pull_request.base.sha }}
-          restore-keys: diffuse-${{ github.event.pull_request.base.sha }}
-
       - name: Assemble
         uses: gradle/gradle-build-action@v2
         env:
@@ -48,13 +39,22 @@ jobs:
         with:
           arguments: assembleRelease
 
+      - uses: actions/cache@v2
+        name: Download base
+        with:
+          path: |
+            diffuse-source-file-release
+            diffuse-mapping-file-release
+          key: diffuse-${{ github.event.pull_request.base.sha }}
+          restore-keys: diffuse-${{ github.event.pull_request.base.sha }}
+
       - id: diffuse
         uses: usefulness/diffuse-action@master
         with:
           old-file-path: diffuse-source-file-release
-          #          old-mapping-path: diffuse-mapping-file-release
+          old-mapping-path: diffuse-mapping-file-release
           new-file-path: app/build/outputs/apk/release/app-release.apk
-          #          new-mapping-path: app/build/outputs/mapping/release/mapping.txt
+          new-mapping-path: app/build/outputs/mapping/release/mapping.txt
 
       - uses: peter-evans/find-comment@v1
         id: find_comment
