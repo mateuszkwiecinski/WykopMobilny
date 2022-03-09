@@ -34,16 +34,8 @@ allprojects {
             tasks.withType(DataBindingMergeDependencyArtifactsTask).configureEach {
                 outputs.cacheIf { false }
             }
-            android {
-                defaultConfig {
-                    lint {
-                        disable += "ModifierParameter" // https://issuetracker.google.com/issues/223424344
-                        disable += "ComposableNaming" // https://issuetracker.google.com/issues/223424344
-                    }
-                }
-                packagingOptions {
-                    exclude 'META-INF/*.kotlin_module'
-                }
+            android.packagingOptions {
+                exclude 'META-INF/*.kotlin_module'
             }
         }
     }
