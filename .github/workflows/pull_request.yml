@@ -104,7 +104,7 @@ jobs:
             touch app/build/emulator.log
             chmod 777 app/build/emulator.log
             adb logcat >> app/build/emulator.log &
-            ./gradlew app:connectedReleaseTestAndroidTest -PtestBuildType=releaseTest
+            ./gradlew app:connectedReleaseTestAndroidTest -PtestBuildType=releaseTest --info
 
       - name: Upload ui tests result
         uses: actions/upload-artifact@v3
