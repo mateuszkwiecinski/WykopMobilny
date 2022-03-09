@@ -9,7 +9,7 @@ import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import kotlinx.coroutines.asExecutor
 
-fun <T> asyncDifferConfig(diff: DiffUtil.ItemCallback<T>) = AsyncDifferConfig.Builder(diff)
+fun <T> asyncDifferConfig(diff: DiffUtil.ItemCallback<T>): AsyncDifferConfig<T> = AsyncDifferConfig.Builder(diff)
     .setBackgroundThreadExecutor(AppDispatchers.Default.asExecutor())
     .build()
 
