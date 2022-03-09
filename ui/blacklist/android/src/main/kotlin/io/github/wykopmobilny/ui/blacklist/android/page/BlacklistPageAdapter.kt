@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.blacklist.BlacklistedElementUi
-import io.github.wykopmobilny.ui.blacklist.android.R
 import io.github.wykopmobilny.ui.blacklist.android.databinding.ItemBlockedElementBinding
 import kotlinx.coroutines.asExecutor
+import io.github.wykopmobilny.ui.base.android.R as BaseR
 
 internal class BlacklistPageAdapter :
     ListAdapter<BlacklistedElementUi, BlacklistPageAdapter.DefaultViewHolder>(
@@ -33,13 +33,13 @@ internal class BlacklistPageAdapter :
             is BlacklistedElementUi.StateUi.Default -> {
                 holder.binding.progress.isVisible = false
                 holder.binding.btnAction.isVisible = true
-                holder.binding.btnAction.setImageResource(R.drawable.ic_lock_open)
+                holder.binding.btnAction.setImageResource(BaseR.drawable.ic_lock_open)
                 holder.binding.btnAction.setOnClickListener { state.unblock() }
             }
             is BlacklistedElementUi.StateUi.Error -> {
                 holder.binding.progress.isVisible = false
                 holder.binding.btnAction.isVisible = true
-                holder.binding.btnAction.setImageResource(R.drawable.ic_exclamation_round)
+                holder.binding.btnAction.setImageResource(BaseR.drawable.ic_exclamation_round)
                 holder.binding.btnAction.setOnClickListener { state.showError() }
             }
             BlacklistedElementUi.StateUi.InProgress -> {

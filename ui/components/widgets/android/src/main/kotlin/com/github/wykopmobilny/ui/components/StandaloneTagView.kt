@@ -10,9 +10,9 @@ import androidx.core.text.scale
 import androidx.core.text.underline
 import com.github.wykopmobilny.ui.components.utils.readColorAttr
 import io.github.wykopmobilny.ui.components.widgets.TagUi
-import io.github.wykopmobilny.ui.components.widgets.android.R
 import io.github.wykopmobilny.ui.components.widgets.android.databinding.ViewTagStandaloneBinding
 import io.github.wykopmobilny.utils.bindings.setOnClick
+import androidx.appcompat.R as AppcompatR
 
 @Suppress("FunctionName")
 fun StandaloneTagView(
@@ -28,7 +28,7 @@ fun TextView.renderTag(model: TagUi) {
         scale(0.8f) {
             append("#")
         }
-        color(context.readColorAttr(R.attr.colorAccent).defaultColor) {
+        color(context.readColorAttr(AppcompatR.attr.colorAccent).defaultColor) {
             underline {
                 append(model.name)
             }

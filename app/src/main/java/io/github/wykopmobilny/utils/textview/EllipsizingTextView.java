@@ -23,8 +23,6 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import java.util.regex.Pattern;
 
-import io.github.wykopmobilny.R;
-
 /**
  * A {@link android.widget.TextView} that ellipsizes more intelligently.
  * This class supports ellipsizing multiline text through setting {@code android:ellipsize}
@@ -66,7 +64,7 @@ public class EllipsizingTextView extends AppCompatTextView {
         a.recycle();
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        theme.resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
         @ColorInt int color = typedValue.data;
         ELLIPSIS.setSpan(new ForegroundColorSpan(color), 0, ELLIPSIS.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     }

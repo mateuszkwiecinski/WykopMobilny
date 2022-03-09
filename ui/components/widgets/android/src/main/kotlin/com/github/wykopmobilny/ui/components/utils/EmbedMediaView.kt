@@ -14,15 +14,16 @@ import io.github.wykopmobilny.ui.components.widgets.NSFW_PLACEHOLDER
 import io.github.wykopmobilny.ui.components.widgets.android.R
 import io.github.wykopmobilny.ui.components.widgets.android.databinding.ViewEmbedMediaBinding
 import io.github.wykopmobilny.utils.bindings.setOnClick
+import io.github.wykopmobilny.ui.base.android.R as BaseR
 
 class EmbedMediaView(context: Context, attrs: AttributeSet?) : MaterialCardView(context, attrs) {
 
     init {
         inflate(context, R.layout.view_embed_media, this)
         cardElevation = 0f
-        radius = context.readDimensionAttr(R.attr.cornerRadius).toFloat()
-        strokeWidth = context.readDimensionAttr(R.attr.outlineWidth)
-        setStrokeColor(context.readColorAttr(R.attr.colorOutline))
+        radius = context.readDimensionAttr(BaseR.attr.cornerRadius).toFloat()
+        strokeWidth = context.readDimensionAttr(BaseR.attr.outlineWidth)
+        setStrokeColor(context.readColorAttr(BaseR.attr.colorOutline))
     }
 }
 

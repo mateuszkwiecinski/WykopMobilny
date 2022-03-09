@@ -92,6 +92,7 @@ android {
         exclude 'DebugProbesKt.bin'
     }
     lint {
+        checkReleaseBuilds = false
         disable += "UnknownNullness"
         disable += "Range"
     }

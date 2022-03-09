@@ -11,6 +11,7 @@ import io.github.wykopmobilny.base.BaseActivity
 import io.github.wykopmobilny.base.BaseFragment
 import io.github.wykopmobilny.databinding.ActivityMywykopBinding
 import io.github.wykopmobilny.utils.viewBinding
+import io.github.wykopmobilny.ui.settings.android.R as SettingsR
 
 class MyWykopFragment : BaseFragment(R.layout.activity_mywykop) {
 
@@ -34,7 +35,7 @@ class MyWykopFragment : BaseFragment(R.layout.activity_mywykop) {
         binding.pager.adapter = pagerAdapter
         binding.tabLayout.setupWithViewPager(binding.pager)
 
-        (activity as BaseActivity).supportActionBar?.setTitle(R.string.mywykop)
+        (activity as BaseActivity).supportActionBar?.setTitle(SettingsR.string.mywykop)
     }
 
     fun onRefresh() {

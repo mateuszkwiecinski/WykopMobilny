@@ -14,6 +14,7 @@ import io.github.wykopmobilny.base.BaseNavigationView
 import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.modules.mainnavigation.MainNavigationInterface
 import javax.inject.Inject
+import io.github.wykopmobilny.ui.settings.android.R as SettingsR
 
 class PromotedFragment : BaseLinksFragment(), PromotedView, BaseNavigationView {
 
@@ -56,7 +57,7 @@ class PromotedFragment : BaseLinksFragment(), PromotedView, BaseNavigationView {
         super.onViewCreated(view, savedInstanceState)
         fab.setOnClickListener { navigator.openAddLinkActivity() }
         presenter.subscribe(this)
-        (activity as BaseActivity).supportActionBar?.setTitle(R.string.main_page)
+        (activity as BaseActivity).supportActionBar?.setTitle(SettingsR.string.main_page)
 
         linksAdapter.linksActionListener = presenter
         linksAdapter.loadNewDataListener = { loadDataListener(false) }

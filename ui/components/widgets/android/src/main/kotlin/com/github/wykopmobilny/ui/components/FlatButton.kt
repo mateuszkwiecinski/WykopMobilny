@@ -13,7 +13,8 @@ import io.github.wykopmobilny.ui.components.widgets.android.R
 import io.github.wykopmobilny.ui.components.widgets.android.databinding.ViewFlatButtonBinding
 import io.github.wykopmobilny.utils.bindings.setImage
 import io.github.wykopmobilny.utils.bindings.setOnClick
-import io.github.wykopmobilny.utils.bindings.toColorInt
+import androidx.appcompat.R as AppcompatR
+import io.github.wykopmobilny.ui.base.android.R as BaseR
 
 class FlatButton(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
 
@@ -21,7 +22,7 @@ class FlatButton(context: Context, attrs: AttributeSet?) : LinearLayout(context,
         inflate(context, R.layout.view_flat_button, this)
         orientation = HORIZONTAL
         gravity = Gravity.CENTER_VERTICAL
-        setBackgroundResource(R.drawable.ripple_outline)
+        setBackgroundResource(BaseR.drawable.ripple_outline)
         val vertical = 4.dpToPx(resources)
         val horizontal = 6.dpToPx(resources)
         updatePadding(
@@ -35,8 +36,8 @@ class FlatButton(context: Context, attrs: AttributeSet?) : LinearLayout(context,
 
 fun FlatButton.bind(value: Button) {
     val binding = ViewFlatButtonBinding.bind(this)
-    val stroke = value.color?.toColorInt(context) ?: context.readColorAttr(R.attr.colorOutline)
-    val color = value.color?.toColorInt(context) ?: context.readColorAttr(R.attr.colorControlNormal)
+    val stroke = value.color?.toColorInt(context) ?: context.readColorAttr(BaseR.attr.colorOutline)
+    val color = value.color?.toColorInt(context) ?: context.readColorAttr(AppcompatR.attr.colorControlNormal)
 
     (background.mutate() as RippleDrawable).getDrawable(1).mutate().setTintList(stroke)
     setOnClick(value.clickAction)

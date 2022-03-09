@@ -26,6 +26,7 @@ import com.google.android.material.resources.MaterialAttributes
 import com.google.android.material.textfield.TextInputLayout
 import com.karumi.shot.ScreenshotTest
 import org.junit.Rule
+import io.github.wykopmobilny.ui.base.android.R as BaseR
 
 abstract class BaseScreenshotTest : ScreenshotTest {
 
@@ -183,9 +184,9 @@ private fun View.guessCoordinatorLayoutHeight() {
 }
 
 enum class ScreenshotTheme(val theme: Int) {
-    Light(R.style.Theme_App_Light),
-    Dark(R.style.Theme_App_Dark),
-    Amoled(R.style.Theme_App_Amoled)
+    Light(BaseR.style.Theme_App_Light),
+    Dark(BaseR.style.Theme_App_Dark),
+    Amoled(BaseR.style.Theme_App_Amoled)
 }
 
 fun exactHeight() = Size(1560, 2880)

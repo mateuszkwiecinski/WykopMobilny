@@ -11,13 +11,13 @@ import android.widget.Toast
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import io.github.aakira.napier.Napier
-import io.github.wykopmobilny.R
 import io.github.wykopmobilny.ui.dialogs.showExceptionDialog
+import androidx.appcompat.R as AppcompatR
 
 fun Context.openBrowser(url: String) {
     // Start in-app browser, handled by Chrome Customs Tabs
     val typedValue = TypedValue()
-    theme.resolveAttribute(R.attr.colorPrimaryDark, typedValue, true)
+    theme.resolveAttribute(AppcompatR.attr.colorPrimaryDark, typedValue, true)
     val customTabsIntent = CustomTabsIntent.Builder()
         .setDefaultColorSchemeParams(
             CustomTabColorSchemeParams.Builder()

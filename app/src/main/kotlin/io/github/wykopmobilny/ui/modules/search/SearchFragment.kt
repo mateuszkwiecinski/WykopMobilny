@@ -22,6 +22,7 @@ import io.github.wykopmobilny.utils.viewBinding
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import androidx.appcompat.R as AppcompatR
 
 class SearchFragment : BaseFragment(R.layout.activity_search) {
 
@@ -65,7 +66,7 @@ class SearchFragment : BaseFragment(R.layout.activity_search) {
         val item = menu.findItem(R.id.action_search) ?: return
         val searchView = item.actionView as SearchView
 
-        searchView.findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text).apply {
+        searchView.findViewById<SearchView.SearchAutoComplete>(AppcompatR.id.search_src_text).apply {
             setAdapter(suggestionsAdapter)
             onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
                 val clicked = suggestionsAdapter.getItem(position) ?: return@OnItemClickListener

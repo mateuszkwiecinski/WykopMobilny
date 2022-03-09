@@ -19,6 +19,7 @@ import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.utils.usermanager.isUserAuthorized
 import io.github.wykopmobilny.utils.viewBinding
 import javax.inject.Inject
+import io.github.wykopmobilny.ui.base.android.R as BaseR
 
 class TagActivity : BaseActivity(), TagActivityView {
 
@@ -118,7 +119,7 @@ class TagActivity : BaseActivity(), TagActivityView {
         binding.backgroundImg.isVisible = tagMeta.background != null
         tagMeta.background?.let { background ->
             binding.backgroundImg.loadImage(background)
-            binding.toolbar.toolbar.setBackgroundResource(R.drawable.gradient_toolbar_up)
+            binding.toolbar.toolbar.setBackgroundResource(BaseR.drawable.gradient_toolbar_up)
         }
         invalidateOptionsMenu()
     }

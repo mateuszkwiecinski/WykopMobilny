@@ -16,6 +16,8 @@ import io.github.wykopmobilny.data.storage.api.PreferenceEntity
 import io.github.wykopmobilny.ui.modules.mainnavigation.MainNavigationInterface
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
+import io.github.wykopmobilny.ui.base.android.R as BaseR
+import io.github.wykopmobilny.ui.settings.android.R as SettingsR
 
 class UpcomingFragment : BaseLinksFragment(), UpcomingView {
 
@@ -35,7 +37,7 @@ class UpcomingFragment : BaseLinksFragment(), UpcomingView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
-        navigation.activityToolbar.overflowIcon = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_sort)
+        navigation.activityToolbar.overflowIcon = ContextCompat.getDrawable(requireActivity(), BaseR.drawable.ic_sort)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -92,7 +94,7 @@ class UpcomingFragment : BaseLinksFragment(), UpcomingView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as BaseActivity).supportActionBar?.setTitle(R.string.wykopalisko)
+        (activity as BaseActivity).supportActionBar?.setTitle(SettingsR.string.wykopalisko)
         presenter.subscribe(this)
         presenter.sortBy = runBlocking {
             appStorage.preferencesQueries.getPreference("settings.links.upcoming_sort").executeAsOneOrNull()

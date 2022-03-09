@@ -44,6 +44,7 @@ import java.io.File
 import java.io.IOException
 import java.nio.file.Files
 import javax.inject.Inject
+import io.github.wykopmobilny.ui.base.android.R as BaseR
 
 class EmbedViewActivity : BaseActivity(), EmbedView {
 
@@ -77,7 +78,7 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(binding.toolbar.toolbar)
-        binding.toolbar.toolbar.setBackgroundResource(R.drawable.gradient_toolbar_up)
+        binding.toolbar.toolbar.setBackgroundResource(BaseR.drawable.gradient_toolbar_up)
         supportActionBar?.title = null
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         presenter.subscribe(this)
