@@ -2,6 +2,7 @@ plugins {
     id("com.starter.library.android")
     id("org.jetbrains.kotlin.kapt")
     id("io.github.wykopmobilny.screenshots")
+    id("app.cash.paparazzi") version("0.9.3")
 }
 
 android {
