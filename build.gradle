@@ -4,14 +4,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("com.starter.config")
     id("com.starter.versioning")
-    id("com.gradleup.auto.manifest")
     id("com.osacky.doctor") version("0.7.3")
     id("com.starter.easylauncher") version("5.0.0") apply(false)
     id "com.github.ben-manes.versions" version "0.42.0"
-}
-
-autoManifest {
-    packageName.set("io.github.wykopmobilny")
 }
 
 commonConfig {
@@ -40,6 +35,9 @@ allprojects {
         }
     }
     pluginManager.withPlugin("com.android.library") {
+        android {
+            namespace "io.github.wykopmobilny${path.replace(":", ".").replace("-", "_")}"
+        }
         android.variantFilter {
             ignore = buildType.name != "debug"
         }
