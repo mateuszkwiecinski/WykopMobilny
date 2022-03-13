@@ -193,6 +193,9 @@ dependencies {
     testImplementation(libs.junit.api)
     testRuntimeOnly(libs.junit.engine)
 
+    debugImplementation(libs.compose.uitest.someweirdmanifestshit)
+    releaseTestImplementation(libs.compose.uitest.someweirdmanifestshit)
+    androidTestImplementation(libs.compose.uitest.core)
     androidTestImplementation(libs.bundles.espresso) {
         exclude(group: "com.google.protobuf", module: "protobuf-lite")
     }

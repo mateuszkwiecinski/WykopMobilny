@@ -95,7 +95,8 @@ compose-material = { module = "androidx.compose.material3:material3", version.re
 compose-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "google-compose-core" }
 compose-material-deprecated = { module = "androidx.compose.material:material", version.ref = "google-compose-core" }
 compose-animation = { module = "androidx.compose.animation:animation", version.ref = "google-compose-core" }
-compose-uitest = { module = "androidx.compose.ui:ui-test", version.ref = "google-compose-core" }
+compose-uitest-core = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "google-compose-core" }
+compose-uitest-someweirdmanifestshit = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "google-compose-core" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "google-compose-core" }
 compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "google-lifecycle" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "google.navigation" }

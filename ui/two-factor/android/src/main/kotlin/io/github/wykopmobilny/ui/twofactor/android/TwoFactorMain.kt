@@ -36,6 +36,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -81,7 +82,8 @@ fun TestingDefault() {
 
 @Composable
 fun TwoFactorMain(navController: NavController, dependencies: TwoFactorAuthDependencies) {
-    val state by dependencies.getTwoFactorAuthDetails().invoke().collectAsState(initial = null)
+    val flow = remember { dependencies.getTwoFactorAuthDetails().invoke() }
+    val state by flow.collectAsState(initial = null)
     TwoFactorScaffold(navController = navController, state = state)
 }
 

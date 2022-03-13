@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.base.ComposableActivity
 import io.github.wykopmobilny.ui.twofactor.TwoFactorAuthDependencies
 import io.github.wykopmobilny.ui.twofactor.android.TwoFactorMain
@@ -22,6 +23,7 @@ internal class TwoFactorAuthorizationActivity : ComposableActivity() {
     @Composable
     override fun ScreenContent() {
         val navController = rememberNavController()
+        Napier.i("Recomposing ScreenContent")
         NavHost(navController = navController, startDestination = "two-factor") {
             twoFactorGraph(navController)
         }
