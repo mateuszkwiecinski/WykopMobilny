@@ -1,17 +1,18 @@
 package io.github.wykopmobilny.utils
 
+import android.app.Activity
 import android.app.Application
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-inline fun <reified TDependency : Any> Fragment.viewModelWrapperFactory() =
-    object : ViewModelProvider.AndroidViewModelFactory(context?.applicationContext as Application) {
+inline fun <reified TDependency : Any> Activity.viewModelWrapperFactory() =
+    object : ViewModelProvider.AndroidViewModelFactory(applicationContext as Application) {
 
         @kotlin.Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>) =
-            viewModelWrapper<TDependency>(context?.applicationContext as Application) as T
+            viewModelWrapper<TDependency>(applicationContext as Application) as T
     }
 
 inline fun <TKey : Any, reified TDependency : Any> Fragment.viewModelWrapperFactoryKeyed(

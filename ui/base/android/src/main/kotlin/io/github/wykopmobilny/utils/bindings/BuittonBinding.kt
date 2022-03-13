@@ -2,6 +2,7 @@ package io.github.wykopmobilny.utils.bindings
 
 import android.widget.Button
 import android.widget.ProgressBar
+import androidx.compose.material3.Button
 import androidx.core.view.isVisible
 import io.github.wykopmobilny.ui.base.components.ProgressButtonUi
 import kotlinx.coroutines.flow.Flow

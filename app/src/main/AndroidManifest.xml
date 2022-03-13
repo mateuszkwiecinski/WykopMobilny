@@ -110,8 +110,7 @@
             />
         <activity
             android:name="io.github.wykopmobilny.ui.modules.twofactor.TwoFactorAuthorizationActivity"
-            android:theme="@style/Theme.App.Dark"
-            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.App.Compose"
             />
         <activity
             android:name=".ui.modules.links.upvoters.UpvotersActivity"
@@ -377,7 +376,10 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             />
 
-        <meta-data android:name="firebase_analytics_collection_deactivated" android:value="@bool/disable_firebase_analytics" />
+        <meta-data
+            android:name="firebase_analytics_collection_deactivated"
+            android:value="@bool/disable_firebase_analytics"
+            />
     </application>
 
     <queries>

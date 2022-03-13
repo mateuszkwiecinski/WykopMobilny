@@ -26,6 +26,7 @@ def findProperty(key) {
 android {
     defaultConfig {
         applicationId "io.github.wykopmobilny"
+        namespace = applicationId
 
         testInstrumentationRunner = "io.github.wykopmobilny.DefaultTestRunner"
         buildConfigField 'String', 'APP_SECRET', "\"${findProperty("wykop.secretKey")}\""
@@ -81,6 +82,7 @@ android {
     buildFeatures {
         viewBinding true
         resValues true
+        compose true
     }
 
     packagingOptions {
@@ -195,10 +197,6 @@ dependencies {
         exclude(group: "com.google.protobuf", module: "protobuf-lite")
     }
     androidTestImplementation(libs.okhttp.mockwebserver)
-}
-
-tasks.named("detekt") {
-    baseline = file("$rootDir/detekt-baseline.xml")
 }
 
 tasks.register("detektProjectBaseline", DetektCreateBaselineTask) {

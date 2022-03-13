@@ -11,10 +11,12 @@ import org.hamcrest.Matchers.startsWith
 
 object TwoFactorAuthPage : Page {
 
+    private val title = withText(startsWith("Wygląda na to że Twoje konto korzysta z uwierzytenienia dwuskładnikowego (2FA)"))
     private val codeInput = withHint("6 cyfrowy kod")
+    private val ctaButton = withText("Weryfikuj")
 
     fun assertVisible() {
-        onView(withText(startsWith("Wygląda na to że Twoje konto korzysta z uwierzytenienia dwuskładnikowego (2FA)"))).waitVisible()
+        onView(title).waitVisible()
     }
 
     fun typeCode(code: String) {
@@ -22,6 +24,6 @@ object TwoFactorAuthPage : Page {
     }
 
     fun tapCtaButton() {
-        onView(withText("Weryfikuj")).waitVisible().perform(click())
+        onView(ctaButton).waitVisible().perform(click())
     }
 }

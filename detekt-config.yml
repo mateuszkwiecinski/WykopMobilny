@@ -1,0 +1,118 @@
+processors:
+  active: false
+
+console-reports:
+  active: true
+  exclude:
+    - 'ProjectStatisticsReport'
+    - 'ComplexityReport'
+    - 'NotificationReport'
+    #  - 'FindingsReport'
+    - 'FileBasedFindingsReport'
+    - 'LiteFindingsReport'
+
+output-reports:
+  active: false
+
+complexity:
+  ComplexMethod:
+    active: false
+    threshold: 15
+    ignoreSingleWhenExpression: false
+    ignoreSimpleWhenEntries: false
+    ignoreNestingFunctions: false
+    nestingFunctions:
+      - 'also'
+      - 'apply'
+      - 'forEach'
+      - 'isNotNull'
+      - 'ifNull'
+      - 'let'
+      - 'run'
+      - 'use'
+      - 'with'
+  LargeClass:
+    active: false
+  LongMethod:
+    active: false
+  LongParameterList:
+    active: false
+  NestedBlockDepth:
+    active: false
+  TooManyFunctions:
+    active: false
+
+coroutines:
+  active: true
+  GlobalCoroutineUsage:
+    active: false
+  InjectDispatcher:
+    active: true
+    dispatcherNames:
+      - 'IO'
+      - 'Default'
+      - 'Unconfined'
+  RedundantSuspendModifier:
+    active: true
+  SleepInsteadOfDelay:
+    active: true
+  SuspendFunWithFlowReturnType:
+    active: true
+
+formatting:
+  active: false
+
+naming:
+  active: true
+  LambdaParameterNaming:
+    active: false
+  VariableMinLength:
+    active: true
+    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
+    minimumVariableNameLength: 2
+  FunctionNaming:
+    active: false
+    excludes: [ 'Compose' ]
+
+performance:
+  active: true
+  SpreadOperator:
+    active: false
+
+potential-bugs:
+  active: true
+  MissingPackageDeclaration:
+    active: true
+    excludes: [ '**/*.kts' ]
+
+style:
+  active: true
+  ForbiddenComment:
+    active: false
+  ForbiddenPublicDataClass:
+    active: false
+  LibraryEntitiesShouldNotBePublic:
+    active: false
+  MagicNumber:
+    active: false
+  MaxLineLength:
+    active: true
+    maxLineLength: 140
+  ReturnCount:
+    active: false
+  ThrowsCount:
+    active: false
+  UseCheckNotNull:
+    active: true
+  UseIfEmptyOrIfBlank:
+    active: true
+  UseIfInsteadOfWhen:
+    active: true
+  UseIsNullOrEmpty:
+    active: true
+  UseOrEmpty:
+    active: true
+  UnnecessaryAbstractClass:
+    ignoreAnnotated: [ 'Module' ]
+  UnusedPrivateMember:
+    ignoreAnnotated: [ 'Preview' ]

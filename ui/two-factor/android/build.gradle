@@ -6,13 +6,14 @@ plugins {
 
 android {
     buildFeatures {
-        viewBinding true
+        compose true
     }
 }
 
 dependencies {
     api(projects.ui.base.android)
     api(projects.ui.twoFactor.api)
+    implementation(libs.compose.material.deprecated)
 
     implementation(projects.common.kotlinHelpers)
     implementation(libs.dagger.core)

@@ -3,13 +3,18 @@ package io.github.wykopmobilny.base
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.lifecycleScope
 import com.r0adkll.slidr.attachSlidr
 import com.r0adkll.slidr.model.SlidrConfig
 import io.github.wykopmobilny.styles.ApplicableStyleUi
 import io.github.wykopmobilny.styles.StylesDependencies
 import io.github.wykopmobilny.utils.requireDependency
+import io.github.wykopmobilny.utils.theme.AppTheme
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.first
@@ -65,4 +70,32 @@ internal abstract class ThemableActivity : AppCompatActivity() {
         }
         setTheme(themeRes)
     }
+}
+
+internal abstract class ComposableActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState ?: intent.getBundleExtra("saved_State"))
+        val getAppStyle = requireDependency<StylesDependencies>().getAppStyle()
+        setContent {
+            val style by getAppStyle().collectAsState(initial = null)
+            val colorScheme = style?.style?.colorScheme
+
+            if (colorScheme != null) {
+                AppTheme(appTheme = colorScheme) {
+                    ScreenContent()
+                }
+            }
+        }
+    }
+
+    @Composable
+    protected abstract fun ScreenContent()
+
+    private val ApplicableStyleUi.colorScheme
+        @Composable get() = when (this) {
+            ApplicableStyleUi.Light -> AppTheme.Light
+            ApplicableStyleUi.Dark -> AppTheme.Dark
+            ApplicableStyleUi.DarkAmoled -> AppTheme.DarkAmoled
+        }
 }

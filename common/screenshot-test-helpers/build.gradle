@@ -4,26 +4,26 @@ plugins {
 }
 
 android {
-    lintOptions {
+    lint {
         disable("FragmentGradleConfiguration")
     }
-
+    buildFeatures {
+        compose true
+    }
     packagingOptions {
-        excludes += "META-INF/*"
+        resources.excludes += "META-INF/*"
     }
 }
 
 dependencies {
     implementation(project(":ui:base:android"))
-    //noinspection GradleDependency https://github.com/pedrovgs/Shot/issues/254
     implementation("androidx.fragment:fragment-testing:1.4.1")
-    implementation("com.karumi:shot-android:5.14.1") {
-        exclude group: "androidx.compose.ui" // https://issuetracker.google.com/issues/223424344
-    }
+    implementation("com.karumi:shot-android:5.14.1")
     implementation("com.facebook.testing.screenshot:core:0.15.0")
     implementation(libs.bundles.espresso)
     implementation(libs.glide.core)
     kapt(libs.glide.compiler)
+    api(libs.paparazzi.core)
     api("com.thedeanda:lorem:2.1")
     api("junit:junit:4.13.2")
 }
