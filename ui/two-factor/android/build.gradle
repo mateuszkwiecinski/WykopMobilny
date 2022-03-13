@@ -1,6 +1,5 @@
 plugins {
     id("com.starter.library.android")
-    id("org.jetbrains.kotlin.kapt")
     id("io.github.wykopmobilny.screenshots")
 }
 
@@ -14,8 +13,5 @@ dependencies {
     api(projects.ui.base.android)
     api(projects.ui.twoFactor.api)
     implementation(libs.compose.material.deprecated)
-
     implementation(projects.common.kotlinHelpers)
-    implementation(libs.dagger.core)
-    kapt(libs.dagger.compiler)
 }

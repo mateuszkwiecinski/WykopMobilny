@@ -44,8 +44,10 @@ jobs:
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
 
       - run: ./gradlew projectCoverage
+        if: ${{ false }}
 
       - uses: codecov/codecov-action@v3
+        if: ${{ false }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
