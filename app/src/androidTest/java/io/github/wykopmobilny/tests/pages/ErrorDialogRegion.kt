@@ -2,6 +2,7 @@ package io.github.wykopmobilny.tests.pages
 
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.RootMatchers.isDialog
@@ -15,7 +16,7 @@ class ErrorDialogRegion(val composeTestRule: ComposeTestRule) : Page {
         if (interop) {
             onView(withText(text)).waitVisible()
         } else {
-            composeTestRule.onNodeWithText(text).assertExists()
+            composeTestRule.onNodeWithText(text).waitVisible()
         }
     }
 
@@ -23,7 +24,7 @@ class ErrorDialogRegion(val composeTestRule: ComposeTestRule) : Page {
         if (interop) {
             onView(withText(text)).inRoot(isDialog()).waitVisible().perform(click())
         } else {
-            composeTestRule.onNodeWithText(text).assertExists()
+            composeTestRule.onNodeWithText(text).waitVisible().performClick()
         }
     }
 }

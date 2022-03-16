@@ -5,6 +5,7 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import io.github.wykopmobilny.tests.base.Page
+import io.github.wykopmobilny.utils.waitVisible
 
 class TwoFactorAuthPage(private val rule: ComposeTestRule) : Page {
 
@@ -13,14 +14,14 @@ class TwoFactorAuthPage(private val rule: ComposeTestRule) : Page {
     private val ctaButton = hasText("Weryfikuj")
 
     fun assertVisible() {
-        rule.onNode(title).assertExists()
+        rule.onNode(title).waitVisible()
     }
 
     fun typeCode(code: String) {
-        rule.onNode(codeInput).assertExists().performTextInput(code)
+        rule.onNode(codeInput).waitVisible().performTextInput(code)
     }
 
     fun tapCtaButton() {
-        rule.onNode(ctaButton).performClick()
+        rule.onNode(ctaButton).waitVisible().performClick()
     }
 }
