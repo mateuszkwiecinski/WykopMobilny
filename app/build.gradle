@@ -33,6 +33,7 @@ android {
         buildConfigField "String", "GOOGLE_KEY", "\"${findProperty("wykop.googleKey")}\""
         resValue "string", "GOOGLE_API_KEY", "${findProperty("wykop.googleKey")}"
     }
+    namespace defaultConfig.applicationId
     testBuildType findProperty("testBuildType") ?: "debug"
 
     compileOptions {
@@ -160,7 +161,7 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.jetbrains.markdown)
     debugImplementation(libs.leakcanary.core)
-    implementation(platform("com.google.firebase:firebase-bom:29.2.0"))
+    implementation(platform("com.google.firebase:firebase-bom:29.2.1"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-perf-ktx")

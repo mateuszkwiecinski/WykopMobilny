@@ -5,7 +5,7 @@ plugins {
     id("com.starter.config")
     id("com.starter.versioning")
     id("com.osacky.doctor") version("0.7.3")
-    id("com.starter.easylauncher") version("5.0.0") apply(false)
+    id("com.starter.easylauncher") version("5.0.1") apply(false)
     id "com.github.ben-manes.versions" version "0.42.0"
 }
 
