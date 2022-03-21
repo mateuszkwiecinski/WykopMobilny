@@ -39,7 +39,7 @@ jobs:
           WYKOP_SECRETKEY: ${{ secrets.WYKOP_SECRETKEY }}
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         name: Download base
         with:
           path: |
