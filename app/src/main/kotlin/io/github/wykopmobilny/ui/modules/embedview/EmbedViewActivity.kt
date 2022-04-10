@@ -52,7 +52,7 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
         const val EXTRA_URL = "EXTRA_URL"
         fun createIntent(context: Context, url: String) =
             Intent(context, EmbedViewActivity::class.java).apply {
-                putExtra(EXTRA_URL, url)
+                putExtra(EXTRA_URL, url.trim())
             }
     }
 

@@ -14,10 +14,10 @@ class ExtensionsTest {
         val format4 = "25s" // 25.000ms
         val format5 = "malformed_time"
 
-        assertEquals(5_000, format1.youtubeTimestampToMsOrNull())
-        assertEquals(11_010_000, format2.youtubeTimestampToMsOrNull())
-        assertEquals(70_000, format3.youtubeTimestampToMsOrNull())
-        assertEquals(25_000, format4.youtubeTimestampToMsOrNull())
+        assertEquals(5_000L, format1.youtubeTimestampToMsOrNull())
+        assertEquals(11_010_000L, format2.youtubeTimestampToMsOrNull())
+        assertEquals(70_000L, format3.youtubeTimestampToMsOrNull())
+        assertEquals(25_000L, format4.youtubeTimestampToMsOrNull())
         assertNull(format5.youtubeTimestampToMsOrNull())
     }
 }
