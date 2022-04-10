@@ -103,7 +103,7 @@ class YTPlayer :
     YouTubePlayer.PlayerStateChangeListener {
 
     private var videoId: String? = null
-    private var timestampMs: Int? = null
+    private var timestampMs: Long? = null
 
     private var playerStyle: YouTubePlayer.PlayerStyle? = null
     private var orientation: Orientation? = null
@@ -192,7 +192,7 @@ class YTPlayer :
         }
 
         if (!wasRestored) {
-            player.loadVideo(videoId, timestampMs ?: 0)
+            player.loadVideo(videoId, timestampMs?.toInt() ?: 0)
         }
     }
 

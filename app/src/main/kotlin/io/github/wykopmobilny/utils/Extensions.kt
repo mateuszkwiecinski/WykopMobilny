@@ -25,6 +25,7 @@ import org.threeten.bp.Duration
 import org.threeten.bp.format.DateTimeParseException
 import java.util.Date
 import java.util.Locale
+import kotlin.time.Duration.Companion.seconds
 
 fun SpannableStringBuilder.appendNewSpan(text: CharSequence, what: Any, flags: Int): SpannableStringBuilder {
     val start = length
@@ -137,14 +138,14 @@ fun Uri.queryFileName(contentResolver: ContentResolver): String {
  * @return time in milliseconds, null if value cannot be converted.
  *
  */
-fun String.youtubeTimestampToMsOrNull(): Int? {
+internal fun String.youtubeTimestampToMsOrNull(): Long? {
     val timestamp = this.toLongOrNull()
     if (timestamp != null) {
-        return Duration.ofSeconds(timestamp).toMillis().toInt()
+        return timestamp.seconds.inWholeMilliseconds
     }
 
     return try {
-        Duration.parse("PT$this").toMillis().toInt()
+        Duration.parse("PT$this").toMillis()
     } catch (e: DateTimeParseException) {
         null
     }
