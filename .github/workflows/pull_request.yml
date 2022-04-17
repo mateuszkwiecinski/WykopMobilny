@@ -63,8 +63,8 @@ jobs:
         with:
           name: apk
           path: |
-            '${{ github.workspace }}/**/build/**/*.apk'
-            '${{ github.workspace }}/**/build/**/mapping.txt'
+            app/build/outputs/apk/release/app-release.apk
+            app/build/outputs/mapping/release/mapping.txt
 
   ui_test:
     runs-on: macos-latest
