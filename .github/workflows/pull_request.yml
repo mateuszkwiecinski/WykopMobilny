@@ -59,6 +59,13 @@ jobs:
           name: lint-results
           path: '${{ github.workspace }}/**/build/**/reports/lint-results-*.html'
 
+      - uses: actions/upload-artifact@v3
+        with:
+          name: apk
+          path: |
+            app/build/outputs/apk/release/app-release.apk
+            app/build/outputs/mapping/release/mapping.txt
+
   ui_test:
     runs-on: macos-latest
     env:
