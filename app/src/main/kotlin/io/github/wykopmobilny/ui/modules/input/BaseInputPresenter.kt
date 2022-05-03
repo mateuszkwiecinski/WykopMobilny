@@ -8,4 +8,5 @@ interface BaseInputPresenter {
     fun sendWithPhotoUrl(photo: String?, containsAdultContent: Boolean)
 }
 
+@Suppress("UnnecessaryAbstractClass")
 abstract class InputPresenter<T : BaseInputView> : BasePresenter<T>(), BaseInputPresenter
