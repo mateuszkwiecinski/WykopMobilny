@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.LoggerWrapper
+import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask
 import com.android.build.gradle.internal.tasks.databinding.DataBindingMergeDependencyArtifactsTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -31,6 +33,15 @@ allprojects {
             }
             android.packagingOptions {
                 exclude 'META-INF/*.kotlin_module'
+            }
+        }
+
+        tasks.withType(DeviceProviderInstrumentTestTask).configureEach {
+            doFirst {
+                LoggerWrapper.Switch.shouldShowInfoLogsAsLifecycle = true
+            }
+            doLast {
+                LoggerWrapper.Switch.shouldShowInfoLogsAsLifecycle = false
             }
         }
     }

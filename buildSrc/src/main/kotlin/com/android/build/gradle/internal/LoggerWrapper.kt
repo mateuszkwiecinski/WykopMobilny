@@ -92,11 +92,8 @@ class LoggerWrapper(private val logger: Logger) : ILogger {
                 return
             }
         }
-        if (objects == null || objects.isEmpty()) {
-            logger.log(newLogLevel, s)
-        } else {
-            logger.log(logLevel, String.format(s, *objects))
-        }
+        val message = if (objects == null || objects.isEmpty()) s else s.format(*objects)
+        logger.log(newLogLevel, message)
     }
 
     private class LoggerSupplier(private val clazz: Class<*>) : Supplier<ILogger>, Serializable {
