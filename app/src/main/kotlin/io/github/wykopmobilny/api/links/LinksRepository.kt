@@ -3,6 +3,7 @@ package io.github.wykopmobilny.api.links
 import io.github.wykopmobilny.api.UserTokenRefresher
 import io.github.wykopmobilny.api.WykopImageFile
 import io.github.wykopmobilny.api.endpoints.LinksRetrofitApi
+import io.github.wykopmobilny.api.entries.allowImageOnly
 import io.github.wykopmobilny.api.errorhandler.ErrorHandlerTransformer
 import io.github.wykopmobilny.api.filters.OWMContentFilter
 import io.github.wykopmobilny.api.patrons.PatronsApi
@@ -169,7 +170,14 @@ class LinksRepository @Inject constructor(
         inputStream: WykopImageFile,
         linkId: Long,
     ) =
-        rxSingle { linksApi.addComment(body.toRequestBody(), plus18.toRequestBody(), linkId, inputStream.getFileMultipart()) }
+        rxSingle {
+            linksApi.addComment(
+                body = body.allowImageOnly().toRequestBody(),
+                plus18 = plus18.toRequestBody(),
+                linkId = linkId,
+                file = inputStream.getFileMultipart(),
+            )
+        }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
             .map { LinkCommentMapper.map(it, owmContentFilter) }
@@ -193,7 +201,15 @@ class LinksRepository @Inject constructor(
         linkId: Long,
         linkComment: Long,
     ) =
-        rxSingle { linksApi.addComment(body.toRequestBody(), plus18.toRequestBody(), linkId, linkComment, inputStream.getFileMultipart()) }
+        rxSingle {
+            linksApi.addComment(
+                body = body.allowImageOnly().toRequestBody(),
+                plus18 = plus18.toRequestBody(),
+                linkId = linkId,
+                commentId = linkComment,
+                file = inputStream.getFileMultipart(),
+            )
+        }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
             .map { LinkCommentMapper.map(it, owmContentFilter) }

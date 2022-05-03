@@ -152,6 +152,10 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
                     isEnabled = !it.useSimpleList && it.showLinkThumbnail,
                     onClicked = { updateUserSetting(UserSettings.showAuthor, !it.showAuthor) },
                 ),
+                hideLinkComments = Setting(
+                    currentValue = it.hideLinkComments,
+                    onClicked = { updateUserSetting(UserSettings.hideLinkComments, !it.hideLinkComments) },
+                ),
             )
         }
 

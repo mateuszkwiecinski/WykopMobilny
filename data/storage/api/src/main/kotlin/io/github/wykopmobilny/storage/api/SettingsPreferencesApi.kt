@@ -23,4 +23,5 @@ interface SettingsPreferencesApi {
     val useBuiltInBrowser: Boolean
     var groupNotifications: Boolean
     val disableExitConfirmation: Boolean
+    val hideLinkCommentsByDefault: Boolean
 }

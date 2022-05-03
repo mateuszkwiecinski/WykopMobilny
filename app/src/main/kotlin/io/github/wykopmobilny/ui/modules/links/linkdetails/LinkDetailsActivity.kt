@@ -204,13 +204,49 @@ class LinkDetailsActivity :
 
     override fun showLinkComments(comments: List<LinkComment>) {
         adapter.link?.comments = comments.toMutableList()
+        // Auto-Collapse comments depending on settings
+        if (settingsApi.hideLinkCommentsByDefault) {
+            adapter.link?.comments?.forEach {
+                if (it.parentId == it.id) {
+                    it.isCollapsed = true
+                } else {
+                    it.isParentCollapsed = true
+                }
+            }
+        }
         binding.loadingView.isVisible = false
         binding.swiperefresh.isRefreshing = false
         adapter.notifyDataSetChanged()
         binding.inputToolbar.show()
         if (linkCommentId != -1L && adapter.link != null) {
-            scrollToComment(linkCommentId)
+            if (settingsApi.hideLinkCommentsByDefault) {
+                expandAndScrollToComment(linkCommentId)
+            } else {
+                scrollToComment(linkCommentId)
+            }
         }
+    }
+
+    private fun expandAndScrollToComment(linkCommentId: Long) {
+        adapter.link?.comments?.let { allComments ->
+            val parentId = allComments.find { it.id == linkCommentId }?.parentId
+            allComments.forEach {
+                if (it.parentId == parentId) {
+                    it.isCollapsed = false
+                    it.isParentCollapsed = false
+                }
+            }
+        }
+        adapter.notifyDataSetChanged()
+
+        val comments = adapter.link!!.comments
+        var index = 0
+        for (i in 0 until comments.size) {
+            if (!comments[i].isParentCollapsed) index++
+            if (comments[i].id == linkCommentId) break
+        }
+
+        binding.recyclerView.scrollToPosition(index + 1)
     }
 
     override fun scrollToComment(id: Long) {
