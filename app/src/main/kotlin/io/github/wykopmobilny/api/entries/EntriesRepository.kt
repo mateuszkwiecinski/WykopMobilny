@@ -46,7 +46,13 @@ class EntriesRepository @Inject constructor(
         .compose(ErrorHandlerTransformer())
 
     override fun addEntry(body: String, wykopImageFile: WykopImageFile, plus18: Boolean) =
-        rxSingle { entriesApi.addEntry(body.toRequestBody(), plus18.toRequestBody(), wykopImageFile.getFileMultipart()) }
+        rxSingle {
+            entriesApi.addEntry(
+                body = body.allowImageOnly().toRequestBody(),
+                plus18 = plus18.toRequestBody(),
+                file = wykopImageFile.getFileMultipart(),
+            )
+        }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
 
@@ -57,7 +63,7 @@ class EntriesRepository @Inject constructor(
     override fun addEntryComment(body: String, entryId: Long, wykopImageFile: WykopImageFile, plus18: Boolean) =
         rxSingle {
             entriesApi.addEntryComment(
-                body = body.toRequestBody(),
+                body = body.allowImageOnly().toRequestBody(),
                 plus18 = plus18.toRequestBody(),
                 entryId = entryId,
                 file = wykopImageFile.getFileMultipart(),
@@ -153,3 +159,6 @@ class EntriesRepository @Inject constructor(
         .compose(ErrorHandlerTransformer())
         .map { it.map { response -> VoterMapper.map(response) } }
 }
+
+internal fun String.allowImageOnly() =
+    ifEmpty { " " }
