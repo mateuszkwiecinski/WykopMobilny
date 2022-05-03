@@ -94,6 +94,8 @@ internal class InteropSettingPreferencesApi @Inject constructor(
             FontSize.VeryLarge -> "huge"
             null -> "normal"
         }
+    override val hideLinkCommentsByDefault: Boolean
+        get() = interop(UserSettings.hideLinkComments) ?: false
     override val hideBlacklistedViews: Boolean
         get() = interop(UserSettings.hideBlacklistedContent) ?: false
     override val enableYoutubePlayer: Boolean

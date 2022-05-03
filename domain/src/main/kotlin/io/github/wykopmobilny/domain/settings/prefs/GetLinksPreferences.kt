@@ -18,14 +18,16 @@ internal class GetLinksPreferences @Inject constructor(
         appStorage.get(UserSettings.showLinkThumbnail),
         appStorage.get(UserSettings.imagePosition),
         appStorage.get(UserSettings.showAuthor),
+        appStorage.get(UserSettings.hideLinkComments),
         appStorage.get(UserSettings.commentsSort),
         appStorage.get(UserSettings.upcomingSort),
-    ) { useSimpleList, showLinkThumbnail, imagePosition, showAuthor, commentsSort, upcomingSort ->
+    ) { useSimpleList, showLinkThumbnail, imagePosition, showAuthor, hideLinkComments, commentsSort, upcomingSort ->
         LinksPreference(
             useSimpleList = useSimpleList ?: false,
             showLinkThumbnail = showLinkThumbnail ?: true,
             imagePosition = imagePosition ?: LinkImagePosition.Left,
             showAuthor = showAuthor ?: false,
+            hideLinkComments = hideLinkComments ?: false,
             commentsSort = commentsSort ?: CommentsDefaultSort.Old,
             upcomingSort = upcomingSort ?: UpcomingSort.Active,
         )
@@ -37,6 +39,7 @@ internal data class LinksPreference(
     val showLinkThumbnail: Boolean,
     val imagePosition: LinkImagePosition,
     val showAuthor: Boolean,
+    val hideLinkComments: Boolean,
     val commentsSort: CommentsDefaultSort,
     val upcomingSort: UpcomingSort,
 )
