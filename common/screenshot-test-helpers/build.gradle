@@ -17,7 +17,7 @@ dependencies {
     implementation(project(":ui:base:android"))
     //noinspection GradleDependency https://github.com/pedrovgs/Shot/issues/254
     implementation("androidx.fragment:fragment-testing:1.4.1")
-    implementation("com.karumi:shot-android:5.14.0") {
+    implementation("com.karumi:shot-android:5.14.1") {
         exclude group: "androidx.compose.ui" // https://issuetracker.google.com/issues/223424344
     }
     implementation("com.facebook.testing.screenshot:core:0.15.0")
