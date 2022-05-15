@@ -19,7 +19,7 @@ dependencies {
     implementation("com.android.tools:common:30.3.0-alpha09")
     implementation("com.karumi:shot:5.14.0")
     implementation("pl.droidsonroids.gradle:plugin:1.0.9")
-    implementation("com.android.tools.build:gradle:7.3.0-alpha09")
+    implementation("com.android.tools.build:gradle:7.3.0-beta01")
 }
 
 gradlePlugin {
