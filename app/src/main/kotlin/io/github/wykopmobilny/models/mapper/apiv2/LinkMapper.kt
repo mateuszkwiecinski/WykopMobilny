@@ -31,6 +31,7 @@ object LinkMapper {
                 userVote = value.userVote,
                 userFavorite = value.userFavorite ?: false,
                 app = value.app,
+                violationUrl = value.violationUrl,
                 gotSelected = false,
                 isBlocked = false,
             ),

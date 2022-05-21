@@ -38,7 +38,7 @@ interface LinksRetrofitApi {
     @GET("/links/comments/{linkId}/sort/{sortBy}/appkey/$APP_KEY")
     suspend fun getLinkComments(@Path("linkId") linkId: Long, @Path("sortBy") sortBy: String): WykopApiResponse<List<LinkCommentResponse>>
 
-    @GET("/links/link/{linkId}/appkey/$APP_KEY")
+    @GET("/links/link/{linkId}/data/full/appkey/$APP_KEY")
     suspend fun getLink(@Path("linkId") linkId: Long): WykopApiResponse<LinkResponse>
 
     @GET("/links/commentVoteUp/{linkId}/{commentId}/appkey/$APP_KEY")

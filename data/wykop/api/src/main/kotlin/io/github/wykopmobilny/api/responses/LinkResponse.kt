@@ -25,4 +25,5 @@ data class LinkResponse(
     @field:Json(name = "user_observe") val userObserve: Boolean?,
     @field:Json(name = "user_favorite") val userFavorite: Boolean?,
     @field:Json(name = "app") val app: String?,
+    @field:Json(name = "violation_url") val violationUrl: String?,
 )
