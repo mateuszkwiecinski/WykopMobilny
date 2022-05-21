@@ -27,7 +27,8 @@ interface EntriesApi {
     fun addEntryComment(body: String, entryId: Long, wykopImageFile: WykopImageFile, plus18: Boolean): Single<EntryCommentResponse>
     fun markFavorite(entryId: Long): Single<FavoriteResponse>
     fun deleteEntry(entryId: Long): Single<EntryResponse>
-    fun editEntry(body: String, entryId: Long): Single<EntryResponse>
+    fun editEntry(body: String, entryId: Long, embed: String?, plus18: Boolean): Single<EntryCommentResponse>
+    fun editEntry(body: String, entryId: Long, wykopImageFile: WykopImageFile, plus18: Boolean): Single<EntryCommentResponse>
 
     fun editEntryComment(body: String, commentId: Long, embed: String?, plus18: Boolean): Single<EntryCommentResponse>
     fun editEntryComment(body: String, commentId: Long, wykopImageFile: WykopImageFile, plus18: Boolean): Single<EntryCommentResponse>

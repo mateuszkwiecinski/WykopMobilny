@@ -226,7 +226,7 @@ class EntryViewHolder(
                 showAdultContent = showAdultContent,
                 hideNsfw = hideNsfw,
                 navigator = navigator,
-                isNsfw = entry.isNsfw
+                isNsfw = entry.isNsfw,
             )
         }
 
@@ -271,7 +271,11 @@ class EntryViewHolder(
             }
 
             entryMenuEdit.setOnClickListener {
-                navigator.openEditEntryActivity(entry.body, entry.id)
+                navigator.openEditEntryActivity(
+                    body = entry.body,
+                    entryId = entry.id,
+                    embed = entry.embed,
+                )
                 dialog.dismiss()
             }
 

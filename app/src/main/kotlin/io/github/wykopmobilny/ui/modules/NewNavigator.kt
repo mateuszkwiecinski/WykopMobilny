@@ -71,8 +71,16 @@ class NewNavigator @Inject constructor(
     fun openAddEntryActivity(receiver: String? = null, extraBody: String? = null) =
         context.startActivity(AddEntryActivity.createIntent(context, receiver, extraBody))
 
-    fun openEditEntryActivity(body: String, entryId: Long) =
-        context.startActivityForResult(EditEntryActivity.createIntent(context, body, entryId), BaseInputActivity.EDIT_ENTRY)
+    fun openEditEntryActivity(body: String, entryId: Long, embed: Embed?) =
+        context.startActivityForResult(
+            EditEntryActivity.createIntent(
+                context = context,
+                body = body,
+                entryId = entryId,
+                embed = embed,
+            ),
+            BaseInputActivity.EDIT_ENTRY,
+        )
 
     fun openEditLinkCommentActivity(commentId: Long, body: String, linkId: Long) =
         context.startActivityForResult(
