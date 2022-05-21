@@ -191,6 +191,12 @@ class LinkHeaderViewHolder(
                 dialog.dismiss()
             }
             linkBury.isVisible = userManagerApi.isUserAuthorized()
+
+            linkReport.isVisible = link.violationUrl != null
+            linkReport.setOnClickListener {
+                navigator.openReportScreen(link.violationUrl.let(::checkNotNull))
+                dialog.dismiss()
+            }
         }
 
         val mBehavior = BottomSheetBehavior.from(bottomSheetView.root.parent as View)

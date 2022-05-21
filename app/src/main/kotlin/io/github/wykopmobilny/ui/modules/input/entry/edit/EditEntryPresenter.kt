@@ -8,12 +8,20 @@ import io.github.wykopmobilny.utils.intoComposite
 
 class EditEntryPresenter(
     private val schedulers: Schedulers,
-    private val entriesApi: EntriesApi
+    private val entriesApi: EntriesApi,
 ) : InputPresenter<EditEntryView>() {
 
-    private fun editEntry() {
+    override fun sendWithPhoto(photo: WykopImageFile, containsAdultContent: Boolean) {
         view?.showProgressBar = true
-        entriesApi.editEntry(view?.textBody!!, view?.entryId!!)
+        val body = view?.textBody ?: return
+        val entryId = view?.entryId ?: return
+
+        entriesApi.editEntry(
+            body = body,
+            entryId = entryId,
+            wykopImageFile = photo,
+            plus18 = containsAdultContent,
+        )
             .subscribeOn(schedulers.backgroundThread())
             .observeOn(schedulers.mainThread())
             .subscribe(
@@ -21,12 +29,31 @@ class EditEntryPresenter(
                 {
                     view?.showProgressBar = false
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
 
-    override fun sendWithPhoto(photo: WykopImageFile, containsAdultContent: Boolean) = editEntry()
+    override fun sendWithPhotoUrl(photo: String?, containsAdultContent: Boolean) {
+        view?.showProgressBar = true
+        val body = view?.textBody ?: return
+        val entryId = view?.entryId ?: return
 
-    override fun sendWithPhotoUrl(photo: String?, containsAdultContent: Boolean) = editEntry()
+        entriesApi.editEntry(
+            body = body,
+            entryId = entryId,
+            embed = photo,
+            plus18 = containsAdultContent,
+        )
+            .subscribeOn(schedulers.backgroundThread())
+            .observeOn(schedulers.mainThread())
+            .subscribe(
+                { view?.exitActivity() },
+                {
+                    view?.showProgressBar = false
+                    view?.showErrorDialog(it)
+                },
+            )
+            .intoComposite(compositeObservable)
+    }
 }

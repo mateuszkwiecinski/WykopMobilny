@@ -58,7 +58,7 @@ interface EntriesRetrofitApi {
     suspend fun addEntry(
         @Part("body") body: RequestBody,
         @Part("adultmedia") plus18: RequestBody,
-        @Part file: MultipartBody.Part
+        @Part file: MultipartBody.Part,
     ): WykopApiResponse<EntryResponse>
 
     @GET("/entries/upvoters/{entryId}/appkey/$APP_KEY")
@@ -72,7 +72,7 @@ interface EntriesRetrofitApi {
     suspend fun addEntry(
         @Field("body") body: String,
         @Field("embed") embed: String?,
-        @Field("adultmedia") plus18: Boolean
+        @Field("adultmedia") plus18: Boolean,
     ): WykopApiResponse<EntryResponse>
 
     @Multipart
@@ -81,7 +81,7 @@ interface EntriesRetrofitApi {
         @Part("body") body: RequestBody,
         @Part("adultmedia") plus18: RequestBody,
         @Path("entryId") entryId: Long,
-        @Part file: MultipartBody.Part
+        @Part file: MultipartBody.Part,
     ): WykopApiResponse<EntryCommentResponse>
 
     @FormUrlEncoded
@@ -90,15 +90,26 @@ interface EntriesRetrofitApi {
         @Field("body") body: String,
         @Field("embed") embed: String?,
         @Field("adultmedia") plus18: Boolean,
-        @Path("entryId") entryId: Long
+        @Path("entryId") entryId: Long,
+    ): WykopApiResponse<EntryCommentResponse>
+
+    @Multipart
+    @POST("/entries/edit/{entryId}/appkey/$APP_KEY")
+    suspend fun editEntry(
+        @Part("body") body: RequestBody,
+        @Part("adultmedia") plus18: RequestBody,
+        @Path("entryId") entryId: Long,
+        @Part file: MultipartBody.Part,
     ): WykopApiResponse<EntryCommentResponse>
 
     @FormUrlEncoded
     @POST("/entries/edit/{entryId}/appkey/$APP_KEY")
     suspend fun editEntry(
         @Field("body") body: String,
-        @Path("entryId") entryId: Long
-    ): WykopApiResponse<EntryResponse>
+        @Field("embed") embed: String?,
+        @Field("adultmedia") plus18: Boolean,
+        @Path("entryId") entryId: Long,
+    ): WykopApiResponse<EntryCommentResponse>
 
     @GET("/entries/delete/{entryId}/appkey/$APP_KEY")
     suspend fun deleteEntry(@Path("entryId") entryId: Long): WykopApiResponse<EntryResponse>
@@ -109,7 +120,7 @@ interface EntriesRetrofitApi {
         @Part("body") body: RequestBody,
         @Part("adultmedia") plus18: RequestBody,
         @Path("commentId") commentId: Long,
-        @Part file: MultipartBody.Part
+        @Part file: MultipartBody.Part,
     ): WykopApiResponse<EntryCommentResponse>
 
     @FormUrlEncoded

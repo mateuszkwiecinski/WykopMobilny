@@ -26,6 +26,7 @@ class Link(
     var userVote: String?,
     var userFavorite: Boolean,
     val app: String?,
+    val violationUrl: String?,
     var gotSelected: Boolean,
     var isBlocked: Boolean = false
 ) : Parcelable {
@@ -52,6 +53,7 @@ class Link(
         parcel.readByte() != 0.toByte(),
         parcel.readString(),
         parcel.readByte() != 0.toByte(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte()
