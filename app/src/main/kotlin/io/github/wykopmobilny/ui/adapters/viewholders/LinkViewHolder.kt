@@ -163,6 +163,7 @@ class LinkViewHolder(
             openLinkDetail(link)
         }
         binding.shareTextView.setOnClickListener {
+            navigator.shareUrl(link.url)
         }
         itemView.setOnClickListener {
             openLinkDetail(link)
