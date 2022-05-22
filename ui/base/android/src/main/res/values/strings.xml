@@ -4,4 +4,5 @@
     <string name="error_dialog_title">Oops</string>
     <string name="error_dialog_retry">Spróbuj ponownie</string>
     <string name="error_dialog_confirm">OK</string>
+    <string name="navigation_back">Wstecz</string>
 </resources>

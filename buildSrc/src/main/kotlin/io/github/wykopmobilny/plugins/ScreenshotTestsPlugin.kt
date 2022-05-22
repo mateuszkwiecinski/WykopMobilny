@@ -9,6 +9,7 @@ class ScreenshotTestsPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("shot")
+        pluginManager.apply("app.cash.paparazzi")
 
         (extensions.findByName("android") as BaseExtension).apply {
             defaultConfig {
@@ -26,6 +27,7 @@ class ScreenshotTestsPlugin : Plugin<Project> {
 
         dependencies.apply {
             add("androidTestImplementation", project(":common:screenshot-test-helpers"))
+            add("testImplementation", project(":common:screenshot-test-helpers"))
         }
 
         Unit

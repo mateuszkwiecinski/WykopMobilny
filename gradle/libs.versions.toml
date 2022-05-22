@@ -1,4 +1,8 @@
 [versions]
+gradle-starter = "0.43.0"
+gradle-karumi = "5.13.0"
+gradle-animationdisabler = "1.0.9"
+gradle-keeper = "0.12.0"
 google-lifecycle = "2.4.1"
 google-appcompat = "1.4.1"
 google-swiperefreshlayout = "1.1.0"
@@ -23,6 +27,16 @@ google-startup = "1.1.1"
 google-exoplayer = "2.17.1"
 google-espresso = "3.4.0"
 google-annotation = "1.3.0"
+google-compose-core = "1.1.1"
+google-compose-material = "1.0.0-alpha07"
+google-navigation = "2.4.1"
+google-accompanist = "0.17.0"
+google-play-services = "4.3.10"
+google-crashlytics = "2.8.1"
+google-performance = "1.4.1"
+google-agp = "7.2.0"
+google-tools = "30.2.0"
+maven-sqldelight = "1.5.3"
 mavencentral-coroutines = "1.6.1"
 mavencentral-okhttp = "4.9.3"
 mavencentral-dagger = "2.42"
@@ -41,6 +55,7 @@ mavencentral-markdown = "0.2.4"
 mavencentral-junit = "5.8.2"
 mavencentral-napier = "2.2.0"
 mavencentral-checker = "3.21.2"
+mavencentral-paparazzi = "1.0.0-SNAPSHOT"
 jitpack-photoview = "2.3.0"
 jitpack-subsampling-scale-image-view = "3.10.0"
 
@@ -75,6 +90,25 @@ leakcanary-core = { module = "com.squareup.leakcanary:leakcanary-android", versi
 jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "mavencentral.markdown" }
 napier-core = { module = "io.github.aakira:napier", version.ref = "mavencentral.napier" }
 
+compose-activity = { module = "androidx.activity:activity-compose", version.ref = "google-activity" }
+compose-material = { module = "androidx.compose.material3:material3", version.ref = "google-compose-material" }
+compose-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "google-compose-core" }
+compose-material-deprecated = { module = "androidx.compose.material:material", version.ref = "google-compose-core" }
+compose-animation = { module = "androidx.compose.animation:animation", version.ref = "google-compose-core" }
+compose-uitest-core = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "google-compose-core" }
+compose-uitest-someweirdmanifestshit = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "google-compose-core" }
+compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "google-compose-core" }
+compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "google-lifecycle" }
+compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "google.navigation" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google.accompanist" }
+accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "google.accompanist" }
+accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "google.accompanist" }
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google.accompanist" }
+accompanist-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "google.accompanist" }
+accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google.accompanist" }
+accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "google.accompanist" }
+accompanist-navigation = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "google.accompanist" }
+
 exoplayer-core = { module = "com.google.android.exoplayer:exoplayer", version.ref = "google-exoplayer" }
 exoplayer-okhttp = { module = "com.google.android.exoplayer:extension-okhttp", version.ref = "google-exoplayer" }
 
@@ -95,6 +129,7 @@ moshi-compiler = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.r
 
 sqldelight-android = { module = "com.squareup.sqldelight:android-driver", version.ref = "mavencentral-sqldelight" }
 sqldelight-extensions = { module = "com.squareup.sqldelight:coroutines-extensions-jvm", version.ref = "mavencentral-sqldelight" }
+sqldelight-gradle = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "maven-sqldelight" }
 
 retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "mavencentral-retrofit" }
 retrofit-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "mavencentral-retrofit" }
@@ -108,6 +143,19 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "mavencentral-coroutines" }
 coroutines-rxjava = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2", version.ref = "mavencentral-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "mavencentral-datetime" }
+
+paparazzi-core = { module = "app.cash.paparazzi:paparazzi", version.ref = "mavencentral-paparazzi" }
+paparazzi-gradle = { module = "app.cash.paparazzi:paparazzi-gradle-plugin", version.ref = "mavencentral-paparazzi" }
+
+starter-gradle = { module = "com.project.starter:android", version.ref = "gradle-starter" }
+play-services-gradle = { module = "com.google.gms:google-services", version.ref = "google-play-services" }
+firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "google-crashlytics" }
+keeper-gradle = { module = "com.slack.keeper:keeper", version.ref = "gradle-keeper" }
+firebase-performacne-gralde = { module = "com.google.firebase:perf-plugin", version.ref = "google-performance" }
+karumi-gradle = { module = "com.karumi:shot", version.ref = "gradle-karumi" }
+animationdisabler-gradle = { module = "pl.droidsonroids.gradle:plugin", version.ref = "gradle-animationdisabler" }
+agp-gradle = { module = "com.android.tools.build:gradle", version.ref = "google-agp" }
+agp-tools-core = { module = "com.android.tools:common", version.ref = "google-tools" }
 
 androidtest-core = { module = "androidx.test:core-ktx", version.ref = "google-androidtest" }
 androidtest-runner = { module = "androidx.test:runner", version.ref = "google-androidtest" }
@@ -134,4 +182,14 @@ espresso = [
     "espresso-intents",
     "espresso-accessibility",
     "espresso-idlingresource",
+]
+compose = [
+    "compose-activity",
+    "compose-material",
+    "compose-animation",
+    "compose-tooling",
+    "compose-viewmodel",
+    "compose-navigation",
+    "compose-icons-extended",
+    "accompanist-systemuicontroller",
 ]

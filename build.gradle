@@ -2,6 +2,7 @@ import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask
 import com.android.build.gradle.internal.tasks.databinding.DataBindingMergeDependencyArtifactsTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
     id("com.starter.config")
@@ -17,6 +18,20 @@ commonConfig {
 }
 
 allprojects {
+    repositories {
+        exclusiveContent {
+            forRepository {
+                repositories.maven {
+                    setUrl("https://oss.sonatype.org/content/repositories/snapshots/")
+                    mavenContent { snapshotsOnly() }
+                }
+            }
+            filter {
+                includeModule("app.cash.paparazzi", "paparazzi")
+                includeModule("app.cash.paparazzi", "paparazzi-agent")
+            }
+        }
+    }
     tasks.withType(KotlinCompile).configureEach {
         kotlinOptions {
             freeCompilerArgs = freeCompilerArgs +
@@ -31,8 +46,13 @@ allprojects {
             tasks.withType(DataBindingMergeDependencyArtifactsTask).configureEach {
                 outputs.cacheIf { false }
             }
-            android.packagingOptions {
-                exclude 'META-INF/*.kotlin_module'
+            android {
+                composeOptions {
+                    kotlinCompilerExtensionVersion libs.versions.google.compose.core.get()
+                }
+                packagingOptions {
+                    exclude 'META-INF/*.kotlin_module'
+                }
             }
         }
 
@@ -48,14 +68,21 @@ allprojects {
     pluginManager.withPlugin("com.android.library") {
         android {
             namespace "io.github.wykopmobilny${path.replace(":", ".").replace("-", "_")}"
-        }
-        android.variantFilter {
-            ignore = buildType.name != "debug"
+            variantFilter {
+                ignore = buildType.name != "debug"
+            }
         }
     }
     pluginManager.withPlugin("com.android.application") {
         android.buildTypes.configureEach {
             setMatchingFallbacks("debug")
+        }
+    }
+    pluginManager.withPlugin("com.starter.quality") {
+        tasks.withType(Detekt).configureEach {
+            baseline.set(file("$rootDir/detekt-baseline.xml"))
+            buildUponDefaultConfig = true
+            config.setFrom(rootProject.file("detekt-config.yml"))
         }
     }
     configurations.configureEach {

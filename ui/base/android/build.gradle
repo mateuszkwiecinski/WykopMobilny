@@ -5,6 +5,7 @@ plugins {
 android {
     buildFeatures {
         viewBinding true
+        compose true
     }
 }
 
@@ -23,4 +24,5 @@ dependencies {
     api(libs.constraintlayout.core)
     api(libs.cardview.core)
     api(libs.recyclerview.core)
+    api(libs.bundles.compose)
 }

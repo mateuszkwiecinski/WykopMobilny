@@ -34,6 +34,13 @@
         <item name="android:navigationBarColor">?colorPrimaryDark</item>
     </style>
 
+
+    <style name="Theme.App.Compose"
+        parent="Theme.AppCompat.DayNight.NoActionBar">
+
+        <item name="android:windowBackground">#2c2c2c</item>
+    </style>
+
     <style name="Theme.App.Dark"
         parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">#2c2c2c</item>

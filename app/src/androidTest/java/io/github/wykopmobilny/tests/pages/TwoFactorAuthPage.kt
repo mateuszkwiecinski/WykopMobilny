@@ -1,27 +1,27 @@
 package io.github.wykopmobilny.tests.pages
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.replaceText
-import androidx.test.espresso.matcher.ViewMatchers.withHint
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import io.github.wykopmobilny.tests.base.Page
 import io.github.wykopmobilny.utils.waitVisible
-import org.hamcrest.Matchers.startsWith
 
-object TwoFactorAuthPage : Page {
+class TwoFactorAuthPage(private val rule: ComposeTestRule) : Page {
 
-    private val codeInput = withHint("6 cyfrowy kod")
+    private val title = hasText("Wygląda na to że Twoje konto korzysta z uwierzytenienia dwuskładnikowego (2FA)", substring = true)
+    private val codeInput = hasText("6 cyfrowy kod")
+    private val ctaButton = hasText("Weryfikuj")
 
     fun assertVisible() {
-        onView(withText(startsWith("Wygląda na to że Twoje konto korzysta z uwierzytenienia dwuskładnikowego (2FA)"))).waitVisible()
+        rule.onNode(title).waitVisible()
     }
 
     fun typeCode(code: String) {
-        onView(codeInput).waitVisible().perform(replaceText(code))
+        rule.onNode(codeInput).waitVisible().performTextInput(code)
     }
 
     fun tapCtaButton() {
-        onView(withText("Weryfikuj")).waitVisible().perform(click())
+        rule.onNode(ctaButton).waitVisible().performClick()
     }
 }

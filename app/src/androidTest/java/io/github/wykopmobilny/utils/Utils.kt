@@ -1,5 +1,6 @@
 package io.github.wykopmobilny.utils
 
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.ViewAssertion
 import androidx.test.espresso.ViewInteraction
@@ -7,6 +8,24 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.util.HumanReadables
 import junit.framework.AssertionFailedError
+
+internal fun SemanticsNodeInteraction.waitVisible(timeout: Long = 3000L): SemanticsNodeInteraction {
+    val startTime = System.currentTimeMillis()
+    val endTime = startTime + timeout
+
+    do {
+        try {
+            this.assertExists()
+            return this
+        } catch (e: AssertionError) {
+            Thread.sleep(50)
+        } catch (e: NoMatchingViewException) {
+            Thread.sleep(50)
+        }
+    } while (System.currentTimeMillis() < endTime)
+
+    return assertExists()
+}
 
 internal fun ViewInteraction.waitVisible(timeout: Long = 3000L): ViewInteraction {
     val startTime = System.currentTimeMillis()

@@ -44,8 +44,10 @@ jobs:
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
 
       - run: ./gradlew projectCoverage
+        if: ${{ false }}
 
       - uses: codecov/codecov-action@v3
+        if: ${{ false }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
@@ -143,21 +145,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - run: ./gradlew assembleDebugAndroidTest
-
-      - name: run tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 28
-          profile: pixel_xl
-          target: google_apis
-          arch: x86
-          disable-spellchecker: true
-          script: |
-            adb shell settings put global hidden_api_policy_p_apps 1
-            adb shell settings put global hidden_api_policy_pre_p_apps 1
-            adb shell settings put global hidden_api_policy 1
-            ./gradlew executeScreenshotTests
+      - run: ./gradlew verifyPaparazzi --no-configuration-cache
 
       - name: Upload ui tests result
         uses: actions/upload-artifact@v3
