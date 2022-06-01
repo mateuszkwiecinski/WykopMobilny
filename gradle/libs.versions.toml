@@ -1,6 +1,6 @@
 [versions]
 google-lifecycle = "2.4.1"
-google-appcompat = "1.4.1"
+google-appcompat = "1.4.2"
 google-swiperefreshlayout = "1.1.0"
 google-recyclerView = "1.2.1"
 google-constraintlayout = "2.1.4"
