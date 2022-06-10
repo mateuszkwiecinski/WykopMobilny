@@ -12,6 +12,7 @@ import io.github.wykopmobilny.databinding.AddlinkPreviewImageBinding
 import io.github.wykopmobilny.models.dataclass.Link
 import io.github.wykopmobilny.ui.modules.NavigatorApi
 import io.github.wykopmobilny.ui.modules.addlink.AddlinkActivity
+import io.github.wykopmobilny.utils.api.stripImageCompression
 import io.github.wykopmobilny.utils.loadImage
 import io.github.wykopmobilny.utils.viewBinding
 import javax.inject.Inject
@@ -30,7 +31,7 @@ class AddLinkDetailsFragment : BaseFragment(R.layout.addlink_details_fragment), 
 
     private val binding by viewBinding(AddlinkDetailsFragmentBinding::bind)
 
-    private var imageKey: String = ""
+    private var selectedImage: String? = null
     private val draftInformation
         get() = (activity as? AddlinkActivity)?.draft?.data
 
@@ -57,16 +58,19 @@ class AddLinkDetailsFragment : BaseFragment(R.layout.addlink_details_fragment), 
     }
 
     override fun showImages(images: List<AddLinkPreviewImage>) {
-        images.forEach {
-            val view = AddlinkPreviewImageBinding.inflate(layoutInflater, binding.imagesList, false)
-            view.previewImage.loadImage(it.sourceUrl)
-            binding.imagesList.addView(view.root)
-            imageKey = it.key
-            view.root.setOnClickListener {
+        binding.imagesList.removeAllViews()
+        selectedImage = images.firstOrNull()?.key
+        images.forEachIndexed { index, image ->
+            val imageBinding = AddlinkPreviewImageBinding.inflate(layoutInflater, binding.imagesList, true)
+            imageBinding.previewImage.loadImage(image.sourceUrl.stripImageCompression())
+            imageBinding.tick.isVisible = index == 0
+
+            imageBinding.root.setOnClickListener {
+                selectedImage = image.key
                 binding.imagesList.children
                     .map(AddlinkPreviewImageBinding::bind)
                     .forEach { image -> image.tick.isVisible = false }
-                view.tick.isVisible = true
+                imageBinding.tick.isVisible = true
             }
         }
     }
@@ -93,13 +97,13 @@ class AddLinkDetailsFragment : BaseFragment(R.layout.addlink_details_fragment), 
         }
 
         presenter.publishLink(
-            draftInformation.key,
-            binding.inputLinkTitle.text.toString(),
-            draftInformation.sourceUrl,
-            binding.inputDescription.text.toString(),
-            binding.inputTags.text.toString(),
-            binding.plus18Checkbox.isChecked,
-            imageKey,
+            key = draftInformation.key,
+            title = binding.inputLinkTitle.text.toString(),
+            sourceUrl = draftInformation.sourceUrl,
+            description = binding.inputDescription.text.toString(),
+            tags = binding.inputTags.text.toString(),
+            plus18 = binding.plus18Checkbox.isChecked,
+            imageKey = selectedImage,
         )
     }
 

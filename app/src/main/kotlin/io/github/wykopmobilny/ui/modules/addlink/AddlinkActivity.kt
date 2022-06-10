@@ -38,7 +38,9 @@ class AddlinkActivity : BaseActivity() {
                 }
             }
         }
-        openFragment(AddlinkUrlInputFragment.newInstance(url), "url_input")
+        if (savedInstanceState == null) {
+            openFragment(AddlinkUrlInputFragment.newInstance(url), "url_input")
+        }
     }
 
     private fun openFragment(fragment: Fragment, tag: String) {

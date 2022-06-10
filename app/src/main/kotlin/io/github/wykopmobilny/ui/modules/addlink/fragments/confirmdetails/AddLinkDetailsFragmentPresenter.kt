@@ -6,8 +6,8 @@ import io.github.wykopmobilny.base.Schedulers
 import io.github.wykopmobilny.utils.intoComposite
 
 class AddLinkDetailsFragmentPresenter(
-    val schedulers: Schedulers,
-    private val addLinkApi: AddLinkApi
+    private val schedulers: Schedulers,
+    private val addLinkApi: AddLinkApi,
 ) : BasePresenter<AddLinkDetailsFragmentView>() {
 
     fun getImages(key: String) {
@@ -23,7 +23,7 @@ class AddLinkDetailsFragmentPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.showImagesLoading(false)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -35,17 +35,15 @@ class AddLinkDetailsFragmentPresenter(
         description: String,
         tags: String,
         plus18: Boolean,
-        imageKey: String
+        imageKey: String?,
     ) {
         view?.showLinkUploading(true)
-        addLinkApi.publishLink(key, title, description, tags, imageKey, sourceUrl, plus18)
+        addLinkApi.publishLink(key, title, description, tags, imageKey.orEmpty(), sourceUrl, plus18)
             .subscribeOn(schedulers.backgroundThread())
             .observeOn(schedulers.mainThread())
             .subscribe(
-                {
-                    view?.openLinkScreen(it)
-                },
-                { view?.showErrorDialog(it) }
+                { view?.openLinkScreen(it) },
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }

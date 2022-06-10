@@ -42,6 +42,8 @@ class RelatedActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener, Re
 
     @Inject
     lateinit var userManager: UserManagerApi
+    override val enableSwipeBackLayout = true
+    override val isActivityTransfluent = true
 
     private val binding by viewBinding(ActivityVoterslistBinding::inflate)
 

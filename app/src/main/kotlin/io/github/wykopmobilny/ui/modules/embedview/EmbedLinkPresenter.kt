@@ -1,11 +1,11 @@
 package io.github.wykopmobilny.ui.modules.embedview
 
 import android.net.Uri
+import androidx.core.net.toUri
 import io.github.wykopmobilny.api.embed.ExternalApi
 import io.github.wykopmobilny.base.BasePresenter
 import io.github.wykopmobilny.base.Schedulers
 import io.reactivex.Maybe
-import java.net.URI
 import javax.inject.Inject
 
 class EmbedLinkPresenter @Inject constructor(
@@ -89,8 +89,10 @@ class EmbedLinkPresenter @Inject constructor(
     }
 
     private fun String.getDomainName(): String {
-        val uri = URI(this)
-        val domain = uri.host
+        val uri = runCatching { toUri() }
+            .recoverCatching { trimEnd(']').toUri() }
+            .getOrThrow()
+        val domain = uri.host.orEmpty()
         return if (domain.startsWith("www.")) domain.substring(4) else domain
     }
 }
