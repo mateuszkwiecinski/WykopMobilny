@@ -158,7 +158,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         )
     }
 
-    protected val appConfig = object : AppConfig {
+    val appConfig = object : AppConfig {
 
         private val firebase
             get() = FirebaseRemoteConfig.getInstance()
@@ -168,6 +168,8 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             get() = firebase.getLong(RemoteConfigKeys.BLACKLIST_FLEX_INTERVAL).milliseconds
         override val notificationsEnabled: Boolean
             get() = firebase.getBoolean(RemoteConfigKeys.NOTIFICATIONS_ENABLED)
+        override val youtubeKey
+            get() = firebase.getString(RemoteConfigKeys.YOUTUBE_KEY)
     }
 
     protected open val notifications by lazy {
