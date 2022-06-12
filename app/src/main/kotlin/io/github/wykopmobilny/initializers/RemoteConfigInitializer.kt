@@ -38,4 +38,5 @@ object RemoteConfigKeys {
     const val BLACKLIST_REFRESH_INTERVAL = "wykop_blacklist_refresh_interval"
     const val BLACKLIST_FLEX_INTERVAL = "wykop_blacklist_flex_interval"
     const val NOTIFICATIONS_ENABLED = "wykop_notifications_enabled"
+    const val YOUTUBE_KEY = "wykop_youtube_key"
 }
