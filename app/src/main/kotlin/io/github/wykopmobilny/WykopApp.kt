@@ -158,7 +158,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         )
     }
 
-    protected val appConfig = object : AppConfig {
+    val appConfig = object : AppConfig {
 
         private val firebase
             get() = FirebaseRemoteConfig.getInstance()

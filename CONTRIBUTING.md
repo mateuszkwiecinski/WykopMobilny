@@ -2,18 +2,9 @@
 
 👍🎉 First off, thanks for taking the time to contribute! 🎉👍
 
-## Setting up the project
-To build the project it is required
+## Useful links for external services
 - `wykop.appKey` and `wykop.secretKey` are API keys from Wykop, that shall be obtained [from wykop api site][wykop-api] (giving all permissions).
-- `wykop.googleKey` is an API key for YouTube player. It shall be obtained following [those developers.google.com instructions][youtube-api].
-
-Add them to your `~/.gradle/local.properties`
-```groovy
-   wykop.secretKey=""
-   wykop.appKey=""
-   wykop.googleKey=""
-```
-or set them as your Environment Variables. The project should compile without them though. 
+- `wykop.googleKey` is an API key for YouTube player. It shall be obtained following [those developers.google.com instructions][youtube-api]. 
 
 ## Submitting changes
 Please create a pull requests and self-review it first on your own.

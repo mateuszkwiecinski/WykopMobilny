@@ -19,7 +19,7 @@ import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayer.ErrorReason
 import com.google.android.youtube.player.YouTubePlayerView
 import io.github.aakira.napier.Napier
-import io.github.wykopmobilny.BuildConfig
+import io.github.wykopmobilny.WykopApp
 import io.github.wykopmobilny.utils.youtubeTimestampToMsOrNull
 import java.net.URLDecoder
 
@@ -120,7 +120,7 @@ class YTPlayer :
         initialize()
 
         playerView = YouTubePlayerView(this)
-        playerView.initialize(BuildConfig.GOOGLE_KEY, this)
+        playerView.initialize(findYoutubeApiKey(), this)
 
         addContentView(playerView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
 
@@ -211,9 +211,11 @@ class YTPlayer :
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RECOVERY_DIALOG_REQUEST) {
             // Retry initialization if user performed a recovery action
-            playerView.initialize(BuildConfig.GOOGLE_KEY, this)
+            playerView.initialize(findYoutubeApiKey(), this)
         }
     }
+
+    private fun findYoutubeApiKey() = (applicationContext as WykopApp).appConfig.youtubeKey
 
     // YouTubePlayer.OnFullscreenListener
     override fun onConfigurationChanged(newConfig: Configuration) {
