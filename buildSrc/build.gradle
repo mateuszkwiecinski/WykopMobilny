@@ -1,6 +1,6 @@
 plugins {
     id("java-gradle-plugin")
-    id("org.jetbrains.kotlin.jvm") version "1.7.0"
+    alias(libs.plugins.kotlin.jvm)
 }
 
 repositories {
@@ -10,16 +10,15 @@ repositories {
 
 dependencies {
     implementation(gradleApi())
-    implementation("com.project.starter:android:0.45.0")
-    implementation("com.google.gms:google-services:4.3.10")
-    implementation("com.google.firebase:firebase-crashlytics-gradle:2.9.0")
-    implementation("com.slack.keeper:keeper:0.12.0")
-    implementation("com.google.firebase:perf-plugin:1.4.1")
-    implementation("com.squareup.sqldelight:gradle-plugin:1.5.3")
-    implementation("com.android.tools:common:30.2.1")
-    implementation("com.karumi:shot:5.14.1")
-    implementation("pl.droidsonroids.gradle:plugin:1.0.9")
-    implementation("com.android.tools.build:gradle:7.2.1")
+    implementation(libs.starter.android.gradle)
+    implementation(libs.play.services.gradle)
+    implementation(libs.firebase.crashlytics.gradle)
+    implementation(libs.keeper.gradle)
+    implementation(libs.firebase.performacne.gralde)
+    implementation(libs.sqldelight.gradle)
+    implementation(libs.agp.tools.core)
+    implementation(libs.karumi.gradle)
+    implementation(libs.animationdisabler.gradle)
 }
 
 gradlePlugin {
