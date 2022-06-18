@@ -1,4 +1,4 @@
-# Wykop Mobilny [Revived] 📱
+# Wypok for wykop.pl [Revived] 📱
 
 > Second iteration of unofficial wykop.pl client for Android, written in Kotlin.
 

@@ -75,7 +75,6 @@ internal class GetProfileDetailsQuery @Inject constructor(
                 joinedAgo = profile?.signupAt?.toJoinedAgo(),
             )
 
-            @OptIn(ExperimentalStdlibApi::class)
             val contextMenuOptions = if (loggedUser == null || loggedUser.id == profileId) {
                 listOf(badgesOption())
             } else {

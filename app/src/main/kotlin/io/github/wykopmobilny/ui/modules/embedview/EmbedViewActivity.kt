@@ -17,7 +17,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
-import com.google.android.exoplayer2.C.CONTENT_TYPE_MOVIE
+import com.google.android.exoplayer2.C.AUDIO_CONTENT_TYPE_MOVIE
 import com.google.android.exoplayer2.C.USAGE_MEDIA
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -90,7 +90,7 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
             .setAudioAttributes(
                 AudioAttributes.Builder()
                     .setUsage(USAGE_MEDIA)
-                    .setContentType(CONTENT_TYPE_MOVIE)
+                    .setContentType(AUDIO_CONTENT_TYPE_MOVIE)
                     .build(),
                 true,
             )

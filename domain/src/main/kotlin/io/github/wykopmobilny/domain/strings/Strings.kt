@@ -11,13 +11,21 @@ object Strings {
     object Notifications {
 
         const val TITLE = APP_NAME
-        fun notificationContentUnbounded(count: Int) = "Posiadasz $count+ nowych powiadomień."
-        fun notificationContent(count: Int) =
-            when (count) {
-                1 -> "Posiadasz $count nowe powiadominie."
-                in 2..4 -> "Posiadasz $count nowe powiadomienia."
-                else -> "Posiadasz $count nowych powiadomień."
-            }
+        fun notificationContentUnbounded(count: Int) = when {
+            count == 1 -> "Posiadasz nowe powiadomienia."
+            count in 2..4 -> "Posiadasz $count+ nowe powiadomienia."
+            count in 12..14 -> "Posiadasz $count+ nowych powiadomień."
+            count % 10 in 2..4 -> "Posiadasz $count+ nowe powiadomienia."
+            else -> "Posiadasz $count+ nowych powiadomień."
+        }
+
+        fun notificationContent(count: Int) = when {
+            count == 1 -> "Posiadasz 1 nowe powiadomienia."
+            count in 2..4 -> "Posiadasz $count nowe powiadomienia."
+            count in 12..14 -> "Posiadasz $count nowych powiadomień."
+            count % 10 in 2..4 -> "Posiadasz $count nowe powiadomienia."
+            else -> "Posiadasz $count nowych powiadomień."
+        }
     }
 
     object Link {
