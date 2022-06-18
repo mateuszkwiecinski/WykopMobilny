@@ -33,7 +33,7 @@ jobs:
           WYKOP_SECRETKEY: ${{ secrets.WYKOP_SECRETKEY }}
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
 
-      - uses: r0adkll/upload-google-play@v1.0.15
+      - uses: r0adkll/upload-google-play@v1.0.17
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICES_JSON }}
           packageName: io.github.wykopmobilny
