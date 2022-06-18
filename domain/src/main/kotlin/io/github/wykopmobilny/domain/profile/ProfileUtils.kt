@@ -49,7 +49,7 @@ internal fun UserInfo.Color.toUi(): Color =
         UserInfo.Color.Unknown -> ColorConst.UserUnknown
     }
 
-internal fun DateTimePeriod.toPrettyString(
+fun DateTimePeriod.toPrettyString(
     suffix: String = "",
     nowFallback: String = "przed chwilą",
 ): String {

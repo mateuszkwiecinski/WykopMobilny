@@ -16,10 +16,7 @@ import com.bumptech.glide.signature.ObjectKey
 import io.github.wykopmobilny.glide.GlideApp
 import io.github.wykopmobilny.utils.api.parseDate
 import io.github.wykopmobilny.utils.recyclerview.ViewHolderDependentItemDecorator
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.periodUntil
 import org.ocpsoft.prettytime.PrettyTime
 import org.threeten.bp.Duration
 import org.threeten.bp.format.DateTimeParseException
@@ -78,31 +75,6 @@ fun String.toPrettyDate(): String =
 
 fun Instant.toPrettyDate(): String =
     PrettyTime(Locale("pl")).format(Date(toEpochMilliseconds()))
-
-fun Instant.toDurationPrettyDate(): String {
-    val period = this.periodUntil(Clock.System.now(), TimeZone.currentSystemDefault())
-
-    if (period.years > 1 && period.months > 0) {
-        return "${period.years} lata ${period.months} mies."
-    } else if (period.years > 1 && period.months == 0) {
-        return "${period.years} lata"
-    } else if (period.years == 1 && period.months > 0) {
-        return "${period.years} rok ${period.months} mies."
-    } else if (period.years == 1 && period.months == 0) {
-        return "${period.years} rok"
-    } else if (period.years == 0 && period.months > 0) {
-        return "${period.months} mies."
-    } else if (period.months == 0 && period.days > 0) {
-        return "${period.days} dni"
-    } else {
-        if (period.days == 0 && period.hours > 0) {
-            return "${period.hours} godz."
-        } else if (period.hours == 0) {
-            return "${period.minutes} min."
-        }
-    }
-    return PrettyTime(Locale("pl")).formatDurationUnrounded(Date(toEpochMilliseconds()))
-}
 
 fun Uri.queryFileName(contentResolver: ContentResolver): String {
     var result: String? = null

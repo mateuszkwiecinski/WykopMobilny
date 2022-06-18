@@ -19,6 +19,7 @@ import io.github.wykopmobilny.base.BaseActivity
 import io.github.wykopmobilny.databinding.ActivityProfileBinding
 import io.github.wykopmobilny.databinding.BadgeListItemBinding
 import io.github.wykopmobilny.databinding.BadgesBottomsheetBinding
+import io.github.wykopmobilny.domain.profile.toPrettyString
 import io.github.wykopmobilny.models.dataclass.drawBadge
 import io.github.wykopmobilny.models.fragments.DataFragment
 import io.github.wykopmobilny.models.fragments.getDataFragmentInstance
@@ -26,11 +27,13 @@ import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.utils.api.getGenderStripResource
 import io.github.wykopmobilny.utils.api.getGroupColor
 import io.github.wykopmobilny.utils.loadImage
-import io.github.wykopmobilny.utils.toDurationPrettyDate
 import io.github.wykopmobilny.utils.toPrettyDate
 import io.github.wykopmobilny.utils.usermanager.UserManagerApi
 import io.github.wykopmobilny.utils.usermanager.isUserAuthorized
 import io.github.wykopmobilny.utils.viewBinding
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.periodUntil
 import javax.inject.Inject
 import io.github.wykopmobilny.ui.base.android.R as BaseR
 
@@ -92,7 +95,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
         patronsApi.getBadgeFor(profileResponse.id)?.drawBadge(binding.patronBadgeTextView)
         binding.tabLayout.setupWithViewPager(binding.pager)
         binding.profilePicture.loadImage(profileResponse.avatar)
-        binding.signup.text = profileResponse.signupAt.toDurationPrettyDate()
+        binding.signup.text = profileResponse.signupAt.periodUntil(Clock.System.now(), TimeZone.currentSystemDefault()).toPrettyString()
         binding.nickname.text = profileResponse.id
         binding.nickname.setTextColor(getGroupColor(profileResponse.color))
         binding.loadingView.isVisible = false
@@ -157,24 +160,12 @@ class ProfileActivity : BaseActivity(), ProfileView {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.pw -> dataFragment.data?.let { navigator.openConversationListActivity(it.id) }
-            R.id.unblock -> {
-                presenter.markUnblocked()
-            }
-            R.id.block -> {
-                presenter.markBlocked()
-            }
-            R.id.observe_profile -> {
-                presenter.markObserved()
-            }
-            R.id.unobserve_profile -> {
-                presenter.markUnobserved()
-            }
-            R.id.badges -> {
-                showBadgesDialog()
-            }
-            R.id.report -> {
-                dataFragment.data?.violationUrl?.let(navigator::openReportScreen) ?: Napier.e("Invalid report button state")
-            }
+            R.id.unblock -> presenter.markUnblocked()
+            R.id.block -> presenter.markBlocked()
+            R.id.observe_profile -> presenter.markObserved()
+            R.id.unobserve_profile -> presenter.markUnobserved()
+            R.id.badges -> showBadgesDialog()
+            R.id.report -> dataFragment.data?.violationUrl?.let(navigator::openReportScreen) ?: Napier.e("Invalid report button state")
             android.R.id.home -> finish()
             else -> return super.onOptionsItemSelected(item)
         }
