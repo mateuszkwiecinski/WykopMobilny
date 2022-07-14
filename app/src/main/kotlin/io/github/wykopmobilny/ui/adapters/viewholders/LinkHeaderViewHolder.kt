@@ -101,6 +101,10 @@ class LinkHeaderViewHolder(
         binding.shareTextView.setOnClickListener {
             navigator.shareUrl(link.url)
         }
+        binding.shareTextView.setOnLongClickListener {
+            navigator.shareUrl(link.title + "\n" + link.description + "\n\n" + link.sourceUrl)
+            true
+        }
         binding.commentsCountTextView.setOnClickListener {}
 
         binding.favoriteButton.isVisible = userManagerApi.isUserAuthorized()
