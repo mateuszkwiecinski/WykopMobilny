@@ -9,6 +9,7 @@ import io.github.wykopmobilny.initializers.RemoteConfigKeys.API_APP_SECRET
 import io.github.wykopmobilny.initializers.RemoteConfigKeys.BLACKLIST_FLEX_INTERVAL
 import io.github.wykopmobilny.initializers.RemoteConfigKeys.BLACKLIST_REFRESH_INTERVAL
 import io.github.wykopmobilny.initializers.RemoteConfigKeys.NOTIFICATIONS_ENABLED
+import io.github.wykopmobilny.initializers.RemoteConfigKeys.YOUTUBE_KEY
 import kotlin.time.Duration.Companion.days
 
 internal class RemoteConfigInitializer : Initializer<FirebaseRemoteConfig> {
@@ -21,6 +22,7 @@ internal class RemoteConfigInitializer : Initializer<FirebaseRemoteConfig> {
                 BLACKLIST_REFRESH_INTERVAL to 7.days.inWholeMilliseconds,
                 BLACKLIST_FLEX_INTERVAL to 1.days.inWholeMilliseconds,
                 NOTIFICATIONS_ENABLED to false,
+                YOUTUBE_KEY to BuildConfig.YOUTUBE_API_KEY,
             ),
         )
 

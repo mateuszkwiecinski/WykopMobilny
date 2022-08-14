@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.LoggerWrapper
-import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask
 import com.slack.keeper.KeeperVariantMarker
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 
@@ -30,6 +28,7 @@ android {
         testInstrumentationRunner = "io.github.wykopmobilny.DefaultTestRunner"
         buildConfigField 'String', 'APP_SECRET', "\"${findProperty("wykop.secretKey")}\""
         buildConfigField 'String', 'APP_KEY', "\"${findProperty("wykop.appKey")}\""
+        buildConfigField 'String', 'YOUTUBE_API_KEY', "\"${findProperty("wykop.youtubeKey")}\""
     }
     namespace defaultConfig.applicationId
     testBuildType findProperty("testBuildType") ?: "debug"

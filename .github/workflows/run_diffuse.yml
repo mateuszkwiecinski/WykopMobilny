@@ -38,6 +38,7 @@ jobs:
           WYKOP_APPKEY: ${{ secrets.WYKOP_APPKEY }}
           WYKOP_SECRETKEY: ${{ secrets.WYKOP_SECRETKEY }}
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
+          WYKOP_YOUTUBEKEY: ${{ secrets.WYKOP_YOUTUBEKEY }}
 
       - uses: actions/cache@v3
         name: Download base
