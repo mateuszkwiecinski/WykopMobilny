@@ -165,6 +165,10 @@ class LinkViewHolder(
         binding.shareTextView.setOnClickListener {
             navigator.shareUrl(link.url)
         }
+        binding.shareTextView.setOnLongClickListener {
+            navigator.shareUrl(link.title + "\n" + link.description + "\n\n" + link.sourceUrl)
+            true
+        }
         itemView.setOnClickListener {
             openLinkDetail(link)
         }
