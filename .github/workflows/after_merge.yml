@@ -39,6 +39,7 @@ jobs:
           WYKOP_APPKEY: ${{ secrets.WYKOP_APPKEY }}
           WYKOP_SECRETKEY: ${{ secrets.WYKOP_SECRETKEY }}
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
+          WYKOP_YOUTUBEKEY: ${{ secrets.WYKOP_YOUTUBEKEY }}
 
       - run: ./gradlew app:assembleReleaseTestAndroidTest -PtestBuildType=releaseTest
         env:
@@ -48,6 +49,9 @@ jobs:
           WYKOP_APPKEY: ${{ secrets.WYKOP_APPKEY }}
           WYKOP_SECRETKEY: ${{ secrets.WYKOP_SECRETKEY }}
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
+          WYKOP_YOUTUBEKEY: ${{ secrets.WYKOP_YOUTUBEKEY }}
+
+      - run: ./gradlew assembleDebugAndroidTest
 
       - run: ./gradlew projectCoverage
 

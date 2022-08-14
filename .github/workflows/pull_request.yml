@@ -42,6 +42,7 @@ jobs:
           WYKOP_APPKEY: ${{ secrets.WYKOP_APPKEY }}
           WYKOP_SECRETKEY: ${{ secrets.WYKOP_SECRETKEY }}
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
+          WYKOP_YOUTUBEKEY: ${{ secrets.WYKOP_YOUTUBEKEY }}
 
       - run: ./gradlew projectCoverage
 
@@ -75,10 +76,11 @@ jobs:
       WYKOP_APPKEY: ${{ secrets.WYKOP_APPKEY }}
       WYKOP_SECRETKEY: ${{ secrets.WYKOP_SECRETKEY }}
       WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
+      WYKOP_YOUTUBEKEY: ${{ secrets.WYKOP_YOUTUBEKEY }}
     strategy:
       fail-fast: false
       matrix:
-        apiVersion: [ 25, 28, 30, 31 ]
+        apiVersion: [ 25, 28, 31, 32 ]
 
     steps:
       - uses: actions/checkout@v3
