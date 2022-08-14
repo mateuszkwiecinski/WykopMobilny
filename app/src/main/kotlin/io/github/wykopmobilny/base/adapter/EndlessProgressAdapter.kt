@@ -39,7 +39,7 @@ abstract class EndlessProgressAdapter<T : RecyclerView.ViewHolder, A : Any> : Re
                         }
                         isLoading = true
                     }
-                }
+                },
             )
         }
     }

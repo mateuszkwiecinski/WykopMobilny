@@ -11,5 +11,5 @@ data class PMMessageResponse(
     @field:Json(name = "status") val status: String,
     @field:Json(name = "direction") val direction: String,
     @field:Json(name = "embed") val embed: EmbedResponse?,
-    @field:Json(name = "app") val app: String?
+    @field:Json(name = "app") val app: String?,
 )

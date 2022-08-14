@@ -117,6 +117,6 @@ class MonthYearPickerDialog : DialogFragment() {
                 10 -> R.string.october
                 11 -> R.string.novermber
                 else -> R.string.december
-            }
+            },
         )
 }

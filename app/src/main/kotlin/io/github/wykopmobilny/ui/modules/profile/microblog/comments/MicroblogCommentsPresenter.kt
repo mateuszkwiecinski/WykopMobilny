@@ -14,7 +14,7 @@ class MicroblogCommentsPresenter(
     val schedulers: Schedulers,
     val profileApi: ProfileApi,
     val entriesApi: EntriesApi,
-    private val entryCommentInteractor: EntryCommentInteractor
+    private val entryCommentInteractor: EntryCommentInteractor,
 ) : BasePresenter<MicroblogCommentsView>(), EntryCommentActionListener {
 
     var page = 1
@@ -32,7 +32,7 @@ class MicroblogCommentsPresenter(
                         view?.addItems(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -57,7 +57,7 @@ class MicroblogCommentsPresenter(
                 },
                 {
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -71,7 +71,7 @@ class MicroblogCommentsPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateComment(comment)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

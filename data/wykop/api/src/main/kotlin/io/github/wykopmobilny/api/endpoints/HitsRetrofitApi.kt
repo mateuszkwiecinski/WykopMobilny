@@ -17,7 +17,7 @@ interface HitsRetrofitApi {
     @GET("/hits/month/{year}/{month}/appkey/$APP_KEY")
     suspend fun byMonth(
         @Path("year") year: Int,
-        @Path("month") month: Int
+        @Path("month") month: Int,
     ): WykopApiResponse<List<LinkResponse>>
 
     @GET("/hits/year/{year}/appkey/$APP_KEY")

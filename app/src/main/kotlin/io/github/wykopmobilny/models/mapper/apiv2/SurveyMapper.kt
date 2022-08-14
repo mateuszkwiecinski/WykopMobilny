@@ -9,6 +9,6 @@ object SurveyMapper : Mapper<SurveyResponse, Survey> {
         Survey(
             value.question ?: "",
             value.answers.orEmpty().map { AnswerMapper.map(it) },
-            value.userAnswer
+            value.userAnswer,
         )
 }

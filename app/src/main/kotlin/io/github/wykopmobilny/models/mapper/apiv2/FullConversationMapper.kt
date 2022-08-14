@@ -8,6 +8,6 @@ object FullConversationMapper : Mapper<FullConversationResponse, FullConversatio
     override fun map(value: FullConversationResponse) =
         FullConversation(
             value.data!!.map { PMMessageMapper.map(it) },
-            AuthorMapper.map(value.receiver)
+            AuthorMapper.map(value.receiver),
         )
 }

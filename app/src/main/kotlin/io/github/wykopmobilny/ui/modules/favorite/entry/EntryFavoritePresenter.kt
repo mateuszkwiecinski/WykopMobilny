@@ -12,7 +12,7 @@ import io.reactivex.Single
 class EntryFavoritePresenter(
     val schedulers: Schedulers,
     val entriesInteractor: EntriesInteractor,
-    private val entryApi: EntriesApi
+    private val entryApi: EntriesApi,
 ) : BasePresenter<EntryFavoriteView>(), EntryActionListener {
 
     var page = 1
@@ -29,7 +29,7 @@ class EntryFavoritePresenter(
                         view?.addItems(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -60,7 +60,7 @@ class EntryFavoritePresenter(
                 },
                 {
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -74,7 +74,7 @@ class EntryFavoritePresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateEntry(entry)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

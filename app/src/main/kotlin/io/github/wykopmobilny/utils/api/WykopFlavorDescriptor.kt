@@ -32,7 +32,7 @@ class WykopFlavorDescriptor : CommonMarkFlavourDescriptor() {
                 BacktickParser(),
                 InlineLinkParser(),
                 ReferenceLinkParser(),
-                EmphStrongParser()
+                EmphStrongParser(),
             )
     }
 
@@ -45,6 +45,6 @@ class WykopFlavorDescriptor : CommonMarkFlavourDescriptor() {
                     visitor.consumeHtml(linkDestination)
                     visitor.consumeTagClose("a")
                 }
-            }
+            },
         )
 }

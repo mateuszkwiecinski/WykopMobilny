@@ -5,5 +5,5 @@ data class PMMessage(
     val body: String,
     val embed: Embed?,
     val isSentFromUser: Boolean,
-    val app: String?
+    val app: String?,
 )

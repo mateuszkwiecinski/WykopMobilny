@@ -11,7 +11,7 @@ import io.reactivex.Single
 
 class HashTagsNotificationsListPresenter(
     val schedulers: Schedulers,
-    private val notificationsApi: NotificationsApi
+    private val notificationsApi: NotificationsApi,
 ) : BasePresenter<NotificationsListView>() {
 
     var page = 1
@@ -28,7 +28,7 @@ class HashTagsNotificationsListPresenter(
                         view?.addNotifications(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -53,7 +53,7 @@ class HashTagsNotificationsListPresenter(
                         fetchAllPages(shouldRefresh)
                     }
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -86,7 +86,7 @@ class HashTagsNotificationsListPresenter(
                         view?.disableLoading()
                     }
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }

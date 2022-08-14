@@ -8,5 +8,5 @@ data class AnswerResponse(
     @field:Json(name = "id") val id: Int,
     @field:Json(name = "answer") val answer: String,
     @field:Json(name = "count") val count: Int,
-    @field:Json(name = "percentage") val percentage: Double
+    @field:Json(name = "percentage") val percentage: Double,
 )

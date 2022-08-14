@@ -23,8 +23,10 @@ internal class WorkManagerScheduler @Inject constructor(
             workManager.cancelAllWorkByTag("${RefreshBlacklistRequest.WORK_NAME}_v$oldVersion")
         }
         val request = PeriodicWorkRequestBuilder<RefreshBlacklistRequest>(
-            repeatInterval.inWholeMilliseconds, TimeUnit.MILLISECONDS,
-            flexDuration.inWholeMilliseconds, TimeUnit.MILLISECONDS,
+            repeatInterval.inWholeMilliseconds,
+            TimeUnit.MILLISECONDS,
+            flexDuration.inWholeMilliseconds,
+            TimeUnit.MILLISECONDS,
         )
             .setConstraints(
                 Constraints.Builder()

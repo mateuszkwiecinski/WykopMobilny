@@ -9,7 +9,7 @@ open class Notification(
     val date: Instant?,
     val type: String,
     val url: String?,
-    var new: Boolean
+    var new: Boolean,
 ) {
 
     var visible = true

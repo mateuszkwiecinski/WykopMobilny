@@ -15,7 +15,7 @@ interface ProfileDomainComponent : ProfileDependencies, HasScopeInitializer {
 
         fun create(
             @BindsInstance @ProfileId
-            profileId: String
+            profileId: String,
         ): ProfileDomainComponent
     }
 }

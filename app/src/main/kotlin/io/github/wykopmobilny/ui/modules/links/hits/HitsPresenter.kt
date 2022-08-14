@@ -12,7 +12,7 @@ import io.reactivex.Single
 class HitsPresenter(
     val schedulers: Schedulers,
     val linksInteractor: LinksInteractor,
-    private val hitsApi: HitsApi
+    private val hitsApi: HitsApi,
 ) : BasePresenter<HitsView>(), LinkActionListener {
 
     companion object {
@@ -42,7 +42,7 @@ class HitsPresenter(
                     view?.addItems(it, true)
                     view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -59,7 +59,7 @@ class HitsPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateLink(link)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

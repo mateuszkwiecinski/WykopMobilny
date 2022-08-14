@@ -10,5 +10,5 @@ data class AvatarUi(
     val avatarUrl: String,
     val rank: Int?,
     val genderStrip: Color?,
-    val onClicked: (() -> Unit)?
+    val onClicked: (() -> Unit)?,
 )

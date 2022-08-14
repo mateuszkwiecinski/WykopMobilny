@@ -14,7 +14,7 @@ import io.github.wykopmobilny.utils.linkhandler.WykopLinkHandler
 class NotificationViewHolder(
     private val binding: NotificationsListItemBinding,
     private val linkHandler: WykopLinkHandler,
-    private val updateHeader: (String) -> Unit
+    private val updateHeader: (String) -> Unit,
 ) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
 
     fun bindNotification(notification: Notification) {
@@ -38,7 +38,7 @@ class NotificationViewHolder(
                         ForegroundColorSpan(getGroupColor(notification.author.group)),
                         0,
                         nickName.length,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
                     )
                 }
             } else {

@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class ConversationPresenter @Inject constructor(
     val schedulers: Schedulers,
-    private val pmApi: PMApi
+    private val pmApi: PMApi,
 ) : BasePresenter<ConversationView>() {
 
     lateinit var user: String
@@ -20,7 +20,7 @@ class ConversationPresenter @Inject constructor(
             .observeOn(schedulers.mainThread())
             .subscribe(
                 { view?.showConversation(it) },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -38,7 +38,7 @@ class ConversationPresenter @Inject constructor(
                 {
                     view?.hideInputbarProgress()
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -56,7 +56,7 @@ class ConversationPresenter @Inject constructor(
                 {
                     view?.hideInputbarProgress()
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

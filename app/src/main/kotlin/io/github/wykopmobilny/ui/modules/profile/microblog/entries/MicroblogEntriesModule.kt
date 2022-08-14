@@ -15,6 +15,6 @@ class MicroblogEntriesModule {
         schedulers: Schedulers,
         profileApi: ProfileApi,
         entriesApi: EntriesApi,
-        entriesInteractor: EntriesInteractor
+        entriesInteractor: EntriesInteractor,
     ) = MicroblogEntriesPresenter(schedulers, profileApi, entriesApi, entriesInteractor)
 }

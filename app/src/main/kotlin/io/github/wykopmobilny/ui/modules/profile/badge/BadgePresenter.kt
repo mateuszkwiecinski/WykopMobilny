@@ -7,7 +7,7 @@ import io.github.wykopmobilny.utils.intoComposite
 
 class BadgePresenter(
     val schedulers: Schedulers,
-    val profileApi: ProfileApi
+    val profileApi: ProfileApi,
 ) : BasePresenter<BadgeView>() {
 
     var page = 1
@@ -25,7 +25,7 @@ class BadgePresenter(
                         view?.addDataToAdapter(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }

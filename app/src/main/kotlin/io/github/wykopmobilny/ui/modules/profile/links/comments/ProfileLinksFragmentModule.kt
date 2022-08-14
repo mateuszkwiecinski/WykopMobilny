@@ -12,6 +12,6 @@ class ProfileLinksFragmentModule {
     fun providePresenter(
         schedulers: Schedulers,
         profileApi: ProfileApi,
-        linksInteractor: LinkCommentInteractor
+        linksInteractor: LinkCommentInteractor,
     ) = ProfileLinksFragmentPresenter(schedulers, profileApi, linksInteractor)
 }

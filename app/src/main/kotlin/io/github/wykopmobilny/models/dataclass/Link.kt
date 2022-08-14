@@ -28,7 +28,7 @@ class Link(
     val app: String?,
     val violationUrl: String?,
     var gotSelected: Boolean,
-    var isBlocked: Boolean = false
+    var isBlocked: Boolean = false,
 ) : Parcelable {
 
     val url = "https://www.wykop.pl/link/$id"
@@ -56,7 +56,7 @@ class Link(
         parcel.readString(),
         parcel.readString(),
         parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

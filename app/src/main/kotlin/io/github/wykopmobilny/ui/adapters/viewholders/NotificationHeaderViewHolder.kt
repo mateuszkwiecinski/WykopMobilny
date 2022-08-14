@@ -11,7 +11,7 @@ import io.github.wykopmobilny.ui.modules.NewNavigator
 class NotificationHeaderViewHolder(
     private val binding: HashtagNotificationHeaderListItemBinding,
     private val navigator: NewNavigator,
-    private val collapseListener: (Boolean, String) -> Unit
+    private val collapseListener: (Boolean, String) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     val collapseDrawable: Drawable? by lazy {

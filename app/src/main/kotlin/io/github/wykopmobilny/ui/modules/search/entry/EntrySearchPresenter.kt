@@ -14,7 +14,7 @@ class EntrySearchPresenter(
     val schedulers: Schedulers,
     val searchApi: SearchApi,
     val entriesApi: EntriesApi,
-    val entriesInteractor: EntriesInteractor
+    val entriesInteractor: EntriesInteractor,
 ) : BasePresenter<EntrySearchView>(), EntryActionListener {
 
     var page = 1
@@ -35,7 +35,7 @@ class EntrySearchPresenter(
                         view?.disableLoading()
                     }
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -66,7 +66,7 @@ class EntrySearchPresenter(
                 },
                 {
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -80,7 +80,7 @@ class EntrySearchPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateEntry(entry)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

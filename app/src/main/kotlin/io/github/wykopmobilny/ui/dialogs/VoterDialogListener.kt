@@ -22,7 +22,7 @@ typealias VotersDialogListener = (List<Voter>) -> Unit
 
 fun createVotersDialogListener(
     dialog: BottomSheetDialog,
-    votersDialogView: DialogVotersBinding
+    votersDialogView: DialogVotersBinding,
 ): (List<Voter>) -> Unit = {
     if (dialog.isShowing) {
         votersDialogView.progressView.isVisible = false

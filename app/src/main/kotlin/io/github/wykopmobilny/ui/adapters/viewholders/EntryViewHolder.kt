@@ -199,7 +199,8 @@ class EntryViewHolder(
 
                 // Setup unEllipsize listener, handle clicks
                 prepareBody(
-                    entry.body, { linkHandler.handleUrl(it) },
+                    entry.body,
+                    { linkHandler.handleUrl(it) },
                     {
                         if (enableClickListener && !isEllipsized) {
                             handleClick(entry)

@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class NotificationsListAdapter @Inject constructor(
     val navigator: NewNavigator,
-    val linkHandler: WykopLinkHandler
+    val linkHandler: WykopLinkHandler,
 ) : EndlessProgressAdapter<RecyclerView.ViewHolder, Notification>() {
 
     companion object {

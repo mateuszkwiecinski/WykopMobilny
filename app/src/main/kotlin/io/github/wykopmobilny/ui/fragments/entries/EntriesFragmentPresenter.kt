@@ -10,7 +10,7 @@ import io.reactivex.Single
 open class EntriesFragmentPresenter(
     val schedulers: Schedulers,
     val entriesApi: EntriesApi,
-    val entriesInteractor: EntriesInteractor
+    val entriesInteractor: EntriesInteractor,
 ) : BasePresenter<EntriesFragmentView>(), EntryActionListener {
 
     override fun voteEntry(entry: Entry) = entriesInteractor.voteEntry(entry).processEntrySingle(entry)
@@ -34,7 +34,7 @@ open class EntriesFragmentPresenter(
                 },
                 {
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -48,7 +48,7 @@ open class EntriesFragmentPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateEntry(entry)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

@@ -21,6 +21,6 @@ object EntryCommentMapper {
                 violationUrl = value.violationUrl,
                 isNsfw = value.body?.lowercase()?.contains("#nsfw") ?: false,
                 isBlocked = value.blocked,
-            )
+            ),
         )
 }

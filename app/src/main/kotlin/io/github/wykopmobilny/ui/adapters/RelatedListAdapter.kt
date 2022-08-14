@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class RelatedListAdapter @Inject constructor(
     private val userManagerApi: UserManagerApi,
-    private val relatedWidgetPresenterFactory: RelatedWidgetPresenterFactory
+    private val relatedWidgetPresenterFactory: RelatedWidgetPresenterFactory,
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<RelatedViewHolder>() {
 
     var linkId: Long? = null
@@ -27,6 +27,6 @@ class RelatedListAdapter @Inject constructor(
             linkId,
             LinkRelatedListItemBinding.inflate(parent.layoutInflater, parent, false),
             userManagerApi,
-            relatedWidgetPresenterFactory.create()
+            relatedWidgetPresenterFactory.create(),
         )
 }

@@ -21,7 +21,7 @@ class MyWykopEntryLinkPresenter(
     val entriesInteractor: EntriesInteractor,
     val linksInteractor: LinksInteractor,
     val linksApi: LinksApi,
-    private val myWykopApi: MyWykopApi
+    private val myWykopApi: MyWykopApi,
 ) : BasePresenter<EntryLinkFragmentView>(), EntryActionListener, LinkActionListener {
 
     var page = 1
@@ -38,7 +38,7 @@ class MyWykopEntryLinkPresenter(
                         view?.addItems(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -55,7 +55,7 @@ class MyWykopEntryLinkPresenter(
                         view?.addItems(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -72,7 +72,7 @@ class MyWykopEntryLinkPresenter(
                         view?.addItems(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -103,7 +103,7 @@ class MyWykopEntryLinkPresenter(
                 },
                 {
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -123,7 +123,7 @@ class MyWykopEntryLinkPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateEntry(entry)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -137,7 +137,7 @@ class MyWykopEntryLinkPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateLink(link)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

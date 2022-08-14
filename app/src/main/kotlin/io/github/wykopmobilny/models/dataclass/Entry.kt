@@ -20,7 +20,7 @@ class Entry(
     var isNsfw: Boolean = false,
     var isBlocked: Boolean = false,
     var collapsed: Boolean = true,
-    val isCommentingPossible: Boolean
+    val isCommentingPossible: Boolean,
 ) {
     override fun equals(other: Any?): Boolean {
         return if (other !is Entry) false

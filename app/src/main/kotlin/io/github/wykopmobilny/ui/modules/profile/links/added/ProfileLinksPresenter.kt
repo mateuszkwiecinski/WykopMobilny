@@ -12,7 +12,7 @@ import io.reactivex.Single
 class ProfileLinksPresenter(
     val schedulers: Schedulers,
     val profileApi: ProfileApi,
-    val linksInteractor: LinksInteractor
+    val linksInteractor: LinksInteractor,
 ) : BasePresenter<ProfileLinksView>(), LinkActionListener {
 
     var page = 1
@@ -32,7 +32,7 @@ class ProfileLinksPresenter(
                         view?.disableLoading()
                     }
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -49,7 +49,7 @@ class ProfileLinksPresenter(
                         view?.addItems(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -66,7 +66,7 @@ class ProfileLinksPresenter(
                         view?.addItems(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -83,7 +83,7 @@ class ProfileLinksPresenter(
                         view?.addItems(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -105,7 +105,7 @@ class ProfileLinksPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateLink(link)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

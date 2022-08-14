@@ -7,7 +7,7 @@ import io.github.wykopmobilny.utils.intoComposite
 
 class MyWykopObservedTagsPresenter(
     val schedulers: Schedulers,
-    private val tagsApi: TagApi
+    private val tagsApi: TagApi,
 ) : BasePresenter<MyWykopObservedTagsView>() {
 
     fun loadTags() {

@@ -12,6 +12,6 @@ class ProfileLinksModule {
     fun provideAddedLinksPresenter(
         schedulers: Schedulers,
         profileApi: ProfileApi,
-        linksInteractor: LinksInteractor
+        linksInteractor: LinksInteractor,
     ) = ProfileLinksPresenter(schedulers, profileApi, linksInteractor)
 }

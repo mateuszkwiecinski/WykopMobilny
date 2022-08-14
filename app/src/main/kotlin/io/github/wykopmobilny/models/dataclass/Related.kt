@@ -6,5 +6,5 @@ data class Related(
     var voteCount: Int,
     val author: Author?,
     val title: String,
-    var userVote: Int
+    var userVote: Int,
 )

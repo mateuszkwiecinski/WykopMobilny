@@ -12,6 +12,6 @@ class HitsModule {
     fun provideHitsPresenter(schedulers: Schedulers, hitsApi: HitsApi, linkInteractor: LinksInteractor) = HitsPresenter(
         schedulers,
         linkInteractor,
-        hitsApi
+        hitsApi,
     )
 }

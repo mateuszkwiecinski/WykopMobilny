@@ -18,7 +18,7 @@ class KotlinGlideRequestListener(val failedListener: (GlideException?) -> Unit, 
         model: Any?,
         target: Target<Drawable>?,
         dataSource: DataSource?,
-        isFirstResource: Boolean
+        isFirstResource: Boolean,
     ): Boolean {
         successListener()
         return false

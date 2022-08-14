@@ -12,6 +12,6 @@ class PromotedFragmentModule {
     fun providePromotedPresenter(
         schedulers: Schedulers,
         linksApi: LinksApi,
-        linksInteractor: LinksInteractor
+        linksInteractor: LinksInteractor,
     ) = PromotedPresenter(schedulers, linksApi, linksInteractor)
 }

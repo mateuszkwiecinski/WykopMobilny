@@ -91,8 +91,8 @@ class InputToolbar(context: Context, attrs: AttributeSet) : ConstraintLayout(con
                     if (binding.body.adapter !is HashTagsSuggestionsAdapter) {
                         binding.body.setAdapter(hashTagsSuggestionAdapter)
                     }
-                }
-            )
+                },
+            ),
         )
         binding.body.threshold = 3
         binding.body.doOnTextChanged { _, _, _, _ ->
@@ -111,13 +111,13 @@ class InputToolbar(context: Context, attrs: AttributeSet) : ConstraintLayout(con
                 inputToolbarListener?.sendPhoto(
                     wykopImageFile,
                     if (binding.body.text.toString().isNotEmpty()) binding.body.text.toString() else ZERO_WIDTH_SPACE,
-                    binding.markdownToolbar.containsAdultContent
+                    binding.markdownToolbar.containsAdultContent,
                 )
             } else {
                 inputToolbarListener?.sendPhoto(
                     binding.markdownToolbar.photoUrl,
                     if (binding.body.text.toString().isNotEmpty()) binding.body.text.toString() else ZERO_WIDTH_SPACE,
-                    binding.markdownToolbar.containsAdultContent
+                    binding.markdownToolbar.containsAdultContent,
                 )
             }
         }

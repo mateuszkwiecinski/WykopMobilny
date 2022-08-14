@@ -16,6 +16,6 @@ class ActionsFragmentModule {
         profileApi: ProfileApi,
         entriesInteractor: EntriesInteractor,
         entriesApi: EntriesApi,
-        linksInteractor: LinksInteractor
+        linksInteractor: LinksInteractor,
     ) = ActionsFragmentPresenter(schedulers, profileApi, entriesInteractor, linksInteractor, entriesApi)
 }

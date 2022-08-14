@@ -7,7 +7,7 @@ import android.widget.MultiAutoCompleteTextView
 
 class WykopSuggestionsTokenizer(
     val setUsersAdapter: () -> Unit,
-    val setHashTagsAdapter: () -> Unit
+    val setHashTagsAdapter: () -> Unit,
 ) : MultiAutoCompleteTextView.Tokenizer {
 
     override fun terminateToken(text: CharSequence): CharSequence {

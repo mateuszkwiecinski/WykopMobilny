@@ -18,7 +18,7 @@ class ActionsFragmentPresenter(
     val profileApi: ProfileApi,
     val entriesInteractor: EntriesInteractor,
     val linksInteractor: LinksInteractor,
-    val entriesApi: EntriesApi
+    val entriesApi: EntriesApi,
 ) : BasePresenter<ActionsView>(), LinkActionListener, EntryActionListener {
 
     lateinit var username: String
@@ -32,7 +32,7 @@ class ActionsFragmentPresenter(
                     view?.addItems(it, true)
                     view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -63,7 +63,7 @@ class ActionsFragmentPresenter(
                 },
                 {
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -83,7 +83,7 @@ class ActionsFragmentPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateEntry(entry)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -97,7 +97,7 @@ class ActionsFragmentPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateLink(link)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

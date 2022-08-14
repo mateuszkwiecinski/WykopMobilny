@@ -94,8 +94,13 @@ class WykopImageFile(val uri: Uri, val context: Context) {
                 options,
             )
             val bitmap = Bitmap.createBitmap(
-                bmp!!, 0, 0, bmp.width,
-                bmp.height, mat, true,
+                bmp!!,
+                0,
+                0,
+                bmp.width,
+                bmp.height,
+                mat,
+                true,
             )
 
             val file = File.createTempFile("rSaved", ".0", context.cacheDir)

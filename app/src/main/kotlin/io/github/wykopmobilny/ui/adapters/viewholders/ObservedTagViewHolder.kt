@@ -7,7 +7,7 @@ import io.github.wykopmobilny.ui.modules.NewNavigator
 
 class ObservedTagViewHolder(
     private val binding: ObservedTagListItemBinding,
-    private val navigator: NewNavigator
+    private val navigator: NewNavigator,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bindView(tag: ObservedTagResponse) {

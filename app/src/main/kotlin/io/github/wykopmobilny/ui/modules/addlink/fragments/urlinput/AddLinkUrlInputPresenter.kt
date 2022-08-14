@@ -7,7 +7,7 @@ import io.github.wykopmobilny.utils.intoComposite
 
 class AddLinkUrlInputPresenter(
     val schedulers: Schedulers,
-    private val addLinkApi: AddLinkApi
+    private val addLinkApi: AddLinkApi,
 ) : BasePresenter<AddLinkUrlInputFragmentView>() {
 
     fun createDraft(url: String) {
@@ -23,7 +23,7 @@ class AddLinkUrlInputPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.showDuplicatesLoading(false)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

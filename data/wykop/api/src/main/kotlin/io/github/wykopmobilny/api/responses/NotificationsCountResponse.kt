@@ -5,5 +5,5 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class NotificationsCountResponse(
-    @field:Json(name = "count") val count: Int
+    @field:Json(name = "count") val count: Int,
 )

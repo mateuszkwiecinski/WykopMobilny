@@ -10,5 +10,5 @@ data class TagMetaResponse(
     @field:Json(name = "is_blocked") var isBlocked: Boolean,
     @field:Json(name = "is_own") val isOwn: Boolean,
     @field:Json(name = "description") val description: String?,
-    @field:Json(name = "background") val background: String?
+    @field:Json(name = "background") val background: String?,
 )

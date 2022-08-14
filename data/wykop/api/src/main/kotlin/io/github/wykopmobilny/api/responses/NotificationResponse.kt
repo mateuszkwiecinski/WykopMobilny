@@ -13,5 +13,5 @@ data class NotificationResponse(
     @field:Json(name = "type") val type: String,
     @field:Json(name = "item_id") val itemId: String?,
     @field:Json(name = "url") val url: String?,
-    @field:Json(name = "new") val new: Boolean
+    @field:Json(name = "new") val new: Boolean,
 )

@@ -28,6 +28,6 @@ interface AddLinkRetrofitApi {
         @Field("tags") tags: String,
         @Field("photo") photo: String? = null,
         @Field("url") url: String,
-        @Field("plus18") plus18: Int
+        @Field("plus18") plus18: Int,
     ): WykopApiResponse<LinkResponse>
 }

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class ProfilePresenter @Inject constructor(
     private val schedulers: Schedulers,
-    private val profileApi: ProfileApi
+    private val profileApi: ProfileApi,
 ) : BasePresenter<ProfileView>() {
 
     var userName = "a__s"

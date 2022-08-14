@@ -25,7 +25,10 @@ inline fun <reified F : Fragment> launchFragmentInContainer(
     initialState: Lifecycle.State = Lifecycle.State.RESUMED,
     crossinline instantiate: () -> F,
 ): FragmentScenarioIHateGoogle<F> = FragmentScenarioIHateGoogle.launchInContainer(
-    F::class.java, fragmentArgs, themeResId, initialState,
+    F::class.java,
+    fragmentArgs,
+    themeResId,
+    initialState,
     object : FragmentFactory() {
         override fun instantiate(
             classLoader: ClassLoader,

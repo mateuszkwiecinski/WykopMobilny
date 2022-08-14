@@ -5,5 +5,5 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class CoubFileVersions(
-    @field:Json(name = "mobile") val mobile: CoubMobileVersions
+    @field:Json(name = "mobile") val mobile: CoubMobileVersions,
 )

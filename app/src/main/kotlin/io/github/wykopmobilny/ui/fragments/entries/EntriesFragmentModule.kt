@@ -12,6 +12,6 @@ class EntriesFragmentModule {
     fun provideEntriesFragmentPresenter(
         schedulers: Schedulers,
         entriesApi: EntriesApi,
-        entryInteractor: EntriesInteractor
+        entryInteractor: EntriesInteractor,
     ) = EntriesFragmentPresenter(schedulers, entriesApi, entryInteractor)
 }

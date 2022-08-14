@@ -30,7 +30,7 @@ interface PMRetrofitApi {
         @Part("body") body: RequestBody,
         @Part("adultmedia") plus18: RequestBody,
         @Path("user") user: String,
-        @Part file: MultipartBody.Part
+        @Part file: MultipartBody.Part,
     ): WykopApiResponse<PMMessageResponse>
 
     @FormUrlEncoded
@@ -39,7 +39,7 @@ interface PMRetrofitApi {
         @Field("body") body: String,
         @Path("user") user: String,
         @Field("embed") embed: String?,
-        @Field("adultmedia") plus18: Boolean
+        @Field("adultmedia") plus18: Boolean,
     ): WykopApiResponse<PMMessageResponse>
 
     @GET("/pm/DeleteConversation/{user}/appkey/$APP_KEY")

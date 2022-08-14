@@ -9,6 +9,6 @@ object VoterMapper : Mapper<VoterResponse, Voter> {
         Voter(
             AuthorMapper.map(value.author),
             value.date,
-            value.voteType
+            value.voteType,
         )
 }

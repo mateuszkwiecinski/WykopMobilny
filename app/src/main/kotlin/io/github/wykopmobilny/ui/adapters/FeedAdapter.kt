@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class FeedAdapter @Inject constructor(
     val userManagerApi: UserManagerApi,
-    val settingsPreferencesApi: SettingsPreferencesApi
+    val settingsPreferencesApi: SettingsPreferencesApi,
 ) : SimpleBaseProgressAdapter<BlockedViewHolder, Entry>() {
 
     override val itemType: Int = 0

@@ -18,7 +18,7 @@ class LinkDetailsPresenter @Inject constructor(
     val schedulers: Schedulers,
     val linksApi: LinksApi,
     private val linkCommentInteractor: LinkCommentInteractor,
-    private val linkHeaderInteractor: LinkInteractor
+    private val linkHeaderInteractor: LinkInteractor,
 ) : BasePresenter<LinkDetailsView>(), LinkCommentActionListener, LinkHeaderActionListener {
 
     var sortBy = "best"
@@ -59,7 +59,7 @@ class LinkDetailsPresenter @Inject constructor(
                         view?.scrollToComment(scrollCommentId)
                     }
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -75,7 +75,7 @@ class LinkDetailsPresenter @Inject constructor(
                 },
                 {
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -103,7 +103,7 @@ class LinkDetailsPresenter @Inject constructor(
                     {
                         view?.showErrorDialog(it)
                         view?.hideInputbarProgress()
-                    }
+                    },
                 )
                 .intoComposite(compositeObservable)
         } else {
@@ -119,7 +119,7 @@ class LinkDetailsPresenter @Inject constructor(
                     {
                         view?.showErrorDialog(it)
                         view?.hideInputbarProgress()
-                    }
+                    },
                 )
                 .intoComposite(compositeObservable)
         }
@@ -140,7 +140,7 @@ class LinkDetailsPresenter @Inject constructor(
                     {
                         view?.showErrorDialog(it)
                         view?.hideInputbarProgress()
-                    }
+                    },
                 )
                 .intoComposite(compositeObservable)
         } else {
@@ -156,7 +156,7 @@ class LinkDetailsPresenter @Inject constructor(
                     {
                         view?.showErrorDialog(it)
                         view?.hideInputbarProgress()
-                    }
+                    },
                 )
                 .intoComposite(compositeObservable)
         }
@@ -171,7 +171,7 @@ class LinkDetailsPresenter @Inject constructor(
                 {
                     view?.showErrorDialog(it)
                     view?.updateLinkComment(link)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -184,7 +184,7 @@ class LinkDetailsPresenter @Inject constructor(
                 {
                     view?.showErrorDialog(it)
                     view?.updateLink(link)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

@@ -12,7 +12,7 @@ import io.reactivex.Single
 class LinkSearchPresenter(
     val schedulers: Schedulers,
     val searchApi: SearchApi,
-    val linksInteractor: LinksInteractor
+    val linksInteractor: LinksInteractor,
 ) : BasePresenter<LinkSearchView>(), LinkActionListener {
 
     var page = 1
@@ -33,7 +33,7 @@ class LinkSearchPresenter(
                         view?.disableLoading()
                     }
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -51,7 +51,7 @@ class LinkSearchPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateLink(link)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

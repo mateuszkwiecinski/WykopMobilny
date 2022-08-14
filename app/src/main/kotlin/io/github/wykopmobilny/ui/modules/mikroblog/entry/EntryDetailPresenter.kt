@@ -18,7 +18,7 @@ class EntryDetailPresenter @Inject constructor(
     val schedulers: Schedulers,
     private val entriesApi: EntriesApi,
     private val entriesInteractor: EntriesInteractor,
-    private val entryCommentInteractor: EntryCommentInteractor
+    private val entryCommentInteractor: EntryCommentInteractor,
 ) : BasePresenter<EntryDetailView>(), EntryActionListener, EntryCommentActionListener {
 
     var entryId = 0L
@@ -49,7 +49,7 @@ class EntryDetailPresenter @Inject constructor(
                 },
                 {
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -74,7 +74,7 @@ class EntryDetailPresenter @Inject constructor(
                 },
                 {
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -86,7 +86,7 @@ class EntryDetailPresenter @Inject constructor(
             .observeOn(schedulers.mainThread())
             .subscribe(
                 { view?.showEntry(it) },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -104,7 +104,7 @@ class EntryDetailPresenter @Inject constructor(
                 {
                     view?.hideInputbarProgress()
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -122,7 +122,7 @@ class EntryDetailPresenter @Inject constructor(
                 {
                     view?.hideInputbarProgress()
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -136,7 +136,7 @@ class EntryDetailPresenter @Inject constructor(
                 {
                     view?.showErrorDialog(it)
                     view?.updateEntry(entry)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -150,7 +150,7 @@ class EntryDetailPresenter @Inject constructor(
                 {
                     view?.showErrorDialog(it)
                     view?.updateComment(comment)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

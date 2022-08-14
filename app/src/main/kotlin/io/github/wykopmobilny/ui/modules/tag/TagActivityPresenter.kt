@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class TagActivityPresenter @Inject constructor(
     private val schedulers: Schedulers,
-    private val tagApi: TagApi
+    private val tagApi: TagApi,
 ) : BasePresenter<TagActivityView>() {
 
     lateinit var tag: String
@@ -19,7 +19,7 @@ class TagActivityPresenter @Inject constructor(
             .observeOn(schedulers.mainThread())
             .subscribe(
                 { view?.setObserveState(it) },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -30,7 +30,7 @@ class TagActivityPresenter @Inject constructor(
             .observeOn(schedulers.mainThread())
             .subscribe(
                 { view?.setObserveState(it) },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -41,7 +41,7 @@ class TagActivityPresenter @Inject constructor(
             .observeOn(schedulers.mainThread())
             .subscribe(
                 { view?.setObserveState(it) },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -52,7 +52,7 @@ class TagActivityPresenter @Inject constructor(
             .observeOn(schedulers.mainThread())
             .subscribe(
                 { view?.setObserveState(it) },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }

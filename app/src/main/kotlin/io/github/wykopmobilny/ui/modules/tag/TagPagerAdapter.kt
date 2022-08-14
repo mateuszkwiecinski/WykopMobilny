@@ -12,7 +12,7 @@ import io.github.wykopmobilny.ui.modules.tag.links.TagLinksFragment
 class TagPagerAdapter(
     private val tag: String,
     private val resources: Resources,
-    fragmentManager: FragmentManager
+    fragmentManager: FragmentManager,
 ) : FragmentPagerAdapter(fragmentManager) {
 
     val registeredFragments = SparseArray<androidx.fragment.app.Fragment>()

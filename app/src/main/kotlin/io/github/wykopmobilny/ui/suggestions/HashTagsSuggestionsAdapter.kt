@@ -15,7 +15,7 @@ import io.github.wykopmobilny.utils.layoutInflater
 
 class HashTagsSuggestionsAdapter(
     context: Context,
-    private val suggestionApi: SuggestApi
+    private val suggestionApi: SuggestApi,
 ) : ArrayAdapter<TagSuggestion>(context, R.layout.autosuggest_item), Filterable {
 
     val items = arrayListOf<TagSuggestion>()

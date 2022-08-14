@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 data class VoterResponse(
     @field:Json(name = "author") val author: AuthorResponse,
     @field:Json(name = "date") val date: String,
-    @field:Json(name = "vote_type") val voteType: Int
+    @field:Json(name = "vote_type") val voteType: Int,
 )

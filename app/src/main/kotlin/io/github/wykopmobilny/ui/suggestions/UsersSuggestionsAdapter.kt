@@ -16,7 +16,7 @@ import io.github.wykopmobilny.utils.layoutInflater
 
 class UsersSuggestionsAdapter(
     context: Context,
-    private val suggestionApi: SuggestApi
+    private val suggestionApi: SuggestApi,
 ) : ArrayAdapter<Author>(context, R.layout.autosuggest_item), Filterable {
 
     val items = arrayListOf<Author>()
