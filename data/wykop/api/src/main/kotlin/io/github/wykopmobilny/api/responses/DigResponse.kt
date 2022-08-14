@@ -6,5 +6,5 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class DigResponse(
     @field:Json(name = "digs") val diggs: Int,
-    @field:Json(name = "buries") val buries: Int
+    @field:Json(name = "buries") val buries: Int,
 )

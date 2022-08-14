@@ -13,6 +13,6 @@ object NotificationMapper : Mapper<NotificationResponse, Notification> {
             date = value.date,
             type = value.type,
             url = value.url,
-            new = value.new
+            new = value.new,
         )
 }

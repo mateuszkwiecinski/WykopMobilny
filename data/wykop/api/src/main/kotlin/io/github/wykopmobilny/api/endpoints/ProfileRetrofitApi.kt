@@ -43,7 +43,7 @@ interface ProfileRetrofitApi {
     @GET("/profiles/entriescomments/{username}/page/{page}/appkey/$APP_KEY/data/full")
     suspend fun getEntriesComments(
         @Path("username") username: String,
-        @Path("page") page: Int
+        @Path("page") page: Int,
     ): WykopApiResponse<List<EntryCommentResponse>>
 
     @GET("/profiles/related/{username}/page/{page}/appkey/$APP_KEY")

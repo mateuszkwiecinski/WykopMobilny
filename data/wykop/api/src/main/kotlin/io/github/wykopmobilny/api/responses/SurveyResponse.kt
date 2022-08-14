@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 data class SurveyResponse(
     @field:Json(name = "question") val question: String?,
     @field:Json(name = "answers") val answers: List<AnswerResponse>?,
-    @field:Json(name = "user_answer") val userAnswer: Int?
+    @field:Json(name = "user_answer") val userAnswer: Int?,
 )

@@ -13,7 +13,7 @@ import javax.inject.Inject
 class MainNavigationPresenter @Inject constructor(
     private val schedulers: Schedulers,
     private val notificationsApi: NotificationsApi,
-    private val userManagerApi: UserManagerApi
+    private val userManagerApi: UserManagerApi,
 ) : BasePresenter<MainNavigationView>() {
 
     private var lastCheckMillis = 0L
@@ -26,7 +26,7 @@ class MainNavigationPresenter @Inject constructor(
                     Observable.interval(0, 1, TimeUnit.MINUTES)
                         .subscribe {
                             checkNotifications(false)
-                        }
+                        },
                 )
             }
         }

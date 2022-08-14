@@ -42,15 +42,17 @@ class WykopImageView(context: Context, attrs: AttributeSet?) : AppCompatImageVie
             .apply(
                 RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .signature(ObjectKey(url))
+                    .signature(ObjectKey(url)),
             )
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    setImageBitmap(resource)
-                }
+            .into(
+                object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                        setImageBitmap(resource)
+                    }
 
-                override fun onLoadCleared(placeholder: Drawable?) = Unit
-            })
+                    override fun onLoadCleared(placeholder: Drawable?) = Unit
+                },
+            )
     }
 
     fun resetImage() {
@@ -61,7 +63,7 @@ class WykopImageView(context: Context, attrs: AttributeSet?) : AppCompatImageVie
         val targetHeightPercentage = (settingsPreferencesApi.cutImageProportion ?: DEFAULT_CUT_IMAGE_PROPORTION).toFloat() / 100
         val proportion = (screenMetrics.heightPixels.toFloat() * targetHeightPercentage) / screenMetrics.widthPixels.toFloat()
         val widthSpec = MeasureSpec.getSize(
-            if (settingsPreferencesApi.showMinifiedImages && !forceDisableMinimizedMode) widthMeasureSpec / 2 else widthMeasureSpec
+            if (settingsPreferencesApi.showMinifiedImages && !forceDisableMinimizedMode) widthMeasureSpec / 2 else widthMeasureSpec,
         )
         if (drawable != null) {
             val measuredMultiplier = (drawable.intrinsicHeight.toFloat() / drawable.intrinsicWidth.toFloat())

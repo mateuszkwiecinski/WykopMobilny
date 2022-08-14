@@ -15,6 +15,6 @@ class MicroblogCommentsModule {
         schedulers: Schedulers,
         profileApi: ProfileApi,
         entriesApi: EntriesApi,
-        entryCommentsInteractor: EntryCommentInteractor
+        entryCommentsInteractor: EntryCommentInteractor,
     ) = MicroblogCommentsPresenter(schedulers, profileApi, entriesApi, entryCommentsInteractor)
 }

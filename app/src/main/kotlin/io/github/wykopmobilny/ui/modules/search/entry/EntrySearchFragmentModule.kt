@@ -14,6 +14,6 @@ class EntrySearchFragmentModule {
         schedulers: Schedulers,
         searchApi: SearchApi,
         entriesApi: EntriesApi,
-        entriesInteractor: EntriesInteractor
+        entriesInteractor: EntriesInteractor,
     ) = EntrySearchPresenter(schedulers, searchApi, entriesApi, entriesInteractor)
 }

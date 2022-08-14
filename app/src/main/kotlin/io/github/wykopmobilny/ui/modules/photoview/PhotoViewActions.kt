@@ -132,7 +132,8 @@ class PhotoViewActions(val context: Context) : PhotoViewCallbacks {
         }
         ActivityCompat.requestPermissions(
             photoView,
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), 1,
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
+            1,
         )
         val writePermission = ContextCompat.checkSelfPermission(
             context,

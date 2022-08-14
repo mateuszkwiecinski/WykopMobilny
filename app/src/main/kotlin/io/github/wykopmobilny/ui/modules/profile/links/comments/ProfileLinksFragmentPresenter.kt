@@ -12,7 +12,7 @@ import io.reactivex.Single
 class ProfileLinksFragmentPresenter(
     private val schedulers: Schedulers,
     private val profileApi: ProfileApi,
-    private val linksInteractor: LinkCommentInteractor
+    private val linksInteractor: LinkCommentInteractor,
 ) : BasePresenter<ProfileLinkCommentsView>(), LinkCommentActionListener {
 
     var page = 1
@@ -30,7 +30,7 @@ class ProfileLinksFragmentPresenter(
                         view?.addItems(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -56,7 +56,7 @@ class ProfileLinksFragmentPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateComment(link)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

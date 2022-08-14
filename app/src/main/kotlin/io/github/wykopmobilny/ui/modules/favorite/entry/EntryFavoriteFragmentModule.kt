@@ -13,7 +13,7 @@ class EntryFavoriteFragmentModule {
     fun provideLinksFavoritePresenter(
         schedulers: Schedulers,
         entriesApi: EntriesApi,
-        entriesInteractor: EntriesInteractor
+        entriesInteractor: EntriesInteractor,
     ) =
         EntryFavoritePresenter(
             schedulers,

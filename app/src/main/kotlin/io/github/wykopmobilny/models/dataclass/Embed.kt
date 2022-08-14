@@ -12,7 +12,7 @@ class Embed(
     val isAnimated: Boolean,
     val size: String,
     var isResize: Boolean = false,
-    var isRevealed: Boolean = false
+    var isRevealed: Boolean = false,
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -24,7 +24,7 @@ class Embed(
         parcel.readByte() != 0.toByte(),
         parcel.readString()!!,
         parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

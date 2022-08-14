@@ -23,14 +23,14 @@ class TopLinkCommentViewHolder(
     navigator: NewNavigator,
     linkHandler: WykopLinkHandler,
     commentActionListener: LinkCommentActionListener,
-    commentViewListener: LinkCommentViewListener?
+    commentViewListener: LinkCommentViewListener?,
 ) : BaseLinkCommentViewHolder(
     binding.root,
     userManagerApi,
     navigator,
     linkHandler,
     commentViewListener,
-    commentActionListener
+    commentActionListener,
 ) {
 
     override lateinit var embedView: WykopEmbedView
@@ -60,7 +60,7 @@ class TopLinkCommentViewHolder(
             navigator: NewNavigator,
             linkHandler: WykopLinkHandler,
             commentActionListener: LinkCommentActionListener,
-            commentViewListener: LinkCommentViewListener?
+            commentViewListener: LinkCommentViewListener?,
         ): TopLinkCommentViewHolder {
             val view = TopLinkCommentViewHolder(
                 TopLinkCommentLayoutBinding.inflate(parent.layoutInflater, parent, false),
@@ -68,7 +68,7 @@ class TopLinkCommentViewHolder(
                 navigator,
                 linkHandler,
                 commentActionListener,
-                commentViewListener
+                commentViewListener,
             )
 
             view.type = viewType
@@ -88,7 +88,7 @@ class TopLinkCommentViewHolder(
         enableYoutubePlayer: Boolean,
         enableEmbedPlayer: Boolean,
         showAdultContent: Boolean,
-        hideNsfw: Boolean
+        hideNsfw: Boolean,
     ) {
         super.bindView(
             linkComment,
@@ -98,7 +98,7 @@ class TopLinkCommentViewHolder(
             enableYoutubePlayer,
             enableEmbedPlayer,
             showAdultContent,
-            hideNsfw
+            hideNsfw,
         )
 
         binding.authorHeaderView.setAuthorData(linkComment.author, linkComment.date, linkComment.app)

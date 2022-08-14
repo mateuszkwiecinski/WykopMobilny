@@ -14,7 +14,7 @@ class TagEntriesPresenter(
     val schedulers: Schedulers,
     val tagApi: TagApi,
     val entriesApi: EntriesApi,
-    val entriesInteractor: EntriesInteractor
+    val entriesInteractor: EntriesInteractor,
 ) : BasePresenter<TagEntriesView>(), EntryActionListener {
 
     var page = 1
@@ -33,7 +33,7 @@ class TagEntriesPresenter(
                         view?.addItems(it.entries, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -64,7 +64,7 @@ class TagEntriesPresenter(
                 },
                 {
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -77,7 +77,7 @@ class TagEntriesPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateEntry(entry)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

@@ -8,5 +8,5 @@ data class AuthorResponse(
     @field:Json(name = "login") val login: String,
     @field:Json(name = "color") val color: Int,
     @field:Json(name = "sex") val sex: String?,
-    @field:Json(name = "avatar") val avatar: String
+    @field:Json(name = "avatar") val avatar: String,
 )

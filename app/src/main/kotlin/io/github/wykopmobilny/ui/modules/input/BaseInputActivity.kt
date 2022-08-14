@@ -81,8 +81,8 @@ abstract class BaseInputActivity<T : BaseInputPresenter> : BaseActivity(), BaseI
                     if (binding.body.adapter !is HashTagsSuggestionsAdapter) {
                         binding.body.setAdapter(hashTagsSuggestionAdapter)
                     }
-                }
-            )
+                },
+            ),
         )
         binding.body.threshold = 3
     }
@@ -186,9 +186,9 @@ abstract class BaseInputActivity<T : BaseInputPresenter> : BaseActivity(), BaseI
         startActivityForResult(
             Intent.createChooser(
                 intent,
-                getString(R.string.insert_photo_galery)
+                getString(R.string.insert_photo_galery),
             ),
-            USER_ACTION_INSERT_PHOTO
+            USER_ACTION_INSERT_PHOTO,
         )
     }
 

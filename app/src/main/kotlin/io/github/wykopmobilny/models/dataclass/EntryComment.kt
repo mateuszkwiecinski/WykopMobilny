@@ -14,7 +14,7 @@ class EntryComment(
     val app: String?,
     val violationUrl: String?,
     var isNsfw: Boolean = false,
-    var isBlocked: Boolean = false
+    var isBlocked: Boolean = false,
 ) {
     override fun equals(other: Any?): Boolean {
         return if (other !is EntryComment) false

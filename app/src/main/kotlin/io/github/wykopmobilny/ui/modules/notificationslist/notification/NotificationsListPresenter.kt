@@ -8,7 +8,7 @@ import io.github.wykopmobilny.utils.intoComposite
 
 class NotificationsListPresenter(
     val schedulers: Schedulers,
-    val notificationsApi: NotificationsApi
+    val notificationsApi: NotificationsApi,
 ) : BasePresenter<NotificationsListView>() {
 
     var page = 1
@@ -25,7 +25,7 @@ class NotificationsListPresenter(
                         view?.addNotifications(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }

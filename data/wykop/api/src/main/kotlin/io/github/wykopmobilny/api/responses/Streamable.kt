@@ -5,5 +5,5 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Streamable(
-    @field:Json(name = "files") val files: StreamableFiles
+    @field:Json(name = "files") val files: StreamableFiles,
 )

@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 internal class ScraperInterceptor @Inject constructor(
     private val baseUrl: String,
-    private val cookiesProvider: (String) -> String?
+    private val cookiesProvider: (String) -> String?,
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {

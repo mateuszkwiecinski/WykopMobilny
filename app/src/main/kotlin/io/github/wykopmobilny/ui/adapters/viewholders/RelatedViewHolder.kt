@@ -10,7 +10,7 @@ class RelatedViewHolder(
     private val linkId: Long?,
     private val binding: LinkRelatedListItemBinding,
     private val userManagerApi: UserManagerApi,
-    private val relatedWidgetPresenter: RelatedWidgetPresenter
+    private val relatedWidgetPresenter: RelatedWidgetPresenter,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bindView(related: Related) {

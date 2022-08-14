@@ -55,7 +55,8 @@ class EntryCommentAdapter @Inject constructor(
     override fun bindHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is EntryCommentViewHolder -> holder.bindView(
-                dataset[position]!!, null,
+                dataset[position]!!,
+                null,
                 openSpoilersDialog = openSpoilersDialog,
                 enableYoutubePlayer = enableYoutubePlayer,
                 enableEmbedPlayer = enableEmbedPlayer,

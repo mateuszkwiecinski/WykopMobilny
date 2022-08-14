@@ -13,6 +13,6 @@ object RelatedMapper : Mapper<RelatedResponse, Related> {
             voteCount = value.voteCount,
             author = value.author?.let(AuthorMapper::map),
             title = value.title,
-            userVote = value.userVote ?: 0
+            userVote = value.userVote ?: 0,
         )
 }

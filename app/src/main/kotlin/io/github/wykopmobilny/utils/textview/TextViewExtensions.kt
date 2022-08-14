@@ -25,7 +25,7 @@ fun TextView.prepareBody(
     html: String,
     urlClickListener: (String) -> Unit,
     clickListener: (() -> Unit)? = null,
-    openSpoilersDialog: Boolean
+    openSpoilersDialog: Boolean,
 ) {
     text = SpannableStringBuilder(html.toSpannable())
     val method = BetterLinkMovementMethod.linkifyHtml(this)
@@ -42,8 +42,8 @@ fun TextView.prepareBody(
                 val spoiler = SpannableString(
                     URLDecoder.decode(
                         url.text().substringAfter("spoiler:"),
-                        "UTF-8"
-                    )
+                        "UTF-8",
+                    ),
                 )
                 Linkify.addLinks(spoiler, Linkify.WEB_URLS)
                 AlertDialog.Builder(context).apply {

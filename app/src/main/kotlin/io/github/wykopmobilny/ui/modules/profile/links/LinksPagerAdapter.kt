@@ -10,7 +10,7 @@ import io.github.wykopmobilny.ui.modules.profile.links.related.ProfileRelatedFra
 
 class LinksPagerAdapter(
     val resources: Resources,
-    fragmentManager: androidx.fragment.app.FragmentManager
+    fragmentManager: androidx.fragment.app.FragmentManager,
 ) : androidx.fragment.app.FragmentPagerAdapter(fragmentManager) {
 
     val registeredFragments = SparseArray<androidx.fragment.app.Fragment>()

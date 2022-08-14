@@ -2,7 +2,7 @@ package io.github.wykopmobilny.ui.helpers
 
 class EndlessScrollListener(
     private val linearLayoutManager: androidx.recyclerview.widget.LinearLayoutManager,
-    val listener: () -> Unit
+    val listener: () -> Unit,
 ) : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
 
     private val visibleThreshold = 2

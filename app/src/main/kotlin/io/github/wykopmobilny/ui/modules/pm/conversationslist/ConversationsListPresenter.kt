@@ -7,7 +7,7 @@ import io.github.wykopmobilny.utils.intoComposite
 
 class ConversationsListPresenter(
     private val schedulers: Schedulers,
-    private val pmApi: PMApi
+    private val pmApi: PMApi,
 ) : BasePresenter<ConversationsListView>() {
 
     fun loadConversations() {

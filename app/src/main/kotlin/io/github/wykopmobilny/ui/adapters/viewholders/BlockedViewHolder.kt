@@ -17,7 +17,7 @@ import io.github.wykopmobilny.utils.layoutInflater
 
 class BlockedViewHolder(
     private val binding: BlockedEntryViewBinding,
-    private val blockListener: (Int) -> Unit
+    private val blockListener: (Int) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     companion object {
@@ -67,7 +67,7 @@ class BlockedViewHolder(
             ForegroundColorSpan(getGroupColor(author?.group ?: 1)),
             text.length - ((author?.nick?.length ?: 0) + 1),
             text.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
         )
         binding.showHiddenTextView.setText(text, TextView.BufferType.SPANNABLE)
     }

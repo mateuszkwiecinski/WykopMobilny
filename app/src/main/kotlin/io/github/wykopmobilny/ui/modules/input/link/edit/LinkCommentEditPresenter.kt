@@ -9,7 +9,7 @@ import io.github.wykopmobilny.utils.intoComposite
 
 class LinkCommentEditPresenter(
     val schedulers: Schedulers,
-    val linksApi: LinksApi
+    val linksApi: LinksApi,
 ) : InputPresenter<BaseInputView>() {
 
     var linkCommentId: Long = -1
@@ -24,7 +24,7 @@ class LinkCommentEditPresenter(
                 {
                     view?.showProgressBar = false
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

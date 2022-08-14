@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class AddEntryPresenter @Inject constructor(
     private val schedulers: Schedulers,
-    private val entriesApi: EntriesApi
+    private val entriesApi: EntriesApi,
 ) : InputPresenter<AddEntryActivityView>() {
 
     override fun sendWithPhoto(photo: WykopImageFile, containsAdultContent: Boolean) {
@@ -22,7 +22,7 @@ class AddEntryPresenter @Inject constructor(
                 {
                     view?.showProgressBar = false
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }
@@ -37,7 +37,7 @@ class AddEntryPresenter @Inject constructor(
                 {
                     view?.showProgressBar = false
                     view?.showErrorDialog(it)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

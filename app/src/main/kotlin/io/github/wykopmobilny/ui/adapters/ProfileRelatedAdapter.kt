@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class ProfileRelatedAdapter @Inject constructor(
     private val userManagerApi: UserManagerApi,
-    private val relatedWidgetPresenterFactory: RelatedWidgetPresenterFactory
+    private val relatedWidgetPresenterFactory: RelatedWidgetPresenterFactory,
 ) : EndlessProgressAdapter<RelatedViewHolder, Related>() {
 
     override fun bindHolder(holder: RelatedViewHolder, position: Int) =
@@ -25,6 +25,6 @@ class ProfileRelatedAdapter @Inject constructor(
             null,
             LinkRelatedListItemBinding.inflate(parent.layoutInflater, parent, false),
             userManagerApi,
-            relatedWidgetPresenterFactory.create()
+            relatedWidgetPresenterFactory.create(),
         )
 }

@@ -11,7 +11,7 @@ import io.github.wykopmobilny.ui.modules.notificationslist.notification.Notifica
 
 class NotificationsListViewPagerAdapter(
     private val resources: Resources,
-    fragmentManager: FragmentManager
+    fragmentManager: FragmentManager,
 ) : androidx.fragment.app.FragmentPagerAdapter(fragmentManager) {
 
     val registeredFragments = SparseArray<Fragment>()

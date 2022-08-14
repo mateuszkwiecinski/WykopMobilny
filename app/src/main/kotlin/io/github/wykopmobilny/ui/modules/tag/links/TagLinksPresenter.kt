@@ -12,7 +12,7 @@ import io.reactivex.Single
 class TagLinksPresenter(
     val schedulers: Schedulers,
     val tagApi: TagApi,
-    val linksInteractor: LinksInteractor
+    val linksInteractor: LinksInteractor,
 ) : BasePresenter<TagLinksView>(), LinkActionListener {
 
     var page = 1
@@ -31,7 +31,7 @@ class TagLinksPresenter(
                         view?.addItems(it.entries, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -52,7 +52,7 @@ class TagLinksPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateLink(link)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

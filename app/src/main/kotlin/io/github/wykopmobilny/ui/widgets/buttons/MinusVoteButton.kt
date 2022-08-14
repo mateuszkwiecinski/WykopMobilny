@@ -10,7 +10,7 @@ import io.github.wykopmobilny.utils.getActivityContext
 class MinusVoteButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.MirkoButtonStyle
+    defStyleAttr: Int = R.attr.MirkoButtonStyle,
 ) : VoteButton(context, attrs, defStyleAttr) {
 
     init {
@@ -26,8 +26,8 @@ class MinusVoteButton @JvmOverloads constructor(
         } else {
             val typedArray = context.obtainStyledAttributes(
                 arrayOf(
-                    R.attr.minusDrawable
-                ).toIntArray()
+                    R.attr.minusDrawable,
+                ).toIntArray(),
             )
             setCompoundDrawablesWithIntrinsicBounds(typedArray.getDrawable(0), null, null, null)
             typedArray.recycle()

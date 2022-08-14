@@ -14,27 +14,28 @@ inline fun <reified T : ViewBinding> AppCompatActivity.viewBinding(noinline init
 
 class ActivityViewBindingDelegate<T : ViewBinding>(
     private val activity: AppCompatActivity,
-    private val initializer: (LayoutInflater) -> T
+    private val initializer: (LayoutInflater) -> T,
 ) : ReadOnlyProperty<AppCompatActivity, T> {
 
     private var _value: T? = null
 
     init {
-        activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
+        activity.lifecycle.addObserver(
+            object : DefaultLifecycleObserver {
 
-            override fun onCreate(owner: LifecycleOwner) {
-                if (_value == null) {
-                    _value = initializer(activity.layoutInflater)
+                override fun onCreate(owner: LifecycleOwner) {
+                    if (_value == null) {
+                        _value = initializer(activity.layoutInflater)
+                    }
+                    activity.setContentView(_value?.root!!)
+                    activity.lifecycle.removeObserver(this)
                 }
-                activity.setContentView(_value?.root!!)
-                activity.lifecycle.removeObserver(this)
-            }
-        })
+            },
+        )
     }
 
     override fun getValue(thisRef: AppCompatActivity, property: KProperty<*>): T {
         if (_value == null) {
-
             // This must be on the main thread only
             if (Looper.myLooper() != Looper.getMainLooper()) {
                 throw IllegalThreadStateException("This cannot be called from other threads. It should be on the main thread only.")

@@ -7,7 +7,7 @@ import io.github.wykopmobilny.utils.intoComposite
 
 class UsersSearchPresenter(
     val schedulers: Schedulers,
-    private val searchApi: SearchApi
+    private val searchApi: SearchApi,
 ) : BasePresenter<UsersSearchView>() {
 
     fun searchProfiles(q: String) {
@@ -16,7 +16,7 @@ class UsersSearchPresenter(
             .observeOn(schedulers.mainThread())
             .subscribe(
                 { view?.showUsers(it) },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }

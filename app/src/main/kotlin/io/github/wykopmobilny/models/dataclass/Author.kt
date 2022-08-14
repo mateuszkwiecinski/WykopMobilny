@@ -14,14 +14,14 @@ class Author(
     val avatarUrl: String,
     val group: Int,
     val sex: String,
-    var badge: AndroidPatronBadge? = null
+    var badge: AndroidPatronBadge? = null,
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readInt(),
         parcel.readString()!!,
-        parcel.readParcelable(AndroidPatronBadge::class.java.classLoader)
+        parcel.readParcelable(AndroidPatronBadge::class.java.classLoader),
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -50,7 +50,7 @@ class Author(
 fun AndroidPatronBadge.drawBadge(view: TextView) {
     val shape = GradientDrawable(
         GradientDrawable.Orientation.LEFT_RIGHT,
-        intArrayOf(Color.parseColor(hexColor), Color.parseColor(hexColor))
+        intArrayOf(Color.parseColor(hexColor), Color.parseColor(hexColor)),
     )
     view.setOnClickListener {
         view.getActivityContext()?.openBrowser("https://patronite.pl/wykop-mobilny")
@@ -63,5 +63,5 @@ fun AndroidPatronBadge.drawBadge(view: TextView) {
 @Parcelize
 data class AndroidPatronBadge(
     val hexColor: String,
-    val text: String
+    val text: String,
 ) : Parcelable

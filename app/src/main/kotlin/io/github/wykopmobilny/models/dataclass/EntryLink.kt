@@ -2,7 +2,7 @@ package io.github.wykopmobilny.models.dataclass
 
 class EntryLink(
     var link: Link?,
-    var entry: Entry?
+    var entry: Entry?,
 ) {
     override fun equals(other: Any?): Boolean {
         return if (other !is EntryLink) false

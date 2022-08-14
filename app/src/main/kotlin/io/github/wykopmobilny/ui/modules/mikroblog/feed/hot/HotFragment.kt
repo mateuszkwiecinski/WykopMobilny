@@ -78,7 +78,7 @@ class HotFragment : BaseFragment(R.layout.hot_fragment), BaseNavigationView, Hot
                 "6" -> R.string.period6
                 "active" -> R.string.active_entries
                 else -> R.string.newest_entries
-            }
+            },
         )
     }
 

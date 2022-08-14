@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class DownvotersPresenter @Inject constructor(
     private val schedulers: Schedulers,
-    private val linksApi: LinksApi
+    private val linksApi: LinksApi,
 ) : BasePresenter<DownvotersView>() {
 
     var linkId = -1L

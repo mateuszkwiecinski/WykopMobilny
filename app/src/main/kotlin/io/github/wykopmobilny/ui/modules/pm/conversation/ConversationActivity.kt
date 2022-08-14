@@ -106,8 +106,8 @@ class ConversationActivity : BaseActivity(), ConversationView, InputToolbarListe
                 getActivityContext()!!.startActivity(
                     ProfileActivity.createIntent(
                         getActivityContext()!!,
-                        conversation.receiver.nick
-                    )
+                        conversation.receiver.nick,
+                    ),
                 )
             }
         }

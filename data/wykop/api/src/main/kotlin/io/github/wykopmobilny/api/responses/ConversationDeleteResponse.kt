@@ -5,5 +5,5 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ConversationDeleteResponse(
-    @field:Json(name = "status") val status: String
+    @field:Json(name = "status") val status: String,
 )

@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 class TagLinksResponse(
     @field:Json(name = "data") override val data: List<LinkResponse>?,
     @field:Json(name = "error") override val error: WykopErrorResponse?,
-    @field:Json(name = "meta") val meta: TagMetaResponse
+    @field:Json(name = "meta") val meta: TagMetaResponse,
 ) : ApiResponse<List<LinkResponse>>

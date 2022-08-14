@@ -12,7 +12,7 @@ import io.github.wykopmobilny.ui.settings.android.R as SettingsR
 
 class ProfilePagerAdapter(
     val resources: Resources,
-    fragmentManager: androidx.fragment.app.FragmentManager
+    fragmentManager: androidx.fragment.app.FragmentManager,
 ) : androidx.fragment.app.FragmentPagerAdapter(fragmentManager) {
 
     val registeredFragments = SparseArray<Fragment>()

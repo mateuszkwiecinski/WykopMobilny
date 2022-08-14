@@ -6,5 +6,5 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class EntryLinkResponse(
     @field:Json(name = "entry") val entry: EntryResponse?,
-    @field:Json(name = "link") val link: LinkResponse?
+    @field:Json(name = "link") val link: LinkResponse?,
 )

@@ -12,7 +12,7 @@ import io.reactivex.Single
 class UpcomingPresenter(
     val schedulers: Schedulers,
     val linksInteractor: LinksInteractor,
-    private val linksApi: LinksApi
+    private val linksApi: LinksApi,
 ) : BasePresenter<UpcomingView>(), LinkActionListener {
 
     companion object {
@@ -37,7 +37,7 @@ class UpcomingPresenter(
                         view?.addItems(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -54,7 +54,7 @@ class UpcomingPresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateLink(link)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

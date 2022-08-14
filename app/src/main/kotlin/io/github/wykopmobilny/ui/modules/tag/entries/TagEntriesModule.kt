@@ -15,6 +15,6 @@ class TagEntriesModule {
         schedulers: Schedulers,
         tagApi: TagApi,
         entriesApi: EntriesApi,
-        entriesInteractor: EntriesInteractor
+        entriesInteractor: EntriesInteractor,
     ) = TagEntriesPresenter(schedulers, tagApi, entriesApi, entriesInteractor)
 }

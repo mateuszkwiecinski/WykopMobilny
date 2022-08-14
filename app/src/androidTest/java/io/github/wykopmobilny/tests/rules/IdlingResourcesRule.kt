@@ -14,7 +14,6 @@ import kotlin.coroutines.CoroutineContext
 
 class IdlingResourcesRule : TestRule {
     override fun apply(base: Statement, description: Description?): Statement {
-
         return object : Statement() {
             override fun evaluate() {
                 val idlingRegistry = IdlingRegistry.getInstance()

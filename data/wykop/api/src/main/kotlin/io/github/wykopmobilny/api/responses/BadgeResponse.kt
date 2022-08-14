@@ -8,5 +8,5 @@ data class BadgeResponse(
     @field:Json(name = "name") val name: String,
     @field:Json(name = "date") val date: String,
     @field:Json(name = "description") val description: String,
-    @field:Json(name = "icon") val icon: String
+    @field:Json(name = "icon") val icon: String,
 )

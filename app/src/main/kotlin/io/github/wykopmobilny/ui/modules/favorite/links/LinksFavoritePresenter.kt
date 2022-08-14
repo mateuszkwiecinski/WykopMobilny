@@ -12,7 +12,7 @@ import io.reactivex.Single
 class LinksFavoritePresenter(
     val schedulers: Schedulers,
     val linksApi: LinksApi,
-    val linksInteractor: LinksInteractor
+    val linksInteractor: LinksInteractor,
 ) : BasePresenter<LinksFavoriteView>(), LinkActionListener {
 
     var page = 1
@@ -29,7 +29,7 @@ class LinksFavoritePresenter(
                         view?.addItems(it, shouldRefresh)
                     } else view?.disableLoading()
                 },
-                { view?.showErrorDialog(it) }
+                { view?.showErrorDialog(it) },
             )
             .intoComposite(compositeObservable)
     }
@@ -47,7 +47,7 @@ class LinksFavoritePresenter(
                 {
                     view?.showErrorDialog(it)
                     view?.updateLink(link)
-                }
+                },
             )
             .intoComposite(compositeObservable)
     }

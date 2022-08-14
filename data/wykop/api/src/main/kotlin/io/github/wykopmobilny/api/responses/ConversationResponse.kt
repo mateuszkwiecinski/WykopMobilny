@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 data class ConversationResponse(
     @field:Json(name = "last_update") val lastUpdate: String,
     @field:Json(name = "receiver") val receiver: AuthorResponse,
-    @field:Json(name = "status") val status: String
+    @field:Json(name = "status") val status: String,
 )

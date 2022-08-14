@@ -17,5 +17,5 @@ data class EntryCommentResponse(
     @field:Json(name = "user_vote") val userVote: Int,
     @field:Json(name = "embed") val embed: EmbedResponse?,
     @field:Json(name = "app") val app: String?,
-    @field:Json(name = "violation_url") val violationUrl: String?
+    @field:Json(name = "violation_url") val violationUrl: String?,
 )

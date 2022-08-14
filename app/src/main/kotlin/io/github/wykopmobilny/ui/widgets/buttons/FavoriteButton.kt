@@ -11,7 +11,7 @@ import io.github.wykopmobilny.R
 class FavoriteButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.MirkoButtonStyle
+    defStyleAttr: Int = R.attr.MirkoButtonStyle,
 ) : AppCompatImageView(context, attrs, defStyleAttr) {
 
     private var favoriteDrawable: Drawable

@@ -4,5 +4,5 @@ import io.github.wykopmobilny.api.responses.VoteResponse
 
 data class EntryVotePublishModel(
     val entryId: Long,
-    val voteResponse: VoteResponse
+    val voteResponse: VoteResponse,
 )

@@ -15,14 +15,14 @@ interface SearchRetrofitApi {
     @POST("/search/links/page/{page}/appkey/$APP_KEY")
     suspend fun searchLinks(
         @Path("page") page: Int,
-        @Field("q") query: String
+        @Field("q") query: String,
     ): WykopApiResponse<List<LinkResponse>>
 
     @FormUrlEncoded
     @POST("/search/entries/page/{page}/appkey/$APP_KEY")
     suspend fun searchEntries(
         @Path("page") page: Int,
-        @Field("q") query: String
+        @Field("q") query: String,
     ): WykopApiResponse<List<EntryResponse>>
 
     @FormUrlEncoded

@@ -4,5 +4,5 @@ import io.github.wykopmobilny.api.responses.DigResponse
 
 data class LinkVoteResponsePublishModel(
     val linkId: Long,
-    val voteResponse: DigResponse
+    val voteResponse: DigResponse,
 )

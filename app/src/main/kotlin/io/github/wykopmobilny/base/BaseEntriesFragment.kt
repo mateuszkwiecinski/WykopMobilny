@@ -63,7 +63,7 @@ open class BaseEntriesFragment : BaseFragment(R.layout.entries_fragment), Entrie
             entriesApi.entryUnVoteSubject
                 .subscribeOn(schedulers.backgroundThread())
                 .observeOn(schedulers.mainThread())
-                .subscribe { updateEntryVoteState(it.entryId, it.voteResponse, false) }
+                .subscribe { updateEntryVoteState(it.entryId, it.voteResponse, false) },
         )
     }
 

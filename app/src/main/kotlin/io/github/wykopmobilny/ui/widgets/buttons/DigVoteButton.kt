@@ -9,7 +9,7 @@ import io.github.wykopmobilny.R
 class DigVoteButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.MirkoButtonStyle
+    defStyleAttr: Int = R.attr.MirkoButtonStyle,
 ) : VoteButton(context, attrs, defStyleAttr) {
 
     fun setVoteState(voteState: String?) {
@@ -21,7 +21,7 @@ class DigVoteButton @JvmOverloads constructor(
                     ContextCompat.getDrawable(context, R.drawable.ic_buttontoolbar_wykop_digged),
                     null,
                     null,
-                    null
+                    null,
                 )
             }
             "bury" -> {
@@ -32,7 +32,7 @@ class DigVoteButton @JvmOverloads constructor(
                     ContextCompat.getDrawable(context, R.drawable.ic_buttontoolbar_wykop_buried),
                     null,
                     null,
-                    null
+                    null,
                 )
             }
             else -> {
