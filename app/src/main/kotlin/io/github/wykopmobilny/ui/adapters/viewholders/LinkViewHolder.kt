@@ -1,6 +1,5 @@
 package io.github.wykopmobilny.ui.adapters.viewholders
 
-import android.util.Log
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.isVisible
