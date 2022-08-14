@@ -34,13 +34,13 @@ jobs:
           WYKOP_GOOGLEKEY: ${{ secrets.WYKOP_GOOGLEKEY }}
           WYKOP_YOUTUBEKEY: ${{ secrets.WYKOP_YOUTUBEKEY }}
 
-      - uses: r0adkll/upload-google-play@v1.0.17
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICES_JSON }}
-          packageName: io.github.wykopmobilny
-          releaseFiles: app/build/outputs/bundle/release/*.aab
-          track: internal
-          mappingFile: app/build/outputs/mapping/release/mapping.txt
+      #      - uses: r0adkll/upload-google-play@v1.0.17
+      #        with:
+      #          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICES_JSON }}
+      #          packageName: io.github.wykopmobilny
+      #          releaseFiles: app/build/outputs/bundle/release/*.aab
+      #          track: internal
+      #          mappingFile: app/build/outputs/mapping/release/mapping.txt
 
       - uses: actions/upload-artifact@v3
         with:
@@ -50,3 +50,15 @@ jobs:
       - uses: softprops/action-gh-release@v0.1.14
         with:
           files: app/build/outputs/apk/release/*.apk
+
+      - uses: timheuer/base64-to-file@v1.1
+        with:
+          fileName: "service-account.json"
+          encodedString: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+
+      - uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: "otwarty-wykop-mobilny"
+          serviceCredentialsFile: service-account.json
+          groups: testers
+          file: app/build/outputs/apk/release/app-release.apk
