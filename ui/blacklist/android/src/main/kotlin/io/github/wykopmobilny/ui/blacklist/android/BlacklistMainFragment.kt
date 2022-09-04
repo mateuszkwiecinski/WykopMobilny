@@ -11,13 +11,13 @@ import io.github.wykopmobilny.ui.blacklist.BlacklistDependencies
 import io.github.wykopmobilny.ui.blacklist.BlacklistedDetailsUi
 import io.github.wykopmobilny.ui.blacklist.GetBlacklistDetails
 import io.github.wykopmobilny.ui.blacklist.android.databinding.FragmentBlacklistMainBinding
+import io.github.wykopmobilny.utils.bindings.bindBackButton
 import io.github.wykopmobilny.utils.bindings.collectErrorDialog
 import io.github.wykopmobilny.utils.bindings.collectSnackbar
 import io.github.wykopmobilny.utils.bindings.setOnClick
 import io.github.wykopmobilny.utils.destroyDependency
 import io.github.wykopmobilny.utils.requireDependency
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -36,7 +36,7 @@ internal class BlacklistMainFragment : Fragment(R.layout.fragment_blacklist_main
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentBlacklistMainBinding.bind(view)
-        binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        binding.toolbar.bindBackButton(activity = activity)
 
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             val shared = getBlacklistDetails().stateIn(this)

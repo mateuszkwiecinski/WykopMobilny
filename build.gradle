@@ -11,8 +11,10 @@ plugins {
 }
 
 commonConfig {
-    javaFilesAllowed false
     javaVersion JavaVersion.VERSION_11
+    androidPlugin {
+        minSdkVersion 23
+    }
 }
 
 allprojects {

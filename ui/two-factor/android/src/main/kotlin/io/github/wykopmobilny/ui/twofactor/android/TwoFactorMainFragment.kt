@@ -9,6 +9,7 @@ import io.github.wykopmobilny.ui.two_factor.android.R
 import io.github.wykopmobilny.ui.two_factor.android.databinding.FragmentTwoFactorBinding
 import io.github.wykopmobilny.ui.twofactor.TwoFactorAuthDependencies
 import io.github.wykopmobilny.utils.InjectableViewModel
+import io.github.wykopmobilny.utils.bindings.bindBackButton
 import io.github.wykopmobilny.utils.bindings.collectErrorDialog
 import io.github.wykopmobilny.utils.bindings.collectProgressInput
 import io.github.wykopmobilny.utils.bindings.collectUserInput
@@ -29,7 +30,7 @@ internal class TwoFactorMainFragment : Fragment(R.layout.fragment_two_factor) {
         val getTwoFactorAuthDetails = viewModel.dependency.getTwoFactorAuthDetails()
 
         val binding = FragmentTwoFactorBinding.bind(view)
-        binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        binding.toolbar.bindBackButton(activity = activity)
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             val shared = getTwoFactorAuthDetails().stateIn(this)
 
