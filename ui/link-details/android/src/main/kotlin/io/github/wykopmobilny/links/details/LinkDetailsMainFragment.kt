@@ -19,6 +19,7 @@ import io.github.wykopmobilny.ui.base.AppDispatchers
 import io.github.wykopmobilny.ui.link_details.android.R
 import io.github.wykopmobilny.ui.link_details.android.databinding.FragmentLinkDetailsBinding
 import io.github.wykopmobilny.utils.InjectableViewModel
+import io.github.wykopmobilny.utils.bindings.bindBackButton
 import io.github.wykopmobilny.utils.bindings.collectErrorDialog
 import io.github.wykopmobilny.utils.bindings.collectInfoDialog
 import io.github.wykopmobilny.utils.bindings.collectMenuOptions
@@ -61,7 +62,7 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
         }
         val getLinkDetails = viewModel.dependency.getLinkDetails()
         val binding = FragmentLinkDetailsBinding.bind(view)
-        binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        binding.toolbar.bindBackButton(activity = activity)
 
         val adapter = LinkDetailsAdapter()
         adapter.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY

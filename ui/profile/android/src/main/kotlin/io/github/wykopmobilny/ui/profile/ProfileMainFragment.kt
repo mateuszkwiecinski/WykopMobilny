@@ -12,6 +12,7 @@ import com.github.wykopmobilny.ui.components.toColorInt
 import com.google.android.material.tabs.TabLayoutMediator
 import io.github.wykopmobilny.ui.profile.android.R
 import io.github.wykopmobilny.ui.profile.android.databinding.FragmentProfileBinding
+import io.github.wykopmobilny.utils.bindings.bindBackButton
 import io.github.wykopmobilny.utils.bindings.collectErrorDialog
 import io.github.wykopmobilny.utils.bindings.collectMenuOptions
 import io.github.wykopmobilny.utils.bindings.setOnClick
@@ -44,7 +45,7 @@ internal class ProfileMainFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        binding.toolbar.bindBackButton(activity = activity)
         val adapter = ProfilePagerAdapter(this)
         binding.viewPager.adapter = adapter
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
