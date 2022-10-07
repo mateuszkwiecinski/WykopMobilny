@@ -36,5 +36,7 @@ fun String.removeSpoilerHtml(): String {
 fun String.stripWykopFormatting(): String {
     return if (contains("<a href=\"spoiler:")) {
         removeSpoilerHtml().removeHtml()
-    } else removeHtml()
+    } else {
+        removeHtml()
+    }
 }

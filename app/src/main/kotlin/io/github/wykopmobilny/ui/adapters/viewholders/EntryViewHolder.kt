@@ -88,11 +88,17 @@ class EntryViewHolder(
         }
 
         fun getViewTypeForEntry(entry: Entry): Int {
-            return if (entry.isBlocked) TYPE_BLOCKED
-            else if (entry.embed != null && entry.survey != null) TYPE_EMBED_SURVEY
-            else if (entry.embed == null && entry.survey != null) TYPE_SURVEY
-            else if (entry.embed != null && entry.survey == null) TYPE_EMBED
-            else TYPE_NORMAL
+            return if (entry.isBlocked) {
+                TYPE_BLOCKED
+            } else if (entry.embed != null && entry.survey != null) {
+                TYPE_EMBED_SURVEY
+            } else if (entry.embed == null && entry.survey != null) {
+                TYPE_SURVEY
+            } else if (entry.embed != null && entry.survey == null) {
+                TYPE_EMBED
+            } else {
+                TYPE_NORMAL
+            }
         }
     }
 

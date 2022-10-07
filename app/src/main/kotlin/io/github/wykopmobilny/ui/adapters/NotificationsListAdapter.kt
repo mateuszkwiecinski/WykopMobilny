@@ -44,8 +44,11 @@ class NotificationsListAdapter @Inject constructor(
         notifyDataSetChanged()
     }
 
-    override fun getViewType(position: Int) = if (items[position] is NotificationHeader) TYPE_HEADER
-    else TYPE_ITEM
+    override fun getViewType(position: Int) = if (items[position] is NotificationHeader) {
+        TYPE_HEADER
+    } else {
+        TYPE_ITEM
+    }
 
     fun collapseAll() {
         dataset.forEach { it?.visible = false }

@@ -101,8 +101,11 @@ class LinkDetailsAdapter @Inject constructor(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0) LinkHeaderViewHolder.TYPE_HEADER
-        else BaseLinkCommentViewHolder.getViewTypeForComment(commentsList[position - 1])
+        return if (position == 0) {
+            LinkHeaderViewHolder.TYPE_HEADER
+        } else {
+            BaseLinkCommentViewHolder.getViewTypeForComment(commentsList[position - 1])
+        }
     }
 
     override fun getItemCount() = commentsList.size + 1

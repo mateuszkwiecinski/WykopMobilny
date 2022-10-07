@@ -23,7 +23,9 @@ class ProfileRelatedPresenter(
                     if (it.isNotEmpty()) {
                         page++
                         view?.addDataToAdapter(it, shouldRefresh)
-                    } else view?.disableLoading()
+                    } else {
+                        view?.disableLoading()
+                    }
                 },
                 { view?.showErrorDialog(it) },
             )

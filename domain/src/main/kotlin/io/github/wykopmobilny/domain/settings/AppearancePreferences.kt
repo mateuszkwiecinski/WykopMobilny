@@ -12,5 +12,5 @@ internal enum class LinkImagePosition {
     Left,
     Right,
     Top,
-    Bottom
+    Bottom,
 }

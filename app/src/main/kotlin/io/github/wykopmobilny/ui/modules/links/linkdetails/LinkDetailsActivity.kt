@@ -97,8 +97,11 @@ class LinkDetailsActivity :
     }
 
     override fun getReplyCommentId(): Long {
-        return if (replyLinkId != 0L && binding.inputToolbar.textBody.contains("@")) replyLinkId
-        else -1
+        return if (replyLinkId != 0L && binding.inputToolbar.textBody.contains("@")) {
+            replyLinkId
+        } else {
+            -1
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

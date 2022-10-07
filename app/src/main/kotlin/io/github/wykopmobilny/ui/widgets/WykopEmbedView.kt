@@ -113,7 +113,9 @@ class WykopEmbedView(context: Context, attrs: AttributeSet) : FrameLayout(contex
                     } else {
                         binding.imageIconGifSize.text = size.substringBefore(".") + size.substring(size.length - 2, size.length)
                     }
-                } else binding.imageIcon.isVisible = false
+                } else {
+                    binding.imageIcon.isVisible = false
+                }
             }
         }
     }

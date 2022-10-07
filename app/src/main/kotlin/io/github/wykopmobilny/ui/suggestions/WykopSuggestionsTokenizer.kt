@@ -46,7 +46,9 @@ class WykopSuggestionsTokenizer(
         } else if (text[index - 1] == '#') {
             setHashTagsAdapter()
             index
-        } else cursor
+        } else {
+            cursor
+        }
     }
 
     override fun findTokenEnd(text: CharSequence, cursor: Int): Int {

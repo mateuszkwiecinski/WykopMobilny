@@ -77,8 +77,11 @@ class EntryAdapter @Inject constructor(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0) EntryViewHolder.getViewTypeForEntry(entry!!)
-        else EntryCommentViewHolder.getViewTypeForEntryComment(entry!!.comments[position - 1])
+        return if (position == 0) {
+            EntryViewHolder.getViewTypeForEntry(entry!!)
+        } else {
+            EntryCommentViewHolder.getViewTypeForEntryComment(entry!!.comments[position - 1])
+        }
     }
 
     override fun getItemCount(): Int {

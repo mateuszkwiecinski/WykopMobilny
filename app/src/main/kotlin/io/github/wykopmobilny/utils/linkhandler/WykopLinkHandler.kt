@@ -97,8 +97,11 @@ class WykopLinkHandler @Inject constructor(
         try {
             val intent = getLinkIntent(url, context)
             if (intent != null) {
-                if (refreshNotifications) context.startActivityForResult(intent, NewNavigator.STARTED_FROM_NOTIFICATIONS_CODE)
-                else context.startActivity(intent)
+                if (refreshNotifications) {
+                    context.startActivityForResult(intent, NewNavigator.STARTED_FROM_NOTIFICATIONS_CODE)
+                } else {
+                    context.startActivity(intent)
+                }
             } else {
                 navigator.openBrowser(url)
             }

@@ -23,8 +23,11 @@ fun getGroupColor(role: Int, isUsingDarkTheme: Boolean = true): Int = when (role
     1 -> Color.parseColor("#ff5917")
     2 -> Color.parseColor("#BB0000")
     5 ->
-        if (isUsingDarkTheme) Color.parseColor("#ffffff")
-        else Color.parseColor("#000000")
+        if (isUsingDarkTheme) {
+            Color.parseColor("#ffffff")
+        } else {
+            Color.parseColor("#000000")
+        }
     999 -> Color.parseColor("#BF9B30")
     1001 -> Color.parseColor("#999999")
     1002 -> Color.parseColor("#999999")

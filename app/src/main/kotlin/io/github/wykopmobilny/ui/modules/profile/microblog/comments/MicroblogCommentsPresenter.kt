@@ -30,7 +30,9 @@ class MicroblogCommentsPresenter(
                     if (it.isNotEmpty()) {
                         page++
                         view?.addItems(it, shouldRefresh)
-                    } else view?.disableLoading()
+                    } else {
+                        view?.disableLoading()
+                    }
                 },
                 { view?.showErrorDialog(it) },
             )

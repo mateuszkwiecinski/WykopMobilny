@@ -49,7 +49,7 @@ data class AppearancePreferencesUi(
 enum class AppThemeUi {
     Automatic,
     Light,
-    Dark
+    Dark,
 }
 
 enum class MainScreenUi {
@@ -79,5 +79,5 @@ enum class LinkImagePositionUi {
     Left,
     Right,
     Top,
-    Bottom
+    Bottom,
 }

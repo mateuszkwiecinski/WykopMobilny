@@ -34,5 +34,5 @@ internal enum class MikroblogScreen {
     Newest,
     SixHours,
     TwelveHours,
-    TwentyFourHours
+    TwentyFourHours,
 }

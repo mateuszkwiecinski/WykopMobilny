@@ -55,7 +55,9 @@ class HashTagsSuggestionsAdapter(
             if (results != null && results.count > 0) {
                 items.addAll(results.values as List<TagSuggestion>)
                 notifyDataSetChanged()
-            } else notifyDataSetInvalidated()
+            } else {
+                notifyDataSetInvalidated()
+            }
         }
     }
 }

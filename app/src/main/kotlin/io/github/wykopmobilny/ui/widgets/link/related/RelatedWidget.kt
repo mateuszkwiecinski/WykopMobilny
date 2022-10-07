@@ -120,11 +120,13 @@ class RelatedWidget(context: Context, attrs: AttributeSet) : CardView(context, a
         binding.voteCountTextView.text = if (relatedItem.voteCount > 0) "+${relatedItem.voteCount}" else "${relatedItem.voteCount}"
         if (relatedItem.voteCount > 0) {
             R.color.plusPressedColor
-        } else if (relatedItem.voteCount < 0) {
-            R.color.minusPressedColor
         } else {
-            null
-        }?.let { binding.voteCountTextView.setTextColor(ContextCompat.getColor(context, it)) }
+            if (relatedItem.voteCount < 0) {
+                R.color.minusPressedColor
+            } else {
+                null
+            }?.let { binding.voteCountTextView.setTextColor(ContextCompat.getColor(context, it)) }
+        }
     }
 
     override fun showErrorDialog(e: Throwable) = context.showExceptionDialog(e)

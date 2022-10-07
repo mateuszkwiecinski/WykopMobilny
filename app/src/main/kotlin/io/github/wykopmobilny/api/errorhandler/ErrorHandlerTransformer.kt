@@ -10,8 +10,11 @@ class ErrorHandlerTransformer<T : Any> : SingleTransformer<WykopApiResponse<T>, 
     override fun apply(upstream: Single<WykopApiResponse<T>>): SingleSource<T> {
         return upstream.flatMap {
             val exception = WykopExceptionParser.getException(it)
-            if (exception != null) Single.error(exception)
-            else Single.just(it.data!!)
+            if (exception != null) {
+                Single.error(exception)
+            } else {
+                Single.just(it.data!!)
+            }
         }
     }
 }
