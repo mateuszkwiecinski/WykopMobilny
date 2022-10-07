@@ -12,6 +12,8 @@ object ProfileLinkParser {
         )
         return if (possibleMatchers.contains(possibleNickMatch)) {
             data.substringAfter("$possibleNickMatch/").substringBefore("/")
-        } else possibleNickMatch
+        } else {
+            possibleNickMatch
+        }
     }
 }

@@ -23,7 +23,9 @@ class NotificationsListPresenter(
                     if (it.isNotEmpty()) {
                         page++
                         view?.addNotifications(it, shouldRefresh)
-                    } else view?.disableLoading()
+                    } else {
+                        view?.disableLoading()
+                    }
                 },
                 { view?.showErrorDialog(it) },
             )

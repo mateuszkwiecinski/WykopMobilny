@@ -102,7 +102,9 @@ abstract class BaseInputActivity<T : BaseInputPresenter> : BaseActivity(), BaseI
             getStringExtra(EXTRA_BODY)?.apply {
                 // @TODO Replace it with some regex or parser, its way too hacky now
                 textBody += stripWykopFormatting()
-                selectionStart = if (!startsWith("#")) textBody.length else {
+                selectionStart = if (!startsWith("#")) {
+                    textBody.length
+                } else {
                     textBody = "\n$textBody"
                     0
                 }
@@ -171,8 +173,9 @@ abstract class BaseInputActivity<T : BaseInputPresenter> : BaseActivity(), BaseI
     }
 
     override fun onBackPressed() {
-        if (!binding.markupToolbar.hasUserEditedContent()) exitActivity()
-        else {
+        if (!binding.markupToolbar.hasUserEditedContent()) {
+            exitActivity()
+        } else {
             exitConfirmationDialog(this) {
                 exitActivity()
             }?.show()

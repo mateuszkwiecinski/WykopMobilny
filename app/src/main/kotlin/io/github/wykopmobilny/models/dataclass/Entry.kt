@@ -23,8 +23,11 @@ class Entry(
     val isCommentingPossible: Boolean,
 ) {
     override fun equals(other: Any?): Boolean {
-        return if (other !is Entry) false
-        else (other.hashCode() == hashCode())
+        return if (other !is Entry) {
+            false
+        } else {
+            (other.hashCode() == hashCode())
+        }
     }
 
     override fun hashCode(): Int {

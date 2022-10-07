@@ -186,7 +186,7 @@ private fun View.guessCoordinatorLayoutHeight() {
 enum class ScreenshotTheme(val theme: Int) {
     Light(BaseR.style.Theme_App_Light),
     Dark(BaseR.style.Theme_App_Dark),
-    Amoled(BaseR.style.Theme_App_Amoled)
+    Amoled(BaseR.style.Theme_App_Amoled),
 }
 
 fun exactHeight() = Size(1560, 2880)

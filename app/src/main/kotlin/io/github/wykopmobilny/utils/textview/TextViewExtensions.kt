@@ -55,7 +55,9 @@ fun TextView.prepareBody(
                     dialog.findViewById<TextView>(android.R.id.message)?.movementMethod = LinkMovementMethod.getInstance()
                 }
             }
-        } else urlClickListener(url.text())
+        } else {
+            urlClickListener(url.text())
+        }
         true
     }
 }

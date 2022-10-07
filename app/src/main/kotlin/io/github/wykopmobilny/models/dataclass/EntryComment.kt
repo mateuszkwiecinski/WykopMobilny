@@ -17,8 +17,11 @@ class EntryComment(
     var isBlocked: Boolean = false,
 ) {
     override fun equals(other: Any?): Boolean {
-        return if (other !is EntryComment) false
-        else (other.id == id)
+        return if (other !is EntryComment) {
+            false
+        } else {
+            (other.id == id)
+        }
     }
 
     override fun hashCode(): Int {

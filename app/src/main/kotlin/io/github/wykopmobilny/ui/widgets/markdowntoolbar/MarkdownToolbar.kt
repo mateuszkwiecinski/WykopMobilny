@@ -32,7 +32,9 @@ class MarkdownToolbar(context: Context, attrs: AttributeSet?) : LinearLayout(con
             if (value != null) {
                 remoteImageInserted()
                 floatingImageView?.loadPhotoUrl(value)
-            } else floatingImageView?.removeImage()
+            } else {
+                floatingImageView?.removeImage()
+            }
         }
 
     var photo: Uri?

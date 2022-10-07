@@ -39,12 +39,15 @@ class EntryLinkAdapter @Inject constructor(
         if (item.entry != null) {
             (holder as BlockedViewHolder).bindView(item.entry!!)
         } else if (item.link != null) {
-            if (holder is SimpleLinkViewHolder) holder.bindView(item.link!!, showMinifiedImages, linkShowImage = linkShowImage)
-            else (holder as? LinkViewHolder)?.bindView(
-                link = item.link!!,
-                linkImagePosition = linkImagePosition,
-                linkShowAuthor = linkShowAuthor,
-            )
+            if (holder is SimpleLinkViewHolder) {
+                holder.bindView(item.link!!, showMinifiedImages, linkShowImage = linkShowImage)
+            } else {
+                (holder as? LinkViewHolder)?.bindView(
+                    link = item.link!!,
+                    linkImagePosition = linkImagePosition,
+                    linkShowAuthor = linkShowAuthor,
+                )
+            }
         }
     }
 }

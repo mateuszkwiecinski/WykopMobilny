@@ -20,7 +20,9 @@ class HotPresenter(
             if (it.isNotEmpty()) {
                 page++
                 view?.showHotEntries(it, shouldRefresh)
-            } else view?.disableLoading()
+            } else {
+                view?.disableLoading()
+            }
         }
         val failure: (Throwable) -> Unit = {
             view?.showErrorDialog(it)

@@ -16,8 +16,11 @@ open class Notification(
     val tag by lazy { this.body.substringAfter("#").substringBefore(" ") }
 
     override fun equals(other: Any?): Boolean {
-        return if (other !is Notification) false
-        else (other.id == id)
+        return if (other !is Notification) {
+            false
+        } else {
+            (other.id == id)
+        }
     }
 
     override fun hashCode(): Int {

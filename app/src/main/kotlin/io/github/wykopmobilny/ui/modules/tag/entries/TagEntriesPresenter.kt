@@ -31,7 +31,9 @@ class TagEntriesPresenter(
                     if (it.entries.isNotEmpty()) {
                         page++
                         view?.addItems(it.entries, shouldRefresh)
-                    } else view?.disableLoading()
+                    } else {
+                        view?.disableLoading()
+                    }
                 },
                 { view?.showErrorDialog(it) },
             )

@@ -123,8 +123,11 @@ class InputToolbar(context: Context, attrs: AttributeSet) : ConstraintLayout(con
         }
 
         disableSendButton()
-        if (showToolbar) showMarkdownToolbar()
-        else closeMarkdownToolbar()
+        if (showToolbar) {
+            showMarkdownToolbar()
+        } else {
+            closeMarkdownToolbar()
+        }
     }
 
     override fun setSelection(start: Int, end: Int) = binding.body.setSelection(start, end)

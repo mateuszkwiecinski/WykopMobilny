@@ -196,7 +196,9 @@ class EntryCommentViewHolder(
                 { handleClick(comment) },
                 openSpoilersDialog,
             )
-        } else binding.entryContentTextView.isVisible = false
+        } else {
+            binding.entryContentTextView.isVisible = false
+        }
 
         if (comment.embed != null && type == TYPE_EMBED) {
             embedView.setEmbed(

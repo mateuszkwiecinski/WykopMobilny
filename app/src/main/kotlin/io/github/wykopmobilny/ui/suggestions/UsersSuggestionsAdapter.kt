@@ -42,7 +42,9 @@ class UsersSuggestionsAdapter(
             if (results != null && results.count > 0) {
                 items.addAll(results.values as List<Author>)
                 notifyDataSetChanged()
-            } else notifyDataSetInvalidated()
+            } else {
+                notifyDataSetInvalidated()
+            }
         }
     }
 

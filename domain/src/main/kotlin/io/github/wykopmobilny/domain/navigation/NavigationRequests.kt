@@ -32,7 +32,7 @@ sealed class InteropRequest {
     ) : InteropRequest() {
 
         enum class Type {
-            TextPlain
+            TextPlain,
         }
     }
 
