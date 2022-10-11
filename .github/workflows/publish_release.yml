@@ -51,7 +51,7 @@ jobs:
         with:
           files: app/build/outputs/apk/release/*.apk
 
-      - uses: timheuer/base64-to-file@v1.1
+      - uses: timheuer/base64-to-file@v1.2
         with:
           fileName: "service-account.json"
           encodedString: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
