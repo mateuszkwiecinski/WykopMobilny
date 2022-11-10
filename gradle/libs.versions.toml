@@ -12,6 +12,7 @@ google-swiperefreshlayout = "1.1.0"
 google-recyclerView = "1.2.1"
 google-constraintlayout = "2.1.4"
 google-androidtest = "1.5.0"
+google-androidtestRunner = "1.5.1"
 google-androidtestext = "1.1.4"
 google-androidArchCore = "2.1.0"
 google-material = "1.7.0"
@@ -132,7 +133,7 @@ animationdisabler-gradle = { module = "pl.droidsonroids.gradle:plugin", version.
 agp-tools-core = { module = "com.android.tools:common", version.ref = "google-tools" }
 
 androidtest-core = { module = "androidx.test:core-ktx", version.ref = "google-androidtest" }
-androidtest-runner = { module = "androidx.test:runner", version.ref = "google-androidtest" }
+androidtest-runner = { module = "androidx.test:runner", version.ref = "google-androidtestRunner" }
 androidtest-rules = { module = "androidx.test:rules", version.ref = "google-androidtest" }
 androidtest-junitext = { module = "androidx.test.ext:junit-ktx", version.ref = "google-androidtestext" }
 androidtest-coretesting = { module = "androidx.arch.core:core-testing", version.ref = "google-androidArchCore" }
