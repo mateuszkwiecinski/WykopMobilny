@@ -6,8 +6,8 @@ import io.github.wykopmobilny.api.errorhandler.ErrorHandlerTransformer
 import io.github.wykopmobilny.api.filters.OWMContentFilter
 import io.github.wykopmobilny.api.patrons.PatronsApi
 import io.github.wykopmobilny.models.mapper.apiv2.AuthorMapper
-import io.github.wykopmobilny.models.mapper.apiv2.EntryMapper
-import io.github.wykopmobilny.models.mapper.apiv2.LinkMapper
+import io.github.wykopmobilny.models.mapper.apiv2.filterEntries
+import io.github.wykopmobilny.models.mapper.apiv2.filterLinks
 import kotlinx.coroutines.rx2.rxSingle
 import javax.inject.Inject
 
@@ -22,13 +22,13 @@ class SearchRepository @Inject constructor(
         .retryWhen(userTokenRefresher)
         .flatMap { patronsApi.ensurePatrons(it) }
         .compose(ErrorHandlerTransformer())
-        .map { it.map { response -> LinkMapper.map(response, owmContentFilter) } }
+        .map { it.filterLinks(owmContentFilter = owmContentFilter) }
 
     override fun searchEntries(page: Int, query: String) = rxSingle { searchApi.searchEntries(page, query) }
         .retryWhen(userTokenRefresher)
         .flatMap { patronsApi.ensurePatrons(it) }
         .compose(ErrorHandlerTransformer())
-        .map { it.map { response -> EntryMapper.map(response, owmContentFilter) } }
+        .map { it.filterEntries(owmContentFilter = owmContentFilter) }
 
     override fun searchProfiles(query: String) = rxSingle { searchApi.searchProfiles(query) }
         .retryWhen(userTokenRefresher)

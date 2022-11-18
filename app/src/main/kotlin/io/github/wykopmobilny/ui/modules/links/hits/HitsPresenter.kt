@@ -39,7 +39,7 @@ class HitsPresenter(
             .observeOn(schedulers.mainThread())
             .subscribe(
                 {
-                    view?.addItems(it, true)
+                    view?.addItems(it.filtered, true)
                     view?.disableLoading()
                 },
                 { view?.showErrorDialog(it) },

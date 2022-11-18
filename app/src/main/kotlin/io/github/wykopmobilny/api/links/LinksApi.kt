@@ -1,6 +1,7 @@
 package io.github.wykopmobilny.api.links
 
 import io.github.wykopmobilny.api.WykopImageFile
+import io.github.wykopmobilny.api.entries.FilteredData
 import io.github.wykopmobilny.api.responses.DigResponse
 import io.github.wykopmobilny.api.responses.LinkVoteResponse
 import io.github.wykopmobilny.api.responses.VoteResponse
@@ -19,10 +20,10 @@ interface LinksApi {
     val digSubject: PublishSubject<LinkVoteResponsePublishModel>
     val voteRemoveSubject: PublishSubject<LinkVoteResponsePublishModel>
 
-    fun getPromoted(page: Int): Single<List<Link>>
-    fun getUpcoming(page: Int, sortBy: String): Single<List<Link>>
+    fun getPromoted(page: Int): Single<FilteredData<Link>>
+    fun getUpcoming(page: Int, sortBy: String): Single<FilteredData<Link>>
 
-    fun getObserved(page: Int): Single<List<Link>>
+    fun getObserved(page: Int): Single<FilteredData<Link>>
     fun getLinkComments(linkId: Long, sortBy: String): Single<List<LinkComment>>
     fun getLink(linkId: Long): Single<Link>
 

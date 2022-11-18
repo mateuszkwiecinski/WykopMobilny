@@ -11,9 +11,10 @@ import io.github.wykopmobilny.api.toRequestBody
 import io.github.wykopmobilny.models.dataclass.LinkVoteResponsePublishModel
 import io.github.wykopmobilny.models.mapper.apiv2.DownvoterMapper
 import io.github.wykopmobilny.models.mapper.apiv2.LinkCommentMapper
-import io.github.wykopmobilny.models.mapper.apiv2.LinkMapper
 import io.github.wykopmobilny.models.mapper.apiv2.RelatedMapper
 import io.github.wykopmobilny.models.mapper.apiv2.UpvoterMapper
+import io.github.wykopmobilny.models.mapper.apiv2.filterLink
+import io.github.wykopmobilny.models.mapper.apiv2.filterLinks
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.rx2.rxSingle
 import javax.inject.Inject
@@ -36,21 +37,21 @@ class LinksRepository @Inject constructor(
             .retryWhen(userTokenRefresher)
             .flatMap { patronsApi.ensurePatrons(it) }
             .compose(ErrorHandlerTransformer())
-            .map { it.map { response -> LinkMapper.map(response, owmContentFilter) } }
+            .map { it.filterLinks(owmContentFilter = owmContentFilter) }
 
     override fun getUpcoming(page: Int, sortBy: String) =
         rxSingle { linksApi.getUpcoming(page, sortBy) }
             .retryWhen(userTokenRefresher)
             .flatMap { patronsApi.ensurePatrons(it) }
             .compose(ErrorHandlerTransformer())
-            .map { it.map { response -> LinkMapper.map(response, owmContentFilter) } }
+            .map { it.filterLinks(owmContentFilter = owmContentFilter) }
 
     override fun getObserved(page: Int) =
         rxSingle { linksApi.getObserved(page) }
             .retryWhen(userTokenRefresher)
             .flatMap { patronsApi.ensurePatrons(it) }
             .compose(ErrorHandlerTransformer())
-            .map { it.map { response -> LinkMapper.map(response, owmContentFilter) } }
+            .map { it.filterLinks(owmContentFilter = owmContentFilter) }
 
     override fun getLinkComments(linkId: Long, sortBy: String) =
         rxSingle { linksApi.getLinkComments(linkId, sortBy) }
@@ -74,7 +75,7 @@ class LinksRepository @Inject constructor(
             .retryWhen(userTokenRefresher)
             .flatMap { patronsApi.ensurePatrons(it) }
             .compose(ErrorHandlerTransformer())
-            .map { LinkMapper.map(it, owmContentFilter) }
+            .map { it.filterLink(owmContentFilter = owmContentFilter) }
 
     override fun commentVoteUp(linkId: Long, commentId: Long) =
         rxSingle { linksApi.commentVoteUp(linkId = linkId, commentId = commentId) }

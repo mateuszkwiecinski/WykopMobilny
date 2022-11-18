@@ -50,15 +50,3 @@ jobs:
       - uses: softprops/action-gh-release@v0.1.14
         with:
           files: app/build/outputs/apk/release/*.apk
-
-      - uses: timheuer/base64-to-file@v1.2
-        with:
-          fileName: "service-account.json"
-          encodedString: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
-
-      - uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: "otwarty-wykop-mobilny"
-          serviceCredentialsFile: service-account.json
-          groups: testers
-          file: app/build/outputs/apk/release/app-release.apk

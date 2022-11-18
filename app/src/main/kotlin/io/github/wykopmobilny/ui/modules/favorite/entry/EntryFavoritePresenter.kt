@@ -23,10 +23,13 @@ class EntryFavoritePresenter(
             .subscribeOn(schedulers.backgroundThread())
             .observeOn(schedulers.mainThread())
             .subscribe(
-                {
-                    if (it.isNotEmpty()) {
+                { data ->
+                    if (data.totalCount > 0) {
                         page++
-                        view?.addItems(it, shouldRefresh)
+                        view?.addItems(
+                            items = data.filtered,
+                            shouldRefresh = shouldRefresh,
+                        )
                     } else {
                         view?.disableLoading()
                     }

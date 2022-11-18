@@ -8,7 +8,7 @@ object TagEntriesMapper {
 
     fun map(value: TagEntriesResponse, owmContentFilter: OWMContentFilter) =
         TagEntries(
-            entries = value.data.orEmpty().map { EntryMapper.map(it, owmContentFilter) },
+            entries = value.data.orEmpty().map { it.filterEntry(owmContentFilter = owmContentFilter) },
             meta = value.meta,
         )
 }

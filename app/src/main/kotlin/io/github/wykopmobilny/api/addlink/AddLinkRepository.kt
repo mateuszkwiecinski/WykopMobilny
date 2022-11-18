@@ -7,7 +7,7 @@ import io.github.wykopmobilny.api.errorhandler.ErrorHandlerTransformer
 import io.github.wykopmobilny.api.filters.OWMContentFilter
 import io.github.wykopmobilny.api.responses.NewLinkResponse
 import io.github.wykopmobilny.models.dataclass.Link
-import io.github.wykopmobilny.models.mapper.apiv2.LinkMapper
+import io.github.wykopmobilny.models.mapper.apiv2.filterLink
 import io.reactivex.Single
 import kotlinx.coroutines.rx2.rxSingle
 import javax.inject.Inject
@@ -50,5 +50,5 @@ class AddLinkRepository @Inject constructor(
         }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
-            .map { LinkMapper.map(it, owmContentFilter) }
+            .map { it.filterLink(owmContentFilter = owmContentFilter) }
 }
