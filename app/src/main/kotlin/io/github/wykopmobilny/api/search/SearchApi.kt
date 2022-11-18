@@ -10,7 +10,7 @@ interface SearchApi {
     fun searchLinks(
         page: Int,
         query: String,
-    ): Single<List<Link>>
+    ): Single<FilteredData<Link>>
 
     fun searchEntries(
         page: Int,
