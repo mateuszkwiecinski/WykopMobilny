@@ -1,5 +1,6 @@
 package io.github.wykopmobilny.api.profile
 
+import io.github.wykopmobilny.api.entries.FilteredData
 import io.github.wykopmobilny.api.responses.BadgeResponse
 import io.github.wykopmobilny.api.responses.ObserveStateResponse
 import io.github.wykopmobilny.api.responses.ProfileResponse
@@ -19,7 +20,7 @@ interface ProfileApi {
     fun getDigged(username: String, page: Int): Single<List<Link>>
     fun getBuried(username: String, page: Int): Single<List<Link>>
     fun getLinkComments(username: String, page: Int): Single<List<LinkComment>>
-    fun getEntries(username: String, page: Int): Single<List<Entry>>
+    fun getEntries(username: String, page: Int): Single<FilteredData<Entry>>
     fun getEntriesComments(username: String, page: Int): Single<List<EntryComment>>
     fun getRelated(username: String, page: Int): Single<List<Related>>
     fun getBadges(username: String, page: Int): Single<List<BadgeResponse>>

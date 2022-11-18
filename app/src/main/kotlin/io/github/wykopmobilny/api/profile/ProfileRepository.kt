@@ -7,7 +7,6 @@ import io.github.wykopmobilny.api.filters.OWMContentFilter
 import io.github.wykopmobilny.api.responses.BadgeResponse
 import io.github.wykopmobilny.api.responses.ProfileResponse
 import io.github.wykopmobilny.data.storage.api.AppStorage
-import io.github.wykopmobilny.models.dataclass.Entry
 import io.github.wykopmobilny.models.dataclass.EntryComment
 import io.github.wykopmobilny.models.dataclass.EntryLink
 import io.github.wykopmobilny.models.dataclass.Link
@@ -15,10 +14,10 @@ import io.github.wykopmobilny.models.dataclass.LinkComment
 import io.github.wykopmobilny.models.dataclass.Related
 import io.github.wykopmobilny.models.mapper.apiv2.EntryCommentMapper
 import io.github.wykopmobilny.models.mapper.apiv2.EntryLinkMapper
-import io.github.wykopmobilny.models.mapper.apiv2.EntryMapper
 import io.github.wykopmobilny.models.mapper.apiv2.LinkCommentMapper
 import io.github.wykopmobilny.models.mapper.apiv2.LinkMapper
 import io.github.wykopmobilny.models.mapper.apiv2.RelatedMapper
+import io.github.wykopmobilny.models.mapper.apiv2.filterEntries
 import io.reactivex.Single
 import kotlinx.coroutines.rx2.rxSingle
 import javax.inject.Inject
@@ -53,11 +52,11 @@ class ProfileRepository @Inject constructor(
             .compose(ErrorHandlerTransformer())
             .map { it.map { LinkMapper.map(it, owmContentFilter) } }
 
-    override fun getEntries(username: String, page: Int): Single<List<Entry>> =
+    override fun getEntries(username: String, page: Int) =
         rxSingle { profileApi.getEntries(username, page) }
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
-            .map { it.map { EntryMapper.map(it, owmContentFilter) } }
+            .map { it.filterEntries(owmContentFilter = owmContentFilter) }
 
     override fun getEntriesComments(username: String, page: Int): Single<List<EntryComment>> =
         rxSingle { profileApi.getEntriesComments(username, page) }

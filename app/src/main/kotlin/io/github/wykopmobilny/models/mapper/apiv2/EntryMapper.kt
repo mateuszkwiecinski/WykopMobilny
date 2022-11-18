@@ -1,30 +1,35 @@
 package io.github.wykopmobilny.models.mapper.apiv2
 
+import io.github.wykopmobilny.api.entries.FilteredData
 import io.github.wykopmobilny.api.filters.OWMContentFilter
 import io.github.wykopmobilny.api.responses.EntryResponse
 import io.github.wykopmobilny.models.dataclass.Entry
 
-object EntryMapper {
+fun EntryResponse.filterEntry(owmContentFilter: OWMContentFilter) =
+    owmContentFilter.filterEntry(
+        Entry(
+            id = id,
+            author = author.let(AuthorMapper::map),
+            body = body.orEmpty(),
+            fullDate = date,
+            isVoted = userVote > 0,
+            isFavorite = favorite,
+            survey = survey?.let(SurveyMapper::map),
+            embed = embed?.let(EmbedMapper::map),
+            voteCount = voteCount,
+            commentsCount = commentsCount,
+            comments = comments.orEmpty().map { EntryCommentMapper.map(it, owmContentFilter) }.toMutableList(),
+            app = app,
+            violationUrl = violationUrl,
+            isNsfw = body?.lowercase()?.contains("#nsfw") == true,
+            isBlocked = blocked,
+            collapsed = true,
+            isCommentingPossible = isCommentingPossible == true,
+        ),
+    )
 
-    fun map(value: EntryResponse, owmContentFilter: OWMContentFilter) =
-        owmContentFilter.filterEntry(
-            Entry(
-                value.id, AuthorMapper.map(value.author),
-                value.body.orEmpty(),
-                value.date,
-                value.userVote > 0,
-                value.favorite,
-                value.survey?.let(SurveyMapper::map),
-                embed = value.embed?.let(EmbedMapper::map),
-                voteCount = value.voteCount,
-                commentsCount = value.commentsCount,
-                comments = value.comments.orEmpty().map { EntryCommentMapper.map(it, owmContentFilter) }.toMutableList(),
-                app = value.app,
-                violationUrl = value.violationUrl,
-                isNsfw = value.body?.lowercase()?.contains("#nsfw") == true,
-                isBlocked = value.blocked,
-                collapsed = true,
-                isCommentingPossible = value.isCommentingPossible == true,
-            ),
-        )
-}
+fun List<EntryResponse>.filterEntries(owmContentFilter: OWMContentFilter) =
+    FilteredData(
+        totalCount = size,
+        filtered = map { response -> response.filterEntry(owmContentFilter) },
+    )

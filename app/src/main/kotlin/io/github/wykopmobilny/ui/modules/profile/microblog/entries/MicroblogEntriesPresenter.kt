@@ -27,9 +27,9 @@ class MicroblogEntriesPresenter(
             .observeOn(schedulers.mainThread())
             .subscribe(
                 {
-                    if (it.isNotEmpty()) {
+                    if (it.totalCount > 0) {
                         page++
-                        view?.addItems(it, shouldRefresh)
+                        view?.addItems(it.filtered, shouldRefresh)
                     } else {
                         view?.disableLoading()
                     }

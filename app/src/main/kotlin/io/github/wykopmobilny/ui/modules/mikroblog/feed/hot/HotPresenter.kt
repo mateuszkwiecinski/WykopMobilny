@@ -1,6 +1,7 @@
 package io.github.wykopmobilny.ui.modules.mikroblog.feed.hot
 
 import io.github.wykopmobilny.api.entries.EntriesApi
+import io.github.wykopmobilny.api.entries.FilteredData
 import io.github.wykopmobilny.base.BasePresenter
 import io.github.wykopmobilny.base.Schedulers
 import io.github.wykopmobilny.models.dataclass.Entry
@@ -16,10 +17,10 @@ class HotPresenter(
 
     fun loadData(shouldRefresh: Boolean) {
         if (shouldRefresh) page = 1
-        val success: (List<Entry>) -> Unit = {
-            if (it.isNotEmpty()) {
+        val success: (FilteredData<Entry>) -> Unit = { data ->
+            if (data.totalCount > 0) {
                 page++
-                view?.showHotEntries(it, shouldRefresh)
+                view?.showHotEntries(data.filtered, shouldRefresh)
             } else {
                 view?.disableLoading()
             }
@@ -34,6 +35,7 @@ class HotPresenter(
                     .observeOn(schedulers.mainThread())
                     .subscribe(success, failure)
             }
+
             "active" ->
                 entriesApi.getActive(page).subscribeOn(schedulers.backgroundThread())
                     .observeOn(schedulers.mainThread())

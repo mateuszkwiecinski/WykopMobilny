@@ -8,9 +8,10 @@ import io.github.wykopmobilny.api.filters.OWMContentFilter
 import io.github.wykopmobilny.api.patrons.PatronsApi
 import io.github.wykopmobilny.api.toRequestBody
 import io.github.wykopmobilny.models.dataclass.EntryVotePublishModel
-import io.github.wykopmobilny.models.mapper.apiv2.EntryMapper
 import io.github.wykopmobilny.models.mapper.apiv2.SurveyMapper
 import io.github.wykopmobilny.models.mapper.apiv2.VoterMapper
+import io.github.wykopmobilny.models.mapper.apiv2.filterEntries
+import io.github.wykopmobilny.models.mapper.apiv2.filterEntry
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.rx2.rxSingle
 import javax.inject.Inject
@@ -140,31 +141,31 @@ class EntriesRepository @Inject constructor(
         .retryWhen(userTokenRefresher)
         .flatMap { patronsApi.ensurePatrons(it) }
         .compose(ErrorHandlerTransformer())
-        .map { it.map { response -> EntryMapper.map(response, owmContentFilter) } }
+        .map { it.filterEntries(owmContentFilter = owmContentFilter) }
 
     override fun getStream(page: Int) = rxSingle { entriesApi.getStream(page) }
         .retryWhen(userTokenRefresher)
         .flatMap { patronsApi.ensurePatrons(it) }
         .compose(ErrorHandlerTransformer())
-        .map { it.map { response -> EntryMapper.map(response, owmContentFilter) } }
+        .map { it.filterEntries(owmContentFilter = owmContentFilter) }
 
     override fun getActive(page: Int) = rxSingle { entriesApi.getActive(page) }
         .retryWhen(userTokenRefresher)
         .flatMap { patronsApi.ensurePatrons(it) }
         .compose(ErrorHandlerTransformer())
-        .map { it.map { response -> EntryMapper.map(response, owmContentFilter) } }
+        .map { it.filterEntries(owmContentFilter = owmContentFilter) }
 
     override fun getObserved(page: Int) = rxSingle { entriesApi.getObserved(page) }
         .retryWhen(userTokenRefresher)
         .flatMap { patronsApi.ensurePatrons(it) }
         .compose(ErrorHandlerTransformer())
-        .map { it.map { response -> EntryMapper.map(response, owmContentFilter) } }
+        .map { it.filterEntries(owmContentFilter = owmContentFilter) }
 
     override fun getEntry(id: Long) = rxSingle { entriesApi.getEntry(id) }
         .retryWhen(userTokenRefresher)
         .flatMap { patronsApi.ensurePatrons(it) }
         .compose(ErrorHandlerTransformer())
-        .map { EntryMapper.map(it, owmContentFilter) }
+        .map { it.filterEntry(owmContentFilter = owmContentFilter) }
 
     override fun getEntryVoters(id: Long) = rxSingle { entriesApi.getEntryVoters(id) }
         .retryWhen(userTokenRefresher)

@@ -35,11 +35,16 @@ interface EntriesApi {
     fun deleteEntryComment(commentId: Long): Single<EntryCommentResponse>
     fun voteSurvey(entryId: Long, answerId: Int): Single<Survey>
 
-    fun getHot(page: Int, period: String): Single<List<Entry>>
-    fun getStream(page: Int): Single<List<Entry>>
-    fun getActive(page: Int): Single<List<Entry>>
-    fun getObserved(page: Int): Single<List<Entry>>
+    fun getHot(page: Int, period: String): Single<FilteredData<Entry>>
+    fun getStream(page: Int): Single<FilteredData<Entry>>
+    fun getActive(page: Int): Single<FilteredData<Entry>>
+    fun getObserved(page: Int): Single<FilteredData<Entry>>
     fun getEntry(id: Long): Single<Entry>
     fun getEntryVoters(id: Long): Single<List<Voter>>
     fun getEntryCommentVoters(id: Long): Single<List<Voter>>
 }
+
+data class FilteredData<T>(
+    val totalCount: Int,
+    val filtered: List<T>,
+)

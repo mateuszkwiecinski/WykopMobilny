@@ -26,12 +26,12 @@ class EntrySearchPresenter(
             .observeOn(schedulers.mainThread())
             .subscribe(
                 {
-                    view?.showSearchEmptyView = (page == 1 && it.isEmpty())
-                    if (it.isNotEmpty()) {
+                    view?.showSearchEmptyView = (page == 1 && it.totalCount <= 0)
+                    if (it.totalCount > 0) {
                         page++
-                        view?.addItems(it, shouldRefresh)
+                        view?.addItems(it.filtered, shouldRefresh)
                     } else {
-                        view?.addItems(it, (page == 1))
+                        view?.addItems(it.filtered, (page == 1))
                         view?.disableLoading()
                     }
                 },

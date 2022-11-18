@@ -9,6 +9,6 @@ object EntryLinkMapper {
     fun map(value: EntryLinkResponse, owmContentFilter: OWMContentFilter) =
         EntryLink(
             link = value.link?.let { LinkMapper.map(it, owmContentFilter) },
-            entry = value.entry?.let { EntryMapper.map(it, owmContentFilter) },
+            entry = value.entry?.filterEntry(owmContentFilter = owmContentFilter),
         )
 }
