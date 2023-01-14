@@ -127,6 +127,10 @@ class PhotoViewActions(val context: Context) : PhotoViewCallbacks {
     }
 
     private fun checkForWriteReadPermission(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // We don't need these permissions for saving images on Android API >= T
+            return true
+        }
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             return true
         }

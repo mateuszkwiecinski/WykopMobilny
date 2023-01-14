@@ -273,6 +273,10 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
     }
 
     private fun checkForWriteReadPermission(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // We don't need these permissions for saving videos on Android API >= T
+            return true
+        }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             return true
         }
