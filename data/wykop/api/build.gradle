@@ -10,3 +10,17 @@ dependencies {
     implementation(libs.moshi.core)
     ksp(libs.moshi.compiler)
 }
+
+tasks.named("detekt") {
+    exclude {
+        it.file.relativePath(project.projectDir).startsWith("build")
+    }
+}
+afterEvaluate {
+    tasks.named("lintKotlinGeneratedByKspKotlin") {
+        enabled = false
+    }
+    tasks.named("formatKotlinGeneratedByKspKotlin") {
+        enabled = false
+    }
+}

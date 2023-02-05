@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -14,9 +13,6 @@
         android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"
         tools:node="remove"
         />
-
-
-    <uses-sdk tools:overrideLibrary="com.ftinc.kit" />
 
     <application
         android:name=".WykopApp"
