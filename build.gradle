@@ -4,9 +4,10 @@ import com.android.build.gradle.internal.tasks.databinding.DataBindingMergeDepen
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("com.starter.config")
-    id("com.starter.versioning")
-    alias(libs.plugins.osacky.gradledoctor)
+    alias(libs.plugins.starter.config)
+    alias(libs.plugins.starter.versioning)
+    alias(libs.plugins.starter.library.android) apply(false)
+    alias(libs.plugins.osacky.doctor)
     alias(libs.plugins.starter.easylauncher) apply(false)
 }
 

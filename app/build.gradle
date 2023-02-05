@@ -6,11 +6,10 @@ plugins {
     id("com.starter.easylauncher")
     id("org.jetbrains.kotlin.kapt")
     id("org.jetbrains.kotlin.plugin.parcelize")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.slack.keeper")
-    id("com.google.firebase.firebase-perf")
-    id("pl.droidsonroids.animation-disabler")
+    alias(libs.plugins.google.playservices)
+    alias(libs.plugins.google.firebase.crashlytics)
+    alias(libs.plugins.slack.keeper)
+    alias(libs.plugins.droidsonroids.animationdisabler)
 }
 
 projectConfig {
@@ -109,21 +108,12 @@ keeper {
     traceReferences {}
 }
 
-kotlinter {
-    experimentalRules = false
-}
-
 easylauncher {
     buildTypes {
         debug {
             filters = customRibbon(ribbonColor: "#2F4F4F", position: "bottom")
         }
     }
-}
-
-repositories {
-    google()
-    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
