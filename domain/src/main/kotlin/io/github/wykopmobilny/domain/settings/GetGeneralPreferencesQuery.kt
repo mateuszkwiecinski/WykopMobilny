@@ -9,8 +9,8 @@ import io.github.wykopmobilny.domain.settings.prefs.GetNotificationPreferences
 import io.github.wykopmobilny.domain.settings.prefs.NotificationsPreferences.RefreshPeriod
 import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.storage.api.UserInfoStorage
-import io.github.wykopmobilny.ui.base.AppDispatchers
-import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.kotlin.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppScopes
 import io.github.wykopmobilny.ui.settings.FilteringUi
 import io.github.wykopmobilny.ui.settings.GeneralPreferencesUi
 import io.github.wykopmobilny.ui.settings.GeneralPreferencesUi.NotificationsUi.RefreshPeriodUi

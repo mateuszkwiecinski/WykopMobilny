@@ -18,7 +18,7 @@ import io.github.wykopmobilny.domain.linkdetails.datasource.linkDetailsSourceOfT
 import io.github.wykopmobilny.domain.linkdetails.datasource.relatedLinksSourceOfTruth
 import io.github.wykopmobilny.domain.profile.LinkInfo
 import io.github.wykopmobilny.links.details.GetLinkDetails
-import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.kotlin.AppScopes
 
 @Module
 internal abstract class LinkDetailsModule {

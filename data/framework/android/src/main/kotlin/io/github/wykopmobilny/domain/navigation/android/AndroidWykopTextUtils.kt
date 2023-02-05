@@ -14,7 +14,7 @@ import androidx.core.text.getSpans
 import androidx.core.text.toSpannable
 import io.github.wykopmobilny.domain.navigation.WykopTextUtils
 import io.github.wykopmobilny.domain.navigation.WykopTextUtils.RecognizedLink
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.withContext
 import org.xml.sax.XMLReader
 import javax.inject.Inject

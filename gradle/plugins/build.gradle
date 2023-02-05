@@ -1,0 +1,25 @@
+plugins {
+    id("java-gradle-plugin")
+    alias(libs.plugins.starter.library.kotlin)
+    alias(libs.plugins.osacky.doctor)
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+dependencies {
+    implementation(gradleApi())
+    implementation(libs.agp.tools.core)
+    implementation(libs.agp.tools.gradle)
+    implementation(libs.karumi.gradle)
+}
+
+gradlePlugin {
+    plugins {
+        screenshotsPlugin {
+            id = "io.github.wykopmobilny.screenshots"
+            implementationClass = "io.github.wykopmobilny.plugins.ScreenshotTestsPlugin"
+        }
+    }
+}

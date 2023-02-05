@@ -42,8 +42,8 @@ import io.github.wykopmobilny.links.details.RelatedLinksSectionUi
 import io.github.wykopmobilny.storage.api.Blacklist
 import io.github.wykopmobilny.storage.api.LoggedUserInfo
 import io.github.wykopmobilny.storage.api.UserInfoStorage
-import io.github.wykopmobilny.ui.base.AppDispatchers
-import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.kotlin.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppScopes
 import io.github.wykopmobilny.ui.base.FailedAction
 import io.github.wykopmobilny.ui.base.Resource
 import io.github.wykopmobilny.ui.base.components.ContextMenuOptionUi

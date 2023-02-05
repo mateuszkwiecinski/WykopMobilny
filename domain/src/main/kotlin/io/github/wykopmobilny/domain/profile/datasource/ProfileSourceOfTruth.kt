@@ -21,7 +21,7 @@ import io.github.wykopmobilny.domain.profile.di.toColorEntity
 import io.github.wykopmobilny.domain.profile.di.toGenderEntity
 import io.github.wykopmobilny.domain.profile.toColorDomain
 import io.github.wykopmobilny.domain.profile.toGenderDomain
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 

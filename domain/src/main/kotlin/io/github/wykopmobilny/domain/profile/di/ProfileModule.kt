@@ -28,8 +28,8 @@ import io.github.wykopmobilny.domain.profile.InitializeProfile
 import io.github.wykopmobilny.domain.profile.ProfileAction
 import io.github.wykopmobilny.domain.profile.ProfileId
 import io.github.wykopmobilny.domain.profile.datasource.profileSourceOfTruth
-import io.github.wykopmobilny.ui.base.AppDispatchers
-import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.kotlin.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppScopes
 import io.github.wykopmobilny.ui.base.SimpleViewStateStorage
 import io.github.wykopmobilny.ui.profile.GetProfileActions
 import io.github.wykopmobilny.ui.profile.GetProfileDetails

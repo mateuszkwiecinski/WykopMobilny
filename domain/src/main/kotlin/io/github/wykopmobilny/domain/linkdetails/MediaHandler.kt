@@ -5,7 +5,7 @@ import io.github.wykopmobilny.data.cache.api.EmbedType
 import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.InteropRequestsProvider
 import io.github.wykopmobilny.domain.settings.prefs.MediaPlayerPreferences
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.withContext
 import java.net.URL
 

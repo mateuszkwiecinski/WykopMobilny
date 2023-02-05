@@ -1,11 +1,10 @@
 [versions]
-gradle-starter = "0.53.0"
+gradle-starter = "0.58.0"
 gradle-easylauncher = "5.1.2"
 gradle-gradledoctor = "0.8.1"
 gradle-karumi = "5.14.1"
 gradle-animationdisabler = "1.0.9"
 gradle-keeper = "0.13.0"
-gradle-kotlinter = "3.13.0"
 google-lifecycle = "2.5.1"
 google-appcompat = "1.6.0"
 google-swiperefreshlayout = "1.1.0"
@@ -15,7 +14,7 @@ google-androidtest = "1.5.0"
 google-androidtestRunner = "1.5.2"
 google-androidtestext = "1.1.5"
 google-androidArchCore = "2.1.0"
-google-material = "1.7.0"
+google-material = "1.8.0"
 google-work = "2.7.1"
 google-preference = "1.2.0"
 google-paging = "3.1.1"
@@ -31,10 +30,12 @@ google-startup = "1.1.1"
 google-exoplayer = "2.18.2"
 google-espresso = "3.5.1"
 google-annotation = "1.5.0"
-google-play-services = "4.3.14"
+google-play-services = "4.3.15"
 google-crashlytics = "2.9.2"
 google-performance = "1.4.2"
-google-tools = "30.3.1"
+google-tools = "30.4.1"
+google-agp = "7.4.1"
+google-ksp = "1.8.10-1.0.9"
 mavencentral-coroutines = "1.6.4"
 mavencentral-okhttp = "4.10.0"
 mavencentral-dagger = "2.44.2"
@@ -44,7 +45,7 @@ mavencentral-datetime = "0.4.0"
 mavencentral-store = "4.0.5"
 mavencentral-retrofit = "2.9.0"
 mavencentral-moshi = "1.14.0"
-mavencentral-sqldelight = "1.5.4"
+mavencentral-sqldelight = "1.5.5"
 mavencentral-jspoon = "1.3.2"
 mavencentral-jsoup = "1.15.3"
 mavencentral-slidr = "3.0.0"
@@ -53,7 +54,7 @@ mavencentral-markdown = "0.2.4"
 mavencentral-junit = "5.9.2"
 mavencentral-napier = "2.2.0"
 mavencentral-checker = "3.21.2"
-mavencentral-kotlin = "1.8.0"
+mavencentral-kotlin = "1.8.10"
 jitpack-photoview = "2.3.0"
 jitpack-subsampling-scale-image-view = "3.10.0"
 
@@ -108,7 +109,6 @@ moshi-compiler = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.r
 
 sqldelight-android = { module = "com.squareup.sqldelight:android-driver", version.ref = "mavencentral-sqldelight" }
 sqldelight-extensions = { module = "com.squareup.sqldelight:coroutines-extensions-jvm", version.ref = "mavencentral-sqldelight" }
-sqldelight-gradle = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "mavencentral-sqldelight" }
 
 retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "mavencentral-retrofit" }
 retrofit-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "mavencentral-retrofit" }
@@ -123,14 +123,9 @@ coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-androi
 coroutines-rxjava = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2", version.ref = "mavencentral-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "mavencentral-datetime" }
 
-starter-android-gradle = { module = "com.project.starter:android", version.ref = "gradle-starter" }
-play-services-gradle = { module = "com.google.gms:google-services", version.ref = "google-play-services" }
-firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "google-crashlytics" }
-keeper-gradle = { module = "com.slack.keeper:keeper", version.ref = "gradle-keeper" }
-firebase-performacne-gralde = { module = "com.google.firebase:perf-plugin", version.ref = "google-performance" }
 karumi-gradle = { module = "com.karumi:shot", version.ref = "gradle-karumi" }
-animationdisabler-gradle = { module = "pl.droidsonroids.gradle:plugin", version.ref = "gradle-animationdisabler" }
 agp-tools-core = { module = "com.android.tools:common", version.ref = "google-tools" }
+agp-tools-gradle = { module = "com.android.tools.build:gradle", version.ref = "google-agp" }
 
 androidtest-core = { module = "androidx.test:core-ktx", version.ref = "google-androidtest" }
 androidtest-runner = { module = "androidx.test:runner", version.ref = "google-androidtestRunner" }
@@ -147,10 +142,19 @@ junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "mav
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "mavencentral-junit" }
 
 [plugins]
-osacky-gradledoctor = { id = "com.osacky.doctor", version.ref = "gradle-gradledoctor" }
+osacky-doctor = { id = "com.osacky.doctor", version.ref = "gradle-gradledoctor" }
 starter-easylauncher = { id = "com.starter.easylauncher", version.ref = "gradle-easylauncher" }
-jmailen-kotlinter = { id = "org.jmailen.kotlinter", version.ref = "gradle-kotlinter" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "mavencentral-kotlin" }
+starter-config = { id = "com.starter.config", version.ref = "gradle-starter" }
+starter-versioning = { id = "com.starter.versioning", version.ref = "gradle-starter" }
+starter-library-android = { id = "com.starter.library.android", version.ref = "gradle-starter" }
+starter-library-kotlin = { id = "com.starter.library.kotlin", version.ref = "gradle-starter" }
+google-playservices = { id = "com.google.gms.google-services", version.ref = "google-play-services" }
+google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "google-crashlytics" }
+slack-keeper = { id = "com.slack.keeper", version.ref = "gradle-keeper" }
+droidsonroids-animationdisabler = { id = "pl.droidsonroids.animation-disabler", version.ref = "gradle-animationdisabler" }
+squareup-sqldelight = { id = "com.squareup.sqldelight", version.ref = "mavencentral-sqldelight" }
+google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 
 [bundles]
 espresso = [

@@ -1,4 +1,4 @@
-package io.github.wykopmobilny.ui.base
+package io.github.wykopmobilny.kotlin
 
 import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.CoroutineDispatcher

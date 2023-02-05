@@ -1,5 +1,30 @@
+import org.gradle.api.initialization.resolve.RepositoriesMode
+
+pluginManagement {
+    repositories { // https://github.com/gradle/gradle/issues/20866
+        gradlePluginPortal()
+        mavenCentral()
+        google()
+    }
+}
+
 plugins {
-    id "com.gradle.enterprise" version "3.12.2"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
+    id "com.gradle.enterprise" version "3.12.3"
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven {
+            name = "R8 releases repository for use with Keeper"
+            setUrl("https://storage.googleapis.com/r8-releases/raw")
+            content { includeModule("com.android.tools", "r8") }
+        }
+    }
 }
 
 rootProject.name = "wykop-mobilny"
@@ -7,9 +32,10 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 Closure discoverSubprojects = {
     fileTree(rootDir) { include("**/build.gradle") }
-        .filter { it.parentFile.name != "buildSrc" }
+        .filter { !it.path.contains("/build/") && it.parentFile.name != "plugins" }
         .collect { rootDir.relativePath(it.parentFile).replace("/",":") }
         .toArray(new String[0])
 }
 
+includeBuild("gradle/plugins")
 include discoverSubprojects()

@@ -6,11 +6,10 @@ plugins {
     id("com.starter.easylauncher")
     id("org.jetbrains.kotlin.kapt")
     id("org.jetbrains.kotlin.plugin.parcelize")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.slack.keeper")
-    id("com.google.firebase.firebase-perf")
-    id("pl.droidsonroids.animation-disabler")
+    alias(libs.plugins.google.playservices)
+    alias(libs.plugins.google.firebase.crashlytics)
+    alias(libs.plugins.slack.keeper)
+    alias(libs.plugins.droidsonroids.animationdisabler)
 }
 
 projectConfig {
@@ -57,21 +56,19 @@ android {
             signingConfig signingConfigs.getByName("debug")
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
-            resValue "bool", "disable_firebase_analytics", "true"
         }
         named("release") {
             minifyEnabled true
             signingConfig signingConfigs.getByName("release")
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             firebaseCrashlytics.mappingFileUploadEnabled findProperty("uploadMapping") == "true"
-            resValue "bool", "disable_firebase_analytics", "false"
         }
         register("releaseTest") {
-            initWith getByName("release")
+            minifyEnabled true
             signingConfig signingConfigs.getByName("debug")
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFile "proguard-rules-test.pro"
             firebaseCrashlytics.mappingFileUploadEnabled false
-            resValue "bool", "disable_firebase_analytics", "true"
         }
     }
 
@@ -106,11 +103,8 @@ androidComponents {
 }
 
 keeper {
+    automaticR8RepoManagement = false
     traceReferences {}
-}
-
-kotlinter {
-    experimentalRules = false
 }
 
 easylauncher {
@@ -119,11 +113,6 @@ easylauncher {
             filters = customRibbon(ribbonColor: "#2F4F4F", position: "bottom")
         }
     }
-}
-
-repositories {
-    google()
-    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -160,7 +149,7 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.jetbrains.markdown)
     debugImplementation(libs.leakcanary.core)
-    implementation(platform("com.google.firebase:firebase-bom:31.1.1"))
+    implementation(platform("com.google.firebase:firebase-bom:31.2.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-perf-ktx")

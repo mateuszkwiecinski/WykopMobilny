@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import io.github.wykopmobilny.ui.blacklist.BlacklistedElementUi
 import io.github.wykopmobilny.ui.blacklist.android.databinding.ItemBlockedElementBinding
 import kotlinx.coroutines.asExecutor

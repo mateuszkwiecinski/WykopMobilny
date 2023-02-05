@@ -10,7 +10,7 @@ import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.data.storage.api.ReadNotificationEntity
 import io.github.wykopmobilny.notification.HandleNotificationDismissed
 import io.github.wykopmobilny.notification.NotificationDependencies
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map

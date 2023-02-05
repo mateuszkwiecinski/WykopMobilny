@@ -4,7 +4,7 @@ import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.domain.navigation.InteropRequest
 import io.github.wykopmobilny.domain.navigation.WykopTextUtils
 import io.github.wykopmobilny.domain.navigation.WykopTextUtils.RecognizedLink
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.withContext
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.html.HtmlGenerator

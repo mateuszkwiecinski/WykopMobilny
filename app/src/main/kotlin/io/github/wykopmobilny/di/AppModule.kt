@@ -4,7 +4,7 @@ import android.content.Context
 import dagger.Binds
 import dagger.Module
 import io.github.wykopmobilny.WykopApp
-import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.kotlin.AppScopes
 
 @Module
 internal abstract class AppModule {

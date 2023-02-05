@@ -5,7 +5,7 @@ import com.squareup.moshi.Types
 import dagger.Reusable
 import io.github.wykopmobilny.api.ErrorBodyParser
 import io.github.wykopmobilny.api.responses.WykopApiResponse
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import javax.inject.Inject

@@ -1,6 +1,6 @@
 plugins {
     id("com.starter.library.kotlin")
-    id("com.squareup.sqldelight")
+    alias(libs.plugins.squareup.sqldelight)
 }
 
 sqldelight {
