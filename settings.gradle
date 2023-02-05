@@ -19,6 +19,11 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven {
+            name = "R8 releases repository for use with Keeper"
+            setUrl("https://storage.googleapis.com/r8-releases/raw")
+            content { includeModule("com.android.tools", "r8") }
+        }
     }
 }
 

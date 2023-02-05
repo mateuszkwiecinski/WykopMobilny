@@ -38,12 +38,12 @@ allprojects {
         }
 
         tasks.withType(DeviceProviderInstrumentTestTask).configureEach {
-            doFirst {
-                LoggerWrapper.Switch.shouldShowInfoLogsAsLifecycle = true
-            }
-            doLast {
-                LoggerWrapper.Switch.shouldShowInfoLogsAsLifecycle = false
-            }
+//            doFirst {
+//                LoggerWrapper.Switch.shouldShowInfoLogsAsLifecycle = true
+//            }
+//            doLast {
+//                LoggerWrapper.Switch.shouldShowInfoLogsAsLifecycle = false
+//            }
         }
     }
     pluginManager.withPlugin("com.android.library") {
