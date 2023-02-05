@@ -56,14 +56,12 @@ android {
             signingConfig signingConfigs.getByName("debug")
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
-            resValue "bool", "disable_firebase_analytics", "true"
         }
         named("release") {
             minifyEnabled true
             signingConfig signingConfigs.getByName("release")
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             firebaseCrashlytics.mappingFileUploadEnabled findProperty("uploadMapping") == "true"
-            resValue "bool", "disable_firebase_analytics", "false"
         }
         register("releaseTest") {
             minifyEnabled true
@@ -71,7 +69,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFile "proguard-rules-test.pro"
             firebaseCrashlytics.mappingFileUploadEnabled false
-            resValue "bool", "disable_firebase_analytics", "true"
         }
     }
 

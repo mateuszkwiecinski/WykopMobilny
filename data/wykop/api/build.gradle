@@ -1,6 +1,6 @@
 plugins {
     id("com.starter.library.kotlin")
-    id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.google.devtools.ksp)
 }
 
 dependencies {
@@ -8,5 +8,5 @@ dependencies {
     api(libs.kotlinx.datetime)
     api(libs.retrofit.core)
     implementation(libs.moshi.core)
-    kapt(libs.moshi.compiler)
+    ksp(libs.moshi.compiler)
 }
