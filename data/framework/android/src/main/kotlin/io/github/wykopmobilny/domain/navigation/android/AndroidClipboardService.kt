@@ -5,7 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import androidx.core.content.getSystemService
 import io.github.wykopmobilny.domain.navigation.ClipboardService
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

@@ -1,9 +1,9 @@
 package io.github.wykopmobilny.domain.utils
 
 import io.github.aakira.napier.Napier
-import io.github.wykopmobilny.ui.base.AppScopes
-import io.github.wykopmobilny.ui.base.launchIn
-import io.github.wykopmobilny.ui.base.launchInKeyed
+import io.github.wykopmobilny.kotlin.AppScopes
+import io.github.wykopmobilny.kotlin.launchIn
+import io.github.wykopmobilny.kotlin.launchInKeyed
 import kotlinx.coroutines.CoroutineScope
 
 internal inline fun <reified T : Any> AppScopes.safe(crossinline block: suspend CoroutineScope.() -> Unit) {

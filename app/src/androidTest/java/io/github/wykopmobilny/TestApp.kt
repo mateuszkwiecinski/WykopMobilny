@@ -7,7 +7,7 @@ import io.github.wykopmobilny.domain.login.ConnectConfig
 import io.github.wykopmobilny.fakes.FakeCookieProvider
 import io.github.wykopmobilny.storage.android.DaggerStoragesComponent
 import io.github.wykopmobilny.storage.android.StoragesComponent
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.asExecutor
 import kotlinx.datetime.Clock
 

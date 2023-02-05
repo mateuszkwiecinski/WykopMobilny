@@ -5,12 +5,11 @@ import android.text.method.LinkMovementMethod
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import io.github.wykopmobilny.ui.base.android.R
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi
 import io.github.wykopmobilny.ui.base.components.InfoDialogUi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flowOn
 

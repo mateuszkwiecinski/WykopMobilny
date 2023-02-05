@@ -13,7 +13,7 @@ import io.github.wykopmobilny.domain.settings.prefs.MainScreen
 import io.github.wykopmobilny.domain.settings.prefs.MikroblogScreen
 import io.github.wykopmobilny.domain.styles.AppThemePreference
 import io.github.wykopmobilny.domain.utils.safe
-import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.kotlin.AppScopes
 import io.github.wykopmobilny.ui.settings.AppThemeUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi
 import io.github.wykopmobilny.ui.settings.AppearancePreferencesUi.AppearanceSectionUi

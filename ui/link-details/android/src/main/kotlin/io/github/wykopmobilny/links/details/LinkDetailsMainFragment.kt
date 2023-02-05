@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.github.wykopmobilny.ui.components.toColorInt
 import com.github.wykopmobilny.ui.components.utils.dpToPx
 import io.github.aakira.napier.Napier
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import io.github.wykopmobilny.ui.link_details.android.R
 import io.github.wykopmobilny.ui.link_details.android.databinding.FragmentLinkDetailsBinding
 import io.github.wykopmobilny.utils.InjectableViewModel

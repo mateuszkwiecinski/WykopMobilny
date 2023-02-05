@@ -7,7 +7,7 @@ import io.github.aakira.napier.Napier
 import io.github.wykopmobilny.domain.navigation.NavigationMode
 import io.github.wykopmobilny.domain.navigation.NightModeState
 import io.github.wykopmobilny.domain.navigation.SystemSettingsDetector
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers

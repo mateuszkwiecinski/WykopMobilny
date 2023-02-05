@@ -5,8 +5,8 @@ import com.squareup.sqldelight.runtime.coroutines.mapToList
 import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.search.di.SearchScope
 import io.github.wykopmobilny.domain.utils.safe
-import io.github.wykopmobilny.ui.base.AppDispatchers
-import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.kotlin.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppScopes
 import io.github.wykopmobilny.ui.search.GetSearchDetails
 import io.github.wykopmobilny.ui.search.SearchDetailsUi
 import kotlinx.coroutines.flow.Flow

@@ -10,13 +10,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import io.github.wykopmobilny.ui.base.android.databinding.ItemOptionBinding
 import io.github.wykopmobilny.ui.base.android.databinding.OptionPickerBinding
 import io.github.wykopmobilny.ui.base.components.OptionPickerUi
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flowOn
 

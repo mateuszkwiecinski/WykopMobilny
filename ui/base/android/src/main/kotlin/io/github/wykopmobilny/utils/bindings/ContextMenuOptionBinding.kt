@@ -2,10 +2,9 @@ package io.github.wykopmobilny.utils.bindings
 
 import android.view.MenuItem
 import com.google.android.material.appbar.MaterialToolbar
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import io.github.wykopmobilny.ui.base.components.ContextMenuOptionUi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flowOn
 

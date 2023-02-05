@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.Provides
 import io.github.wykopmobilny.api.endpoints.NotificationsRetrofitApi
 import io.github.wykopmobilny.domain.api.ApiClient
-import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.kotlin.AppScopes
 import javax.inject.Singleton
 
 @Module

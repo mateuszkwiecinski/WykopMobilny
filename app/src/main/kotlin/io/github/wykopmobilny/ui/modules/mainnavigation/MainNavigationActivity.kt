@@ -31,7 +31,7 @@ import io.github.wykopmobilny.databinding.DrawerHeaderViewLayoutBinding
 import io.github.wykopmobilny.databinding.PatronListItemBinding
 import io.github.wykopmobilny.databinding.PatronsBottomsheetBinding
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import io.github.wykopmobilny.ui.dialogs.confirmationDialog
 import io.github.wykopmobilny.ui.modules.NewNavigator
 import io.github.wykopmobilny.ui.modules.favorite.FavoriteFragment

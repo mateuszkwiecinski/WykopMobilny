@@ -11,8 +11,8 @@ import io.github.wykopmobilny.domain.repositories.ProfilesRepository
 import io.github.wykopmobilny.domain.strings.Strings
 import io.github.wykopmobilny.domain.utils.safeKeyed
 import io.github.wykopmobilny.storage.api.UserInfoStorage
-import io.github.wykopmobilny.ui.base.AppDispatchers
-import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.kotlin.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppScopes
 import io.github.wykopmobilny.ui.base.FailedAction
 import io.github.wykopmobilny.ui.base.SimpleViewStateStorage
 import io.github.wykopmobilny.ui.base.components.ContextMenuOptionUi

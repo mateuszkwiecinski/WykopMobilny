@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.karumi.shot.ShotTestRunner
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import io.github.wykopmobilny.utils.ApplicationInjector
 import kotlinx.coroutines.Dispatchers
 import kotlin.reflect.KClass

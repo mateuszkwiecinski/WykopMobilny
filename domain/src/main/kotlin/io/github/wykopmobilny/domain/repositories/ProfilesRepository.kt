@@ -5,7 +5,7 @@ import io.github.wykopmobilny.api.responses.ObserveStateResponse
 import io.github.wykopmobilny.data.cache.api.AppCache
 import io.github.wykopmobilny.data.storage.api.AppStorage
 import io.github.wykopmobilny.domain.api.ApiClient
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

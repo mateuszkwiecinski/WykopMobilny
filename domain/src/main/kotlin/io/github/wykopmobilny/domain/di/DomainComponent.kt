@@ -26,7 +26,7 @@ import io.github.wykopmobilny.domain.work.di.WorkDomainComponent
 import io.github.wykopmobilny.notification.NotificationsApi
 import io.github.wykopmobilny.storage.api.SettingsPreferencesApi
 import io.github.wykopmobilny.storage.api.Storages
-import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.kotlin.AppScopes
 import io.github.wykopmobilny.work.WorkApi
 import kotlinx.datetime.Clock
 import javax.inject.Singleton

@@ -11,7 +11,7 @@ import io.github.wykopmobilny.data.cache.api.UserVote
 import io.github.wykopmobilny.domain.api.ApiClient
 import io.github.wykopmobilny.domain.linkdetails.VoteDownReason
 import io.github.wykopmobilny.domain.profile.LinkInfo
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

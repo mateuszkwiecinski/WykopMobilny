@@ -12,7 +12,7 @@ import io.github.wykopmobilny.domain.navigation.AppGateway
 import io.github.wykopmobilny.domain.navigation.AuthenticatorApp
 import io.github.wykopmobilny.domain.navigation.ExternalApp
 import io.github.wykopmobilny.domain.navigation.YoutubeApp
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.callbackFlow

@@ -6,7 +6,7 @@ import androidx.core.text.toSpannable
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import io.github.aakira.napier.Napier
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.asExecutor
 
 fun <T> asyncDifferConfig(diff: DiffUtil.ItemCallback<T>): AsyncDifferConfig<T> = AsyncDifferConfig.Builder(diff)

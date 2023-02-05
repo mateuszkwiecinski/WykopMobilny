@@ -10,7 +10,7 @@ import io.github.wykopmobilny.domain.settings.LinkImagePosition
 import io.github.wykopmobilny.domain.settings.prefs.GetLinksPreferences
 import io.github.wykopmobilny.domain.settings.prefs.LinksPreference
 import io.github.wykopmobilny.domain.utils.safeKeyed
-import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.kotlin.AppScopes
 import io.github.wykopmobilny.ui.base.components.Drawable
 import io.github.wykopmobilny.ui.components.widgets.AvatarUi
 import io.github.wykopmobilny.ui.components.widgets.Button

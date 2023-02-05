@@ -16,7 +16,7 @@ import io.github.wykopmobilny.domain.profile.datasource.toEntity
 import io.github.wykopmobilny.domain.profile.datasource.upsert
 import io.github.wykopmobilny.domain.profile.toColorDomain
 import io.github.wykopmobilny.domain.profile.toGenderDomain
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.flow.map
 import kotlin.math.absoluteValue
 

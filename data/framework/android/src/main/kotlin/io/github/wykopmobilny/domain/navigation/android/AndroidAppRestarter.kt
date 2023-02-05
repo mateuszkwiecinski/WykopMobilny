@@ -3,7 +3,7 @@ package io.github.wykopmobilny.domain.navigation.android
 import android.app.Application
 import android.content.Intent
 import io.github.wykopmobilny.domain.navigation.AppRestarter
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

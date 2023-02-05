@@ -1,7 +1,7 @@
 package io.github.wykopmobilny.api.embed
 
 import io.github.wykopmobilny.api.endpoints.ExternalRetrofitApi
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.rx2.rxSingle
 import kotlinx.coroutines.withContext
 import java.net.URL

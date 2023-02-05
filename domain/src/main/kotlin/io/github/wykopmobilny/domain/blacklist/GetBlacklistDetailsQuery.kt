@@ -9,7 +9,7 @@ import io.github.wykopmobilny.domain.repositories.TagsRepository
 import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.domain.utils.withResource
 import io.github.wykopmobilny.storage.api.Blacklist
-import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.kotlin.AppScopes
 import io.github.wykopmobilny.ui.base.FailedAction
 import io.github.wykopmobilny.ui.base.ItemState
 import io.github.wykopmobilny.ui.base.Resource

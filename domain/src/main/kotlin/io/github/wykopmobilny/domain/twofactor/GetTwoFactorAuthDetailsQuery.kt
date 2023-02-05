@@ -9,7 +9,7 @@ import io.github.wykopmobilny.domain.strings.Strings
 import io.github.wykopmobilny.domain.twofactor.di.TwoFactorAuthScope
 import io.github.wykopmobilny.domain.utils.safe
 import io.github.wykopmobilny.domain.utils.withResource
-import io.github.wykopmobilny.ui.base.AppScopes
+import io.github.wykopmobilny.kotlin.AppScopes
 import io.github.wykopmobilny.ui.base.FailedAction
 import io.github.wykopmobilny.ui.base.Resource
 import io.github.wykopmobilny.ui.base.components.ErrorDialogUi

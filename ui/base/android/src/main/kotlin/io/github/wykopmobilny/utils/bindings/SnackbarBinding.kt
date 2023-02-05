@@ -2,9 +2,8 @@ package io.github.wykopmobilny.utils.bindings
 
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flowOn
 

@@ -10,7 +10,7 @@ import io.github.wykopmobilny.notification.AppNotification
 import io.github.wykopmobilny.notification.NotificationsManager
 import io.github.wykopmobilny.notification.cancelNotification
 import io.github.wykopmobilny.storage.api.SessionStorage
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import io.github.wykopmobilny.work.GetNotificationsRefreshWorkDetails
 import io.github.wykopmobilny.work.WorkData
 import kotlinx.coroutines.flow.first

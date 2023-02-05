@@ -1,10 +1,9 @@
 package io.github.wykopmobilny.utils.bindings
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import io.github.wykopmobilny.ui.base.AppDispatchers
+import io.github.wykopmobilny.kotlin.AppDispatchers
 import io.github.wykopmobilny.ui.base.components.SwipeRefreshUi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flowOn
 
