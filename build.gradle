@@ -2,6 +2,7 @@ import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask
 import com.android.build.gradle.internal.tasks.databinding.DataBindingMergeDependencyArtifactsTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapperKt
 
 plugins {
     alias(libs.plugins.starter.config)
@@ -45,6 +46,13 @@ allprojects {
 //                LoggerWrapper.Switch.shouldShowInfoLogsAsLifecycle = false
 //            }
         }
+
+        if (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.startsWith("7.")) {
+            org.slf4j.LoggerFactory.getILoggerFactory().addNoOpLogger("com.android.build.api.component.impl.MutableListBackedUpWithListProperty")
+            org.slf4j.LoggerFactory.getILoggerFactory().addNoOpLogger("com.android.build.api.component.impl.MutableMapBackedUpWithMapProperty")
+        } else {
+            throw new Exception("AGP major version changed, review hack.")
+        }
     }
     pluginManager.withPlugin("com.android.library") {
         android {
@@ -64,6 +72,11 @@ allprojects {
             if (requested.group == "org.checkerframework" && requested.name != "checker-compat-qual") {
                 useVersion(libs.versions.mavencentral.checker.get())
                 because("https://github.com/google/ExoPlayer/issues/10007")
+            }
+
+            def kotlinVersion = KotlinPluginWrapperKt.getKotlinPluginVersion(project)
+            if (requested.group == 'org.jetbrains.kotlin' && requested.name.startsWith("kotlin")) {
+                useVersion kotlinVersion
             }
         }
     }

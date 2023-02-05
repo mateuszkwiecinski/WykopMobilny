@@ -1,11 +1,10 @@
 [versions]
-gradle-starter = "0.57.0"
+gradle-starter = "0.58.0"
 gradle-easylauncher = "5.1.2"
 gradle-gradledoctor = "0.8.1"
 gradle-karumi = "5.14.1"
 gradle-animationdisabler = "1.0.9"
 gradle-keeper = "0.13.0"
-gradle-kotlinter = "3.13.0"
 google-lifecycle = "2.5.1"
 google-appcompat = "1.6.0"
 google-swiperefreshlayout = "1.1.0"
@@ -36,6 +35,7 @@ google-crashlytics = "2.9.2"
 google-performance = "1.4.2"
 google-tools = "30.4.1"
 google-agp = "7.4.1"
+google-ksp = "1.8.10-1.0.9"
 mavencentral-coroutines = "1.6.4"
 mavencentral-okhttp = "4.10.0"
 mavencentral-dagger = "2.44.2"
@@ -144,7 +144,6 @@ junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref 
 [plugins]
 osacky-doctor = { id = "com.osacky.doctor", version.ref = "gradle-gradledoctor" }
 starter-easylauncher = { id = "com.starter.easylauncher", version.ref = "gradle-easylauncher" }
-jmailen-kotlinter = { id = "org.jmailen.kotlinter", version.ref = "gradle-kotlinter" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "mavencentral-kotlin" }
 starter-config = { id = "com.starter.config", version.ref = "gradle-starter" }
 starter-versioning = { id = "com.starter.versioning", version.ref = "gradle-starter" }
@@ -155,6 +154,7 @@ google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.
 slack-keeper = { id = "com.slack.keeper", version.ref = "gradle-keeper" }
 droidsonroids-animationdisabler = { id = "pl.droidsonroids.animation-disabler", version.ref = "gradle-animationdisabler" }
 squareup-sqldelight = { id = "com.squareup.sqldelight", version.ref = "mavencentral-sqldelight" }
+google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 
 [bundles]
 espresso = [

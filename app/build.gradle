@@ -66,8 +66,9 @@ android {
             resValue "bool", "disable_firebase_analytics", "false"
         }
         register("releaseTest") {
-            initWith getByName("release")
+            minifyEnabled true
             signingConfig signingConfigs.getByName("debug")
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFile "proguard-rules-test.pro"
             firebaseCrashlytics.mappingFileUploadEnabled false
             resValue "bool", "disable_firebase_analytics", "true"
