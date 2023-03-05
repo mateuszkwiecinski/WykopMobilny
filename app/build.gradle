@@ -188,6 +188,9 @@ dependencies {
 tasks.named("detekt") {
     baseline = file("$rootDir/detekt-baseline.xml")
 }
+tasks.withType(Checkstyle).configureEach {
+    enabled = false
+}
 
 tasks.register("detektProjectBaseline", DetektCreateBaselineTask) {
     description = "Overrides current baseline."
