@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PackageInfoFlags
+import android.os.Build
 import androidx.core.net.toUri
 import io.github.wykopmobilny.domain.navigation.AppGateway
 import io.github.wykopmobilny.domain.navigation.AuthenticatorApp
@@ -90,12 +92,20 @@ private fun knownAppId(app: ExternalApp) =
 
 private fun Context.isPackageInstalled(packageName: String): Boolean {
     return try {
-        packageManager.getPackageInfo(packageName, 0)
+        packageManager.getPackageInfoCompat(packageName, 0)
         true
     } catch (ignored: PackageManager.NameNotFoundException) {
         false
     }
 }
+
+private fun PackageManager.getPackageInfoCompat(packageName: String, flags: Int) =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getPackageInfo(packageName, PackageInfoFlags.of(flags.toLong()))
+    } else {
+        @Suppress("DEPRECATION")
+        getPackageInfo(packageName, flags)
+    }
 
 private fun Context.observeInstalledPackages() =
     callbackFlow {
