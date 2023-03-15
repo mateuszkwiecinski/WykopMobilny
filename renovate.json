@@ -1,5 +1,5 @@
 {
-  "includeForks": true,
+  "forkProcessing": "enabled",
   "assignees": [
     "mateuszkwiecinski"
   ],
