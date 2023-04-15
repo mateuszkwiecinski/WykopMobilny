@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withCreated
 import com.r0adkll.slidr.attachSlidr
 import com.r0adkll.slidr.model.SlidrConfig
 import dagger.android.AndroidInjection
@@ -52,7 +53,8 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
         } else {
             null
         }
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.launch {
+            withCreated { }
             val shared = getAppStyle().stateIn(this)
             launch {
                 shared

@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.github.wykopmobilny.ui.components.toColorInt
@@ -52,13 +54,15 @@ internal class ProfileMainFragment : Fragment(R.layout.fragment_profile) {
             tab.setText(adapter.getTitle(position))
         }
             .attach()
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            val shared = getProfileDetails().stateIn(this)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                val shared = getProfileDetails().stateIn(this)
 
-            launch { shared.map { it.errorDialog }.collectErrorDialog(view.context) }
-            launch { shared.map { it.contextMenuOptions }.collectMenuOptions(binding.toolbar) }
-            launch { shared.map { it.onAddEntryClicked }.setOnClick(binding.addEntry) }
-            launch { shared.map { it.header }.bindHeader(binding) }
+                launch { shared.map { it.errorDialog }.collectErrorDialog(view.context) }
+                launch { shared.map { it.contextMenuOptions }.collectMenuOptions(binding.toolbar) }
+                launch { shared.map { it.onAddEntryClicked }.setOnClick(binding.addEntry) }
+                launch { shared.map { it.header }.bindHeader(binding) }
+            }
         }
     }
 
