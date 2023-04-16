@@ -15,14 +15,10 @@ android {
 
 dependencies {
     implementation(project(":ui:base:android"))
-    //noinspection GradleDependency https://github.com/pedrovgs/Shot/issues/254
     implementation("androidx.fragment:fragment-testing:1.5.7")
-    implementation("com.karumi:shot-android:5.14.1") {
-        exclude group: "androidx.compose.ui" // https://issuetracker.google.com/issues/223424344
-    }
-    implementation("com.facebook.testing.screenshot:core:0.15.0")
     implementation(libs.bundles.espresso)
     implementation(libs.glide.core)
+    implementation(libs.usefulness.screenshotTesting.core)
     kapt(libs.glide.compiler)
     api("com.thedeanda:lorem:2.1")
     api("junit:junit:4.13.2")

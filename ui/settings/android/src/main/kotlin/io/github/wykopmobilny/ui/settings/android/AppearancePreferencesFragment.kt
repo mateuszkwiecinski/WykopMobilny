@@ -14,7 +14,6 @@ import io.github.wykopmobilny.ui.settings.MainScreenUi
 import io.github.wykopmobilny.ui.settings.MikroblogScreenUi
 import io.github.wykopmobilny.ui.settings.SettingsDependencies
 import io.github.wykopmobilny.utils.requireDependency
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
@@ -29,8 +28,8 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.appearance_preferences, rootKey)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 getAppearancePreferences().collect {
                     bindList("appTheme", it.appearance.userThemeSetting, themeSettingMapping)
                     bindCheckbox("useAmoledTheme", it.appearance.useAmoledTheme)

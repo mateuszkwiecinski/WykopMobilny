@@ -5,6 +5,7 @@ gradle-gradledoctor = "0.8.1"
 gradle-karumi = "5.14.1"
 gradle-animationdisabler = "1.0.9"
 gradle-keeper = "0.14.0"
+gradle-screenshotTesting = "0.16.11"
 google-lifecycle = "2.6.1"
 google-appcompat = "1.6.1"
 google-swiperefreshlayout = "1.1.0"
@@ -123,7 +124,8 @@ coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-androi
 coroutines-rxjava = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2", version.ref = "mavencentral-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "mavencentral-datetime" }
 
-karumi-gradle = { module = "com.karumi:shot", version.ref = "gradle-karumi" }
+usefulness-screenshotTesting-core = { module = "io.github.usefulness:screenshot-testing-core", version.ref = "gradle-screenshotTesting" }
+usefulness-screenshotTesting-plugin = { module = "io.github.usefulness:screenshot-testing-plugin", version.ref = "gradle-screenshotTesting" }
 agp-tools-core = { module = "com.android.tools:common", version.ref = "google-tools" }
 agp-tools-gradle = { module = "com.android.tools.build:gradle", version.ref = "google-agp" }
 

@@ -6,9 +6,12 @@ import android.util.Size
 import android.view.View
 import android.view.View.MeasureSpec.makeMeasureSpec
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.allViews
@@ -20,15 +23,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.rule.GrantPermissionRule
 import com.facebook.testing.screenshot.Screenshot
-import com.facebook.testing.screenshot.internal.TestNameDetector
+import com.facebook.testing.screenshot.TestNameDetector
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.resources.MaterialAttributes
 import com.google.android.material.textfield.TextInputLayout
-import com.karumi.shot.ScreenshotTest
 import org.junit.Rule
 import io.github.wykopmobilny.ui.base.android.R as BaseR
 
-abstract class BaseScreenshotTest : ScreenshotTest {
+abstract class BaseScreenshotTest {
 
     @get:Rule
     val mRuntimePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
@@ -88,12 +90,24 @@ abstract class BaseScreenshotTest : ScreenshotTest {
     }
 
     private fun View.disableFlakyComponents() {
-        disableFlakyComponentsAndWaitForIdle(view = this)
+        allViews.filter {
+            it is NestedScrollView ||
+                it is HorizontalScrollView ||
+                it is ScrollView
+        }
+            .forEach(::hideViewBars)
+        allViews.filterIsInstance<EditText>().forEach { it.isCursorVisible = false }
         allViews.filterIsInstance<TextInputLayout>().forEach { it.isHintAnimationEnabled = false }
     }
 
+    private fun hideViewBars(it: View) {
+        it.isHorizontalScrollBarEnabled = false
+        it.isVerticalScrollBarEnabled = false
+        it.overScrollMode = View.OVER_SCROLL_NEVER
+    }
+
     private fun recordScreenshot(view: View, name: String) {
-        val snapshotName = "${TestNameDetector.getTestClass()}_$name"
+        val snapshotName = "${TestNameDetector.getTestMethodInfo()?.className?.substringAfterLast(".")}_$name"
         Screenshot
             .snap(view)
             .setIncludeAccessibilityInfo(false)

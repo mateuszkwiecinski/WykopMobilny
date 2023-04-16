@@ -57,3 +57,9 @@
 # If there is no `java.lang.ClassValue` (for example, in Android), then R8/ProGuard will print a warning.
 # However, since in this case they will not be used, we can disable these warnings
 -dontwarn kotlinx.serialization.internal.ClassValueReferences
+
+# https://github.com/square/okhttp/issues/7777
+-dontwarn okhttp3.internal.platform.**
+-dontwarn org.conscrypt.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.openjsse.**

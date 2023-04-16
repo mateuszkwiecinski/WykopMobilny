@@ -10,7 +10,6 @@ import io.github.wykopmobilny.ui.settings.GeneralPreferencesUi.NotificationsUi.R
 import io.github.wykopmobilny.ui.settings.GetGeneralPreferences
 import io.github.wykopmobilny.ui.settings.SettingsDependencies
 import io.github.wykopmobilny.utils.requireDependency
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 internal class GeneralPreferencesFragment : PreferenceFragmentCompat() {
@@ -25,8 +24,8 @@ internal class GeneralPreferencesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.general_preferences, rootKey)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 getGeneralPreferences().collect {
                     bindPreference("appearance", ::openAppearanceSettings)
                     bindCheckbox("showNotifications", it.notifications.notificationsEnabled)
