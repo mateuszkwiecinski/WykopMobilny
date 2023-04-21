@@ -12,8 +12,9 @@ dependencies {
 }
 
 tasks.named("detekt") {
+    def dir = layout.projectDirectory.asFile
     exclude {
-        it.file.relativePath(project.projectDir).startsWith("build")
+        it.file.relativePath(dir).startsWith("build")
     }
 }
 afterEvaluate {

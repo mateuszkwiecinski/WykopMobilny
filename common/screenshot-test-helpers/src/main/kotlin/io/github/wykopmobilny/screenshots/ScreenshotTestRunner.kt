@@ -3,13 +3,25 @@ package io.github.wykopmobilny.screenshots
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import com.karumi.shot.ShotTestRunner
+import android.os.Bundle
+import androidx.test.runner.AndroidJUnitRunner
 import io.github.wykopmobilny.kotlin.AppDispatchers
 import io.github.wykopmobilny.utils.ApplicationInjector
 import kotlinx.coroutines.Dispatchers
 import kotlin.reflect.KClass
+import com.facebook.testing.screenshot.ScreenshotRunner
 
-class ScreenshotTestRunner : ShotTestRunner() {
+class ScreenshotTestRunner : AndroidJUnitRunner() {
+
+    override fun onCreate(arguments: Bundle?) {
+        ScreenshotRunner.onCreate(this, arguments)
+        super.onCreate(arguments)
+    }
+
+    override fun finish(resultCode: Int, results: Bundle?) {
+        ScreenshotRunner.onDestroy()
+        super.finish(resultCode, results)
+    }
 
     override fun newApplication(cl: ClassLoader, className: String, context: Context): Application =
         super.newApplication(cl, ScreenshotTestsApplication::class.java.name, context)

@@ -12,7 +12,7 @@ dependencies {
     implementation(gradleApi())
     implementation(libs.agp.tools.core)
     implementation(libs.agp.tools.gradle)
-    implementation(libs.karumi.gradle)
+    implementation(libs.usefulness.screenshotTesting.plugin)
 }
 
 gradlePlugin {

@@ -6,7 +6,9 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
@@ -70,70 +72,75 @@ internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details
         (binding.list.itemAnimator as DefaultItemAnimator).apply {
             moveDuration = (resources.getInteger(android.R.integer.config_shortAnimTime) / 1.5).toLong()
         }
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            val shared = getLinkDetails()
-                .flowOn(AppDispatchers.Default)
-                .stateIn(this)
 
-            launch {
-                val adapterList = shared.map { it.toAdapterList() }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                val shared = getLinkDetails()
                     .flowOn(AppDispatchers.Default)
+                    .stateIn(this)
 
-                val commentId = commentId
-                if (savedInstanceState == null && commentId != null) {
-                    runCatching {
-                        withTimeout(3000) {
-                            val state = adapterList.stateIn(this)
-                            val targetElement = state.mapNotNull { list ->
-                                list.indexOfFirst { item ->
-                                    when (item) {
-                                        is ListItem.Header,
-                                        is ListItem.RelatedSection,
-                                        -> false
-                                        is ListItem.ParentComment -> item.id == commentId
-                                        is ListItem.ReplyComment -> item.id == commentId
-                                    }
-                                }.takeIf { it >= 0 }
-                            }.first()
-                            adapter.submitList(state.value) {
-                                binding.appBarLayout.setExpanded(false, false)
-                                val linearLayoutManager = binding.list.layoutManager as LinearLayoutManager
-                                linearLayoutManager.scrollToPositionWithOffset(targetElement, 8.dpToPx(resources))
-                            }
-                        }
-                    }
-                        .onFailure { Napier.w("Couldn't find target comment key=$key") }
-                }
-                adapterList.collect { adapter.submitList(it) }
-            }
-            launch { shared.map { it.errorDialog }.collectErrorDialog(view.context) }
-            launch { shared.map { it.infoDialog }.collectInfoDialog(view.context) }
-            launch { shared.map { it.swipeRefresh }.collectSwipeRefresh(binding.swipeRefresh) }
-            launch { shared.map { it.contextMenuOptions }.collectMenuOptions(binding.toolbar) }
-            launch { shared.map { it.picker }.collectOptionPicker(view.context) }
-            launch { shared.map { it.snackbar }.collectSnackbar(view) }
-            launch {
-                shared.map { it.header }
-                    .collect { header ->
-                        when (header) {
-                            LinkDetailsHeaderUi.Loading -> {
-                                binding.parallaxContainer.isInvisible = true
-                            }
-                            is LinkDetailsHeaderUi.WithData -> {
-                                binding.parallaxContainer.isVisible = header.previewImageUrl != null
-                                if (header.previewImageUrl != null) {
-                                    Glide.with(this@LinkDetailsMainFragment)
-                                        .load(header.previewImageUrl)
-                                        .transition(withCrossFade())
-                                        .into(binding.imgPreview)
+                launch {
+                    val adapterList = shared.map { it.toAdapterList() }
+                        .flowOn(AppDispatchers.Default)
+
+                    val commentId = commentId
+                    if (savedInstanceState == null && commentId != null) {
+                        runCatching {
+                            withTimeout(3000) {
+                                val state = adapterList.stateIn(this)
+                                val targetElement = state.mapNotNull { list ->
+                                    list.indexOfFirst { item ->
+                                        when (item) {
+                                            is ListItem.Header,
+                                            is ListItem.RelatedSection,
+                                            -> false
+
+                                            is ListItem.ParentComment -> item.id == commentId
+                                            is ListItem.ReplyComment -> item.id == commentId
+                                        }
+                                    }.takeIf { it >= 0 }
+                                }.first()
+                                adapter.submitList(state.value) {
+                                    binding.appBarLayout.setExpanded(false, false)
+                                    val linearLayoutManager = binding.list.layoutManager as LinearLayoutManager
+                                    linearLayoutManager.scrollToPositionWithOffset(targetElement, 8.dpToPx(resources))
                                 }
-                                binding.imgPreview.setOnClick(header.viewLinkAction)
-                                binding.txtDomain.text = header.domain
-                                binding.hotBadgeStrip.isVisible = header.badge != null
-                                binding.hotBadgeStrip.setBackgroundColor(header.badge.toColorInt(view.context).defaultColor)
                             }
                         }
+                            .onFailure { Napier.w("Couldn't find target comment key=$key") }
                     }
+                    adapterList.collect { adapter.submitList(it) }
+                }
+                launch { shared.map { it.errorDialog }.collectErrorDialog(view.context) }
+                launch { shared.map { it.infoDialog }.collectInfoDialog(view.context) }
+                launch { shared.map { it.swipeRefresh }.collectSwipeRefresh(binding.swipeRefresh) }
+                launch { shared.map { it.contextMenuOptions }.collectMenuOptions(binding.toolbar) }
+                launch { shared.map { it.picker }.collectOptionPicker(view.context) }
+                launch { shared.map { it.snackbar }.collectSnackbar(view) }
+                launch {
+                    shared.map { it.header }
+                        .collect { header ->
+                            when (header) {
+                                LinkDetailsHeaderUi.Loading -> {
+                                    binding.parallaxContainer.isInvisible = true
+                                }
+
+                                is LinkDetailsHeaderUi.WithData -> {
+                                    binding.parallaxContainer.isVisible = header.previewImageUrl != null
+                                    if (header.previewImageUrl != null) {
+                                        Glide.with(this@LinkDetailsMainFragment)
+                                            .load(header.previewImageUrl)
+                                            .transition(withCrossFade())
+                                            .into(binding.imgPreview)
+                                    }
+                                    binding.imgPreview.setOnClick(header.viewLinkAction)
+                                    binding.txtDomain.text = header.domain
+                                    binding.hotBadgeStrip.isVisible = header.badge != null
+                                    binding.hotBadgeStrip.setBackgroundColor(header.badge.toColorInt(view.context).defaultColor)
+                                }
+                            }
+                        }
+                }
             }
         }
     }

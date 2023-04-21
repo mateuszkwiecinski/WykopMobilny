@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withCreated
 import com.r0adkll.slidr.attachSlidr
 import com.r0adkll.slidr.model.SlidrConfig
 import io.github.wykopmobilny.styles.ApplicableStyleUi
@@ -30,7 +31,8 @@ internal abstract class ThemableActivity : AppCompatActivity() {
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val slidr = attachSlidr(SlidrConfig(edgeOnly = true))
 
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.launch {
+            withCreated { }
             val shared = getAppStyle().stateIn(this)
             launch {
                 shared

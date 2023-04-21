@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import io.github.wykopmobilny.ui.two_factor.android.R
 import io.github.wykopmobilny.ui.two_factor.android.databinding.FragmentTwoFactorBinding
 import io.github.wykopmobilny.ui.twofactor.TwoFactorAuthDependencies
@@ -31,13 +33,16 @@ internal class TwoFactorMainFragment : Fragment(R.layout.fragment_two_factor) {
 
         val binding = FragmentTwoFactorBinding.bind(view)
         binding.toolbar.bindBackButton(activity = activity)
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            val shared = getTwoFactorAuthDetails().stateIn(this)
 
-            launch { shared.map { it.code }.collectUserInput(binding.code) }
-            launch { shared.map { it.verifyButton }.collectProgressInput(binding.buttonVerify, binding.progress) }
-            launch { shared.map { it.authenticatorButton }.collectProgressInput(binding.butonOpenApp, progress = null) }
-            launch { shared.map { it.errorDialog }.collectErrorDialog(binding.root.context) }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                val shared = getTwoFactorAuthDetails().stateIn(this)
+
+                launch { shared.map { it.code }.collectUserInput(binding.code) }
+                launch { shared.map { it.verifyButton }.collectProgressInput(binding.buttonVerify, binding.progress) }
+                launch { shared.map { it.authenticatorButton }.collectProgressInput(binding.butonOpenApp, progress = null) }
+                launch { shared.map { it.errorDialog }.collectErrorDialog(binding.root.context) }
+            }
         }
     }
 }

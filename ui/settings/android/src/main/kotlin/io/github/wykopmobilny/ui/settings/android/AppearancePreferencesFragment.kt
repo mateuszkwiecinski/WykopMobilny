@@ -2,7 +2,9 @@ package io.github.wykopmobilny.ui.settings.android
 
 import android.content.Context
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.preference.PreferenceFragmentCompat
 import io.github.wykopmobilny.ui.settings.AppThemeUi
 import io.github.wykopmobilny.ui.settings.FontSizeUi
@@ -12,7 +14,7 @@ import io.github.wykopmobilny.ui.settings.MainScreenUi
 import io.github.wykopmobilny.ui.settings.MikroblogScreenUi
 import io.github.wykopmobilny.ui.settings.SettingsDependencies
 import io.github.wykopmobilny.utils.requireDependency
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
 
@@ -26,26 +28,28 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.appearance_preferences, rootKey)
 
-        lifecycleScope.launchWhenCreated {
-            getAppearancePreferences().collect {
-                bindList("appTheme", it.appearance.userThemeSetting, themeSettingMapping)
-                bindCheckbox("useAmoledTheme", it.appearance.useAmoledTheme)
-                bindList("defaultScreen", it.appearance.startScreen, defaultScreenMapping)
-                bindList("fontSize", it.appearance.fontSize, fontMapping)
-                bindCheckbox("disableEdgeSlide", it.appearance.disableEdgeSlide)
-                bindCheckbox("enableYoutubePlayer", it.mediaPlayerSection.enableYoutubePlayer)
-                bindCheckbox("enableEmbedPlayer", it.mediaPlayerSection.enableEmbedPlayer)
-                bindList("hotEntriesScreen", it.mikroblogSection.mikroblogScreen, defaultMikroblogScreenMapping)
-                bindCheckbox("cutLongEntries", it.mikroblogSection.cutLongEntries)
-                bindCheckbox("openSpoilersDialog", it.mikroblogSection.openSpoilersInDialog)
-                bindCheckbox("linkSimpleList", it.linksSection.useSimpleList)
-                bindCheckbox("linkShowImage", it.linksSection.showLinkThumbnail)
-                bindList("linkImagePosition", it.linksSection.imagePosition, imagePositionMapping)
-                bindCheckbox("linkShowAuthor", it.linksSection.showAuthor)
-                bindCheckbox("hideLinkCommentsByDefault", it.linksSection.hideLinkComments)
-                bindCheckbox("showMinifiedImages", it.imagesSection.showMinifiedImages)
-                bindCheckbox("cutImages", it.imagesSection.cutImages)
-                bindSlider("cutImageProportion", it.imagesSection.cutImagesProportion)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                getAppearancePreferences().collect {
+                    bindList("appTheme", it.appearance.userThemeSetting, themeSettingMapping)
+                    bindCheckbox("useAmoledTheme", it.appearance.useAmoledTheme)
+                    bindList("defaultScreen", it.appearance.startScreen, defaultScreenMapping)
+                    bindList("fontSize", it.appearance.fontSize, fontMapping)
+                    bindCheckbox("disableEdgeSlide", it.appearance.disableEdgeSlide)
+                    bindCheckbox("enableYoutubePlayer", it.mediaPlayerSection.enableYoutubePlayer)
+                    bindCheckbox("enableEmbedPlayer", it.mediaPlayerSection.enableEmbedPlayer)
+                    bindList("hotEntriesScreen", it.mikroblogSection.mikroblogScreen, defaultMikroblogScreenMapping)
+                    bindCheckbox("cutLongEntries", it.mikroblogSection.cutLongEntries)
+                    bindCheckbox("openSpoilersDialog", it.mikroblogSection.openSpoilersInDialog)
+                    bindCheckbox("linkSimpleList", it.linksSection.useSimpleList)
+                    bindCheckbox("linkShowImage", it.linksSection.showLinkThumbnail)
+                    bindList("linkImagePosition", it.linksSection.imagePosition, imagePositionMapping)
+                    bindCheckbox("linkShowAuthor", it.linksSection.showAuthor)
+                    bindCheckbox("hideLinkCommentsByDefault", it.linksSection.hideLinkComments)
+                    bindCheckbox("showMinifiedImages", it.imagesSection.showMinifiedImages)
+                    bindCheckbox("cutImages", it.imagesSection.cutImages)
+                    bindSlider("cutImageProportion", it.imagesSection.cutImagesProportion)
+                }
             }
         }
     }

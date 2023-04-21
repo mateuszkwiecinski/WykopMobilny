@@ -10,7 +10,9 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import io.github.wykopmobilny.ui.login.Login
 import io.github.wykopmobilny.ui.login.LoginDependencies
 import io.github.wykopmobilny.ui.login.android.databinding.FragmentLoginBinding
@@ -45,28 +47,30 @@ internal class LoginFragment : Fragment(R.layout.fragment_login) {
         @SuppressLint("SetJavaScriptEnabled")
         binding.webView.settings.javaScriptEnabled = true
 
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            val sharedFlow = login().stateIn(this)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                val sharedFlow = login().stateIn(this)
 
-            binding.webView.webViewClient = object : WebViewClient() {
+                binding.webView.webViewClient = object : WebViewClient() {
 
-                override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-                    sharedFlow.value.parseUrlAction(request.url.toString())
-                    return super.shouldOverrideUrlLoading(view, request)
+                    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+                        sharedFlow.value.parseUrlAction(request.url.toString())
+                        return super.shouldOverrideUrlLoading(view, request)
+                    }
                 }
-            }
 
-            launch {
-                sharedFlow.map { it.urlToLoad }
-                    .distinctUntilChanged()
-                    .collect { binding.webView.loadUrl(it) }
+                launch {
+                    sharedFlow.map { it.urlToLoad }
+                        .distinctUntilChanged()
+                        .collect { binding.webView.loadUrl(it) }
+                }
+                launch {
+                    sharedFlow.map { it.isLoading }
+                        .distinctUntilChanged()
+                        .collect { binding.fullScreenProgress.isVisible = it }
+                }
+                launch { sharedFlow.map { it.errorDialog }.collectErrorDialog(requireContext()) }
             }
-            launch {
-                sharedFlow.map { it.isLoading }
-                    .distinctUntilChanged()
-                    .collect { binding.fullScreenProgress.isVisible = it }
-            }
-            launch { sharedFlow.map { it.errorDialog }.collectErrorDialog(requireContext()) }
         }
     }
 }

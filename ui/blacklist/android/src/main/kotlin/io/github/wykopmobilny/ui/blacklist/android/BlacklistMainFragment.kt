@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.tabs.TabLayoutMediator
 import io.github.wykopmobilny.ui.blacklist.BlacklistDependencies
 import io.github.wykopmobilny.ui.blacklist.BlacklistedDetailsUi
@@ -38,18 +40,20 @@ internal class BlacklistMainFragment : Fragment(R.layout.fragment_blacklist_main
         val binding = FragmentBlacklistMainBinding.bind(view)
         binding.toolbar.bindBackButton(activity = activity)
 
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            val shared = getBlacklistDetails().stateIn(this)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                val shared = getBlacklistDetails().stateIn(this)
 
-            val blacklistAdapter = BlacklistAdapter(this@BlacklistMainFragment)
-            binding.viewPager.adapter = blacklistAdapter
-            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-                tab.setText(blacklistAdapter.getTitle(position))
+                val blacklistAdapter = BlacklistAdapter(this@BlacklistMainFragment)
+                binding.viewPager.adapter = blacklistAdapter
+                TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+                    tab.setText(blacklistAdapter.getTitle(position))
+                }
+                    .attach()
+                launch { shared.map { it.errorDialog }.collectErrorDialog(requireContext()) }
+                launch { shared.map { it.snackbar }.collectSnackbar(binding.root) }
+                launch { shared.bindContent(binding) }
             }
-                .attach()
-            launch { shared.map { it.errorDialog }.collectErrorDialog(requireContext()) }
-            launch { shared.map { it.snackbar }.collectSnackbar(binding.root) }
-            launch { shared.bindContent(binding) }
         }
     }
 
@@ -65,6 +69,7 @@ internal class BlacklistMainFragment : Fragment(R.layout.fragment_blacklist_main
                         binding.btnProgress.isVisible = content.isLoading
                         binding.btnImport.setOnClick(content.loadAction)
                     }
+
                     is BlacklistedDetailsUi.Content.WithData -> {
                         binding.emptyContainer.isVisible = false
                         binding.btnImport.setOnClick(null)

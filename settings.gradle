@@ -11,6 +11,7 @@ pluginManagement {
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
     id "com.gradle.enterprise" version "3.13"
+    id("com.pablisco.gradle.auto.include") version "1.3"
 }
 
 dependencyResolutionManagement {
@@ -27,15 +28,11 @@ dependencyResolutionManagement {
     }
 }
 
+autoInclude {
+    ignore(":gradle:plugins")
+}
+
 rootProject.name = "wykop-mobilny"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-Closure discoverSubprojects = {
-    fileTree(rootDir) { include("**/build.gradle") }
-        .filter { !it.path.contains("/build/") && it.parentFile.name != "plugins" }
-        .collect { rootDir.relativePath(it.parentFile).replace("/",":") }
-        .toArray(new String[0])
-}
-
 includeBuild("gradle/plugins")
-include discoverSubprojects()

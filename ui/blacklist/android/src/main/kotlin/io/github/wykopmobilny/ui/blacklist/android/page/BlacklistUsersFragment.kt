@@ -4,7 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.wykopmobilny.ui.blacklist.BlacklistDependencies
@@ -17,6 +19,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.launch
 
 class BlacklistUsersFragment : Fragment(R.layout.fragment_page) {
 
@@ -34,16 +37,19 @@ class BlacklistUsersFragment : Fragment(R.layout.fragment_page) {
         binding.list.addItemDecoration(DividerItemDecoration(view.context, LinearLayoutManager.VERTICAL))
         val adapter = BlacklistPageAdapter()
         binding.list.adapter = adapter
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            getBlacklistDetails()
-                .mapNotNull { it.content }
-                .filterIsInstance<BlacklistedDetailsUi.Content.WithData>()
-                .map { it.users }
-                .collect { page ->
-                    binding.swipeRefresh.isRefreshing = page.isRefreshing
-                    binding.swipeRefresh.setOnRefreshListener { page.refreshAction() }
-                    adapter.submitList(page.elements)
-                }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                getBlacklistDetails()
+                    .mapNotNull { it.content }
+                    .filterIsInstance<BlacklistedDetailsUi.Content.WithData>()
+                    .map { it.users }
+                    .collect { page ->
+                        binding.swipeRefresh.isRefreshing = page.isRefreshing
+                        binding.swipeRefresh.setOnRefreshListener { page.refreshAction() }
+                        adapter.submitList(page.elements)
+                    }
+            }
         }
     }
 }

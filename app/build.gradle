@@ -21,6 +21,9 @@ def findProperty(key) {
 }
 
 android {
+    buildFeatures {
+        buildConfig = true
+    }
     defaultConfig {
         applicationId "io.github.wykopmobilny"
 
@@ -187,9 +190,6 @@ dependencies {
 
 tasks.named("detekt") {
     baseline = file("$rootDir/detekt-baseline.xml")
-}
-tasks.withType(Checkstyle).configureEach {
-    enabled = false
 }
 
 tasks.register("detektProjectBaseline", DetektCreateBaselineTask) {

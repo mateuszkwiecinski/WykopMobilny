@@ -46,13 +46,6 @@ allprojects {
 //                LoggerWrapper.Switch.shouldShowInfoLogsAsLifecycle = false
 //            }
         }
-
-        if (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.startsWith("7.")) {
-            org.slf4j.LoggerFactory.getILoggerFactory().addNoOpLogger("com.android.build.api.component.impl.MutableListBackedUpWithListProperty")
-            org.slf4j.LoggerFactory.getILoggerFactory().addNoOpLogger("com.android.build.api.component.impl.MutableMapBackedUpWithMapProperty")
-        } else {
-            throw new Exception("AGP major version changed, review hack.")
-        }
     }
     pluginManager.withPlugin("com.android.library") {
         android {

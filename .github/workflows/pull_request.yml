@@ -140,7 +140,16 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 11
+          java-version: 17
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version-file: '.python-version'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'Pillow==9.1.1'
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
@@ -159,11 +168,11 @@ jobs:
             adb shell settings put global hidden_api_policy_p_apps 1
             adb shell settings put global hidden_api_policy_pre_p_apps 1
             adb shell settings put global hidden_api_policy 1
-            ./gradlew executeScreenshotTests
+            ./gradlew verifyDebugAndroidTestScreenshotTest -m -q | grep verifyDebugAndroidTestScreenshotTest| awk '{print $1}' | xargs -n 1 -I % ./gradlew -Pandroid.testInstrumentationRunnerArguments.waitForActivitiesToComplete=false %
 
-      - name: Upload ui tests result
+      - name: Upload failed screenshjots
         uses: actions/upload-artifact@v3
-        if: ${{ always() }}
+        if: ${{ failure() }}
         with:
           name: screenshots-report
-          path: "${{ github.workspace }}/**/build/**/shot/"
+          path: "${{ github.workspace }}/**/build/failedScreenshots/"
