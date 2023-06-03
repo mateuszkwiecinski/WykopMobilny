@@ -51,12 +51,11 @@ fun Context.getGroupColor(role: Int): Int = when (role) {
     else -> Color.BLUE
 }
 
-fun getGenderStripResource(authorSex: String): Int =
-    when (authorSex) {
-        "male" -> R.drawable.strip_male
-        "female" -> R.drawable.strip_female
-        else -> 0
-    }
+fun getGenderStripResource(authorSex: String): Int = when (authorSex) {
+    "male" -> R.drawable.strip_male
+    "female" -> R.drawable.strip_female
+    else -> 0
+}
 
 fun String.stripImageCompression(): String {
     val extension = substringAfterLast(".")

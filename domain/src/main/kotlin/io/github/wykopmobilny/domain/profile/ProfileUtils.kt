@@ -12,47 +12,40 @@ import kotlinx.datetime.DateTimePeriod
 
 internal const val DEFAULT_PROFILE_BACKGROUND = "https://i.imgur.com/aSm6pSJ.jpg"
 
-internal fun GenderEntity.toGenderDomain() =
-    when (this) {
-        GenderEntity.Male -> UserInfo.Gender.Male
-        GenderEntity.Female -> UserInfo.Gender.Female
-    }
+internal fun GenderEntity.toGenderDomain() = when (this) {
+    GenderEntity.Male -> UserInfo.Gender.Male
+    GenderEntity.Female -> UserInfo.Gender.Female
+}
 
-internal fun UserColorEntity.toColorDomain() =
-    when (this) {
-        UserColorEntity.Green -> UserInfo.Color.Green
-        UserColorEntity.Orange -> UserInfo.Color.Orange
-        UserColorEntity.Claret -> UserInfo.Color.Claret
-        UserColorEntity.Admin -> UserInfo.Color.Admin
-        UserColorEntity.Banned -> UserInfo.Color.Banned
-        UserColorEntity.Deleted -> UserInfo.Color.Deleted
-        UserColorEntity.Client -> UserInfo.Color.Client
-        UserColorEntity.Unknown -> UserInfo.Color.Unknown
-    }
+internal fun UserColorEntity.toColorDomain() = when (this) {
+    UserColorEntity.Green -> UserInfo.Color.Green
+    UserColorEntity.Orange -> UserInfo.Color.Orange
+    UserColorEntity.Claret -> UserInfo.Color.Claret
+    UserColorEntity.Admin -> UserInfo.Color.Admin
+    UserColorEntity.Banned -> UserInfo.Color.Banned
+    UserColorEntity.Deleted -> UserInfo.Color.Deleted
+    UserColorEntity.Client -> UserInfo.Color.Client
+    UserColorEntity.Unknown -> UserInfo.Color.Unknown
+}
 
-internal fun UserInfo.Gender?.toUi() =
-    when (this) {
-        UserInfo.Gender.Male -> ColorConst.Male
-        UserInfo.Gender.Female -> ColorConst.Female
-        null -> ColorConst.Transparent
-    }
+internal fun UserInfo.Gender?.toUi() = when (this) {
+    UserInfo.Gender.Male -> ColorConst.Male
+    UserInfo.Gender.Female -> ColorConst.Female
+    null -> ColorConst.Transparent
+}
 
-internal fun UserInfo.Color.toUi(): Color =
-    when (this) {
-        UserInfo.Color.Green -> ColorConst.UserGreen
-        UserInfo.Color.Orange -> ColorConst.UserOrange
-        UserInfo.Color.Claret -> ColorConst.UserClaret
-        UserInfo.Color.Admin -> ColorReference.Admin
-        UserInfo.Color.Banned -> ColorConst.UserBanned
-        UserInfo.Color.Deleted -> ColorConst.UserDeleted
-        UserInfo.Color.Client -> ColorConst.UserClient
-        UserInfo.Color.Unknown -> ColorConst.UserUnknown
-    }
+internal fun UserInfo.Color.toUi(): Color = when (this) {
+    UserInfo.Color.Green -> ColorConst.UserGreen
+    UserInfo.Color.Orange -> ColorConst.UserOrange
+    UserInfo.Color.Claret -> ColorConst.UserClaret
+    UserInfo.Color.Admin -> ColorReference.Admin
+    UserInfo.Color.Banned -> ColorConst.UserBanned
+    UserInfo.Color.Deleted -> ColorConst.UserDeleted
+    UserInfo.Color.Client -> ColorConst.UserClient
+    UserInfo.Color.Unknown -> ColorConst.UserUnknown
+}
 
-fun DateTimePeriod.toPrettyString(
-    suffix: String = "",
-    nowFallback: String = "przed chwilą",
-): String {
+fun DateTimePeriod.toPrettyString(suffix: String = "", nowFallback: String = "przed chwilą"): String {
     val yearsPart = when {
         years == 0 -> ""
         years == 1 -> "1 rok"

@@ -11,11 +11,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.milliseconds
 
-internal fun <T> AppStorage.get(key: UserSetting<T>): Flow<T?> =
-    preferencesQueries.getPreference(key.preferencesKey).asFlow()
-        .mapToOneOrNull(AppDispatchers.IO)
-        .map { value -> value?.let(key.mapping) }
-        .distinctUntilChanged()
+internal fun <T> AppStorage.get(key: UserSetting<T>): Flow<T?> = preferencesQueries.getPreference(key.preferencesKey).asFlow()
+    .mapToOneOrNull(AppDispatchers.IO)
+    .map { value -> value?.let(key.mapping) }
+    .distinctUntilChanged()
 
 internal suspend fun <T> AppStorage.update(key: UserSetting<T>, value: T?) = withContext(AppDispatchers.IO) {
     val mapped = value?.let(key.reverseMapping)
@@ -32,34 +31,25 @@ internal class UserSetting<T>(
     val reverseMapping: (T) -> String?,
 )
 
-internal fun <T : Enum<T>> enumMapping(
-    preferencesKey: String,
-    enumMapping: Map<T, String>,
-) = UserSetting(
+internal fun <T : Enum<T>> enumMapping(preferencesKey: String, enumMapping: Map<T, String>) = UserSetting(
     preferencesKey = preferencesKey,
     mapping = { enumMapping.entries.firstOrNull { (_, value) -> value == it }?.key },
     reverseMapping = { enumMapping[it] },
 )
 
-internal fun booleanMapping(
-    preferencesKey: String,
-) = UserSetting(
+internal fun booleanMapping(preferencesKey: String) = UserSetting(
     preferencesKey = preferencesKey,
     mapping = { it.toBoolean() },
     reverseMapping = { it.toString() },
 )
 
-internal fun durationMapping(
-    preferencesKey: String,
-) = UserSetting(
+internal fun durationMapping(preferencesKey: String) = UserSetting(
     preferencesKey = preferencesKey,
     mapping = { it.toLongOrNull()?.milliseconds },
     reverseMapping = { it.inWholeMilliseconds.toString() },
 )
 
-internal fun longMapping(
-    preferencesKey: String,
-) = UserSetting(
+internal fun longMapping(preferencesKey: String) = UserSetting(
     preferencesKey = preferencesKey,
     mapping = { it.toLongOrNull() },
     reverseMapping = { it.toString() },

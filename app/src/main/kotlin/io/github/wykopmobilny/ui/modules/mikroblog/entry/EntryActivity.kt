@@ -47,12 +47,7 @@ class EntryActivity :
         const val EXTRA_COMMENT_ID = "COMMENT_ID"
         const val EXTRA_IS_REVEALED = "IS_REVEALED"
 
-        fun createIntent(
-            context: Context,
-            entryId: Long,
-            commentId: Long?,
-            isRevealed: Boolean,
-        ) =
+        fun createIntent(context: Context, entryId: Long, commentId: Long?, isRevealed: Boolean) =
             Intent(context, EntryActivity::class.java).apply {
                 putExtra(EXTRA_ENTRY_ID, entryId)
                 putExtra(EXTRA_IS_REVEALED, isRevealed)

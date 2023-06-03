@@ -204,10 +204,7 @@ internal class LinkDetailsMainFragmentTest : BaseScreenshotTest() {
     }
 }
 
-private fun stubUser(
-    text: String,
-    color: Color = ColorConst.UserOrange,
-) = UserInfoUi(
+private fun stubUser(text: String, color: Color = ColorConst.UserOrange) = UserInfoUi(
     avatar = AvatarUi(
         avatarUrl = BaseScreenshotTest.avatarUrl,
         rank = 123,
@@ -218,39 +215,30 @@ private fun stubUser(
     color = color,
 )
 
-private fun stubPlusCounter(
-    count: Int = 123,
-    clicked: Boolean = false,
-) = Button(
+private fun stubPlusCounter(count: Int = 123, clicked: Boolean = false) = Button(
     icon = Drawable.Plus,
     label = count.toString(),
     color = if (clicked) ColorConst.CounterUpvoted else null,
     clickAction = {},
 )
 
-private fun stubMinusCounter(
-    count: Int = 123,
-    clicked: Boolean = false,
-) = Button(
+private fun stubMinusCounter(count: Int = 123, clicked: Boolean = false) = Button(
     icon = Drawable.Minus,
     label = count.toString(),
     color = if (clicked) ColorConst.CounterDownvoted else null,
     clickAction = {},
 )
 
-private fun stubEmbedStatic(
-    url: String = BaseScreenshotTest.commentImageUrl,
-    size: String? = null,
-    hasNsfwOverlay: Boolean = false,
-) = EmbedMediaUi(
-    content = EmbedMediaUi.Content.StaticImage(
-        url = url,
-    ),
-    size = size,
-    hasNsfwOverlay = hasNsfwOverlay,
-    widthToHeightRatio = 1f,
-    clickAction = {},
-)
+private fun stubEmbedStatic(url: String = BaseScreenshotTest.commentImageUrl, size: String? = null, hasNsfwOverlay: Boolean = false) =
+    EmbedMediaUi(
+        content = EmbedMediaUi.Content.StaticImage(
+            url = url,
+        ),
+        size = size,
+        hasNsfwOverlay = hasNsfwOverlay,
+        widthToHeightRatio = 1f,
+        clickAction = {},
+    )
 
 private fun stubEmbedPlayable(
     url: String = BaseScreenshotTest.commentImageUrl,
@@ -303,11 +291,7 @@ private fun stubNormalComment(
     shareAction = {},
 )
 
-fun stubToggleButton(
-    isToggled: Boolean = false,
-    isEnabled: Boolean = true,
-    isVisible: Boolean = true,
-) = ToggleButtonUi(
+fun stubToggleButton(isToggled: Boolean = false, isEnabled: Boolean = true, isVisible: Boolean = true) = ToggleButtonUi(
     isToggled = isToggled,
     clickAction = {}.takeIf { isEnabled },
     isVisible = isVisible,

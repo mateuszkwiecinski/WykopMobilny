@@ -13,15 +13,13 @@ class SuggestRepository @Inject constructor(
     private val userTokenRefresher: UserTokenRefresher,
 ) : SuggestApi {
 
-    override fun getTagSuggestions(suggestionString: String) =
-        rxSingle { suggestApi.getTagSuggestions(suggestionString) }
-            .retryWhen(userTokenRefresher)
-            .compose(ErrorHandlerTransformer())
-            .map { it.map { response -> TagSuggestionsMapper.map(response) } }
+    override fun getTagSuggestions(suggestionString: String) = rxSingle { suggestApi.getTagSuggestions(suggestionString) }
+        .retryWhen(userTokenRefresher)
+        .compose(ErrorHandlerTransformer())
+        .map { it.map { response -> TagSuggestionsMapper.map(response) } }
 
-    override fun getUserSuggestions(suggestionString: String) =
-        rxSingle { suggestApi.getUsersSuggestions(suggestionString) }
-            .retryWhen(userTokenRefresher)
-            .compose(ErrorHandlerTransformer())
-            .map { it.map { response -> AuthorMapper.map(response) } }
+    override fun getUserSuggestions(suggestionString: String) = rxSingle { suggestApi.getUsersSuggestions(suggestionString) }
+        .retryWhen(userTokenRefresher)
+        .compose(ErrorHandlerTransformer())
+        .map { it.map { response -> AuthorMapper.map(response) } }
 }

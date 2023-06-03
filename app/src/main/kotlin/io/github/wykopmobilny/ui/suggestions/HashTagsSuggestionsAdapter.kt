@@ -34,8 +34,7 @@ class HashTagsSuggestionsAdapter(
 
     override fun getFilter() = object : Filter() {
 
-        override fun convertResultToString(resultValue: Any): CharSequence =
-            (resultValue as TagSuggestion).tag.removePrefix("#")
+        override fun convertResultToString(resultValue: Any): CharSequence = (resultValue as TagSuggestion).tag.removePrefix("#")
 
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             val filterResults = FilterResults()

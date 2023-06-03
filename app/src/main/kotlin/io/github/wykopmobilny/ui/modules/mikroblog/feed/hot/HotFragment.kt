@@ -66,8 +66,7 @@ class HotFragment : BaseFragment(R.layout.hot_fragment), BaseNavigationView, Hot
 
     override fun disableLoading() = entriesFragment.disableLoading()
 
-    override fun showHotEntries(entries: List<Entry>, isRefreshing: Boolean) =
-        entriesFragment.addItems(entries, isRefreshing)
+    override fun showHotEntries(entries: List<Entry>, isRefreshing: Boolean) = entriesFragment.addItems(entries, isRefreshing)
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.hot_period, menu)

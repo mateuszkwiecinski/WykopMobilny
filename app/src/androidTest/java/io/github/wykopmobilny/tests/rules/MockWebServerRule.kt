@@ -15,25 +15,21 @@ class MockWebServerRule : TestRule {
 
     private val dispatcher = MockDispatcher()
 
-    override fun apply(base: Statement, description: Description): Statement =
-        object : Statement() {
-            override fun evaluate() {
-                mockWebServer.dispatcher = dispatcher
-                mockWebServer.start(port = PORT)
-                try {
-                    val result = runCatching { base.evaluate() }
-                    dispatcher.unmatchedRequest?.let { error("Failed to match response=${dispatcher.unmatchedRequest?.requestUrl}") }
-                    result.getOrThrow()
-                } finally {
-                    mockWebServer.shutdown()
-                }
+    override fun apply(base: Statement, description: Description): Statement = object : Statement() {
+        override fun evaluate() {
+            mockWebServer.dispatcher = dispatcher
+            mockWebServer.start(port = PORT)
+            try {
+                val result = runCatching { base.evaluate() }
+                dispatcher.unmatchedRequest?.let { error("Failed to match response=${dispatcher.unmatchedRequest?.requestUrl}") }
+                result.getOrThrow()
+            } finally {
+                mockWebServer.shutdown()
             }
         }
+    }
 
-    fun enqueue(
-        requestMatcher: (RecordedRequest) -> Boolean,
-        response: () -> MockResponse,
-    ) {
+    fun enqueue(requestMatcher: (RecordedRequest) -> Boolean, response: () -> MockResponse) {
         dispatcher.requests.add(requestMatcher to response)
     }
 
@@ -61,13 +57,8 @@ private class MockDispatcher : Dispatcher() {
     }
 }
 
-private fun pathMatcher(path: String): (RecordedRequest) -> Boolean =
-    { it.path?.substringBefore("/appkey/") == path }
+private fun pathMatcher(path: String): (RecordedRequest) -> Boolean = { it.path?.substringBefore("/appkey/") == path }
 
-private fun cdnMatcher(): (RecordedRequest) -> Boolean =
-    { it.path?.startsWith("/cdn/") == true }
+private fun cdnMatcher(): (RecordedRequest) -> Boolean = { it.path?.startsWith("/cdn/") == true }
 
-fun MockWebServerRule.enqueue(
-    path: String,
-    response: () -> MockResponse,
-) = enqueue(pathMatcher(path), response)
+fun MockWebServerRule.enqueue(path: String, response: () -> MockResponse) = enqueue(pathMatcher(path), response)

@@ -54,8 +54,7 @@ internal class BlacklistPageAdapter :
 
     private class BlacklistElementDiff : DiffUtil.ItemCallback<BlacklistedElementUi>() {
 
-        override fun areItemsTheSame(oldItem: BlacklistedElementUi, newItem: BlacklistedElementUi) =
-            oldItem.name == newItem.name
+        override fun areItemsTheSame(oldItem: BlacklistedElementUi, newItem: BlacklistedElementUi) = oldItem.name == newItem.name
 
         override fun areContentsTheSame(oldItem: BlacklistedElementUi, newItem: BlacklistedElementUi) =
             oldItem.name == newItem.name && oldItem.state::class == newItem.state::class

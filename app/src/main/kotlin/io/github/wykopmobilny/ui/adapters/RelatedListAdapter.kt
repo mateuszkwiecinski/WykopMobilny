@@ -17,16 +17,14 @@ class RelatedListAdapter @Inject constructor(
     var linkId: Long? = null
     val items = ArrayList<Related>()
 
-    override fun onBindViewHolder(holder: RelatedViewHolder, position: Int) =
-        holder.bindView(items[position])
+    override fun onBindViewHolder(holder: RelatedViewHolder, position: Int) = holder.bindView(items[position])
 
     override fun getItemCount(): Int = items.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RelatedViewHolder =
-        RelatedViewHolder(
-            linkId,
-            LinkRelatedListItemBinding.inflate(parent.layoutInflater, parent, false),
-            userManagerApi,
-            relatedWidgetPresenterFactory.create(),
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RelatedViewHolder = RelatedViewHolder(
+        linkId,
+        LinkRelatedListItemBinding.inflate(parent.layoutInflater, parent, false),
+        userManagerApi,
+        relatedWidgetPresenterFactory.create(),
+    )
 }

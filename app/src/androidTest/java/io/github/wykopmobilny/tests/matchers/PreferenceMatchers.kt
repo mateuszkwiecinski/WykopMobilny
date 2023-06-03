@@ -14,10 +14,9 @@ internal fun tapPreference(option: Matcher<View>) {
     onView(option).perform(click())
 }
 
-internal fun onPreference(option: Matcher<View>) =
-    onView(
-        allOf(
-            isAssignableFrom(CheckBox::class.java),
-            isDescendantOfA(withChild(withChild(option))),
-        ),
-    )
+internal fun onPreference(option: Matcher<View>) = onView(
+    allOf(
+        isAssignableFrom(CheckBox::class.java),
+        isDescendantOfA(withChild(withChild(option))),
+    ),
+)

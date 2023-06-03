@@ -25,10 +25,7 @@ import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 
-internal fun profileSourceOfTruth(
-    profileId: String,
-    cache: AppCache,
-) = SourceOfTruth.of<Int, List<EntryLinkResponse>, List<ProfileAction>>(
+internal fun profileSourceOfTruth(profileId: String, cache: AppCache) = SourceOfTruth.of<Int, List<EntryLinkResponse>, List<ProfileAction>>(
     reader = { page ->
         val linksStream = cache.profileActionsQueries.selectLinksPage(profileId = profileId, page = page)
             .asFlow()
@@ -181,16 +178,14 @@ internal fun ProfileQueries.upsert(author: AuthorResponse) {
     )
 }
 
-internal fun String?.asUserVote() =
-    when (this) {
-        "dig" -> UserVote.Up
-        "bury" -> UserVote.Down
-        else -> null
-    }
+internal fun String?.asUserVote() = when (this) {
+    "dig" -> UserVote.Up
+    "bury" -> UserVote.Down
+    else -> null
+}
 
-internal fun Int.asUserVote() =
-    when {
-        this > 0 -> UserVote.Up
-        this < 0 -> UserVote.Down
-        else -> null
-    }
+internal fun Int.asUserVote() = when {
+    this > 0 -> UserVote.Up
+    this < 0 -> UserVote.Down
+    else -> null
+}

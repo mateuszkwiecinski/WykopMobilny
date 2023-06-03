@@ -53,50 +53,40 @@ class NewNavigator @Inject constructor(
     fun openEntryDetailsActivity(entryId: Long, isRevealed: Boolean) =
         context.startActivity(EntryActivity.createIntent(context, entryId, null, isRevealed))
 
-    fun openTagActivity(tag: String) =
-        context.startActivity(TagActivity.createIntent(context, tag))
+    fun openTagActivity(tag: String) = context.startActivity(TagActivity.createIntent(context, tag))
 
-    fun openConversationListActivity(user: String) =
-        context.startActivity(ConversationActivity.createIntent(context, user))
+    fun openConversationListActivity(user: String) = context.startActivity(ConversationActivity.createIntent(context, user))
 
-    fun openPhotoViewActivity(url: String) =
-        context.startActivity(PhotoViewActivity.createIntent(context, url))
+    fun openPhotoViewActivity(url: String) = context.startActivity(PhotoViewActivity.createIntent(context, url))
 
-    fun openSettingsActivity() =
-        context.startActivity(SettingsActivity.createIntent(context))
+    fun openSettingsActivity() = context.startActivity(SettingsActivity.createIntent(context))
 
-    fun openLoginScreen() =
-        context.startActivity(LoginScreenActivity.createIntent(context))
+    fun openLoginScreen() = context.startActivity(LoginScreenActivity.createIntent(context))
 
     fun openAddEntryActivity(receiver: String? = null, extraBody: String? = null) =
         context.startActivity(AddEntryActivity.createIntent(context, receiver, extraBody))
 
-    fun openEditEntryActivity(body: String, entryId: Long, embed: Embed?) =
-        context.startActivityForResult(
-            EditEntryActivity.createIntent(
-                context = context,
-                body = body,
-                entryId = entryId,
-                embed = embed,
-            ),
-            BaseInputActivity.EDIT_ENTRY,
-        )
+    fun openEditEntryActivity(body: String, entryId: Long, embed: Embed?) = context.startActivityForResult(
+        EditEntryActivity.createIntent(
+            context = context,
+            body = body,
+            entryId = entryId,
+            embed = embed,
+        ),
+        BaseInputActivity.EDIT_ENTRY,
+    )
 
-    fun openEditLinkCommentActivity(commentId: Long, body: String, linkId: Long) =
-        context.startActivityForResult(
-            LinkCommentEditActivity.createIntent(context, commentId, body, linkId),
-            BaseInputActivity.EDIT_LINK_COMMENT,
-        )
+    fun openEditLinkCommentActivity(commentId: Long, body: String, linkId: Long) = context.startActivityForResult(
+        LinkCommentEditActivity.createIntent(context, commentId, body, linkId),
+        BaseInputActivity.EDIT_LINK_COMMENT,
+    )
 
-    fun openEditEntryCommentActivity(body: String, entryId: Long, commentId: Long, embed: Embed?) =
-        context.startActivityForResult(
-            EditEntryCommentActivity.createIntent(context, body, entryId, commentId, embed),
-            BaseInputActivity.EDIT_ENTRY_COMMENT,
-        )
+    fun openEditEntryCommentActivity(body: String, entryId: Long, commentId: Long, embed: Embed?) = context.startActivityForResult(
+        EditEntryCommentActivity.createIntent(context, body, entryId, commentId, embed),
+        BaseInputActivity.EDIT_ENTRY_COMMENT,
+    )
 
-    fun openBrowser(
-        url: String,
-    ) {
+    fun openBrowser(url: String) {
         if (settingsPreferences.useBuiltInBrowser) {
             context.openBrowser(url)
         } else {
@@ -107,38 +97,29 @@ class NewNavigator @Inject constructor(
         }
     }
 
-    fun openReportScreen(violationUrl: String) =
-        context.openBrowser(violationUrl)
+    fun openReportScreen(violationUrl: String) = context.openBrowser(violationUrl)
 
-    fun openLinkDetailsActivity(link: Link) =
-        context.startActivity(LinkDetailsActivity.createIntent(context, link))
+    fun openLinkDetailsActivity(link: Link) = context.startActivity(LinkDetailsActivity.createIntent(context, link))
 
-    fun openLinkUpvotersActivity(linkId: Long) =
-        context.startActivity(UpvotersActivity.createIntent(linkId, context))
+    fun openLinkUpvotersActivity(linkId: Long) = context.startActivity(UpvotersActivity.createIntent(linkId, context))
 
     fun openLinkDetailsActivity(linkId: Long, commentId: Long = -1L) =
         context.startActivity(LinkDetailsActivity.createIntent(context, linkId, commentId))
 
-    fun openLinkDownvotersActivity(linkId: Long) =
-        context.startActivity(DownvotersActivity.createIntent(linkId, context))
+    fun openLinkDownvotersActivity(linkId: Long) = context.startActivity(DownvotersActivity.createIntent(linkId, context))
 
-    fun openLinkRelatedActivity(linkId: Long) =
-        context.startActivity(RelatedActivity.createIntent(linkId, context))
+    fun openLinkRelatedActivity(linkId: Long) = context.startActivity(RelatedActivity.createIntent(linkId, context))
 
-    fun openProfileActivity(username: String) =
-        context.startActivity(ProfileActivity.createIntent(context, username))
+    fun openProfileActivity(username: String) = context.startActivity(ProfileActivity.createIntent(context, username))
 
     fun openNotificationsListActivity(preselectIndex: Int = NotificationsListActivity.PRESELECT_NOTIFICATIONS) =
         context.startActivityForResult(NotificationsListActivity.createIntent(context, preselectIndex), STARTED_FROM_NOTIFICATIONS_CODE)
 
-    fun openEmbedActivity(url: String) =
-        context.startActivity(EmbedViewActivity.createIntent(context, url))
+    fun openEmbedActivity(url: String) = context.startActivity(EmbedViewActivity.createIntent(context, url))
 
-    fun openYoutubeActivity(url: String) =
-        startAndReportOnError({ YoutubeActivity.createIntent(context, url) }, "YouTube")
+    fun openYoutubeActivity(url: String) = startAndReportOnError({ YoutubeActivity.createIntent(context, url) }, "YouTube")
 
-    fun openAddLinkActivity() =
-        context.startActivity(AddlinkActivity.createIntent(context))
+    fun openAddLinkActivity() = context.startActivity(AddlinkActivity.createIntent(context))
 
     fun shareUrl(url: String) {
         ShareCompat.IntentBuilder(context)

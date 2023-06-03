@@ -16,8 +16,7 @@ fun longArgumentNullable(key: String): ReadWriteProperty<Fragment, Long?> = Long
 private class StringArgumentDelegate<T : String?>(private val key: String) : ReadWriteProperty<Fragment, T> {
 
     @Suppress("UNCHECKED_CAST")
-    override fun getValue(thisRef: Fragment, property: KProperty<*>) =
-        thisRef.arguments?.getString(key, null) as T
+    override fun getValue(thisRef: Fragment, property: KProperty<*>) = thisRef.arguments?.getString(key, null) as T
 
     override fun setValue(thisRef: Fragment, property: KProperty<*>, value: T) {
         thisRef.arguments = (thisRef.arguments ?: Bundle())
@@ -28,14 +27,13 @@ private class StringArgumentDelegate<T : String?>(private val key: String) : Rea
 private class LongArgumentDelegate<T : Long?>(private val key: String) : ReadWriteProperty<Fragment, T> {
 
     @Suppress("UNCHECKED_CAST")
-    override fun getValue(thisRef: Fragment, property: KProperty<*>) =
-        thisRef.arguments?.run {
-            if (containsKey(key)) {
-                getLong(key, 0L)
-            } else {
-                null
-            }
-        } as T
+    override fun getValue(thisRef: Fragment, property: KProperty<*>) = thisRef.arguments?.run {
+        if (containsKey(key)) {
+            getLong(key, 0L)
+        } else {
+            null
+        }
+    } as T
 
     override fun setValue(thisRef: Fragment, property: KProperty<*>, value: T) {
         thisRef.arguments = (thisRef.arguments ?: Bundle())

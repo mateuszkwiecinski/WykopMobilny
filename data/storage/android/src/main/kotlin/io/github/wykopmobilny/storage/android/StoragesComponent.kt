@@ -22,11 +22,7 @@ interface StoragesComponent : Storages {
     @Component.Factory
     interface Factory {
 
-        fun create(
-            @BindsInstance dbName: String?,
-            @BindsInstance context: Context,
-            @BindsInstance executor: Executor,
-        ): StoragesComponent
+        fun create(@BindsInstance dbName: String?, @BindsInstance context: Context, @BindsInstance executor: Executor): StoragesComponent
     }
 }
 

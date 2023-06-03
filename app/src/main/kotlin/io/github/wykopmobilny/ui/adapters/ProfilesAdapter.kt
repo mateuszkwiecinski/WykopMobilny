@@ -10,8 +10,7 @@ class ProfilesAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Author
 
     val items = ArrayList<Author>()
 
-    override fun onBindViewHolder(holder: AuthorViewHolder, position: Int) =
-        holder.bindView(items[position])
+    override fun onBindViewHolder(holder: AuthorViewHolder, position: Int) = holder.bindView(items[position])
 
     override fun getItemCount(): Int = items.size
 

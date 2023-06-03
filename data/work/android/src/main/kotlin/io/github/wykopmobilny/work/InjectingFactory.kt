@@ -12,11 +12,7 @@ class InjectingFactory @Inject constructor(
     private val dependencies: Lazy<WorkDependencies>,
 ) : WorkerFactory() {
 
-    override fun createWorker(
-        appContext: Context,
-        workerClassName: String,
-        workerParameters: WorkerParameters,
-    ): ListenableWorker? {
+    override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker? {
         Napier.i("Creating worker $workerClassName")
 
         return when (workerClassName) {

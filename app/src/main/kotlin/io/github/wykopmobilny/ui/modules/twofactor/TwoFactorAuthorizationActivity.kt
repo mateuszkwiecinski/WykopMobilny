@@ -23,8 +23,7 @@ internal class TwoFactorAuthorizationActivity : ThemableActivity() {
     }
     companion object {
 
-        fun createIntent(context: Context) =
-            Intent(context, TwoFactorAuthorizationActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        fun createIntent(context: Context) = Intent(context, TwoFactorAuthorizationActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
     }
 }

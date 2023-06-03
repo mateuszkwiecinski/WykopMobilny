@@ -16,10 +16,9 @@ internal class InstantAdapter {
     fun toJson(date: Instant?) = date?.toString()
 
     @FromJson
-    fun fromJson(date: String) =
-        runCatching { date.replace(' ', 'T').toLocalDateTime() }
-            .recoverCatching { date.toLocalDateTime() }
-            .onFailure { Napier.e("Could parse $date", it) }
-            .getOrNull()
-            ?.toInstant(apiTimeZone)
+    fun fromJson(date: String) = runCatching { date.replace(' ', 'T').toLocalDateTime() }
+        .recoverCatching { date.toLocalDateTime() }
+        .onFailure { Napier.e("Could parse $date", it) }
+        .getOrNull()
+        ?.toInstant(apiTimeZone)
 }

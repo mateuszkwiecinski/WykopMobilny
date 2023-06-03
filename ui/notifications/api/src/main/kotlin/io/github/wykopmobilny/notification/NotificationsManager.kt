@@ -9,5 +9,4 @@ interface NotificationsManager {
     suspend fun cancelNotification(type: KClass<out AppNotification.Type>)
 }
 
-suspend inline fun <reified T : AppNotification.Type> NotificationsManager.cancelNotification() =
-    cancelNotification(T::class)
+suspend inline fun <reified T : AppNotification.Type> NotificationsManager.cancelNotification() = cancelNotification(T::class)

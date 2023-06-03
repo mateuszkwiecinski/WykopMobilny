@@ -23,44 +23,42 @@ internal class GetSearchDetailsQuery @Inject constructor(
     private val appScopes: AppScopes,
 ) : GetSearchDetails {
 
-    override fun invoke(): Flow<SearchDetailsUi> =
-        combine(
-            searchViewState.state,
-            searchResultsFlow(),
-        ) { viewState, searchResults ->
-            SearchDetailsUi(
-                query = viewState.query.orEmpty(),
-                searchResults = searchResults,
-                onQueryChanged = { value -> searchViewState.update { it.copy(query = value) } },
-                onQuerySubmitted = viewState.query?.let { query ->
-                    {
-                        appScopes.applicationScope.launch {
-                            appStorage.suggestionsQueries.insertOrReplace(query)
-                        }
+    override fun invoke(): Flow<SearchDetailsUi> = combine(
+        searchViewState.state,
+        searchResultsFlow(),
+    ) { viewState, searchResults ->
+        SearchDetailsUi(
+            query = viewState.query.orEmpty(),
+            searchResults = searchResults,
+            onQueryChanged = { value -> searchViewState.update { it.copy(query = value) } },
+            onQuerySubmitted = viewState.query?.let { query ->
+                {
+                    appScopes.applicationScope.launch {
+                        appStorage.suggestionsQueries.insertOrReplace(query)
                     }
-                },
-            )
-        }
-
-    private fun searchResultsFlow() =
-        searchViewState.state.flatMapLatest { viewState ->
-            val query = viewState.query.orEmpty()
-            if (query.length >= 2) {
-                appStorage.suggestionsQueries.searchByText(query)
-                    .asFlow()
-                    .mapToList(AppDispatchers.Default)
-            } else {
-                flowOf(emptyList())
-            }
-        }
-            .map { results ->
-                results.map { result ->
-                    SearchDetailsUi.Suggestion(
-                        text = result,
-                        onClick = {
-                            appScopes.safe<SearchScope> { searchViewState.update { SearchViewState(query = result) } }
-                        },
-                    )
                 }
+            },
+        )
+    }
+
+    private fun searchResultsFlow() = searchViewState.state.flatMapLatest { viewState ->
+        val query = viewState.query.orEmpty()
+        if (query.length >= 2) {
+            appStorage.suggestionsQueries.searchByText(query)
+                .asFlow()
+                .mapToList(AppDispatchers.Default)
+        } else {
+            flowOf(emptyList())
+        }
+    }
+        .map { results ->
+            results.map { result ->
+                SearchDetailsUi.Suggestion(
+                    text = result,
+                    onClick = {
+                        appScopes.safe<SearchScope> { searchViewState.update { SearchViewState(query = result) } }
+                    },
+                )
             }
+        }
 }

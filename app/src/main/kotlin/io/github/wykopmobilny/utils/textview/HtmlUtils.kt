@@ -6,11 +6,9 @@ import androidx.core.text.toSpannable
 import java.net.URLDecoder
 import java.util.regex.Pattern
 
-fun String.toSpannable(): Spannable =
-    HtmlCompat.fromHtml(this, HtmlCompat.FROM_HTML_MODE_COMPACT, null, CodeTagHandler()).toSpannable()
+fun String.toSpannable(): Spannable = HtmlCompat.fromHtml(this, HtmlCompat.FROM_HTML_MODE_COMPACT, null, CodeTagHandler()).toSpannable()
 
-fun String.removeHtml() =
-    HtmlCompat.fromHtml(this, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+fun String.removeHtml() = HtmlCompat.fromHtml(this, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
 
 fun String.removeSpoilerHtml(): String {
     val regexBegin = "<a href=\"spoiler:"

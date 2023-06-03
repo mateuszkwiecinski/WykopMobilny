@@ -17,11 +17,7 @@ import io.github.wykopmobilny.utils.bindings.setOnLongClick
 import androidx.appcompat.R as AppcompatR
 import io.github.wykopmobilny.ui.base.android.R as BaseR
 
-internal fun LinkDetailsParentCommentBinding.bindParentComment(
-    parent: ParentCommentUi,
-    data: LinkCommentUi.Normal,
-    hasReplies: Boolean,
-) {
+internal fun LinkDetailsParentCommentBinding.bindParentComment(parent: ParentCommentUi, data: LinkCommentUi.Normal, hasReplies: Boolean) {
     clickableContainer.setOnClick(data.clickAction)
     clickableContainer.setOnLongClick(parent.toggleExpansionStateAction)
     if (data.showsOption) {
@@ -58,10 +54,7 @@ internal fun LinkDetailsParentCommentBinding.bindParentComment(
     btnReply.setOnClick(data.profileAction)
 }
 
-internal fun LinkDetailsParentCommentHiddenBinding.bindHiddenParent(
-    parent: ParentCommentUi,
-    data: LinkCommentUi.Hidden,
-) {
+internal fun LinkDetailsParentCommentHiddenBinding.bindHiddenParent(parent: ParentCommentUi, data: LinkCommentUi.Hidden) {
     root.setOnClick(data.onClicked)
     root.setOnLongClick(parent.toggleExpansionStateAction)
 

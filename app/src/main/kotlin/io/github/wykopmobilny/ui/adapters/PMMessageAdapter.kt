@@ -33,15 +33,14 @@ class PMMessageAdapter @Inject constructor(
         navigator = navigator,
     )
 
-    override fun onBindViewHolder(holder: PMMessageViewHolder, position: Int) =
-        holder.bindView(
-            message = messages[position],
-            openSpoilersDialog = openSpoilersDialog,
-            enableEmbedPlayer = enableEmbedPlayer,
-            enableYoutubePlayer = enableYoutubePlayer,
-            showAdultContent = showAdultContent,
-            hideNsfw = hideNsfw,
-        )
+    override fun onBindViewHolder(holder: PMMessageViewHolder, position: Int) = holder.bindView(
+        message = messages[position],
+        openSpoilersDialog = openSpoilersDialog,
+        enableEmbedPlayer = enableEmbedPlayer,
+        enableYoutubePlayer = enableYoutubePlayer,
+        showAdultContent = showAdultContent,
+        hideNsfw = hideNsfw,
+    )
 
     override fun onViewRecycled(holder: PMMessageViewHolder) {
         holder.cleanRecycled()

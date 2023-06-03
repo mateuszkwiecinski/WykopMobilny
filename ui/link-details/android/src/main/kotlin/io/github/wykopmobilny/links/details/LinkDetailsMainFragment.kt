@@ -40,12 +40,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 
-fun linkDetailsFragment(linkId: Long, commentId: Long?): Fragment =
-    LinkDetailsMainFragment()
-        .apply {
-            this.linkId = linkId
-            this.commentId = commentId
-        }
+fun linkDetailsFragment(linkId: Long, commentId: Long?): Fragment = LinkDetailsMainFragment()
+    .apply {
+        this.linkId = linkId
+        this.commentId = commentId
+    }
 
 internal class LinkDetailsMainFragment : Fragment(R.layout.fragment_link_details) {
 

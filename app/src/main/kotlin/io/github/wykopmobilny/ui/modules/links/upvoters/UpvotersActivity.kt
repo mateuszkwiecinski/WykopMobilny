@@ -23,10 +23,9 @@ class UpvotersActivity : BaseActivity(), androidx.swiperefreshlayout.widget.Swip
         const val DATA_FRAGMENT_TAG = "UPVOTERS_LIST"
         const val EXTRA_LINK_ID = "LINK_ID_EXTRA"
 
-        fun createIntent(linkId: Long, activity: Activity) =
-            Intent(activity, UpvotersActivity::class.java).apply {
-                putExtra(EXTRA_LINK_ID, linkId)
-            }
+        fun createIntent(linkId: Long, activity: Activity) = Intent(activity, UpvotersActivity::class.java).apply {
+            putExtra(EXTRA_LINK_ID, linkId)
+        }
     }
 
     @Inject

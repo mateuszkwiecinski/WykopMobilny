@@ -12,9 +12,6 @@ interface FrameworkComponent : Framework {
     @Component.Factory
     interface Factory {
 
-        fun create(
-            @BindsInstance scope: CoroutineScope,
-            @BindsInstance application: Application,
-        ): FrameworkComponent
+        fun create(@BindsInstance scope: CoroutineScope, @BindsInstance application: Application): FrameworkComponent
     }
 }

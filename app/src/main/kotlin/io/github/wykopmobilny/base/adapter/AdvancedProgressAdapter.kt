@@ -21,8 +21,7 @@ abstract class AdvancedProgressAdapter<A : Any> :
 
     abstract fun bindHolder(holder: RecyclerView.ViewHolder, position: Int)
 
-    override fun getItemId(position: Int) =
-        dataset[position]?.hashCode()?.toLong() ?: position.toLong()
+    override fun getItemId(position: Int) = dataset[position]?.hashCode()?.toLong() ?: position.toLong()
 
     override fun disableLoading() {
         if (dataset.isNotEmpty() && dataset.last() == null) {
@@ -58,12 +57,11 @@ abstract class AdvancedProgressAdapter<A : Any> :
         if (dataset[position] != null) bindHolder(holder, position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        if (viewType == EndlessProgressAdapter.ITEM_PROGRESS) {
-            ProgressViewHolder(ProgressItemBinding.inflate(parent.layoutInflater, parent, false))
-        } else {
-            createViewHolder(parent, viewType)
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = if (viewType == EndlessProgressAdapter.ITEM_PROGRESS) {
+        ProgressViewHolder(ProgressItemBinding.inflate(parent.layoutInflater, parent, false))
+    } else {
+        createViewHolder(parent, viewType)
+    }
 
     class ProgressViewHolder(val binding: ProgressItemBinding) : RecyclerView.ViewHolder(binding.root)
 }

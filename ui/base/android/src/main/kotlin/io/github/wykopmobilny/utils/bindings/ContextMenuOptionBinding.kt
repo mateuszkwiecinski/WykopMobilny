@@ -8,9 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flowOn
 
-suspend fun Flow<List<ContextMenuOptionUi>>.collectMenuOptions(
-    toolbar: MaterialToolbar,
-) {
+suspend fun Flow<List<ContextMenuOptionUi>>.collectMenuOptions(toolbar: MaterialToolbar) {
     distinctUntilChangedBy { it.map(ContextMenuOptionUi::label) + it.map(ContextMenuOptionUi::icon) }
         .flowOn(AppDispatchers.Default)
         .collect { options ->

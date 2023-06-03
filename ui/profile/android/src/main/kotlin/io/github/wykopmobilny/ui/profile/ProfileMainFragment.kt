@@ -28,9 +28,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-fun profileMainFragment(userId: String): Fragment =
-    ProfileMainFragment()
-        .apply { this.userId = userId }
+fun profileMainFragment(userId: String): Fragment = ProfileMainFragment()
+    .apply { this.userId = userId }
 
 internal class ProfileMainFragment : Fragment(R.layout.fragment_profile) {
 

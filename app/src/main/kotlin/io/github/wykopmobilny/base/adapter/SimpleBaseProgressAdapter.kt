@@ -55,24 +55,22 @@ abstract class SimpleBaseProgressAdapter<T : RecyclerView.ViewHolder, A : Any> :
 
     override fun getItemCount() = dataset.size
 
-    override fun getItemViewType(position: Int): Int =
-        if (dataset[position] == null) {
-            ITEM_PROGRESS
-        } else {
-            itemType
-        }
+    override fun getItemViewType(position: Int): Int = if (dataset[position] == null) {
+        ITEM_PROGRESS
+    } else {
+        itemType
+    }
 
     @Suppress("UNCHECKED_CAST")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (dataset[position] != null) bindHolder(holder as T, position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        when (viewType) {
-            itemType -> createViewHolder(parent)
-            ITEM_PROGRESS -> ProgressViewHolder(ProgressItemBinding.inflate(parent.layoutInflater, parent, false))
-            else -> error("Not supported")
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+        itemType -> createViewHolder(parent)
+        ITEM_PROGRESS -> ProgressViewHolder(ProgressItemBinding.inflate(parent.layoutInflater, parent, false))
+        else -> error("Not supported")
+    }
 
     class ProgressViewHolder(val binding: ProgressItemBinding) : RecyclerView.ViewHolder(binding.root)
 }

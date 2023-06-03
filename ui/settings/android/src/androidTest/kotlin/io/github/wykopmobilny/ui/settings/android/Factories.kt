@@ -27,30 +27,20 @@ internal fun BaseScreenshotTest.registerSettings(
     },
 )
 
-internal fun stubSetting(
-    value: Boolean,
-    isEnabled: Boolean = true,
-) = Setting(
+internal fun stubSetting(value: Boolean, isEnabled: Boolean = true) = Setting(
     currentValue = value,
     isEnabled = isEnabled,
     onClicked = {},
 )
 
-internal fun <T> stubListSetting(
-    value: T,
-    isEnabled: Boolean = true,
-) = ListSetting(
+internal fun <T> stubListSetting(value: T, isEnabled: Boolean = true) = ListSetting(
     currentValue = value,
     isEnabled = isEnabled,
     values = emptyList(),
     onSelected = {},
 )
 
-internal fun stubSliderSetting(
-    value: Int,
-    range: IntRange,
-    isEnabled: Boolean = true,
-) = SliderSetting(
+internal fun stubSliderSetting(value: Int, range: IntRange, isEnabled: Boolean = true) = SliderSetting(
     currentValue = value,
     isEnabled = isEnabled,
     values = range,

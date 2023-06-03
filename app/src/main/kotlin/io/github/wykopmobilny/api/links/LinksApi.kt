@@ -33,42 +33,15 @@ interface LinksApi {
     fun relatedVoteDown(linkId: Long, relatedId: Int): Single<VoteResponse>
     fun commentVoteCancel(linkId: Long, commentId: Long): Single<LinkVoteResponse>
     fun commentDelete(commentId: Long): Single<LinkComment>
-    fun commentAdd(
-        body: String,
-        plus18: Boolean,
-        inputStream: WykopImageFile,
-        linkId: Long,
-        linkComment: Long,
-    ): Single<LinkComment>
+    fun commentAdd(body: String, plus18: Boolean, inputStream: WykopImageFile, linkId: Long, linkComment: Long): Single<LinkComment>
 
-    fun relatedAdd(
-        title: String,
-        url: String,
-        plus18: Boolean,
-        linkId: Long,
-    ): Single<Related>
+    fun relatedAdd(title: String, url: String, plus18: Boolean, linkId: Long): Single<Related>
 
-    fun commentAdd(
-        body: String,
-        embed: String?,
-        plus18: Boolean,
-        linkId: Long,
-        linkComment: Long,
-    ): Single<LinkComment>
+    fun commentAdd(body: String, embed: String?, plus18: Boolean, linkId: Long, linkComment: Long): Single<LinkComment>
 
-    fun commentAdd(
-        body: String,
-        plus18: Boolean,
-        inputStream: WykopImageFile,
-        linkId: Long,
-    ): Single<LinkComment>
+    fun commentAdd(body: String, plus18: Boolean, inputStream: WykopImageFile, linkId: Long): Single<LinkComment>
 
-    fun commentAdd(
-        body: String,
-        embed: String?,
-        plus18: Boolean,
-        linkId: Long,
-    ): Single<LinkComment>
+    fun commentAdd(body: String, embed: String?, plus18: Boolean, linkId: Long): Single<LinkComment>
 
     fun commentEdit(body: String, linkId: Long): Single<LinkComment>
     fun voteUp(linkId: Long, notifyPublisher: Boolean = true): Single<DigResponse>

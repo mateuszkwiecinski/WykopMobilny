@@ -11,10 +11,6 @@ import io.github.wykopmobilny.ui.fragments.entries.EntriesInteractor
 class TagEntriesModule {
 
     @Provides
-    fun provideTagEntriesPresenter(
-        schedulers: Schedulers,
-        tagApi: TagApi,
-        entriesApi: EntriesApi,
-        entriesInteractor: EntriesInteractor,
-    ) = TagEntriesPresenter(schedulers, tagApi, entriesApi, entriesInteractor)
+    fun provideTagEntriesPresenter(schedulers: Schedulers, tagApi: TagApi, entriesApi: EntriesApi, entriesInteractor: EntriesInteractor) =
+        TagEntriesPresenter(schedulers, tagApi, entriesApi, entriesInteractor)
 }

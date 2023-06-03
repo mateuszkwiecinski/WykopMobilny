@@ -11,18 +11,15 @@ class ExternalRepository @Inject constructor(
     private val embedApi: ExternalRetrofitApi,
 ) : ExternalApi {
 
-    override fun getStreamableUrl(streamableId: String) =
-        rxSingle {
-            val streamable = embedApi.getStreamableFile(streamableId)
+    override fun getStreamableUrl(streamableId: String) = rxSingle {
+        val streamable = embedApi.getStreamableFile(streamableId)
 
-            withContext(AppDispatchers.Default) {
-                URL(streamable.files.mp4Mobile?.url ?: streamable.files.mp4.url)
-            }
+        withContext(AppDispatchers.Default) {
+            URL(streamable.files.mp4Mobile?.url ?: streamable.files.mp4.url)
         }
+    }
 
-    override fun getCoub(coubId: String) =
-        rxSingle { embedApi.getCoub(coubId) }
+    override fun getCoub(coubId: String) = rxSingle { embedApi.getCoub(coubId) }
 
-    override fun getGfycat(gfycatId: String) =
-        rxSingle { embedApi.getGfycat(gfycatId) }
+    override fun getGfycat(gfycatId: String) = rxSingle { embedApi.getGfycat(gfycatId) }
 }

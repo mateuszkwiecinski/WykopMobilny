@@ -1,11 +1,17 @@
 plugins {
     id("com.starter.library.kotlin")
-    id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.google.devtools.ksp)
 }
 
 dependencies {
     api(libs.coroutines.core)
     implementation(libs.retrofit.core)
     implementation(libs.moshi.core)
-    kapt(libs.moshi.compiler)
+    ksp(libs.moshi.compiler)
+}
+
+tasks.whenTaskAdded {task ->
+    if(task.name.contains("lintKotlinGeneratedByKspKotlin")) {
+        task.enabled = false
+    }
 }

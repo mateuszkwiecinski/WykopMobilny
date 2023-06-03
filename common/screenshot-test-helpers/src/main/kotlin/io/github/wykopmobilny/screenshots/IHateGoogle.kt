@@ -30,10 +30,7 @@ inline fun <reified F : Fragment> launchFragmentInContainer(
     themeResId,
     initialState,
     object : FragmentFactory() {
-        override fun instantiate(
-            classLoader: ClassLoader,
-            className: String,
-        ) = if (className == F::class.java.name) {
+        override fun instantiate(classLoader: ClassLoader, className: String) = if (className == F::class.java.name) {
             instantiate()
         } else {
             super.instantiate(classLoader, className)
@@ -41,9 +38,7 @@ inline fun <reified F : Fragment> launchFragmentInContainer(
     },
 )
 
-inline fun <reified F : Fragment, T : Any> FragmentScenarioIHateGoogle<F>.withFragment(
-    crossinline block: F.() -> T,
-): T {
+inline fun <reified F : Fragment, T : Any> FragmentScenarioIHateGoogle<F>.withFragment(crossinline block: F.() -> T): T {
     lateinit var value: T
     var err: Throwable? = null
     onFragment { fragment ->

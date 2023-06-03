@@ -43,14 +43,12 @@ class ScreenshotTestsApplication : Application(), ApplicationInjector {
     override fun <T : Any> destroyDependency(clazz: KClass<T>, scopeId: Any?) = Unit
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> getDependency(clazz: KClass<T>, scopeId: Any?): T =
-        runCatching { dependencies[id(clazz, scopeId)] as T }
-            .getOrElse { error("Can't find ${id(clazz, scopeId)} in ${dependencies.keys}") }
+    override fun <T : Any> getDependency(clazz: KClass<T>, scopeId: Any?): T = runCatching { dependencies[id(clazz, scopeId)] as T }
+        .getOrElse { error("Can't find ${id(clazz, scopeId)} in ${dependencies.keys}") }
 
     fun <T : Any> registerDependency(clazz: KClass<T>, scopeId: Any? = null, dependency: T) {
         dependencies[id(clazz, scopeId)] = dependency
     }
 
-    private fun <T : Any> id(clazz: KClass<T>, scopeId: Any?) =
-        scopeId?.let { "[${clazz.java.name}]$it" } ?: clazz.java.name
+    private fun <T : Any> id(clazz: KClass<T>, scopeId: Any?) = scopeId?.let { "[${clazz.java.name}]$it" } ?: clazz.java.name
 }

@@ -16,12 +16,11 @@ class MicroblogPagerAdapter(
 
     val registeredFragments = SparseArray<Fragment>()
 
-    override fun getItem(position: Int): Fragment =
-        if (position == 0) {
-            MicroblogEntriesFragment.newInstance()
-        } else {
-            MicroblogCommentsFragment.newInstance()
-        }
+    override fun getItem(position: Int): Fragment = if (position == 0) {
+        MicroblogEntriesFragment.newInstance()
+    } else {
+        MicroblogCommentsFragment.newInstance()
+    }
 
     override fun getCount() = 2
 
@@ -36,11 +35,10 @@ class MicroblogPagerAdapter(
         super.destroyItem(container, position, `object`)
     }
 
-    override fun getPageTitle(position: Int) =
-        if (position == 0) {
-            R.string.entries
-        } else {
-            R.string.commented
-        }
-            .let(resources::getString)
+    override fun getPageTitle(position: Int) = if (position == 0) {
+        R.string.entries
+    } else {
+        R.string.commented
+    }
+        .let(resources::getString)
 }

@@ -19,9 +19,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flowOn
 
-suspend fun Flow<OptionPickerUi?>.collectOptionPicker(
-    context: Context,
-) {
+suspend fun Flow<OptionPickerUi?>.collectOptionPicker(context: Context) {
     var dialog: BottomSheetDialog? = null
     distinctUntilChangedBy { it?.reasons?.map(OptionPickerUi.Option::label) }
         .flowOn(AppDispatchers.Default)
@@ -87,8 +85,7 @@ private class PickerListAdapter : ListAdapter<OptionPickerUi.Option, PickerListA
     class DefaultViewHolder(val binding: ItemOptionBinding) : RecyclerView.ViewHolder(binding.root)
 
     private object Diff : DiffUtil.ItemCallback<OptionPickerUi.Option>() {
-        override fun areItemsTheSame(oldItem: OptionPickerUi.Option, newItem: OptionPickerUi.Option) =
-            oldItem.label == newItem.label
+        override fun areItemsTheSame(oldItem: OptionPickerUi.Option, newItem: OptionPickerUi.Option) = oldItem.label == newItem.label
 
         override fun areContentsTheSame(oldItem: OptionPickerUi.Option, newItem: OptionPickerUi.Option) =
             oldItem.label == newItem.label && oldItem.icon == newItem.icon

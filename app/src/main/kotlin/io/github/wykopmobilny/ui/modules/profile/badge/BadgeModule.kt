@@ -8,6 +8,5 @@ import io.github.wykopmobilny.base.Schedulers
 @Module
 class BadgeModule {
     @Provides
-    fun provideBadgePresenter(schedulers: Schedulers, profileApi: ProfileApi) =
-        BadgePresenter(schedulers, profileApi)
+    fun provideBadgePresenter(schedulers: Schedulers, profileApi: ProfileApi) = BadgePresenter(schedulers, profileApi)
 }

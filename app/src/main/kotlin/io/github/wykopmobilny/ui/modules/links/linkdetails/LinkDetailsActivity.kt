@@ -340,30 +340,28 @@ class LinkDetailsActivity :
         const val EXTRA_LINK_ID = "EXTRA_LINKID"
         const val EXTRA_COMMENT_ID = "EXTRA_COMMENT_ID"
 
-        fun createIntent(context: Context, link: Link) =
-            if (BuildConfig.DEBUG) {
-                LinkDetailsActivityV2.createIntent(context, link.id)
-                Intent(context, LinkDetailsActivity::class.java).apply {
-                    putExtra(EXTRA_LINK, link)
-                }
-            } else {
-                Intent(context, LinkDetailsActivity::class.java).apply {
-                    putExtra(EXTRA_LINK, link)
-                }
+        fun createIntent(context: Context, link: Link) = if (BuildConfig.DEBUG) {
+            LinkDetailsActivityV2.createIntent(context, link.id)
+            Intent(context, LinkDetailsActivity::class.java).apply {
+                putExtra(EXTRA_LINK, link)
             }
+        } else {
+            Intent(context, LinkDetailsActivity::class.java).apply {
+                putExtra(EXTRA_LINK, link)
+            }
+        }
 
-        fun createIntent(context: Context, linkId: Long, commentId: Long? = null) =
-            if (BuildConfig.DEBUG) {
-                LinkDetailsActivityV2.createIntent(context, linkId = linkId, commentId = commentId)
-                Intent(context, LinkDetailsActivity::class.java).apply {
-                    putExtra(EXTRA_LINK_ID, linkId)
-                    putExtra(EXTRA_COMMENT_ID, commentId)
-                }
-            } else {
-                Intent(context, LinkDetailsActivity::class.java).apply {
-                    putExtra(EXTRA_LINK_ID, linkId)
-                    putExtra(EXTRA_COMMENT_ID, commentId)
-                }
+        fun createIntent(context: Context, linkId: Long, commentId: Long? = null) = if (BuildConfig.DEBUG) {
+            LinkDetailsActivityV2.createIntent(context, linkId = linkId, commentId = commentId)
+            Intent(context, LinkDetailsActivity::class.java).apply {
+                putExtra(EXTRA_LINK_ID, linkId)
+                putExtra(EXTRA_COMMENT_ID, commentId)
             }
+        } else {
+            Intent(context, LinkDetailsActivity::class.java).apply {
+                putExtra(EXTRA_LINK_ID, linkId)
+                putExtra(EXTRA_COMMENT_ID, commentId)
+            }
+        }
     }
 }

@@ -21,8 +21,7 @@ class UsersSuggestionsAdapter(
 
     val items = arrayListOf<Author>()
     private val itemsFilter = object : Filter() {
-        override fun convertResultToString(resultValue: Any): CharSequence =
-            (resultValue as Author).nick
+        override fun convertResultToString(resultValue: Any): CharSequence = (resultValue as Author).nick
 
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             val filterResults = FilterResults()

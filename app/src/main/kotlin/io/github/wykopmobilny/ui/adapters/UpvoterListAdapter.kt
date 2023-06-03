@@ -11,8 +11,7 @@ class UpvoterListAdapter @Inject constructor() : androidx.recyclerview.widget.Re
 
     val items = ArrayList<Upvoter>()
 
-    override fun onBindViewHolder(holder: UpvoterViewHolder, position: Int) =
-        holder.bindView(items[position])
+    override fun onBindViewHolder(holder: UpvoterViewHolder, position: Int) = holder.bindView(items[position])
 
     override fun getItemCount(): Int = items.size
 

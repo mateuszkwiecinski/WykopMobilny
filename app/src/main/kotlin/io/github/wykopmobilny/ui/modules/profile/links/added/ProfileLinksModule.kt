@@ -9,9 +9,6 @@ import io.github.wykopmobilny.ui.fragments.links.LinksInteractor
 @Module
 class ProfileLinksModule {
     @Provides
-    fun provideAddedLinksPresenter(
-        schedulers: Schedulers,
-        profileApi: ProfileApi,
-        linksInteractor: LinksInteractor,
-    ) = ProfileLinksPresenter(schedulers, profileApi, linksInteractor)
+    fun provideAddedLinksPresenter(schedulers: Schedulers, profileApi: ProfileApi, linksInteractor: LinksInteractor) =
+        ProfileLinksPresenter(schedulers, profileApi, linksInteractor)
 }

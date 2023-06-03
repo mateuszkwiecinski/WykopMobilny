@@ -91,11 +91,7 @@ class LinkViewHolder(
         }
     }
 
-    fun bindView(
-        link: Link,
-        linkImagePosition: String,
-        linkShowAuthor: Boolean,
-    ) {
+    fun bindView(link: Link, linkImagePosition: String, linkShowAuthor: Boolean) {
         setupBody(
             link = link,
             linkImagePosition = linkImagePosition,
@@ -113,11 +109,7 @@ class LinkViewHolder(
         }
     }
 
-    private fun setupBody(
-        link: Link,
-        linkImagePosition: String,
-        linkShowAuthor: Boolean,
-    ) {
+    private fun setupBody(link: Link, linkImagePosition: String, linkShowAuthor: Boolean) {
         if (link.gotSelected) {
             setWidgetAlpha(ALPHA_VISITED)
         } else {

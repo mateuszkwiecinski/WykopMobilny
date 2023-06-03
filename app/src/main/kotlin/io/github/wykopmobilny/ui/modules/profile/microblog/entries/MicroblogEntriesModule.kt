@@ -11,10 +11,6 @@ import io.github.wykopmobilny.ui.fragments.entries.EntriesInteractor
 class MicroblogEntriesModule {
 
     @Provides
-    fun providePresenter(
-        schedulers: Schedulers,
-        profileApi: ProfileApi,
-        entriesApi: EntriesApi,
-        entriesInteractor: EntriesInteractor,
-    ) = MicroblogEntriesPresenter(schedulers, profileApi, entriesApi, entriesInteractor)
+    fun providePresenter(schedulers: Schedulers, profileApi: ProfileApi, entriesApi: EntriesApi, entriesInteractor: EntriesInteractor) =
+        MicroblogEntriesPresenter(schedulers, profileApi, entriesApi, entriesInteractor)
 }

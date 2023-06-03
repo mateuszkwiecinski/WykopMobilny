@@ -38,11 +38,10 @@ class TagPagerAdapter(
         super.destroyItem(container, position, `object`)
     }
 
-    override fun getPageTitle(position: Int) =
-        if (position == 0) {
-            R.string.links
-        } else {
-            R.string.entries
-        }
-            .let(resources::getString)
+    override fun getPageTitle(position: Int) = if (position == 0) {
+        R.string.links
+    } else {
+        R.string.entries
+    }
+        .let(resources::getString)
 }

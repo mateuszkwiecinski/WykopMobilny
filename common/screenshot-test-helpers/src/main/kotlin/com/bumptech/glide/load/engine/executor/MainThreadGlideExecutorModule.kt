@@ -44,11 +44,10 @@ private class AssetLoadingLoaderFactory(private val context: Context) : ModelLoa
 
     override fun build(multiFactory: MultiModelLoaderFactory) = object : ModelLoader<GlideUrl, InputStream> {
 
-        override fun buildLoadData(model: GlideUrl, width: Int, height: Int, options: Options) =
-            ModelLoader.LoadData(
-                ObjectKey(model),
-                StreamAssetPathFetcher(context.assets, model.toStringUrl().replaceFirst("https://www.wykop.pl/cdn/", "responses/")),
-            )
+        override fun buildLoadData(model: GlideUrl, width: Int, height: Int, options: Options) = ModelLoader.LoadData(
+            ObjectKey(model),
+            StreamAssetPathFetcher(context.assets, model.toStringUrl().replaceFirst("https://www.wykop.pl/cdn/", "responses/")),
+        )
 
         override fun handles(model: GlideUrl) = true
     }
@@ -61,8 +60,7 @@ private class DirectExecutorService : AbstractExecutorService() {
     @Volatile
     private var terminated: Boolean = false
 
-    override fun execute(command: Runnable) =
-        command.run()
+    override fun execute(command: Runnable) = command.run()
 
     override fun isTerminated() = terminated
 

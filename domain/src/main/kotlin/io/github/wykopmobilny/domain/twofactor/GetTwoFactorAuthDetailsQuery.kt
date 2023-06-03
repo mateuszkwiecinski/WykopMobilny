@@ -30,46 +30,45 @@ internal class GetTwoFactorAuthDetailsQuery @Inject constructor(
     private val appGateway: AppGateway,
 ) : GetTwoFactorAuthDetails {
 
-    override fun invoke() =
-        combine(
-            viewStateStorage.state,
-            appGateway.getInstalledAuthenticatorApps(),
-        ) { viewState, authenticatorApps ->
-            val authenticatorApp = authenticatorApps.firstOrNull() ?: AuthenticatorApp.Google
-            val authenticatorButton = ProgressButtonUi.Default(
-                label = Strings.TwoFactorAuth.openAuthenticator(authenticatorApp),
-                onClicked = safeCallback { appGateway.openApp(authenticatorApp) },
-            )
+    override fun invoke() = combine(
+        viewStateStorage.state,
+        appGateway.getInstalledAuthenticatorApps(),
+    ) { viewState, authenticatorApps ->
+        val authenticatorApp = authenticatorApps.firstOrNull() ?: AuthenticatorApp.Google
+        val authenticatorButton = ProgressButtonUi.Default(
+            label = Strings.TwoFactorAuth.openAuthenticator(authenticatorApp),
+            onClicked = safeCallback { appGateway.openApp(authenticatorApp) },
+        )
 
-            TwoFactorAuthDetailsUi(
-                code = TextInputUi(
-                    text = viewState.code,
-                    onChanged = safeCallback { updated -> viewStateStorage.update { it.copy(code = updated) } },
-                ),
-                verifyButton = if (viewState.generalResource.isLoading) {
-                    ProgressButtonUi.Loading
-                } else {
-                    ProgressButtonUi.Default(
-                        label = Strings.TwoFactorAuth.Cta,
-                        onClicked = safeCallback {
-                            withResource(
-                                refresh = { send2FACode(viewState.code) },
-                                update = { resource -> viewStateStorage.update { it.copy(generalResource = resource) } },
-                                launch = { callback -> appScopes.safe<TwoFactorAuthScope>(block = callback) },
-                            )
-                        },
-                    )
-                },
-                authenticatorButton = authenticatorButton,
-                errorDialog = viewState.generalResource.failedAction?.let { error ->
-                    ErrorDialogUi(
-                        error = error.cause,
-                        retryAction = error.retryAction,
-                        dismissAction = safeCallback { viewStateStorage.update { it.copy(generalResource = Resource.idle()) } },
-                    )
-                },
-            )
-        }
+        TwoFactorAuthDetailsUi(
+            code = TextInputUi(
+                text = viewState.code,
+                onChanged = safeCallback { updated -> viewStateStorage.update { it.copy(code = updated) } },
+            ),
+            verifyButton = if (viewState.generalResource.isLoading) {
+                ProgressButtonUi.Loading
+            } else {
+                ProgressButtonUi.Default(
+                    label = Strings.TwoFactorAuth.Cta,
+                    onClicked = safeCallback {
+                        withResource(
+                            refresh = { send2FACode(viewState.code) },
+                            update = { resource -> viewStateStorage.update { it.copy(generalResource = resource) } },
+                            launch = { callback -> appScopes.safe<TwoFactorAuthScope>(block = callback) },
+                        )
+                    },
+                )
+            },
+            authenticatorButton = authenticatorButton,
+            errorDialog = viewState.generalResource.failedAction?.let { error ->
+                ErrorDialogUi(
+                    error = error.cause,
+                    retryAction = error.retryAction,
+                    dismissAction = safeCallback { viewStateStorage.update { it.copy(generalResource = Resource.idle()) } },
+                )
+            },
+        )
+    }
 
     private suspend fun send2FACode(code: String) {
         api.mutation { loginApi.autorizeWith2FA(code) }

@@ -21,5 +21,4 @@ data class Event<T : Any>(
 
 fun <T : Any> T.toEvent() = Event(this)
 
-suspend fun <T : Any> Flow<Event<T>>.collectEvent(block: (T) -> Unit) =
-    collect { it.consume(block) }
+suspend fun <T : Any> Flow<Event<T>>.collectEvent(block: (T) -> Unit) = collect { it.consume(block) }

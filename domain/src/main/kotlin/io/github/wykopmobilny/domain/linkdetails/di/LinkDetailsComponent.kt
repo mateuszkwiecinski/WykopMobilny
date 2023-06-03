@@ -13,8 +13,6 @@ interface LinkDetailsComponent : LinkDetailsDependencies, HasScopeInitializer {
     @Subcomponent.Factory
     interface Factory {
 
-        fun create(
-            @BindsInstance key: LinkDetailsKey,
-        ): LinkDetailsComponent
+        fun create(@BindsInstance key: LinkDetailsKey): LinkDetailsComponent
     }
 }

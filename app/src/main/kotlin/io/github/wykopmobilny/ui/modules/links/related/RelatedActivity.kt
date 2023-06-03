@@ -28,10 +28,9 @@ class RelatedActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener, Re
         private const val DATA_FRAGMENT_TAG = "RELATED_LIST"
         private const val EXTRA_LINKID = "LINK_ID_EXTRA"
 
-        fun createIntent(linkId: Long, activity: Activity) =
-            Intent(activity, RelatedActivity::class.java).apply {
-                putExtra(EXTRA_LINKID, linkId)
-            }
+        fun createIntent(linkId: Long, activity: Activity) = Intent(activity, RelatedActivity::class.java).apply {
+            putExtra(EXTRA_LINKID, linkId)
+        }
     }
 
     @Inject

@@ -42,15 +42,14 @@ internal class GetAppearanceSectionPreferences @Inject constructor(
             replay = 0,
         )
 
-    private suspend fun findDefaultEdgeSlide() =
-        when (systemSettingsDetector.getNavigationMode()) {
-            NavigationMode.ThreeButtons,
-            NavigationMode.TwoButtons,
-            NavigationMode.Unknown,
-            -> false
-            NavigationMode.FullScreenGesture,
-            -> true
-        }
+    private suspend fun findDefaultEdgeSlide() = when (systemSettingsDetector.getNavigationMode()) {
+        NavigationMode.ThreeButtons,
+        NavigationMode.TwoButtons,
+        NavigationMode.Unknown,
+        -> false
+        NavigationMode.FullScreenGesture,
+        -> true
+    }
 }
 
 internal data class AppearanceSection(

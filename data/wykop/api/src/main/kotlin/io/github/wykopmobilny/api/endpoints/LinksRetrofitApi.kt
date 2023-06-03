@@ -24,10 +24,7 @@ import retrofit2.http.Path
 interface LinksRetrofitApi {
 
     @GET("/links/upcoming/page/{page}/sort/{sortBy}/appkey/$APP_KEY")
-    suspend fun getUpcoming(
-        @Path("page") page: Int,
-        @Path("sortBy") sortBy: String,
-    ): WykopApiResponse<List<LinkResponse>>
+    suspend fun getUpcoming(@Path("page") page: Int, @Path("sortBy") sortBy: String): WykopApiResponse<List<LinkResponse>>
 
     @GET("/links/promoted/page/{page}/appkey/$APP_KEY")
     suspend fun getPromoted(@Path("page") page: Int): WykopApiResponse<List<LinkResponse>>
@@ -63,10 +60,7 @@ interface LinksRetrofitApi {
     suspend fun voteUp(@Path("linkId") linkId: Long): WykopApiResponse<DigResponse>
 
     @GET("/links/votedown/{linkId}/{voteType}/appkey/$APP_KEY")
-    suspend fun voteDown(
-        @Path("linkId") linkId: Long,
-        @Path("voteType") reason: Int,
-    ): WykopApiResponse<DigResponse>
+    suspend fun voteDown(@Path("linkId") linkId: Long, @Path("voteType") reason: Int): WykopApiResponse<DigResponse>
 
     @GET("/links/relatedvoteup/{linkId}/{relatedId}/appkey/$APP_KEY")
     suspend fun relatedVoteUp(@Path("linkId") linkId: Long, @Path("relatedId") relatedId: Long): WykopApiResponse<VoteResponse>
@@ -129,10 +123,7 @@ interface LinksRetrofitApi {
 
     @FormUrlEncoded
     @POST("/links/commentedit/{linkId}/appkey/$APP_KEY")
-    suspend fun editComment(
-        @Field("body") body: String,
-        @Path("linkId") linkId: Long,
-    ): WykopApiResponse<LinkCommentResponse>
+    suspend fun editComment(@Field("body") body: String, @Path("linkId") linkId: Long): WykopApiResponse<LinkCommentResponse>
 
     @GET("/links/favorite/{linkId}/appkey/$APP_KEY")
     suspend fun toggleFavorite(@Path("linkId") linkId: Long): WykopApiResponse<List<Boolean>>

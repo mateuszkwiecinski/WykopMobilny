@@ -77,24 +77,22 @@ abstract class EndlessProgressAdapter<T : RecyclerView.ViewHolder, A : Any> : Re
 
     abstract fun getViewType(position: Int): Int
 
-    override fun getItemViewType(position: Int): Int =
-        if (dataset[position] == null) {
-            ITEM_PROGRESS
-        } else {
-            getViewType(position)
-        }
+    override fun getItemViewType(position: Int): Int = if (dataset[position] == null) {
+        ITEM_PROGRESS
+    } else {
+        getViewType(position)
+    }
 
     @Suppress("UNCHECKED_CAST")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (dataset[position] != null) bindHolder(holder as T, position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        if (viewType == ITEM_PROGRESS) {
-            ProgressViewHolder(ProgressItemBinding.inflate(parent.layoutInflater, parent, false))
-        } else {
-            constructViewHolder(parent, viewType)
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = if (viewType == ITEM_PROGRESS) {
+        ProgressViewHolder(ProgressItemBinding.inflate(parent.layoutInflater, parent, false))
+    } else {
+        constructViewHolder(parent, viewType)
+    }
 
     class ProgressViewHolder(binding: ProgressItemBinding) : RecyclerView.ViewHolder(binding.root)
 }

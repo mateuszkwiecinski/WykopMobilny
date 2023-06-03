@@ -26,14 +26,13 @@ class WykopFlavorDescriptor : CommonMarkFlavourDescriptor() {
     override fun createInlinesLexer() = MarkdownLexer(_GFMLexer())
 
     override val sequentialParserManager = object : SequentialParserManager() {
-        override fun getParserSequence() =
-            listOf(
-                AutolinkParser(listOf(MarkdownTokenTypes.AUTOLINK, GFMTokenTypes.GFM_AUTOLINK)),
-                BacktickParser(),
-                InlineLinkParser(),
-                ReferenceLinkParser(),
-                EmphStrongParser(),
-            )
+        override fun getParserSequence() = listOf(
+            AutolinkParser(listOf(MarkdownTokenTypes.AUTOLINK, GFMTokenTypes.GFM_AUTOLINK)),
+            BacktickParser(),
+            InlineLinkParser(),
+            ReferenceLinkParser(),
+            EmphStrongParser(),
+        )
     }
 
     override fun createHtmlGeneratingProviders(linkMap: LinkMap, baseURI: URI?) =

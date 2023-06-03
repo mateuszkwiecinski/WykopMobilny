@@ -31,10 +31,7 @@ fun Context.showExceptionDialog(throwable: Throwable) {
     }
 }
 
-private fun Context.exceptionDialog(
-    throwable: Throwable,
-    onPositive: Pair<Int, () -> Unit> = android.R.string.ok to { },
-): AlertDialog {
+private fun Context.exceptionDialog(throwable: Throwable, onPositive: Pair<Int, () -> Unit> = android.R.string.ok to { }): AlertDialog {
     val message = when {
         throwable is WykopExceptionParser.WykopApiException -> "${throwable.message} (${throwable.code})"
         throwable.message.isNullOrEmpty() -> throwable.toString()

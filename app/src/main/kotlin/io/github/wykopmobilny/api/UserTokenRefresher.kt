@@ -19,8 +19,7 @@ class UserTokenRefresher @Inject constructor(
     private val errorBodyParser: ErrorBodyParser,
 ) : Function<Flowable<Throwable>, Publisher<*>> {
 
-    override fun apply(errors: Flowable<Throwable>) =
-        errors.flatMapSingle { failure -> rxSingle { refresh(failure) } }
+    override fun apply(errors: Flowable<Throwable>) = errors.flatMapSingle { failure -> rxSingle { refresh(failure) } }
 
     private suspend fun refresh(failure: Throwable) {
         when (failure) {
