@@ -30,24 +30,23 @@ class IdlingResourcesRule : TestRule {
 }
 
 class DispatcherIdlerRule : TestRule {
-    override fun apply(base: Statement?, description: Description?): Statement =
-        object : Statement() {
-            override fun evaluate() {
-                val espressoTrackedDispatcherIO = EspressoTrackedDispatcher(Dispatchers.IO)
-                val espressoTrackedDispatcherDefault = EspressoTrackedDispatcher(Dispatchers.Default)
-                AppDispatchers.replaceDispatchers(
-                    io = espressoTrackedDispatcherIO,
-                    default = espressoTrackedDispatcherDefault,
-                )
-                try {
-                    base?.evaluate()
-                } finally {
-                    espressoTrackedDispatcherIO.cleanUp()
-                    espressoTrackedDispatcherDefault.cleanUp()
-                    AppDispatchers.replaceDispatchers()
-                }
+    override fun apply(base: Statement?, description: Description?): Statement = object : Statement() {
+        override fun evaluate() {
+            val espressoTrackedDispatcherIO = EspressoTrackedDispatcher(Dispatchers.IO)
+            val espressoTrackedDispatcherDefault = EspressoTrackedDispatcher(Dispatchers.Default)
+            AppDispatchers.replaceDispatchers(
+                io = espressoTrackedDispatcherIO,
+                default = espressoTrackedDispatcherDefault,
+            )
+            try {
+                base?.evaluate()
+            } finally {
+                espressoTrackedDispatcherIO.cleanUp()
+                espressoTrackedDispatcherDefault.cleanUp()
+                AppDispatchers.replaceDispatchers()
             }
         }
+    }
 }
 
 class EspressoTrackedDispatcher(private val wrappedCoroutineDispatcher: CoroutineDispatcher) : CoroutineDispatcher() {

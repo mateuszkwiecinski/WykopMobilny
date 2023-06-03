@@ -98,249 +98,248 @@ internal class GetLinkDetailsQuery @Inject constructor(
     private val clipboardService: ClipboardService,
 ) : GetLinkDetails {
 
-    override fun invoke() =
-        combine(
-            detailsFlow(),
-            viewStateStorage.state,
-            commentsFlow(),
-            relatedLinksFlow(),
-            userInfoStorage.loggedUser,
-            getLinksPreferences(),
-        ) { link, viewState, (comments, toggleCommentsAction), relatedLinks, loggedUser, linkpreferences ->
-            val header = if (link == null) {
-                LinkDetailsHeaderUi.Loading
-            } else {
-                LinkDetailsHeaderUi.WithData(
-                    title = textUtils.parseHtml(link.title).toString(),
-                    body = textUtils.parseHtml(link.description).toString(),
-                    domain = URL(link.sourceUrl).host.removePrefix("www."),
-                    badge = ColorConst.LinkBadgeHot.takeIf { link.isHot },
-                    voteCount = TwoActionsCounterUi(
-                        count = link.voteCount,
-                        color = when (link.userAction) {
-                            UserVote.Up -> ColorConst.CounterUpvoted
-                            UserVote.Down -> ColorConst.CounterDownvoted
-                            null -> null
-                        },
-                        upvoteAction = safeCallback {
-                            when (link.userAction) {
-                                UserVote.Up -> linksRepository.removeVote(link.id)
-                                UserVote.Down,
-                                null,
-                                -> linksRepository.voteUp(link.id)
-                            }
-                        },
-                        downvoteAction = safeCallback {
-                            when (link.userAction) {
-                                UserVote.Down -> linksRepository.removeVote(link.id)
-                                UserVote.Up,
-                                null,
-                                -> viewStateStorage.update { viewState ->
-                                    viewState.copy(
-                                        picker = OptionPickerUi(
-                                            title = Strings.Link.BURY_REASON_TITLE,
-                                            reasons = VoteDownReason.values().map { reason ->
-                                                OptionPickerUi.Option(
-                                                    label = reason.label,
-                                                    clickAction = safeCallback { linksRepository.voteDown(link.id, reason) },
-                                                )
-                                            },
-                                            dismissAction = safeCallback { viewStateStorage.update { it.copy(picker = null) } },
-                                        ),
-                                    )
-                                }
-                            }
-                        },
-                    ),
-                    upvotePercentage = link.upvotePercentage,
-                    previewImageUrl = link.fullImageUrl,
-                    commentsCount = Button(
-                        label = link.commentsCount.toString(),
-                        icon = Drawable.Comments,
-                        clickAction = toggleCommentsAction,
-                    ),
-                    postedAgo = link.postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(suffix = "temu"),
-                    author = link.author.toUi(
-                        onClicked = safeCallback { interopRequests.request(InteropRequest.Profile(link.author.profileId)) },
-                    ),
-                    tags = link.tags.map { tag ->
-                        TagUi(
-                            name = tag,
-                            onClick = safeCallback { interopRequests.request(InteropRequest.Tag(tag)) },
-                        )
+    override fun invoke() = combine(
+        detailsFlow(),
+        viewStateStorage.state,
+        commentsFlow(),
+        relatedLinksFlow(),
+        userInfoStorage.loggedUser,
+        getLinksPreferences(),
+    ) { link, viewState, (comments, toggleCommentsAction), relatedLinks, loggedUser, linkpreferences ->
+        val header = if (link == null) {
+            LinkDetailsHeaderUi.Loading
+        } else {
+            LinkDetailsHeaderUi.WithData(
+                title = textUtils.parseHtml(link.title).toString(),
+                body = textUtils.parseHtml(link.description).toString(),
+                domain = URL(link.sourceUrl).host.removePrefix("www."),
+                badge = ColorConst.LinkBadgeHot.takeIf { link.isHot },
+                voteCount = TwoActionsCounterUi(
+                    count = link.voteCount,
+                    color = when (link.userAction) {
+                        UserVote.Up -> ColorConst.CounterUpvoted
+                        UserVote.Down -> ColorConst.CounterDownvoted
+                        null -> null
                     },
-                    viewLinkAction = safeCallback { interopRequests.request(InteropRequest.WebBrowser(link.sourceUrl)) },
-                    favoriteButton = ToggleButtonUi(
-                        isToggled = link.userFavorite,
-                        clickAction = safeCallback { linksRepository.toggleFavorite(link.id) },
-                        isVisible = loggedUser != null,
-                    ),
-                    moreAction = safeCallback {
-                        viewStateStorage.update { viewState ->
-                            viewState.copy(
-                                picker = OptionPickerUi(
-                                    title = Strings.Link.MORE_TITLE_LINK,
-                                    reasons = listOf(
-                                        OptionPickerUi.Option(
-                                            label = Strings.Link.MORE_OPTION_SHARE,
-                                            icon = Drawable.Share,
-                                            clickAction = safeCallback { interopRequests.request(InteropRequest.Share(link.wykopUrl)) },
-                                        ),
-                                        OptionPickerUi.Option(
-                                            label = Strings.Link.MORE_OPTION_COPY,
-                                            icon = Drawable.Copy,
-                                            clickAction = safeCallback {
-                                                clipboardService.copy(
-                                                    """
-                                                        ${link.title.copyableText(textUtils)}
-                                                        
-                                                        ${link.description.copyableText(textUtils)}
-                                                    """.trimIndent(),
-                                                )
-                                                showSnackbar(Strings.COPIED_TO_CLIPBOARD)
-                                            },
-                                        ),
-                                        OptionPickerUi.Option(
-                                            label = Strings.Link.moreOptionUpvotersList(link.voteCount),
-                                            icon = Drawable.Upvoters,
-                                            clickAction = safeCallback { interopRequests.request(InteropRequest.UpvotersList(link.id)) },
-                                        ),
-                                        OptionPickerUi.Option(
-                                            label = Strings.Link.moreOptionDownvotersList(link.buryCount),
-                                            icon = Drawable.Downvoters,
-                                            clickAction = safeCallback { interopRequests.request(InteropRequest.DownvotersList(link.id)) },
-                                        ),
-                                        OptionPickerUi.Option(
-                                            label = Strings.Link.MORE_OPTION_OPEN_IN_BROWSER,
-                                            icon = Drawable.Browser,
-                                            clickAction = safeCallback {
-                                                interopRequests.request(InteropRequest.WebBrowser(url = link.wykopUrl, force = true))
-                                            },
-                                        ),
-                                    ),
-                                    dismissAction = safeCallback { viewStateStorage.update { it.copy(picker = null) } },
-                                ),
-                            )
+                    upvoteAction = safeCallback {
+                        when (link.userAction) {
+                            UserVote.Up -> linksRepository.removeVote(link.id)
+                            UserVote.Down,
+                            null,
+                            -> linksRepository.voteUp(link.id)
                         }
                     },
-                    commentsSort = Button(
-                        label = linkpreferences.commentsSort.label,
-                        icon = Drawable.Sort,
-                        clickAction = safeCallback {
-                            viewStateStorage.update { viewState ->
+                    downvoteAction = safeCallback {
+                        when (link.userAction) {
+                            UserVote.Down -> linksRepository.removeVote(link.id)
+                            UserVote.Up,
+                            null,
+                            -> viewStateStorage.update { viewState ->
                                 viewState.copy(
                                     picker = OptionPickerUi(
-                                        title = Strings.Link.COMMENTS_SORT_TITLE,
-                                        reasons = CommentsDefaultSort.values().map { option ->
+                                        title = Strings.Link.BURY_REASON_TITLE,
+                                        reasons = VoteDownReason.values().map { reason ->
                                             OptionPickerUi.Option(
-                                                label = Strings.Link.commentsSortOption(option.label),
-                                                clickAction = safeCallback { appStorage.update(UserSettings.commentsSort, option) },
+                                                label = reason.label,
+                                                clickAction = safeCallback { linksRepository.voteDown(link.id, reason) },
                                             )
                                         },
                                         dismissAction = safeCallback { viewStateStorage.update { it.copy(picker = null) } },
                                     ),
                                 )
                             }
-                        },
-                    ),
-                    currentUser = loggedUser?.toUi(onClicked = null),
-                    addCommentAction = safeCallback { TODO("Not supported") },
-                )
-            }
-            val commentsSection = CommentsSectionUi(
-                comments = comments,
-                isLoading = comments.isEmpty() && viewState.generalResource.isLoading,
-            )
-            val relatedSection = if (link == null) {
-                null
-            } else if (link.relatedCount > 0) {
-                val resource = viewState.relatedResource
-                if (resource.isLoading) {
-                    RelatedLinksSectionUi.Loading
-                } else if (resource.failedAction != null) {
-                    RelatedLinksSectionUi.FullWidthError(
-                        retryAction = safeCallback { resource.failedAction?.retryAction.let(::checkNotNull).invoke() },
-                    )
-                } else {
-                    val addLinkAction = safeCallback { TODO() }
-                    if (!relatedLinks.isNullOrEmpty()) {
-                        RelatedLinksSectionUi.WithData(
-                            links = relatedLinks.map { related -> related.toUi(linkId = link.id) },
-                            addLinkAction = addLinkAction,
-                        )
-                    } else {
-                        RelatedLinksSectionUi.Empty(
-                            addLinkAction = addLinkAction,
-                        )
-                    }
-                }
-            } else {
-                null
-            }
-
-            LinkDetailsUi(
-                swipeRefresh = SwipeRefreshUi(
-                    isRefreshing = viewState.generalResource.isLoading && link != null,
-                    refreshAction = safeCallback {
-                        coroutineScope {
-                            viewStateStorage.update { it.copy(generalResource = Resource.loading()) }
-                            val linkRefresh = async { linkStore.fresh(key = key.linkId) }
-                            val commentsRefresh = async { commentsStore.fresh(key = key.linkId) }
-
-                            runCatching { awaitAll(linkRefresh, commentsRefresh) }
-                                .onSuccess {
-                                    viewStateStorage.update {
-                                        it.copy(
-                                            generalResource = Resource.idle(),
-                                            forciblyShownBlockedComments = emptySet(),
-                                            allowedNsfwImages = emptySet(),
-                                            expandedComments = emptySet(),
-                                        )
-                                    }
-                                }
-                                .onFailure { failure ->
-                                    viewStateStorage.update {
-                                        it.copy(
-                                            generalResource = Resource.error(FailedAction(cause = failure)),
-                                            forciblyShownBlockedComments = emptySet(),
-                                            allowedNsfwImages = emptySet(),
-                                            expandedComments = emptySet(),
-                                        )
-                                    }
-                                }
                         }
                     },
                 ),
-                header = header,
-                relatedSection = relatedSection,
-                commentsSection = commentsSection,
-                errorDialog = viewState.generalResource.failedAction?.let { error ->
-                    ErrorDialogUi(
-                        error = error.cause,
-                        retryAction = error.retryAction,
-                        dismissAction = safeCallback { viewStateStorage.update { it.copy(generalResource = Resource.idle()) } },
+                upvotePercentage = link.upvotePercentage,
+                previewImageUrl = link.fullImageUrl,
+                commentsCount = Button(
+                    label = link.commentsCount.toString(),
+                    icon = Drawable.Comments,
+                    clickAction = toggleCommentsAction,
+                ),
+                postedAgo = link.postedAt.periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString(suffix = "temu"),
+                author = link.author.toUi(
+                    onClicked = safeCallback { interopRequests.request(InteropRequest.Profile(link.author.profileId)) },
+                ),
+                tags = link.tags.map { tag ->
+                    TagUi(
+                        name = tag,
+                        onClick = safeCallback { interopRequests.request(InteropRequest.Tag(tag)) },
                     )
                 },
-                infoDialog = viewState.spoilerDialog?.let {
-                    InfoDialogUi(
-                        title = Strings.Comment.SPOILER_DIALOG_TITLE,
-                        message = it,
-                        dismissAction = safeCallback { viewStateStorage.update { it.copy(spoilerDialog = null) } },
-                    )
-                },
-                contextMenuOptions = listOfNotNull(
-                    link?.wykopUrl?.let { shareUrl ->
-                        ContextMenuOptionUi(
-                            icon = Drawable.Share,
-                            label = Strings.SHARE_TITLE,
-                            onClick = safeCallback { interopRequests.request(InteropRequest.Share(url = shareUrl)) },
+                viewLinkAction = safeCallback { interopRequests.request(InteropRequest.WebBrowser(link.sourceUrl)) },
+                favoriteButton = ToggleButtonUi(
+                    isToggled = link.userFavorite,
+                    clickAction = safeCallback { linksRepository.toggleFavorite(link.id) },
+                    isVisible = loggedUser != null,
+                ),
+                moreAction = safeCallback {
+                    viewStateStorage.update { viewState ->
+                        viewState.copy(
+                            picker = OptionPickerUi(
+                                title = Strings.Link.MORE_TITLE_LINK,
+                                reasons = listOf(
+                                    OptionPickerUi.Option(
+                                        label = Strings.Link.MORE_OPTION_SHARE,
+                                        icon = Drawable.Share,
+                                        clickAction = safeCallback { interopRequests.request(InteropRequest.Share(link.wykopUrl)) },
+                                    ),
+                                    OptionPickerUi.Option(
+                                        label = Strings.Link.MORE_OPTION_COPY,
+                                        icon = Drawable.Copy,
+                                        clickAction = safeCallback {
+                                            clipboardService.copy(
+                                                """
+                                                        ${link.title.copyableText(textUtils)}
+                                                        
+                                                        ${link.description.copyableText(textUtils)}
+                                                """.trimIndent(),
+                                            )
+                                            showSnackbar(Strings.COPIED_TO_CLIPBOARD)
+                                        },
+                                    ),
+                                    OptionPickerUi.Option(
+                                        label = Strings.Link.moreOptionUpvotersList(link.voteCount),
+                                        icon = Drawable.Upvoters,
+                                        clickAction = safeCallback { interopRequests.request(InteropRequest.UpvotersList(link.id)) },
+                                    ),
+                                    OptionPickerUi.Option(
+                                        label = Strings.Link.moreOptionDownvotersList(link.buryCount),
+                                        icon = Drawable.Downvoters,
+                                        clickAction = safeCallback { interopRequests.request(InteropRequest.DownvotersList(link.id)) },
+                                    ),
+                                    OptionPickerUi.Option(
+                                        label = Strings.Link.MORE_OPTION_OPEN_IN_BROWSER,
+                                        icon = Drawable.Browser,
+                                        clickAction = safeCallback {
+                                            interopRequests.request(InteropRequest.WebBrowser(url = link.wykopUrl, force = true))
+                                        },
+                                    ),
+                                ),
+                                dismissAction = safeCallback { viewStateStorage.update { it.copy(picker = null) } },
+                            ),
                         )
+                    }
+                },
+                commentsSort = Button(
+                    label = linkpreferences.commentsSort.label,
+                    icon = Drawable.Sort,
+                    clickAction = safeCallback {
+                        viewStateStorage.update { viewState ->
+                            viewState.copy(
+                                picker = OptionPickerUi(
+                                    title = Strings.Link.COMMENTS_SORT_TITLE,
+                                    reasons = CommentsDefaultSort.values().map { option ->
+                                        OptionPickerUi.Option(
+                                            label = Strings.Link.commentsSortOption(option.label),
+                                            clickAction = safeCallback { appStorage.update(UserSettings.commentsSort, option) },
+                                        )
+                                    },
+                                    dismissAction = safeCallback { viewStateStorage.update { it.copy(picker = null) } },
+                                ),
+                            )
+                        }
                     },
                 ),
-                picker = viewState.picker,
-                snackbar = viewState.snackbar,
+                currentUser = loggedUser?.toUi(onClicked = null),
+                addCommentAction = safeCallback { TODO("Not supported") },
             )
         }
+        val commentsSection = CommentsSectionUi(
+            comments = comments,
+            isLoading = comments.isEmpty() && viewState.generalResource.isLoading,
+        )
+        val relatedSection = if (link == null) {
+            null
+        } else if (link.relatedCount > 0) {
+            val resource = viewState.relatedResource
+            if (resource.isLoading) {
+                RelatedLinksSectionUi.Loading
+            } else if (resource.failedAction != null) {
+                RelatedLinksSectionUi.FullWidthError(
+                    retryAction = safeCallback { resource.failedAction?.retryAction.let(::checkNotNull).invoke() },
+                )
+            } else {
+                val addLinkAction = safeCallback { TODO() }
+                if (!relatedLinks.isNullOrEmpty()) {
+                    RelatedLinksSectionUi.WithData(
+                        links = relatedLinks.map { related -> related.toUi(linkId = link.id) },
+                        addLinkAction = addLinkAction,
+                    )
+                } else {
+                    RelatedLinksSectionUi.Empty(
+                        addLinkAction = addLinkAction,
+                    )
+                }
+            }
+        } else {
+            null
+        }
+
+        LinkDetailsUi(
+            swipeRefresh = SwipeRefreshUi(
+                isRefreshing = viewState.generalResource.isLoading && link != null,
+                refreshAction = safeCallback {
+                    coroutineScope {
+                        viewStateStorage.update { it.copy(generalResource = Resource.loading()) }
+                        val linkRefresh = async { linkStore.fresh(key = key.linkId) }
+                        val commentsRefresh = async { commentsStore.fresh(key = key.linkId) }
+
+                        runCatching { awaitAll(linkRefresh, commentsRefresh) }
+                            .onSuccess {
+                                viewStateStorage.update {
+                                    it.copy(
+                                        generalResource = Resource.idle(),
+                                        forciblyShownBlockedComments = emptySet(),
+                                        allowedNsfwImages = emptySet(),
+                                        expandedComments = emptySet(),
+                                    )
+                                }
+                            }
+                            .onFailure { failure ->
+                                viewStateStorage.update {
+                                    it.copy(
+                                        generalResource = Resource.error(FailedAction(cause = failure)),
+                                        forciblyShownBlockedComments = emptySet(),
+                                        allowedNsfwImages = emptySet(),
+                                        expandedComments = emptySet(),
+                                    )
+                                }
+                            }
+                    }
+                },
+            ),
+            header = header,
+            relatedSection = relatedSection,
+            commentsSection = commentsSection,
+            errorDialog = viewState.generalResource.failedAction?.let { error ->
+                ErrorDialogUi(
+                    error = error.cause,
+                    retryAction = error.retryAction,
+                    dismissAction = safeCallback { viewStateStorage.update { it.copy(generalResource = Resource.idle()) } },
+                )
+            },
+            infoDialog = viewState.spoilerDialog?.let {
+                InfoDialogUi(
+                    title = Strings.Comment.SPOILER_DIALOG_TITLE,
+                    message = it,
+                    dismissAction = safeCallback { viewStateStorage.update { it.copy(spoilerDialog = null) } },
+                )
+            },
+            contextMenuOptions = listOfNotNull(
+                link?.wykopUrl?.let { shareUrl ->
+                    ContextMenuOptionUi(
+                        icon = Drawable.Share,
+                        label = Strings.SHARE_TITLE,
+                        onClick = safeCallback { interopRequests.request(InteropRequest.Share(url = shareUrl)) },
+                    )
+                },
+            ),
+            picker = viewState.picker,
+            snackbar = viewState.snackbar,
+        )
+    }
 
     private fun RelatedLink.toUi(linkId: Long) = RelatedLinkUi(
         author = author?.toUi(onClicked = null),
@@ -370,62 +369,61 @@ internal class GetLinkDetailsQuery @Inject constructor(
         shareAction = safeCallback { interopRequests.request(InteropRequest.Share(url)) },
     )
 
-    private fun commentsFlow() =
-        combine(
-            commentsStore.stream(StoreRequest.cached(key = key.linkId, refresh = false))
-                .map { it.dataOrNull() }
-                .distinctUntilChanged(),
-            getCommentPreferences(),
-            userInfoStorage.loggedUser,
-            detailsFlow(),
-            blacklistStore.stream(StoreRequest.cached(key = Unit, refresh = false))
-                .map { it.dataOrNull() }
-                .filterNotNull()
-                .distinctUntilChanged(),
-            viewStateStorage.state,
-        ) { comments, commentPreferences, loggedUser, link, blacklist, viewState ->
-            val comparator: Comparator<LinkComment> = when (commentPreferences.sort) {
-                CommentsDefaultSort.Best -> compareByDescending { it.totalCount }
-                CommentsDefaultSort.New -> compareByDescending { it.postedAt }
-                CommentsDefaultSort.Old -> compareBy { it.postedAt }
-            }
-            link ?: return@combine emptyMap<ParentCommentUi, List<LinkCommentUi>>() to null
-
-            val commentsUi = comments.orEmpty()
-                .toSortedMap(comparator.thenComparing(compareBy { it.id }))
-                .map { (key, value) ->
-                    val isCollapsed = viewState.collapsedIds.contains(key.id)
-
-                    val replies = value
-                        .sortedBy { it.postedAt }
-                        .map { reply -> reply.toUi(loggedUser, link, commentPreferences, blacklist, viewState) }
-                        .filterNot { it is LinkCommentUi.Hidden && commentPreferences.hideBlacklistedContent }
-                    val parent = ParentCommentUi(
-                        collapsedCount = if (isCollapsed && replies.isNotEmpty()) "+${replies.size}" else null,
-                        toggleExpansionStateAction = if (replies.isNotEmpty()) {
-                            safeCallback {
-                                viewStateStorage.update {
-                                    val updated = if (isCollapsed) it.collapsedIds - key.id else it.collapsedIds + key.id
-                                    it.copy(collapsedIds = updated)
-                                }
-                            }
-                        } else {
-                            null
-                        },
-                        data = key.toUi(loggedUser, link, commentPreferences, blacklist, viewState),
-                    )
-
-                    parent to replies.takeUnless { isCollapsed }.orEmpty()
-                }
-                .toMap()
-            val allComments = comments.orEmpty().flatMap { it.value.map { it.id } + it.key.id }.toSet()
-            val commentsAction = if (viewState.collapsedIds.size == allComments.size) {
-                safeCallback { viewStateStorage.update { it.copy(collapsedIds = emptySet()) } }
-            } else {
-                safeCallback { viewStateStorage.update { it.copy(collapsedIds = allComments) } }
-            }
-            commentsUi to commentsAction
+    private fun commentsFlow() = combine(
+        commentsStore.stream(StoreRequest.cached(key = key.linkId, refresh = false))
+            .map { it.dataOrNull() }
+            .distinctUntilChanged(),
+        getCommentPreferences(),
+        userInfoStorage.loggedUser,
+        detailsFlow(),
+        blacklistStore.stream(StoreRequest.cached(key = Unit, refresh = false))
+            .map { it.dataOrNull() }
+            .filterNotNull()
+            .distinctUntilChanged(),
+        viewStateStorage.state,
+    ) { comments, commentPreferences, loggedUser, link, blacklist, viewState ->
+        val comparator: Comparator<LinkComment> = when (commentPreferences.sort) {
+            CommentsDefaultSort.Best -> compareByDescending { it.totalCount }
+            CommentsDefaultSort.New -> compareByDescending { it.postedAt }
+            CommentsDefaultSort.Old -> compareBy { it.postedAt }
         }
+        link ?: return@combine emptyMap<ParentCommentUi, List<LinkCommentUi>>() to null
+
+        val commentsUi = comments.orEmpty()
+            .toSortedMap(comparator.thenComparing(compareBy { it.id }))
+            .map { (key, value) ->
+                val isCollapsed = viewState.collapsedIds.contains(key.id)
+
+                val replies = value
+                    .sortedBy { it.postedAt }
+                    .map { reply -> reply.toUi(loggedUser, link, commentPreferences, blacklist, viewState) }
+                    .filterNot { it is LinkCommentUi.Hidden && commentPreferences.hideBlacklistedContent }
+                val parent = ParentCommentUi(
+                    collapsedCount = if (isCollapsed && replies.isNotEmpty()) "+${replies.size}" else null,
+                    toggleExpansionStateAction = if (replies.isNotEmpty()) {
+                        safeCallback {
+                            viewStateStorage.update {
+                                val updated = if (isCollapsed) it.collapsedIds - key.id else it.collapsedIds + key.id
+                                it.copy(collapsedIds = updated)
+                            }
+                        }
+                    } else {
+                        null
+                    },
+                    data = key.toUi(loggedUser, link, commentPreferences, blacklist, viewState),
+                )
+
+                parent to replies.takeUnless { isCollapsed }.orEmpty()
+            }
+            .toMap()
+        val allComments = comments.orEmpty().flatMap { it.value.map { it.id } + it.key.id }.toSet()
+        val commentsAction = if (viewState.collapsedIds.size == allComments.size) {
+            safeCallback { viewStateStorage.update { it.copy(collapsedIds = emptySet()) } }
+        } else {
+            safeCallback { viewStateStorage.update { it.copy(collapsedIds = allComments) } }
+        }
+        commentsUi to commentsAction
+    }
 
     private fun getCommentPreferences(): Flow<CommentPreferences> = combine(
         getLinksPreferences(),
@@ -448,14 +446,12 @@ internal class GetLinkDetailsQuery @Inject constructor(
     }
         .distinctUntilChanged()
 
-    private fun relatedLinksFlow() =
-        relatedLinksStore.stream(StoreRequest.cached(key = key.linkId, refresh = false))
-            .map { it.dataOrNull() }
+    private fun relatedLinksFlow() = relatedLinksStore.stream(StoreRequest.cached(key = key.linkId, refresh = false))
+        .map { it.dataOrNull() }
 
-    private fun detailsFlow() =
-        linkStore.stream(StoreRequest.cached(key = key.linkId, refresh = false))
-            .map { it.dataOrNull() }
-            .distinctUntilChanged()
+    private fun detailsFlow() = linkStore.stream(StoreRequest.cached(key = key.linkId, refresh = false))
+        .map { it.dataOrNull() }
+        .distinctUntilChanged()
 
     private suspend fun LinkComment.toUi(
         loggedUser: LoggedUserInfo?,
@@ -671,16 +667,14 @@ private val tagsRegex by lazy {
 private val LinkComment.usedTags
     get() = tagsRegex.matchEntire(body)?.groupValues.orEmpty()
 
-private suspend fun LinkComment.isBlocked(
-    hideNewUserContent: Boolean,
-    blacklist: Blacklist,
-): Boolean = withContext(AppDispatchers.Default) {
-    val blockedTagsUsed = usedTags.intersect(blacklist.tags)
-    val linkAuthorOnBlackList = blacklist.users.contains(author.profileId)
-    val isTooLowRank = hideNewUserContent && author.color == UserInfo.Color.Green
+private suspend fun LinkComment.isBlocked(hideNewUserContent: Boolean, blacklist: Blacklist): Boolean =
+    withContext(AppDispatchers.Default) {
+        val blockedTagsUsed = usedTags.intersect(blacklist.tags)
+        val linkAuthorOnBlackList = blacklist.users.contains(author.profileId)
+        val isTooLowRank = hideNewUserContent && author.color == UserInfo.Color.Green
 
-    blockedTagsUsed.isNotEmpty() || linkAuthorOnBlackList || isTooLowRank
-}
+        blockedTagsUsed.isNotEmpty() || linkAuthorOnBlackList || isTooLowRank
+    }
 
 private data class CommentPreferences(
     val hideNewUserContent: Boolean,

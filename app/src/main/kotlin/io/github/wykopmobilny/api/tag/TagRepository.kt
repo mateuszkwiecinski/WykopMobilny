@@ -32,10 +32,9 @@ class TagRepository @Inject constructor(
         .flatMap(ErrorHandler<TagLinksResponse>())
         .map { TagLinksMapper.map(it, owmContentFilter) }
 
-    override fun getObservedTags(): Single<List<ObservedTagResponse>> =
-        rxSingle { tagApi.getObservedTags() }
-            .retryWhen(userTokenRefresher)
-            .compose(ErrorHandlerTransformer())
+    override fun getObservedTags(): Single<List<ObservedTagResponse>> = rxSingle { tagApi.getObservedTags() }
+        .retryWhen(userTokenRefresher)
+        .compose(ErrorHandlerTransformer())
 
     override fun observe(tag: String) = rxSingle { tagApi.observe(tag) }
         .retryWhen(userTokenRefresher)

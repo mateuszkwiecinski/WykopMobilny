@@ -20,10 +20,7 @@ internal abstract class PromotedModule {
     companion object {
 
         @Provides
-        fun promotedPager(
-            mediator: StoreMediator<Link>,
-            pagingSource: Provider<PagingSource<Link>>,
-        ) = Pager(
+        fun promotedPager(mediator: StoreMediator<Link>, pagingSource: Provider<PagingSource<Link>>) = Pager(
             config = PagingConfig(pageSize = 20),
             remoteMediator = mediator,
             pagingSourceFactory = pagingSource::get,

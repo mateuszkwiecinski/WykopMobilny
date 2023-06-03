@@ -28,8 +28,7 @@ class EntryCommentAdapter @Inject constructor(
     private val showAdultContent by lazy { settingsPreferencesApi.showAdultContent }
     private val hideNsfw by lazy { settingsPreferencesApi.hideNsfw }
 
-    override fun getViewType(position: Int) =
-        EntryCommentViewHolder.getViewTypeForEntryComment(dataset[position]!!)
+    override fun getViewType(position: Int) = EntryCommentViewHolder.getViewTypeForEntryComment(dataset[position]!!)
 
     override fun addData(items: List<EntryComment>, shouldClearAdapter: Boolean) {
         super.addData(items.filterNot { settingsPreferencesApi.hideBlacklistedViews && it.isBlocked }, shouldClearAdapter)

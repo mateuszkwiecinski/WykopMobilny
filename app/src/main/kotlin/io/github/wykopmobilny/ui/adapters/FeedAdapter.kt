@@ -15,9 +15,7 @@ class FeedAdapter @Inject constructor(
 
     override val itemType: Int = 0
 
-    override fun bindHolder(holder: BlockedViewHolder, position: Int) =
-        holder.bindView(data[position])
+    override fun bindHolder(holder: BlockedViewHolder, position: Int) = holder.bindView(data[position])
 
-    override fun createViewHolder(parent: ViewGroup): BlockedViewHolder =
-        BlockedViewHolder.inflateView(parent) { notifyItemChanged(it) }
+    override fun createViewHolder(parent: ViewGroup): BlockedViewHolder = BlockedViewHolder.inflateView(parent) { notifyItemChanged(it) }
 }

@@ -50,10 +50,9 @@ class EmbedViewActivity : BaseActivity(), EmbedView {
 
     companion object {
         const val EXTRA_URL = "EXTRA_URL"
-        fun createIntent(context: Context, url: String) =
-            Intent(context, EmbedViewActivity::class.java).apply {
-                putExtra(EXTRA_URL, url.trim())
-            }
+        fun createIntent(context: Context, url: String) = Intent(context, EmbedViewActivity::class.java).apply {
+            putExtra(EXTRA_URL, url.trim())
+        }
     }
 
     @Inject

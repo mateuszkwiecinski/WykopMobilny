@@ -82,26 +82,22 @@ class BodyContentView(context: Context, attrs: AttributeSet?) : AppCompatTextVie
 
     private inner class EllipsizeEndStrategy {
 
-        fun processText(text: CharSequence?) =
-            if (text == null || fitsInLayout(text)) text else createEllipsizedText(text)
+        fun processText(text: CharSequence?) = if (text == null || fitsInLayout(text)) text else createEllipsizedText(text)
 
-        private fun fitsInLayout(text: CharSequence) =
-            createWorkingLayout(text).lineCount <= maxLines
+        private fun fitsInLayout(text: CharSequence) = createWorkingLayout(text).lineCount <= maxLines
 
-        private fun createWorkingLayout(workingText: CharSequence) =
-            StaticLayout.Builder.obtain(
-                workingText,
-                0,
-                workingText.length,
-                paint,
-                measuredWidth - compoundPaddingLeft - compoundPaddingRight,
-            )
-                .setMaxLines(maxLines)
-                .setLineSpacing(lineSpacingExtra, lineSpacingMultiplier)
-                .build()
+        private fun createWorkingLayout(workingText: CharSequence) = StaticLayout.Builder.obtain(
+            workingText,
+            0,
+            workingText.length,
+            paint,
+            measuredWidth - compoundPaddingLeft - compoundPaddingRight,
+        )
+            .setMaxLines(maxLines)
+            .setLineSpacing(lineSpacingExtra, lineSpacingMultiplier)
+            .build()
 
-        private fun stripEndPunctuation(workingText: CharSequence) =
-            defaultEndPunctuation.matcher(workingText).replaceFirst("")
+        private fun stripEndPunctuation(workingText: CharSequence) = defaultEndPunctuation.matcher(workingText).replaceFirst("")
 
         private fun createEllipsizedText(fullText: CharSequence): CharSequence {
             val layout = createWorkingLayout(fullText)

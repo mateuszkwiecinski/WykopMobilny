@@ -76,9 +76,7 @@ private fun String.convertMarkdownToHtml(): String {
         .removeSuffix("</p></body>")
 }
 
-internal suspend fun String.copyableText(
-    textUtils: WykopTextUtils,
-) = withContext(AppDispatchers.Default) {
+internal suspend fun String.copyableText(textUtils: WykopTextUtils) = withContext(AppDispatchers.Default) {
     val withSpoilersExpanded = spoilerRegex.replace(this@copyableText) { match ->
         match.groupValues[1].decode().convertMarkdownToHtml()
     }
@@ -86,8 +84,7 @@ internal suspend fun String.copyableText(
     textUtils.parseHtml(withSpoilersExpanded).toString()
 }
 
-private fun String.decode() =
-    URLDecoder.decode(this, "UTF-8")
+private fun String.decode() = URLDecoder.decode(this, "UTF-8")
 
 private val MatchResult.id
     get() = range.toString()

@@ -74,16 +74,15 @@ object Strings {
 
         const val Cta = "Weryfikuj"
 
-        fun openAuthenticator(externalApp: AuthenticatorApp) =
-            when (externalApp) {
-                AuthenticatorApp.Google -> "Google Authenticator"
-                AuthenticatorApp.Microsoft -> "Microsoft Authenticator"
-                AuthenticatorApp.Authy -> "Authy"
-                AuthenticatorApp.AuthenticatorPro -> "Authenticator Pro"
-                AuthenticatorApp.Bitwarden -> "Bitwarden"
-                AuthenticatorApp.Pixplicity -> "Pixplicity Authenticator"
-                AuthenticatorApp.Salesforce -> "Salesforce Authenticator"
-                AuthenticatorApp.Lastpass -> "Lastpass Authenticator"
-            }
+        fun openAuthenticator(externalApp: AuthenticatorApp) = when (externalApp) {
+            AuthenticatorApp.Google -> "Google Authenticator"
+            AuthenticatorApp.Microsoft -> "Microsoft Authenticator"
+            AuthenticatorApp.Authy -> "Authy"
+            AuthenticatorApp.AuthenticatorPro -> "Authenticator Pro"
+            AuthenticatorApp.Bitwarden -> "Bitwarden"
+            AuthenticatorApp.Pixplicity -> "Pixplicity Authenticator"
+            AuthenticatorApp.Salesforce -> "Salesforce Authenticator"
+            AuthenticatorApp.Lastpass -> "Lastpass Authenticator"
+        }
     }
 }

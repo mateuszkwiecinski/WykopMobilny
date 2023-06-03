@@ -18,24 +18,21 @@ class MyWykopRepository @Inject constructor(
     private val patronsApi: PatronsApi,
 ) : MyWykopApi {
 
-    override fun getIndex(page: Int): Single<List<EntryLink>> =
-        rxSingle { myWykopApi.getIndex(page) }
-            .retryWhen(userTokenRefresher)
-            .flatMap { patronsApi.ensurePatrons(it) }
-            .compose(ErrorHandlerTransformer())
-            .map { it.map { response -> EntryLinkMapper.map(response, owmContentFilter) } }
+    override fun getIndex(page: Int): Single<List<EntryLink>> = rxSingle { myWykopApi.getIndex(page) }
+        .retryWhen(userTokenRefresher)
+        .flatMap { patronsApi.ensurePatrons(it) }
+        .compose(ErrorHandlerTransformer())
+        .map { it.map { response -> EntryLinkMapper.map(response, owmContentFilter) } }
 
-    override fun byUsers(page: Int): Single<List<EntryLink>> =
-        rxSingle { myWykopApi.byUsers(page) }
-            .retryWhen(userTokenRefresher)
-            .flatMap { patronsApi.ensurePatrons(it) }
-            .compose(ErrorHandlerTransformer())
-            .map { it.map { response -> EntryLinkMapper.map(response, owmContentFilter) } }
+    override fun byUsers(page: Int): Single<List<EntryLink>> = rxSingle { myWykopApi.byUsers(page) }
+        .retryWhen(userTokenRefresher)
+        .flatMap { patronsApi.ensurePatrons(it) }
+        .compose(ErrorHandlerTransformer())
+        .map { it.map { response -> EntryLinkMapper.map(response, owmContentFilter) } }
 
-    override fun byTags(page: Int): Single<List<EntryLink>> =
-        rxSingle { myWykopApi.byTags(page) }
-            .retryWhen(userTokenRefresher)
-            .flatMap { patronsApi.ensurePatrons(it) }
-            .compose(ErrorHandlerTransformer())
-            .map { it.map { response -> EntryLinkMapper.map(response, owmContentFilter) } }
+    override fun byTags(page: Int): Single<List<EntryLink>> = rxSingle { myWykopApi.byTags(page) }
+        .retryWhen(userTokenRefresher)
+        .flatMap { patronsApi.ensurePatrons(it) }
+        .compose(ErrorHandlerTransformer())
+        .map { it.map { response -> EntryLinkMapper.map(response, owmContentFilter) } }
 }

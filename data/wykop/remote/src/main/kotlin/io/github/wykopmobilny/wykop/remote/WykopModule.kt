@@ -24,66 +24,53 @@ internal class WykopModule {
 
     @Reusable
     @Provides
-    fun addLinkRetrofitApi(retrofit: Retrofit) =
-        retrofit.create<AddLinkRetrofitApi>()
+    fun addLinkRetrofitApi(retrofit: Retrofit) = retrofit.create<AddLinkRetrofitApi>()
 
     @Reusable
     @Provides
-    fun entriesRetrofitApi(retrofit: Retrofit) =
-        retrofit.create<EntriesRetrofitApi>()
+    fun entriesRetrofitApi(retrofit: Retrofit) = retrofit.create<EntriesRetrofitApi>()
 
     @Reusable
     @Provides
-    fun externalRetrofitApi(retrofit: Retrofit) =
-        retrofit.create<ExternalRetrofitApi>()
+    fun externalRetrofitApi(retrofit: Retrofit) = retrofit.create<ExternalRetrofitApi>()
 
     @Reusable
     @Provides
-    fun hitsRetrofitApi(retrofit: Retrofit) =
-        retrofit.create<HitsRetrofitApi>()
+    fun hitsRetrofitApi(retrofit: Retrofit) = retrofit.create<HitsRetrofitApi>()
 
     @Reusable
     @Provides
-    fun linksRetrofitApi(retrofit: Retrofit) =
-        retrofit.create<LinksRetrofitApi>()
+    fun linksRetrofitApi(retrofit: Retrofit) = retrofit.create<LinksRetrofitApi>()
 
     @Reusable
     @Provides
-    fun loginRetrofitApi(retrofit: Retrofit) =
-        retrofit.create<LoginRetrofitApi>()
+    fun loginRetrofitApi(retrofit: Retrofit) = retrofit.create<LoginRetrofitApi>()
 
     @Reusable
     @Provides
-    fun myWykopRetrofitApi(retrofit: Retrofit) =
-        retrofit.create<MyWykopRetrofitApi>()
+    fun myWykopRetrofitApi(retrofit: Retrofit) = retrofit.create<MyWykopRetrofitApi>()
 
     @Reusable
     @Provides
-    fun notificationsRetrofitApi(retrofit: Retrofit) =
-        retrofit.create<NotificationsRetrofitApi>()
+    fun notificationsRetrofitApi(retrofit: Retrofit) = retrofit.create<NotificationsRetrofitApi>()
 
     @Reusable
     @Provides
-    fun pMRetrofitApi(retrofit: Retrofit) =
-        retrofit.create<PMRetrofitApi>()
+    fun pMRetrofitApi(retrofit: Retrofit) = retrofit.create<PMRetrofitApi>()
 
     @Reusable
     @Provides
-    fun profileRetrofitApi(retrofit: Retrofit) =
-        retrofit.create<ProfileRetrofitApi>()
+    fun profileRetrofitApi(retrofit: Retrofit) = retrofit.create<ProfileRetrofitApi>()
 
     @Reusable
     @Provides
-    fun searchRetrofitApi(retrofit: Retrofit) =
-        retrofit.create<SearchRetrofitApi>()
+    fun searchRetrofitApi(retrofit: Retrofit) = retrofit.create<SearchRetrofitApi>()
 
     @Reusable
     @Provides
-    fun suggestRetrofitApi(retrofit: Retrofit) =
-        retrofit.create<SuggestRetrofitApi>()
+    fun suggestRetrofitApi(retrofit: Retrofit) = retrofit.create<SuggestRetrofitApi>()
 
     @Reusable
     @Provides
-    fun tagRetrofitApi(retrofit: Retrofit) =
-        retrofit.create<TagRetrofitApi>()
+    fun tagRetrofitApi(retrofit: Retrofit) = retrofit.create<TagRetrofitApi>()
 }

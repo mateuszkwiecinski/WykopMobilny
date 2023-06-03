@@ -6,6 +6,5 @@ import io.github.wykopmobilny.models.mapper.Mapper
 import io.github.wykopmobilny.utils.toPrettyDate
 
 object ConversationMapper : Mapper<ConversationResponse, Conversation> {
-    override fun map(value: ConversationResponse) =
-        Conversation(AuthorMapper.map(value.receiver), value.lastUpdate.toPrettyDate())
+    override fun map(value: ConversationResponse) = Conversation(AuthorMapper.map(value.receiver), value.lastUpdate.toPrettyDate())
 }

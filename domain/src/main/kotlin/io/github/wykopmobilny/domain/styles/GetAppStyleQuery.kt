@@ -15,40 +15,36 @@ internal class GetAppStyleQuery @Inject constructor(
     private val systemSettingsDetector: SystemSettingsDetector,
 ) : GetAppStyle {
 
-    override fun invoke() =
-        getAppearanceSectionPreferences()
-            .map { appearance ->
-                StyleUi(
-                    style = findAppStyle(appearance.appThemePreference, appearance.isAmoledTheme),
-                    edgeSlidingBehaviorEnabled = !appearance.disableEdgeSlide,
-                )
+    override fun invoke() = getAppearanceSectionPreferences()
+        .map { appearance ->
+            StyleUi(
+                style = findAppStyle(appearance.appThemePreference, appearance.isAmoledTheme),
+                edgeSlidingBehaviorEnabled = !appearance.disableEdgeSlide,
+            )
+        }
+        .distinctUntilChanged()
+
+    private suspend fun findAppStyle(appThemePreference: AppThemePreference, isAmoledTheme: Boolean) = when (appThemePreference) {
+        AppThemePreference.Auto ->
+            if (isSystemDark()) {
+                findDarkMode(isAmoledTheme)
+            } else {
+                ApplicableStyleUi.Light
             }
-            .distinctUntilChanged()
+        AppThemePreference.Light -> ApplicableStyleUi.Light
+        AppThemePreference.Dark -> findDarkMode(isAmoledTheme)
+    }
 
-    private suspend fun findAppStyle(appThemePreference: AppThemePreference, isAmoledTheme: Boolean) =
-        when (appThemePreference) {
-            AppThemePreference.Auto ->
-                if (isSystemDark()) {
-                    findDarkMode(isAmoledTheme)
-                } else {
-                    ApplicableStyleUi.Light
-                }
-            AppThemePreference.Light -> ApplicableStyleUi.Light
-            AppThemePreference.Dark -> findDarkMode(isAmoledTheme)
-        }
+    private fun findDarkMode(isAmoledTheme: Boolean) = if (isAmoledTheme) {
+        ApplicableStyleUi.DarkAmoled
+    } else {
+        ApplicableStyleUi.Dark
+    }
 
-    private fun findDarkMode(isAmoledTheme: Boolean) =
-        if (isAmoledTheme) {
-            ApplicableStyleUi.DarkAmoled
-        } else {
-            ApplicableStyleUi.Dark
-        }
-
-    private suspend fun isSystemDark() =
-        when (systemSettingsDetector.getNightModeState()) {
-            NightModeState.Enabled -> true
-            NightModeState.Disabled,
-            NightModeState.Unknown,
-            -> false
-        }
+    private suspend fun isSystemDark() = when (systemSettingsDetector.getNightModeState()) {
+        NightModeState.Enabled -> true
+        NightModeState.Disabled,
+        NightModeState.Unknown,
+        -> false
+    }
 }

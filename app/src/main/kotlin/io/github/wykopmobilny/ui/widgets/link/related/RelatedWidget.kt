@@ -35,12 +35,7 @@ class RelatedWidget(context: Context, attrs: AttributeSet) : CardView(context, a
     private lateinit var presenter: RelatedWidgetPresenter
     private lateinit var relatedItem: Related
 
-    fun setRelatedData(
-        linkId: Long?,
-        related: Related,
-        userManagerApi: UserManagerApi,
-        relatedWidgetPresenter: RelatedWidgetPresenter,
-    ) {
+    fun setRelatedData(linkId: Long?, related: Related, userManagerApi: UserManagerApi, relatedWidgetPresenter: RelatedWidgetPresenter) {
         relatedItem = related
         presenter = relatedWidgetPresenter
         binding.title.text = related.title

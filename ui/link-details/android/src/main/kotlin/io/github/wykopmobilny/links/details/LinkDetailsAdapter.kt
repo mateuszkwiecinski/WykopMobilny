@@ -23,19 +23,18 @@ import io.github.wykopmobilny.utils.asyncDifferConfig
 
 internal class LinkDetailsAdapter : ListAdapter<ListItem, LinkDetailsAdapter.BindingViewHolder>(asyncDifferConfig(ListItem.Diff)) {
 
-    override fun getItemViewType(position: Int) =
-        when (val item = getItem(position)) {
-            is ListItem.Header -> R.layout.link_details_header
-            is ListItem.ParentComment -> when (item.comment.data) {
-                is LinkCommentUi.Hidden -> R.layout.link_details_parent_comment_hidden
-                is LinkCommentUi.Normal -> R.layout.link_details_parent_comment
-            }
-            is ListItem.ReplyComment -> when (item.comment) {
-                is LinkCommentUi.Hidden -> R.layout.link_details_reply_comment_hidden
-                is LinkCommentUi.Normal -> R.layout.link_details_reply_comment
-            }
-            is ListItem.RelatedSection -> R.layout.link_details_related
+    override fun getItemViewType(position: Int) = when (val item = getItem(position)) {
+        is ListItem.Header -> R.layout.link_details_header
+        is ListItem.ParentComment -> when (item.comment.data) {
+            is LinkCommentUi.Hidden -> R.layout.link_details_parent_comment_hidden
+            is LinkCommentUi.Normal -> R.layout.link_details_parent_comment
         }
+        is ListItem.ReplyComment -> when (item.comment) {
+            is LinkCommentUi.Hidden -> R.layout.link_details_reply_comment_hidden
+            is LinkCommentUi.Normal -> R.layout.link_details_reply_comment
+        }
+        is ListItem.RelatedSection -> R.layout.link_details_related
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -105,8 +104,7 @@ internal sealed class ListItem {
             }
         }
 
-        override fun areContentsTheSame(oldItem: ListItem, newItem: ListItem) =
-            oldItem == newItem
+        override fun areContentsTheSame(oldItem: ListItem, newItem: ListItem) = oldItem == newItem
 
         override fun getChangePayload(oldItem: ListItem, newItem: ListItem) = Change(oldItem, newItem)
 

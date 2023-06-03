@@ -6,9 +6,8 @@ import io.github.wykopmobilny.models.dataclass.TagLinks
 
 object TagLinksMapper {
 
-    fun map(value: TagLinksResponse, owmContentFilter: OWMContentFilter) =
-        TagLinks(
-            entries = value.data.orEmpty().map { it.filterLink(owmContentFilter = owmContentFilter) },
-            meta = value.meta,
-        )
+    fun map(value: TagLinksResponse, owmContentFilter: OWMContentFilter) = TagLinks(
+        entries = value.data.orEmpty().map { it.filterLink(owmContentFilter = owmContentFilter) },
+        meta = value.meta,
+    )
 }

@@ -29,10 +29,9 @@ internal class PhotoViewActivity : BaseActivity() {
         const val URL_EXTRA = "URL"
         const val SHARE_REQUEST_CODE = 1
 
-        fun createIntent(context: Context, imageUrl: String) =
-            Intent(context, PhotoViewActivity::class.java).apply {
-                putExtra(URL_EXTRA, imageUrl)
-            }
+        fun createIntent(context: Context, imageUrl: String) = Intent(context, PhotoViewActivity::class.java).apply {
+            putExtra(URL_EXTRA, imageUrl)
+        }
     }
 
     @Inject

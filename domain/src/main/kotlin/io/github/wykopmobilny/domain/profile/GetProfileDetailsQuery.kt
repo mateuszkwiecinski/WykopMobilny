@@ -51,65 +51,64 @@ internal class GetProfileDetailsQuery @Inject constructor(
     private val interopRequests: InteropRequestsProvider,
 ) : GetProfileDetails {
 
-    override fun invoke() =
-        combine(
-            profileStore.stream(StoreRequest.cached(Unit, refresh = false)),
-            userInfoStorage.loggedUser,
-            viewStateStorage.state,
-        ) { storeResponse, loggedUser, viewState ->
-            val profile = storeResponse.dataOrNull()
-            val header = ProfileHeaderUi(
-                isLoading = viewState.isLoading || storeResponse is StoreResponse.Loading,
-                description = profile?.description,
-                userInfo = profile?.userInfo?.toUi(onClicked = null),
-                backgroundUrl = profile?.let { it.background ?: DEFAULT_PROFILE_BACKGROUND },
-                banReason = if (profile?.banReason != null || profile?.banDate != null) {
-                    BanReasonUi(
-                        reason = profile.banReason,
-                        endDate = profile.banDate,
-                    )
-                } else {
-                    null
-                },
-                followersCount = profile?.let { it.followers ?: 0 },
-                joinedAgo = profile?.signupAt?.toJoinedAgo(),
-            )
-
-            val contextMenuOptions = if (loggedUser == null || loggedUser.id == profileId) {
-                listOf(badgesOption())
+    override fun invoke() = combine(
+        profileStore.stream(StoreRequest.cached(Unit, refresh = false)),
+        userInfoStorage.loggedUser,
+        viewStateStorage.state,
+    ) { storeResponse, loggedUser, viewState ->
+        val profile = storeResponse.dataOrNull()
+        val header = ProfileHeaderUi(
+            isLoading = viewState.isLoading || storeResponse is StoreResponse.Loading,
+            description = profile?.description,
+            userInfo = profile?.userInfo?.toUi(onClicked = null),
+            backgroundUrl = profile?.let { it.background ?: DEFAULT_PROFILE_BACKGROUND },
+            banReason = if (profile?.banReason != null || profile?.banDate != null) {
+                BanReasonUi(
+                    reason = profile.banReason,
+                    endDate = profile.banDate,
+                )
             } else {
-                buildList {
-                    add(privateMessageOption())
-                    if (profile != null) {
-                        if (profile.isBlocked > 0) {
-                            add(unblockOption())
-                        } else {
-                            add(blockOption())
-                        }
-                        if (profile.isObserved > 0) {
-                            add(unobserveOption())
-                        } else {
-                            add(observeOption())
-                        }
-                        add(reportOption())
+                null
+            },
+            followersCount = profile?.let { it.followers ?: 0 },
+            joinedAgo = profile?.signupAt?.toJoinedAgo(),
+        )
+
+        val contextMenuOptions = if (loggedUser == null || loggedUser.id == profileId) {
+            listOf(badgesOption())
+        } else {
+            buildList {
+                add(privateMessageOption())
+                if (profile != null) {
+                    if (profile.isBlocked > 0) {
+                        add(unblockOption())
+                    } else {
+                        add(blockOption())
                     }
+                    if (profile.isObserved > 0) {
+                        add(unobserveOption())
+                    } else {
+                        add(observeOption())
+                    }
+                    add(reportOption())
                 }
             }
-
-            ProfileDetailsUi(
-                errorDialog = viewState.failedAction?.let { failure ->
-                    ErrorDialogUi(
-                        error = failure.cause,
-                        retryAction = failure.retryAction,
-                        dismissAction = safeCallback { viewStateStorage.update { it.copy(failedAction = null) } },
-                    )
-                },
-                header = header,
-                onAddEntryClicked = safeCallback { interopRequests.request(InteropRequest.NewEntry(profileId)) },
-                contextMenuOptions = contextMenuOptions,
-            )
         }
-            .flowOn(AppDispatchers.Default)
+
+        ProfileDetailsUi(
+            errorDialog = viewState.failedAction?.let { failure ->
+                ErrorDialogUi(
+                    error = failure.cause,
+                    retryAction = failure.retryAction,
+                    dismissAction = safeCallback { viewStateStorage.update { it.copy(failedAction = null) } },
+                )
+            },
+            header = header,
+            onAddEntryClicked = safeCallback { interopRequests.request(InteropRequest.NewEntry(profileId)) },
+            contextMenuOptions = contextMenuOptions,
+        )
+    }
+        .flowOn(AppDispatchers.Default)
 
     private fun badgesOption() = ContextMenuOptionUi(
         label = Strings.Profile.BADGES,
@@ -154,6 +153,5 @@ internal class GetProfileDetailsQuery @Inject constructor(
         }
     }
 
-    private fun Instant.toJoinedAgo() =
-        periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString()
+    private fun Instant.toJoinedAgo() = periodUntil(clock.now(), TimeZone.currentSystemDefault()).toPrettyString()
 }

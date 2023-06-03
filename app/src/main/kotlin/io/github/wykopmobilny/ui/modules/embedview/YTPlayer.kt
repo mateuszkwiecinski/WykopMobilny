@@ -93,7 +93,10 @@ object AudioUtil {
 }
 
 enum class Orientation {
-    AUTO, AUTO_START_WITH_LANDSCAPE, ONLY_LANDSCAPE, ONLY_PORTRAIT
+    AUTO,
+    AUTO_START_WITH_LANDSCAPE,
+    ONLY_LANDSCAPE,
+    ONLY_PORTRAIT,
 }
 
 class YTPlayer :
@@ -144,11 +147,7 @@ class YTPlayer :
         animExit = intent.getIntExtra(EXTRA_ANIM_EXIT, 0)
     }
 
-    override fun onInitializationSuccess(
-        provider: YouTubePlayer.Provider,
-        player: YouTubePlayer,
-        wasRestored: Boolean,
-    ) {
+    override fun onInitializationSuccess(provider: YouTubePlayer.Provider, player: YouTubePlayer, wasRestored: Boolean) {
         this.player = player
         player.setOnFullscreenListener(this)
         player.setPlayerStateChangeListener(this)
@@ -196,10 +195,7 @@ class YTPlayer :
         }
     }
 
-    override fun onInitializationFailure(
-        provider: YouTubePlayer.Provider,
-        errorReason: YouTubeInitializationResult,
-    ) {
+    override fun onInitializationFailure(provider: YouTubePlayer.Provider, errorReason: YouTubeInitializationResult) {
         if (errorReason.isUserRecoverableError) {
             errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show()
         } else {

@@ -112,20 +112,17 @@ internal class InteropSettingPreferencesApi @Inject constructor(
     override val disableExitConfirmation: Boolean
         get() = interop(UserSettings.exitConfirmation) ?: true
 
-    private fun <T : Enum<T>> interop(setting: UserSetting<T>): T? =
-        runBlocking {
-            appStorage.get(setting).first()
-        }
+    private fun <T : Enum<T>> interop(setting: UserSetting<T>): T? = runBlocking {
+        appStorage.get(setting).first()
+    }
 
     @JvmName("interopBoolean")
-    private fun interop(setting: UserSetting<Boolean>): Boolean? =
-        runBlocking {
-            appStorage.get(setting).first()
-        }
+    private fun interop(setting: UserSetting<Boolean>): Boolean? = runBlocking {
+        appStorage.get(setting).first()
+    }
 
     @JvmName("interopLong")
-    private fun interop(setting: UserSetting<Long>): Long? =
-        runBlocking {
-            appStorage.get(setting).first()
-        }
+    private fun interop(setting: UserSetting<Long>): Long? = runBlocking {
+        appStorage.get(setting).first()
+    }
 }

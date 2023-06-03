@@ -37,17 +37,13 @@ class ProfileLinksFragmentPresenter(
             .intoComposite(compositeObservable)
     }
 
-    override fun removeVote(comment: LinkComment) =
-        linksInteractor.commentVoteCancel(comment).processLinkCommentSingle(comment)
+    override fun removeVote(comment: LinkComment) = linksInteractor.commentVoteCancel(comment).processLinkCommentSingle(comment)
 
-    override fun digComment(comment: LinkComment) =
-        linksInteractor.commentVoteUp(comment).processLinkCommentSingle(comment)
+    override fun digComment(comment: LinkComment) = linksInteractor.commentVoteUp(comment).processLinkCommentSingle(comment)
 
-    override fun buryComment(comment: LinkComment) =
-        linksInteractor.commentVoteDown(comment).processLinkCommentSingle(comment)
+    override fun buryComment(comment: LinkComment) = linksInteractor.commentVoteDown(comment).processLinkCommentSingle(comment)
 
-    override fun deleteComment(comment: LinkComment) =
-        linksInteractor.removeComment(comment).processLinkCommentSingle(comment)
+    override fun deleteComment(comment: LinkComment) = linksInteractor.removeComment(comment).processLinkCommentSingle(comment)
 
     private fun Single<LinkComment>.processLinkCommentSingle(link: LinkComment) {
         this

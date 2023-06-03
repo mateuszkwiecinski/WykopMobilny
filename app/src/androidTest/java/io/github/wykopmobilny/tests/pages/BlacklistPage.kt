@@ -17,11 +17,10 @@ object BlacklistPage {
 
     private val tagsTab = withText("Tagi")
     private val usersTab = withText("Użytkownicy")
-    private fun lockIcon(label: String) =
-        allOf(
-            withId(BlacklistR.id.btnAction),
-            withParent(hasSibling(withText(label))),
-        )
+    private fun lockIcon(label: String) = allOf(
+        withId(BlacklistR.id.btnAction),
+        withParent(hasSibling(withText(label))),
+    )
 
     fun tapUsersTab() {
         onView(usersTab).waitVisible().perform(click())

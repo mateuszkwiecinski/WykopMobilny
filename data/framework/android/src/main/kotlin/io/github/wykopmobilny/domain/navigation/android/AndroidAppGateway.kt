@@ -28,23 +28,21 @@ internal class AndroidAppGateway @Inject constructor(
     private val application: Application,
 ) : AppGateway {
 
-    override fun getInstalledYoutubeApps() =
-        application.observeInstalledPackages()
-            .map {
-                YoutubeApp.values()
-                    .filter { application.isPackageInstalled(knownAppId(it)) }
-                    .toSet()
-            }
-            .flowOn(AppDispatchers.Default)
+    override fun getInstalledYoutubeApps() = application.observeInstalledPackages()
+        .map {
+            YoutubeApp.values()
+                .filter { application.isPackageInstalled(knownAppId(it)) }
+                .toSet()
+        }
+        .flowOn(AppDispatchers.Default)
 
-    override fun getInstalledAuthenticatorApps() =
-        application.observeInstalledPackages()
-            .map {
-                AuthenticatorApp.values()
-                    .filter { application.isPackageInstalled(knownAppId(it)) }
-                    .toSet()
-            }
-            .flowOn(AppDispatchers.Default)
+    override fun getInstalledAuthenticatorApps() = application.observeInstalledPackages()
+        .map {
+            AuthenticatorApp.values()
+                .filter { application.isPackageInstalled(knownAppId(it)) }
+                .toSet()
+        }
+        .flowOn(AppDispatchers.Default)
 
     override suspend fun openApp(app: ExternalApp) = withContext(AppDispatchers.Main) {
         with(application) {
@@ -75,20 +73,19 @@ private fun Context.openStoreListing(appId: String) {
     }
 }
 
-private fun knownAppId(app: ExternalApp) =
-    when (app) {
-        YoutubeApp.Official -> "com.google.android.youtube"
-        YoutubeApp.Vanced -> "com.vanced.android.youtube"
-        YoutubeApp.NewPipe -> "org.schabi.newpipe"
-        AuthenticatorApp.Google -> "com.google.android.apps.authenticator2"
-        AuthenticatorApp.Microsoft -> "com.azure.authenticator"
-        AuthenticatorApp.Authy -> "com.authy.authy"
-        AuthenticatorApp.AuthenticatorPro -> "me.jmh.authenticatorpro"
-        AuthenticatorApp.Bitwarden -> "com.x8bit.bitwarden"
-        AuthenticatorApp.Pixplicity -> "com.pixplicity.auth"
-        AuthenticatorApp.Salesforce -> "com.salesforce.authenticator"
-        AuthenticatorApp.Lastpass -> "com.lastpass.authenticator"
-    }
+private fun knownAppId(app: ExternalApp) = when (app) {
+    YoutubeApp.Official -> "com.google.android.youtube"
+    YoutubeApp.Vanced -> "com.vanced.android.youtube"
+    YoutubeApp.NewPipe -> "org.schabi.newpipe"
+    AuthenticatorApp.Google -> "com.google.android.apps.authenticator2"
+    AuthenticatorApp.Microsoft -> "com.azure.authenticator"
+    AuthenticatorApp.Authy -> "com.authy.authy"
+    AuthenticatorApp.AuthenticatorPro -> "me.jmh.authenticatorpro"
+    AuthenticatorApp.Bitwarden -> "com.x8bit.bitwarden"
+    AuthenticatorApp.Pixplicity -> "com.pixplicity.auth"
+    AuthenticatorApp.Salesforce -> "com.salesforce.authenticator"
+    AuthenticatorApp.Lastpass -> "com.lastpass.authenticator"
+}
 
 private fun Context.isPackageInstalled(packageName: String): Boolean {
     return try {
@@ -107,26 +104,22 @@ private fun PackageManager.getPackageInfoCompat(packageName: String, flags: Int)
         getPackageInfo(packageName, flags)
     }
 
-private fun Context.observeInstalledPackages() =
-    callbackFlow {
-        val receiver = broadcastReceiver { trySendBlocking(Unit) }
+private fun Context.observeInstalledPackages() = callbackFlow {
+    val receiver = broadcastReceiver { trySendBlocking(Unit) }
 
-        registerReceiver(receiver, getInstalledOrRemovedIntentFilter())
+    registerReceiver(receiver, getInstalledOrRemovedIntentFilter())
 
-        awaitClose { unregisterReceiver(receiver) }
-    }
-        .onStart { emit(Unit) }
+    awaitClose { unregisterReceiver(receiver) }
+}
+    .onStart { emit(Unit) }
 
-internal fun broadcastReceiver(callback: (Intent) -> Unit) =
-    object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) =
-            callback(intent)
-    }
+internal fun broadcastReceiver(callback: (Intent) -> Unit) = object : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) = callback(intent)
+}
 
-private fun getInstalledOrRemovedIntentFilter() =
-    IntentFilter().apply {
-        addAction("android.intent.action.PACKAGE_ADDED")
-        addAction("android.intent.action.PACKAGE_REMOVED")
-        addCategory("android.intent.category.DEFAULT")
-        addDataScheme("package")
-    }
+private fun getInstalledOrRemovedIntentFilter() = IntentFilter().apply {
+    addAction("android.intent.action.PACKAGE_ADDED")
+    addAction("android.intent.action.PACKAGE_REMOVED")
+    addCategory("android.intent.category.DEFAULT")
+    addDataScheme("package")
+}

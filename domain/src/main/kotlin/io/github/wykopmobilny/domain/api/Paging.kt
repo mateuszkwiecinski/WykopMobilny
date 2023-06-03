@@ -59,9 +59,7 @@ internal class PagingSource<T : Any> @Inject constructor(
         registerInvalidatedCallback { job.cancelChildren() }
     }
 
-    override suspend fun load(
-        params: LoadParams<Int>,
-    ): LoadResult<Int, T> = withContext(AppDispatchers.Default) {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> = withContext(AppDispatchers.Default) {
         val nextPageNumber = params.key ?: 1
         runCatching {
             val response = store.stream(StoreRequest.cached(nextPageNumber, refresh = false))

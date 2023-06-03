@@ -17,20 +17,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-suspend fun Flow<PagingData<ListElementUi>>.bindEntries(
-    recyclerView: RecyclerView,
-    swipeRefreshLayout: SwipeRefreshLayout,
-) = coroutineScope {
-    val adapter = EntriesAdapter()
-    launch {
-        swipeRefreshLayout.setOnRefreshListener { adapter.refresh() }
-        adapter.loadStateFlow.collect { swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading }
+suspend fun Flow<PagingData<ListElementUi>>.bindEntries(recyclerView: RecyclerView, swipeRefreshLayout: SwipeRefreshLayout) =
+    coroutineScope {
+        val adapter = EntriesAdapter()
+        launch {
+            swipeRefreshLayout.setOnRefreshListener { adapter.refresh() }
+            adapter.loadStateFlow.collect { swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading }
+        }
+        launch {
+            recyclerView.adapter = adapter
+            collectLatest { adapter.submitData(it) }
+        }
     }
-    launch {
-        recyclerView.adapter = adapter
-        collectLatest { adapter.submitData(it) }
-    }
-}
 
 internal class EntriesAdapter : PagingDataAdapter<ListElementUi, EntriesAdapter.EntryViewHolder>(
     diffCallback = EntriesComparator,
@@ -50,8 +48,7 @@ internal class EntriesAdapter : PagingDataAdapter<ListElementUi, EntriesAdapter.
 
 internal object EntriesComparator : DiffUtil.ItemCallback<ListElementUi>() {
 
-    override fun areItemsTheSame(oldItem: ListElementUi, newItem: ListElementUi) =
-        oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: ListElementUi, newItem: ListElementUi) = oldItem.id == newItem.id
 
     override fun areContentsTheSame(oldItem: ListElementUi, newItem: ListElementUi) =
         oldItem::class.java.simpleName == newItem::class.java.simpleName

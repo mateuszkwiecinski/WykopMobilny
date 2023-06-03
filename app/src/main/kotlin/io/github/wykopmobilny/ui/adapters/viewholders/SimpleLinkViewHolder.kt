@@ -45,12 +45,11 @@ class SimpleLinkViewHolder(
             appStorage = appStorage,
         )
 
-        fun getViewTypeForLink(link: Link): Int =
-            if (link.isBlocked) {
-                TYPE_BLOCKED
-            } else {
-                TYPE_SIMPLE_LINK
-            }
+        fun getViewTypeForLink(link: Link): Int = if (link.isBlocked) {
+            TYPE_BLOCKED
+        } else {
+            TYPE_SIMPLE_LINK
+        }
     }
 
     private val digCountDrawable by lazy {

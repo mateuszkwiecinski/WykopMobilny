@@ -128,16 +128,15 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         }
     }
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
-        DaggerAppComponent.factory().create(
-            instance = this,
-            okHttpClient = okHttpClient,
-            wykop = wykopApi,
-            patrons = patrons,
-            scraper = scraper,
-            storages = storages,
-            settingsInterop = domainComponent.settingsApiInterop(),
-        )
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> = DaggerAppComponent.factory().create(
+        instance = this,
+        okHttpClient = okHttpClient,
+        wykop = wykopApi,
+        patrons = patrons,
+        scraper = scraper,
+        storages = storages,
+        settingsInterop = domainComponent.settingsApiInterop(),
+    )
 
     protected open val domainComponent: DomainComponent by lazy {
         daggerDomain().create(
@@ -186,8 +185,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             dependencies = object : NotificationDependencies {
                 val lazyDependencies by lazy { requireDependency<NotificationDependencies>() }
 
-                override fun handleNotificationDismissed() =
-                    lazyDependencies.handleNotificationDismissed()
+                override fun handleNotificationDismissed() = lazyDependencies.handleNotificationDismissed()
             },
         )
     }
@@ -232,8 +230,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             signingInterceptor = ApiSignInterceptor(
                 object : SimpleUserManagerApi {
 
-                    override fun getUserCredentials(): UserCredentials? =
-                        userManagerApi.get().getUserCredentials()
+                    override fun getUserCredentials(): UserCredentials? = userManagerApi.get().getUserCredentials()
                 },
             ),
         )
@@ -261,26 +258,25 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
 
     // TODO @mk : 25/07/2021 I don't know where I'm going here yet. Will figure something out 👀
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> getDependency(clazz: KClass<T>, scopeId: Any?): T =
-        when (clazz) {
-            LoginDependencies::class -> getOrPutScope<LoginScope>(scopeId) { domainComponent.login() }
-            StylesDependencies::class -> getOrPutScope<StylesScope>(scopeId) { domainComponent.styles() }
-            SettingsDependencies::class -> getOrPutScope<SettingsScope>(scopeId) { domainComponent.settings() }
-            BlacklistDependencies::class -> getOrPutScope<BlacklistScope>(scopeId) { domainComponent.blacklist() }
-            WorkDependencies::class -> getOrPutScope<WorkScope>(scopeId) { domainComponent.work() }
-            SearchDependencies::class -> getOrPutScope<SearchScope>(scopeId) { domainComponent.search() }
-            NotificationDependencies::class -> getOrPutScope<NotificationsScope>(scopeId) { domainComponent.notifications() }
-            TwoFactorAuthDependencies::class -> getOrPutScope<TwoFactorAuthScope>(scopeId) { domainComponent.twoFactor() }
-            LinkDetailsDependencies::class -> {
-                scopeId as LinkDetailsKey
-                getOrPutScope<LinkDetailsScope>(scopeId) { domainComponent.linkDetails().create(key = scopeId) }
-            }
-            ProfileDependencies::class -> {
-                scopeId as String
-                getOrPutScope<ProfileScope>(scopeId) { domainComponent.profile().create(profileId = scopeId) }
-            }
-            else -> error("Unknown dependency type $clazz")
-        }.dependencyContainer as T
+    override fun <T : Any> getDependency(clazz: KClass<T>, scopeId: Any?): T = when (clazz) {
+        LoginDependencies::class -> getOrPutScope<LoginScope>(scopeId) { domainComponent.login() }
+        StylesDependencies::class -> getOrPutScope<StylesScope>(scopeId) { domainComponent.styles() }
+        SettingsDependencies::class -> getOrPutScope<SettingsScope>(scopeId) { domainComponent.settings() }
+        BlacklistDependencies::class -> getOrPutScope<BlacklistScope>(scopeId) { domainComponent.blacklist() }
+        WorkDependencies::class -> getOrPutScope<WorkScope>(scopeId) { domainComponent.work() }
+        SearchDependencies::class -> getOrPutScope<SearchScope>(scopeId) { domainComponent.search() }
+        NotificationDependencies::class -> getOrPutScope<NotificationsScope>(scopeId) { domainComponent.notifications() }
+        TwoFactorAuthDependencies::class -> getOrPutScope<TwoFactorAuthScope>(scopeId) { domainComponent.twoFactor() }
+        LinkDetailsDependencies::class -> {
+            scopeId as LinkDetailsKey
+            getOrPutScope<LinkDetailsScope>(scopeId) { domainComponent.linkDetails().create(key = scopeId) }
+        }
+        ProfileDependencies::class -> {
+            scopeId as String
+            getOrPutScope<ProfileScope>(scopeId) { domainComponent.profile().create(profileId = scopeId) }
+        }
+        else -> error("Unknown dependency type $clazz")
+    }.dependencyContainer as T
 
     private inline fun <reified T : Any> scopeKey(id: Any?) = scopeKey(T::class, id)
 
@@ -289,15 +285,14 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
     private inline fun <reified T : Any> getOrPutScope(id: Any?, container: () -> Any) =
         scopes.getOrPut(scopeKey<T>(id)) { initScope(container()) }
 
-    private fun <T> initScope(container: T) =
-        SubScope(
-            dependencyContainer = container,
-            coroutineScope = CoroutineScope(Job(applicationScope.coroutineContext[Job]) + Dispatchers.Default),
-        ).apply {
-            if (container is HasScopeInitializer) {
-                coroutineScope.launch { container.initializer().initialize() }
-            }
+    private fun <T> initScope(container: T) = SubScope(
+        dependencyContainer = container,
+        coroutineScope = CoroutineScope(Job(applicationScope.coroutineContext[Job]) + Dispatchers.Default),
+    ).apply {
+        if (container is HasScopeInitializer) {
+            coroutineScope.launch { container.initializer().initialize() }
         }
+    }
 
     override fun <T : Any> destroyDependency(clazz: KClass<T>, scopeId: Any?) {
         Napier.i("Destroying dependency name=${clazz.java.name}")
@@ -316,11 +311,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
         }?.coroutineScope?.cancel()
     }
 
-    override fun <T : Any> launchScoped(
-        clazz: KClass<T>,
-        id: Any?,
-        block: suspend CoroutineScope.() -> Unit,
-    ) {
+    override fun <T : Any> launchScoped(clazz: KClass<T>, id: Any?, block: suspend CoroutineScope.() -> Unit) {
         val key = scopeKey(clazz, id)
         scopes[key]?.coroutineScope?.launch(block = block) ?: return Napier.w("launchScoped didn't find scope for key=$key")
     }
@@ -330,10 +321,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
             var currentActivity: Activity? = null
             registerActivityLifecycleCallbacks(
                 object : ActivityLifecycleCallbacks {
-                    override fun onActivityCreated(
-                        activity: Activity,
-                        savedInstanceState: Bundle?,
-                    ) = Unit
+                    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
 
                     override fun onActivityStarted(activity: Activity) = Unit
 
@@ -347,8 +335,7 @@ open class WykopApp : DaggerApplication(), ApplicationInjector, AppScopes {
 
                     override fun onActivityStopped(activity: Activity) = Unit
 
-                    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) =
-                        Unit
+                    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
 
                     override fun onActivityDestroyed(activity: Activity) = Unit
                 },

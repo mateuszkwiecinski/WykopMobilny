@@ -20,17 +20,16 @@ internal class TestApp : WykopApp() {
         instance = this
     }
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
-        DaggerTestAppComponent.factory()
-            .create(
-                instance = this,
-                okHttpClient = okHttpClient,
-                wykop = wykopApi,
-                patrons = patrons,
-                scraper = scraper,
-                storages = storages,
-                settingsInterop = domainComponent.settingsApiInterop(),
-            )
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> = DaggerTestAppComponent.factory()
+        .create(
+            instance = this,
+            okHttpClient = okHttpClient,
+            wykop = wykopApi,
+            patrons = patrons,
+            scraper = scraper,
+            storages = storages,
+            settingsInterop = domainComponent.settingsApiInterop(),
+        )
 
     override val wykopApi by lazy {
         daggerWykop().create(

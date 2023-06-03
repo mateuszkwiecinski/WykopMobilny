@@ -9,6 +9,5 @@ import io.github.wykopmobilny.base.Schedulers
 class ProfileRelatedModule {
 
     @Provides
-    fun providePresenter(schedulers: Schedulers, profileApi: ProfileApi) =
-        ProfileRelatedPresenter(schedulers, profileApi)
+    fun providePresenter(schedulers: Schedulers, profileApi: ProfileApi) = ProfileRelatedPresenter(schedulers, profileApi)
 }

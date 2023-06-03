@@ -13,11 +13,7 @@ internal class NotificationsGlobalModule {
 
     @Singleton
     @Provides
-    fun notificationsStore(
-        retrofitApi: NotificationsRetrofitApi,
-        appScopes: AppScopes,
-        apiClient: ApiClient,
-    ) = StoreBuilder.from(
+    fun notificationsStore(retrofitApi: NotificationsRetrofitApi, appScopes: AppScopes, apiClient: ApiClient) = StoreBuilder.from(
         fetcher = apiClient.fetcher(retrofitApi::getNotifications),
     )
         .scope(appScopes.applicationScope)

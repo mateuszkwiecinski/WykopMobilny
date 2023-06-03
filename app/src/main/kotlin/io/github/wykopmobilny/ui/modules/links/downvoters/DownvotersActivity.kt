@@ -24,10 +24,9 @@ class DownvotersActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         const val DATA_FRAGMENT_TAG = "DOWNVOTERS_LIST"
         const val EXTRA_LINKID = "LINK_ID_EXTRA"
 
-        fun createIntent(linkId: Long, activity: Activity) =
-            Intent(activity, DownvotersActivity::class.java).apply {
-                putExtra(EXTRA_LINKID, linkId)
-            }
+        fun createIntent(linkId: Long, activity: Activity) = Intent(activity, DownvotersActivity::class.java).apply {
+            putExtra(EXTRA_LINKID, linkId)
+        }
     }
 
     @Inject

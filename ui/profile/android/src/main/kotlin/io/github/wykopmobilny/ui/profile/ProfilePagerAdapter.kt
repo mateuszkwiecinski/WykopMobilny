@@ -10,19 +10,17 @@ internal class ProfilePagerAdapter(
 
     override fun getItemCount() = 3
 
-    fun getTitle(position: Int) =
-        when (position) {
-            0 -> R.string.profile_tab_title_actions
-            1 -> R.string.profile_tab_title_links
-            2 -> R.string.profile_tab_title_microblog
-            else -> error("unsupported")
-        }
+    fun getTitle(position: Int) = when (position) {
+        0 -> R.string.profile_tab_title_actions
+        1 -> R.string.profile_tab_title_links
+        2 -> R.string.profile_tab_title_microblog
+        else -> error("unsupported")
+    }
 
-    override fun createFragment(position: Int) =
-        when (position) {
-            0 -> ActionsFragment()
-            1 -> LinksFragment()
-            2 -> MicroblogFragment()
-            else -> error("unsupported")
-        }
+    override fun createFragment(position: Int) = when (position) {
+        0 -> ActionsFragment()
+        1 -> LinksFragment()
+        2 -> MicroblogFragment()
+        else -> error("unsupported")
+    }
 }

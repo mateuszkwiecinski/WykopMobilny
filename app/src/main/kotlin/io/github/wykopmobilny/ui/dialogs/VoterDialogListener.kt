@@ -20,10 +20,7 @@ import io.github.wykopmobilny.utils.getActivityContext
 
 typealias VotersDialogListener = (List<Voter>) -> Unit
 
-fun createVotersDialogListener(
-    dialog: BottomSheetDialog,
-    votersDialogView: DialogVotersBinding,
-): (List<Voter>) -> Unit = {
+fun createVotersDialogListener(dialog: BottomSheetDialog, votersDialogView: DialogVotersBinding): (List<Voter>) -> Unit = {
     if (dialog.isShowing) {
         votersDialogView.progressView.isVisible = false
         votersDialogView.votersTextView.isVisible = true

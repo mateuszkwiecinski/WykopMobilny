@@ -13,9 +13,7 @@ import androidx.core.content.ContextCompat
 import io.github.aakira.napier.Napier
 
 @Dimension(unit = Dimension.PX)
-fun Number.dpToPx(
-    resources: Resources,
-) = (toFloat() * resources.displayMetrics.density).toInt()
+fun Number.dpToPx(resources: Resources) = (toFloat() * resources.displayMetrics.density).toInt()
 
 fun Context.readColorAttr(@AttrRes attrColor: Int): ColorStateList {
     val typedValue = TypedValue()

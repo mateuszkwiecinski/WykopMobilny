@@ -9,9 +9,6 @@ import io.github.wykopmobilny.ui.fragments.links.LinksInteractor
 @Module
 class PromotedFragmentModule {
     @Provides
-    fun providePromotedPresenter(
-        schedulers: Schedulers,
-        linksApi: LinksApi,
-        linksInteractor: LinksInteractor,
-    ) = PromotedPresenter(schedulers, linksApi, linksInteractor)
+    fun providePromotedPresenter(schedulers: Schedulers, linksApi: LinksApi, linksInteractor: LinksInteractor) =
+        PromotedPresenter(schedulers, linksApi, linksInteractor)
 }

@@ -49,8 +49,7 @@ class AddlinkUrlInputFragment : BaseFragment(R.layout.addlink_fragment), AddLink
         super.onDestroyView()
     }
 
-    override fun setLinkDraft(draft: NewLinkResponse) =
-        (activity as AddlinkActivity).openDuplicatesActivity(draft)
+    override fun setLinkDraft(draft: NewLinkResponse) = (activity as AddlinkActivity).openDuplicatesActivity(draft)
 
     override fun showDuplicatesLoading(visibility: Boolean) {
         binding.linkIcon.isVisible = !visibility

@@ -28,9 +28,8 @@ internal class ProfileActivityV2 : ThemableActivity() {
     companion object {
         const val EXTRA_USER_ID = "EXTRA_USERNAME"
 
-        fun createIntent(context: Context, userId: String) =
-            Intent(context, ProfileActivityV2::class.java).apply {
-                putExtra(EXTRA_USER_ID, userId)
-            }
+        fun createIntent(context: Context, userId: String) = Intent(context, ProfileActivityV2::class.java).apply {
+            putExtra(EXTRA_USER_ID, userId)
+        }
     }
 }

@@ -6,13 +6,12 @@ import io.github.wykopmobilny.ui.blacklist.BlacklistedDetailsUi
 import io.github.wykopmobilny.ui.blacklist.GetBlacklistDetails
 import kotlinx.coroutines.flow.flowOf
 
-internal fun BaseScreenshotTest.registerBlacklist(
-    blacklist: () -> BlacklistedDetailsUi = { error("unsupported") },
-) = registerDependencies<BlacklistDependencies>(
-    object : BlacklistDependencies {
+internal fun BaseScreenshotTest.registerBlacklist(blacklist: () -> BlacklistedDetailsUi = { error("unsupported") }) =
+    registerDependencies<BlacklistDependencies>(
+        object : BlacklistDependencies {
 
-        override fun blacklistDetails() = object : GetBlacklistDetails {
-            override fun invoke() = flowOf(blacklist())
-        }
-    },
-)
+            override fun blacklistDetails() = object : GetBlacklistDetails {
+                override fun invoke() = flowOf(blacklist())
+            }
+        },
+    )

@@ -34,10 +34,9 @@ class ConversationActivity : BaseActivity(), ConversationView, InputToolbarListe
         private const val EXTRA_USER = "USER"
         private const val DATA_FRAGMENT_TAG = "CONVERSATION_TAG"
 
-        fun createIntent(context: Context, user: String) =
-            Intent(context, ConversationActivity::class.java).apply {
-                putExtra(EXTRA_USER, user)
-            }
+        fun createIntent(context: Context, user: String) = Intent(context, ConversationActivity::class.java).apply {
+            putExtra(EXTRA_USER, user)
+        }
     }
 
     private val binding by viewBinding(ActivityConversationBinding::inflate)

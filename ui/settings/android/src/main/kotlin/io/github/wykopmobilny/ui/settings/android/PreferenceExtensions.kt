@@ -23,11 +23,7 @@ internal fun PreferenceFragmentCompat.bindCheckbox(key: String, setting: Setting
     pref.setOnPreferenceClickListener { setting.onClicked(); true }
 }
 
-internal fun <T> PreferenceFragmentCompat.bindList(
-    key: String,
-    setting: ListSetting<T>,
-    mapping: Map<T, String>,
-) {
+internal fun <T> PreferenceFragmentCompat.bindList(key: String, setting: ListSetting<T>, mapping: Map<T, String>) {
     val pref = findPreference<ListPreference>(key) ?: return
     pref.entries = setting.values.mapNotNull { mapping[it] }.toTypedArray()
     pref.entryValues = pref.entries

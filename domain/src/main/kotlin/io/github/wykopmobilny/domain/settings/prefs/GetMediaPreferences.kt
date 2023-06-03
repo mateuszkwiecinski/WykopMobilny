@@ -26,16 +26,15 @@ internal class GetMediaPreferences @Inject constructor(
         )
     }
 
-    private fun canUseYoutubePlayer() =
-        appStorage.get(UserSettings.useYoutubePlayer)
-            .flatMapLatest { savedValue ->
-                if (savedValue == null) {
-                    appGateway.getInstalledYoutubeApps()
-                        .map { apps -> apps.singleOrNull() == YoutubeApp.Official }
-                } else {
-                    flowOf(savedValue)
-                }
+    private fun canUseYoutubePlayer() = appStorage.get(UserSettings.useYoutubePlayer)
+        .flatMapLatest { savedValue ->
+            if (savedValue == null) {
+                appGateway.getInstalledYoutubeApps()
+                    .map { apps -> apps.singleOrNull() == YoutubeApp.Official }
+            } else {
+                flowOf(savedValue)
             }
+        }
 }
 
 internal data class MediaPlayerPreferences(

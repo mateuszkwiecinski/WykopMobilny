@@ -9,9 +9,6 @@ import io.github.wykopmobilny.base.Schedulers
 class EntriesFragmentModule {
 
     @Provides
-    fun provideEntriesFragmentPresenter(
-        schedulers: Schedulers,
-        entriesApi: EntriesApi,
-        entryInteractor: EntriesInteractor,
-    ) = EntriesFragmentPresenter(schedulers, entriesApi, entryInteractor)
+    fun provideEntriesFragmentPresenter(schedulers: Schedulers, entriesApi: EntriesApi, entryInteractor: EntriesInteractor) =
+        EntriesFragmentPresenter(schedulers, entriesApi, entryInteractor)
 }

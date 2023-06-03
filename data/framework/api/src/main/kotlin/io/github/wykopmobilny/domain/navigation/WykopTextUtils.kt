@@ -2,10 +2,7 @@ package io.github.wykopmobilny.domain.navigation
 
 interface WykopTextUtils {
 
-    suspend fun parseHtml(
-        text: String,
-        onLinkClicked: ((RecognizedLink) -> Unit)? = null,
-    ): CharSequence
+    suspend fun parseHtml(text: String, onLinkClicked: ((RecognizedLink) -> Unit)? = null): CharSequence
 
     sealed class RecognizedLink {
 

@@ -13,8 +13,7 @@ class ObservedTagsAdapter @Inject constructor(val navigator: NewNavigator) : Rec
 
     val items = ArrayList<ObservedTagResponse>()
 
-    override fun onBindViewHolder(holder: ObservedTagViewHolder, position: Int) =
-        holder.bindView(items[position])
+    override fun onBindViewHolder(holder: ObservedTagViewHolder, position: Int) = holder.bindView(items[position])
 
     override fun getItemCount(): Int = items.size
 

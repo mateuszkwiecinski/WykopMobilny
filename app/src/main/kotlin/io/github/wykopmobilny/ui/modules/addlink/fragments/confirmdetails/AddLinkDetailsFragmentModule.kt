@@ -8,6 +8,5 @@ import io.github.wykopmobilny.base.Schedulers
 @Module
 class AddLinkDetailsFragmentModule {
     @Provides
-    fun providesPresenter(schedulers: Schedulers, addLinkApi: AddLinkApi) =
-        AddLinkDetailsFragmentPresenter(schedulers, addLinkApi)
+    fun providesPresenter(schedulers: Schedulers, addLinkApi: AddLinkApi) = AddLinkDetailsFragmentPresenter(schedulers, addLinkApi)
 }

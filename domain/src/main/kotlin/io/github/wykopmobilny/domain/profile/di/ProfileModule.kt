@@ -159,21 +159,19 @@ private fun ProfileResponse.toProfileEntity() = ProfileEntity(
 )
 
 @Suppress("MagicNumber")
-internal fun Int.toColorEntity() =
-    when (this) {
-        0 -> UserColorEntity.Green
-        1 -> UserColorEntity.Orange
-        2 -> UserColorEntity.Claret
-        5 -> UserColorEntity.Admin
-        1001 -> UserColorEntity.Banned
-        1002 -> UserColorEntity.Deleted
-        2001 -> UserColorEntity.Client
-        else -> UserColorEntity.Unknown
-    }
+internal fun Int.toColorEntity() = when (this) {
+    0 -> UserColorEntity.Green
+    1 -> UserColorEntity.Orange
+    2 -> UserColorEntity.Claret
+    5 -> UserColorEntity.Admin
+    1001 -> UserColorEntity.Banned
+    1002 -> UserColorEntity.Deleted
+    2001 -> UserColorEntity.Client
+    else -> UserColorEntity.Unknown
+}
 
-internal fun String?.toGenderEntity() =
-    when (this) {
-        "male" -> GenderEntity.Male
-        "female" -> GenderEntity.Female
-        else -> null
-    }
+internal fun String?.toGenderEntity() = when (this) {
+    "male" -> GenderEntity.Male
+    "female" -> GenderEntity.Female
+    else -> null
+}

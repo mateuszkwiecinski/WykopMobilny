@@ -60,20 +60,19 @@ class NotificationsListAdapter @Inject constructor(
         notifyDataSetChanged()
     }
 
-    override fun constructViewHolder(parent: ViewGroup, viewType: Int) =
-        when (viewType) {
-            TYPE_HEADER -> NotificationHeaderViewHolder(
-                HashtagNotificationHeaderListItemBinding.inflate(parent.layoutInflater, parent, false),
-                navigator,
-                collapseListener,
-            )
-            TYPE_ITEM -> NotificationViewHolder(
-                NotificationsListItemBinding.inflate(parent.layoutInflater, parent, false),
-                linkHandler,
-                updateHeader,
-            )
-            else -> error("unsupported type")
-        }
+    override fun constructViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+        TYPE_HEADER -> NotificationHeaderViewHolder(
+            HashtagNotificationHeaderListItemBinding.inflate(parent.layoutInflater, parent, false),
+            navigator,
+            collapseListener,
+        )
+        TYPE_ITEM -> NotificationViewHolder(
+            NotificationsListItemBinding.inflate(parent.layoutInflater, parent, false),
+            linkHandler,
+            updateHeader,
+        )
+        else -> error("unsupported type")
+    }
 
     override fun bindHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {

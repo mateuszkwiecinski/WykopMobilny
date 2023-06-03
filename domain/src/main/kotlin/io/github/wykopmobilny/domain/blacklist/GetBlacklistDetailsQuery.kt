@@ -28,95 +28,94 @@ internal class GetBlacklistDetailsQuery @Inject constructor(
     private val appScopes: AppScopes,
 ) : GetBlacklistDetails {
 
-    override fun invoke() =
-        combine(
-            viewState.state,
-            store.stream(StoreRequest.cached(Unit, refresh = false)),
-        ) { viewStateUi, response ->
-            val blacklist = response.dataOrNull()
-            val content = if (blacklist == null || blacklist.users.isEmpty() && blacklist.tags.isEmpty()) {
-                BlacklistedDetailsUi.Content.Empty(
-                    isLoading = viewStateUi.generalResource.isLoading,
-                    loadAction = ::refresh,
-                )
-            } else {
-                BlacklistedDetailsUi.Content.WithData(
-                    users = BlacklistedDetailsUi.Content.WithData.ElementPage(
-                        isRefreshing = viewStateUi.generalResource.isLoading,
-                        refreshAction = ::refresh,
-                        elements = blacklist.users.sorted()
-                            .map { user ->
-                                BlacklistedElementUi(
-                                    name = user,
-                                    state = when (val state = viewStateUi.usersState[user]) {
-                                        is ItemState.Error -> BlacklistedElementUi.StateUi.Error(
-                                            showError = {
-                                                viewState.update {
-                                                    it.copy(
-                                                        generalResource = Resource.error(
-                                                            failedAction = FailedAction(
-                                                                cause = state.error,
-                                                                retryAction = { unblockUser(user) },
-                                                            ),
+    override fun invoke() = combine(
+        viewState.state,
+        store.stream(StoreRequest.cached(Unit, refresh = false)),
+    ) { viewStateUi, response ->
+        val blacklist = response.dataOrNull()
+        val content = if (blacklist == null || blacklist.users.isEmpty() && blacklist.tags.isEmpty()) {
+            BlacklistedDetailsUi.Content.Empty(
+                isLoading = viewStateUi.generalResource.isLoading,
+                loadAction = ::refresh,
+            )
+        } else {
+            BlacklistedDetailsUi.Content.WithData(
+                users = BlacklistedDetailsUi.Content.WithData.ElementPage(
+                    isRefreshing = viewStateUi.generalResource.isLoading,
+                    refreshAction = ::refresh,
+                    elements = blacklist.users.sorted()
+                        .map { user ->
+                            BlacklistedElementUi(
+                                name = user,
+                                state = when (val state = viewStateUi.usersState[user]) {
+                                    is ItemState.Error -> BlacklistedElementUi.StateUi.Error(
+                                        showError = {
+                                            viewState.update {
+                                                it.copy(
+                                                    generalResource = Resource.error(
+                                                        failedAction = FailedAction(
+                                                            cause = state.error,
+                                                            retryAction = { unblockUser(user) },
                                                         ),
-                                                    )
-                                                }
-                                            },
-                                        )
-                                        ItemState.InProgress -> BlacklistedElementUi.StateUi.InProgress
-                                        null -> BlacklistedElementUi.StateUi.Default(
-                                            unblock = { unblockUser(user) },
-                                        )
-                                    },
-                                )
-                            },
-                    ),
-                    tags = BlacklistedDetailsUi.Content.WithData.ElementPage(
-                        isRefreshing = viewStateUi.generalResource.isLoading,
-                        refreshAction = ::refresh,
-                        elements = blacklist.tags.sorted()
-                            .map { tag ->
-                                BlacklistedElementUi(
-                                    name = tag,
-                                    state = when (val state = viewStateUi.tagsState[tag]) {
-                                        is ItemState.Error -> BlacklistedElementUi.StateUi.Error(
-                                            showError = {
-                                                viewState.update {
-                                                    it.copy(
-                                                        generalResource = Resource.error(
-                                                            failedAction = FailedAction(
-                                                                cause = state.error,
-                                                                retryAction = { unblockTag(tag) },
-                                                            ),
-                                                        ),
-                                                    )
-                                                }
-                                            },
-                                        )
-                                        ItemState.InProgress -> BlacklistedElementUi.StateUi.InProgress
-                                        null -> BlacklistedElementUi.StateUi.Default(
-                                            unblock = { unblockTag(tag) },
-                                        )
-                                    },
-                                )
-                            },
-                    ),
-                )
-            }
-
-            BlacklistedDetailsUi(
-                errorDialog = viewStateUi.generalResource.failedAction?.let { error ->
-                    ErrorDialogUi(
-                        error = error.cause,
-                        retryAction = error.retryAction,
-                        dismissAction = {
-                            appScopes.safe<BlacklistScope> { viewState.update { it.copy(generalResource = Resource.idle()) } }
+                                                    ),
+                                                )
+                                            }
+                                        },
+                                    )
+                                    ItemState.InProgress -> BlacklistedElementUi.StateUi.InProgress
+                                    null -> BlacklistedElementUi.StateUi.Default(
+                                        unblock = { unblockUser(user) },
+                                    )
+                                },
+                            )
                         },
-                    )
-                },
-                content = content,
+                ),
+                tags = BlacklistedDetailsUi.Content.WithData.ElementPage(
+                    isRefreshing = viewStateUi.generalResource.isLoading,
+                    refreshAction = ::refresh,
+                    elements = blacklist.tags.sorted()
+                        .map { tag ->
+                            BlacklistedElementUi(
+                                name = tag,
+                                state = when (val state = viewStateUi.tagsState[tag]) {
+                                    is ItemState.Error -> BlacklistedElementUi.StateUi.Error(
+                                        showError = {
+                                            viewState.update {
+                                                it.copy(
+                                                    generalResource = Resource.error(
+                                                        failedAction = FailedAction(
+                                                            cause = state.error,
+                                                            retryAction = { unblockTag(tag) },
+                                                        ),
+                                                    ),
+                                                )
+                                            }
+                                        },
+                                    )
+                                    ItemState.InProgress -> BlacklistedElementUi.StateUi.InProgress
+                                    null -> BlacklistedElementUi.StateUi.Default(
+                                        unblock = { unblockTag(tag) },
+                                    )
+                                },
+                            )
+                        },
+                ),
             )
         }
+
+        BlacklistedDetailsUi(
+            errorDialog = viewStateUi.generalResource.failedAction?.let { error ->
+                ErrorDialogUi(
+                    error = error.cause,
+                    retryAction = error.retryAction,
+                    dismissAction = {
+                        appScopes.safe<BlacklistScope> { viewState.update { it.copy(generalResource = Resource.idle()) } }
+                    },
+                )
+            },
+            content = content,
+        )
+    }
 
     private fun refresh(): Unit = appScopes.safe<BlacklistScope> {
         withResource(

@@ -70,11 +70,9 @@ fun ImageView.loadImage(url: String, signature: Int? = null) {
     }
 }
 
-fun String.toPrettyDate(): String =
-    PrettyTime(Locale("pl")).format(parseDate(this))
+fun String.toPrettyDate(): String = PrettyTime(Locale("pl")).format(parseDate(this))
 
-fun Instant.toPrettyDate(): String =
-    PrettyTime(Locale("pl")).format(Date(toEpochMilliseconds()))
+fun Instant.toPrettyDate(): String = PrettyTime(Locale("pl")).format(Date(toEpochMilliseconds()))
 
 fun Uri.queryFileName(contentResolver: ContentResolver): String {
     var result: String? = null

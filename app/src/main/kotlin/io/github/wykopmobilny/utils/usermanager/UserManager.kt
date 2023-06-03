@@ -64,15 +64,14 @@ class UserManager @Inject constructor(
         )
     }
 
-    override fun getUserCredentials(): UserCredentials? =
-        userInfo.value?.let {
-            UserCredentials(
-                login = it.id,
-                avatarUrl = it.avatarUrl,
-                backgroundUrl = it.backgroundUrl,
-                userKey = it.userToken,
-            )
-        }
+    override fun getUserCredentials(): UserCredentials? = userInfo.value?.let {
+        UserCredentials(
+            login = it.id,
+            avatarUrl = it.avatarUrl,
+            backgroundUrl = it.backgroundUrl,
+            userKey = it.userToken,
+        )
+    }
 
     override fun runIfLoggedIn(context: Context, callback: () -> Unit) {
         appScopes.applicationScope.launch(Dispatchers.Main, start = CoroutineStart.UNDISPATCHED) {

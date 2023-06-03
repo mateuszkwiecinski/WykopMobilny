@@ -15,10 +15,7 @@ import io.github.wykopmobilny.utils.bindings.setOnClick
 import androidx.appcompat.R as AppcompatR
 
 @Suppress("FunctionName")
-fun StandaloneTagView(
-    context: Context,
-    model: TagUi,
-): View = ViewTagStandaloneBinding.inflate(LayoutInflater.from(context)).run {
+fun StandaloneTagView(context: Context, model: TagUi): View = ViewTagStandaloneBinding.inflate(LayoutInflater.from(context)).run {
     root.renderTag(model)
     root
 }

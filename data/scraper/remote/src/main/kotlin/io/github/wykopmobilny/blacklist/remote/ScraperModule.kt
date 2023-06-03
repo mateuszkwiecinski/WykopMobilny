@@ -18,11 +18,7 @@ internal class ScraperModule {
 
     @Provides
     @Reusable
-    fun retrofit(
-        okHttpClient: OkHttpClient,
-        url: String,
-        interceptor: ScraperInterceptor,
-    ): Retrofit {
+    fun retrofit(okHttpClient: OkHttpClient, url: String, interceptor: ScraperInterceptor): Retrofit {
         val client = okHttpClient.newBuilder()
             .addInterceptor(interceptor)
             .build()

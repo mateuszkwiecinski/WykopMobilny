@@ -24,41 +24,36 @@ internal data class LinkComment(
     val totalCount = plusCount - minusCount
 }
 
-internal fun LinkComment.wykopUrl(linkId: Long) =
-    "https://www.wykop.pl/link/$linkId/#comment-$id"
+internal fun LinkComment.wykopUrl(linkId: Long) = "https://www.wykop.pl/link/$linkId/#comment-$id"
 
-internal fun Embed.toUi(
-    useLowQualityImage: Boolean,
-    hasNsfwOverlay: Boolean,
-    clickAction: () -> Unit,
-    widthToHeightRatio: Float,
-) = EmbedMediaUi(
-    content = when (type) {
-        EmbedType.AnimatedImage ->
-            EmbedMediaUi.Content.PlayableMedia(
-                previewImage = preview,
-                domain = "Gif",
+internal fun Embed.toUi(useLowQualityImage: Boolean, hasNsfwOverlay: Boolean, clickAction: () -> Unit, widthToHeightRatio: Float) =
+    EmbedMediaUi(
+        content = when (type) {
+            EmbedType.AnimatedImage ->
+                EmbedMediaUi.Content.PlayableMedia(
+                    previewImage = preview,
+                    domain = "Gif",
+                )
+            EmbedType.Video ->
+                EmbedMediaUi.Content.PlayableMedia(
+                    previewImage = preview,
+                    domain = URL(id).userFriendlyDomain(includeTopLevel = false),
+                )
+            EmbedType.StaticImage,
+            EmbedType.Unknown,
+            -> EmbedMediaUi.Content.StaticImage(
+                url = if (useLowQualityImage) {
+                    id
+                } else {
+                    preview
+                },
             )
-        EmbedType.Video ->
-            EmbedMediaUi.Content.PlayableMedia(
-                previewImage = preview,
-                domain = URL(id).userFriendlyDomain(includeTopLevel = false),
-            )
-        EmbedType.StaticImage,
-        EmbedType.Unknown,
-        -> EmbedMediaUi.Content.StaticImage(
-            url = if (useLowQualityImage) {
-                id
-            } else {
-                preview
-            },
-        )
-    },
-    size = size.takeIf { useLowQualityImage || type == EmbedType.AnimatedImage },
-    hasNsfwOverlay = hasNsfwOverlay,
-    widthToHeightRatio = widthToHeightRatio,
-    clickAction = clickAction,
-)
+        },
+        size = size.takeIf { useLowQualityImage || type == EmbedType.AnimatedImage },
+        hasNsfwOverlay = hasNsfwOverlay,
+        widthToHeightRatio = widthToHeightRatio,
+        clickAction = clickAction,
+    )
 
 internal fun URL.userFriendlyDomain(includeTopLevel: Boolean = true): String {
     val parts = host.split(".")

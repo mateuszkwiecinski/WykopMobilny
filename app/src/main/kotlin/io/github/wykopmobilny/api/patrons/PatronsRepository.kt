@@ -25,8 +25,7 @@ class PatronsRepository @Inject constructor(
         }
     }
 
-    private suspend fun getPatronsOrEmpty() =
-        runCatching { patronsApi.getPatrons().patrons }
-            .getOrDefault(emptyList())
-            .also { _patrons = it }
+    private suspend fun getPatronsOrEmpty() = runCatching { patronsApi.getPatrons().patrons }
+        .getOrDefault(emptyList())
+        .also { _patrons = it }
 }

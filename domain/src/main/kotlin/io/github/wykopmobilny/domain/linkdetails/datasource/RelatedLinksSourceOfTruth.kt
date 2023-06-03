@@ -16,9 +16,7 @@ import io.github.wykopmobilny.domain.profile.toGenderDomain
 import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.flow.map
 
-internal fun relatedLinksSourceOfTruth(
-    cache: AppCache,
-) = SourceOfTruth.of<Long, List<RelatedResponse>, List<RelatedLink>>(
+internal fun relatedLinksSourceOfTruth(cache: AppCache) = SourceOfTruth.of<Long, List<RelatedResponse>, List<RelatedLink>>(
     reader = { linkId ->
         cache.linksRelatedQueries.selectByLinkId(linkId = linkId)
             .asFlow()
@@ -36,10 +34,7 @@ internal fun relatedLinksSourceOfTruth(
     delete = { linkId -> cache.linksRelatedQueries.deleteByLinkId(linkId) },
 )
 
-private fun RelatedResponse.toEntity(
-    orderOnPage: Int,
-    linkId: Long,
-) = RelatedLinkEntity(
+private fun RelatedResponse.toEntity(orderOnPage: Int, linkId: Long) = RelatedLinkEntity(
     id = id,
     userVote = userVote?.asUserVote(),
     voteCount = voteCount,

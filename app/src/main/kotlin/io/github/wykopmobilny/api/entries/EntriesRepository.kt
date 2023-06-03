@@ -46,32 +46,30 @@ class EntriesRepository @Inject constructor(
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
 
-    override fun addEntry(body: String, wykopImageFile: WykopImageFile, plus18: Boolean) =
-        rxSingle {
-            entriesApi.addEntry(
-                body = body.allowImageOnly().toRequestBody(),
-                plus18 = plus18.toRequestBody(),
-                file = wykopImageFile.getFileMultipart(),
-            )
-        }
-            .retryWhen(userTokenRefresher)
-            .compose(ErrorHandlerTransformer())
+    override fun addEntry(body: String, wykopImageFile: WykopImageFile, plus18: Boolean) = rxSingle {
+        entriesApi.addEntry(
+            body = body.allowImageOnly().toRequestBody(),
+            plus18 = plus18.toRequestBody(),
+            file = wykopImageFile.getFileMultipart(),
+        )
+    }
+        .retryWhen(userTokenRefresher)
+        .compose(ErrorHandlerTransformer())
 
     override fun addEntry(body: String, embed: String?, plus18: Boolean) = rxSingle { entriesApi.addEntry(body, embed, plus18) }
         .retryWhen(userTokenRefresher)
         .compose(ErrorHandlerTransformer())
 
-    override fun addEntryComment(body: String, entryId: Long, wykopImageFile: WykopImageFile, plus18: Boolean) =
-        rxSingle {
-            entriesApi.addEntryComment(
-                body = body.allowImageOnly().toRequestBody(),
-                plus18 = plus18.toRequestBody(),
-                entryId = entryId,
-                file = wykopImageFile.getFileMultipart(),
-            )
-        }
-            .retryWhen(userTokenRefresher)
-            .compose(ErrorHandlerTransformer())
+    override fun addEntryComment(body: String, entryId: Long, wykopImageFile: WykopImageFile, plus18: Boolean) = rxSingle {
+        entriesApi.addEntryComment(
+            body = body.allowImageOnly().toRequestBody(),
+            plus18 = plus18.toRequestBody(),
+            entryId = entryId,
+            file = wykopImageFile.getFileMultipart(),
+        )
+    }
+        .retryWhen(userTokenRefresher)
+        .compose(ErrorHandlerTransformer())
 
     override fun addEntryComment(body: String, entryId: Long, embed: String?, plus18: Boolean) =
         rxSingle { entriesApi.addEntryComment(body, embed, plus18, entryId) }
@@ -83,12 +81,7 @@ class EntriesRepository @Inject constructor(
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
 
-    override fun editEntry(
-        body: String,
-        entryId: Long,
-        wykopImageFile: WykopImageFile,
-        plus18: Boolean,
-    ) = rxSingle {
+    override fun editEntry(body: String, entryId: Long, wykopImageFile: WykopImageFile, plus18: Boolean) = rxSingle {
         entriesApi.editEntry(
             body = body.toRequestBody(),
             plus18 = plus18.toRequestBody(),
@@ -112,12 +105,7 @@ class EntriesRepository @Inject constructor(
             .retryWhen(userTokenRefresher)
             .compose(ErrorHandlerTransformer())
 
-    override fun editEntryComment(
-        body: String,
-        commentId: Long,
-        wykopImageFile: WykopImageFile,
-        plus18: Boolean,
-    ) = rxSingle {
+    override fun editEntryComment(body: String, commentId: Long, wykopImageFile: WykopImageFile, plus18: Boolean) = rxSingle {
         entriesApi.editEntryComment(
             body = body.toRequestBody(),
             plus18 = plus18.toRequestBody(),
@@ -178,5 +166,4 @@ class EntriesRepository @Inject constructor(
         .map { it.map { response -> VoterMapper.map(response) } }
 }
 
-internal fun String.allowImageOnly() =
-    ifEmpty { " " }
+internal fun String.allowImageOnly() = ifEmpty { " " }

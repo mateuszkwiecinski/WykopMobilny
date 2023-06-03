@@ -10,11 +10,7 @@ interface AppScopes {
 
     val applicationScope: CoroutineScope
 
-    fun <T : Any> launchScoped(
-        clazz: KClass<T>,
-        id: Any? = null,
-        block: suspend CoroutineScope.() -> Unit,
-    )
+    fun <T : Any> launchScoped(clazz: KClass<T>, id: Any? = null, block: suspend CoroutineScope.() -> Unit)
 }
 
 object AppDispatchers {
@@ -25,20 +21,13 @@ object AppDispatchers {
         private set
 
     @VisibleForTesting
-    fun replaceDispatchers(
-        io: CoroutineDispatcher = Dispatchers.IO,
-        default: CoroutineDispatcher = Dispatchers.Default,
-    ) {
+    fun replaceDispatchers(io: CoroutineDispatcher = Dispatchers.IO, default: CoroutineDispatcher = Dispatchers.Default) {
         IO = io
         Default = default
     }
 }
 
-inline fun <reified T : Any> AppScopes.launchIn(
-    noinline block: suspend CoroutineScope.() -> Unit,
-) = launchScoped(T::class, block = block)
+inline fun <reified T : Any> AppScopes.launchIn(noinline block: suspend CoroutineScope.() -> Unit) = launchScoped(T::class, block = block)
 
-inline fun <reified T : Any> AppScopes.launchInKeyed(
-    id: Any,
-    noinline block: suspend CoroutineScope.() -> Unit,
-) = launchScoped(T::class, id, block)
+inline fun <reified T : Any> AppScopes.launchInKeyed(id: Any, noinline block: suspend CoroutineScope.() -> Unit) =
+    launchScoped(T::class, id, block)

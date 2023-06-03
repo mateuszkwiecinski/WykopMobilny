@@ -6,9 +6,8 @@ import io.github.wykopmobilny.models.dataclass.EntryLink
 
 object EntryLinkMapper {
 
-    fun map(value: EntryLinkResponse, owmContentFilter: OWMContentFilter) =
-        EntryLink(
-            link = value.link?.filterLink(owmContentFilter = owmContentFilter),
-            entry = value.entry?.filterEntry(owmContentFilter = owmContentFilter),
-        )
+    fun map(value: EntryLinkResponse, owmContentFilter: OWMContentFilter) = EntryLink(
+        link = value.link?.filterLink(owmContentFilter = owmContentFilter),
+        entry = value.entry?.filterEntry(owmContentFilter = owmContentFilter),
+    )
 }

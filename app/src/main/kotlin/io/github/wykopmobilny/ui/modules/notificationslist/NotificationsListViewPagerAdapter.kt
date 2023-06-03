@@ -16,12 +16,11 @@ class NotificationsListViewPagerAdapter(
 
     val registeredFragments = SparseArray<Fragment>()
 
-    override fun getItem(position: Int): Fragment =
-        if (position == 0) {
-            NotificationsListFragment.newInstance()
-        } else {
-            HashTagsNotificationsListFragment.newInstance()
-        }
+    override fun getItem(position: Int): Fragment = if (position == 0) {
+        NotificationsListFragment.newInstance()
+    } else {
+        HashTagsNotificationsListFragment.newInstance()
+    }
 
     override fun getCount() = 2
 
@@ -36,10 +35,9 @@ class NotificationsListViewPagerAdapter(
         super.destroyItem(container, position, `object`)
     }
 
-    override fun getPageTitle(position: Int) =
-        if (position == 0) {
-            resources.getString(R.string.notifications_directed)
-        } else {
-            resources.getString(R.string.hashtags_notifications_title)
-        }
+    override fun getPageTitle(position: Int) = if (position == 0) {
+        resources.getString(R.string.notifications_directed)
+    } else {
+        resources.getString(R.string.hashtags_notifications_title)
+    }
 }

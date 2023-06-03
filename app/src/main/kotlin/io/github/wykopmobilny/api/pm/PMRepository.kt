@@ -43,17 +43,16 @@ class PMRepository @Inject constructor(
             .compose(ErrorHandlerTransformer())
             .map { PMMessageMapper.map(it) }
 
-    override fun sendMessage(body: String, user: String, plus18: Boolean, embed: WykopImageFile) =
-        rxSingle {
-            pmRetrofitApi.sendMessage(
-                body = body.toRequestBody(),
-                plus18 = plus18.toRequestBody(),
-                user = user,
-                file = embed.getFileMultipart(),
-            )
-        }
-            .retryWhen(userTokenRefresher)
-            .flatMap { patronsApi.ensurePatrons(it) }
-            .compose(ErrorHandlerTransformer())
-            .map { PMMessageMapper.map(it) }
+    override fun sendMessage(body: String, user: String, plus18: Boolean, embed: WykopImageFile) = rxSingle {
+        pmRetrofitApi.sendMessage(
+            body = body.toRequestBody(),
+            plus18 = plus18.toRequestBody(),
+            user = user,
+            file = embed.getFileMultipart(),
+        )
+    }
+        .retryWhen(userTokenRefresher)
+        .flatMap { patronsApi.ensurePatrons(it) }
+        .compose(ErrorHandlerTransformer())
+        .map { PMMessageMapper.map(it) }
 }

@@ -6,9 +6,8 @@ import io.github.wykopmobilny.models.dataclass.TagEntries
 
 object TagEntriesMapper {
 
-    fun map(value: TagEntriesResponse, owmContentFilter: OWMContentFilter) =
-        TagEntries(
-            entries = value.data.orEmpty().map { it.filterEntry(owmContentFilter = owmContentFilter) },
-            meta = value.meta,
-        )
+    fun map(value: TagEntriesResponse, owmContentFilter: OWMContentFilter) = TagEntries(
+        entries = value.data.orEmpty().map { it.filterEntry(owmContentFilter = owmContentFilter) },
+        meta = value.meta,
+    )
 }

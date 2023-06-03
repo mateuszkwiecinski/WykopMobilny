@@ -164,6 +164,5 @@ class PhotoViewActions(val context: Context) : PhotoViewCallbacks {
         context.contentResolver.insert(Images.Media.EXTERNAL_CONTENT_URI, values)
     }
 
-    private fun getMimeType(uri: String) =
-        MimeTypeMap.getSingleton().getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(uri))
+    private fun getMimeType(uri: String) = MimeTypeMap.getSingleton().getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(uri))
 }

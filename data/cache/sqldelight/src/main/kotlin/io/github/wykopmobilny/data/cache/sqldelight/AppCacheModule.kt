@@ -64,18 +64,14 @@ internal class AppCacheModule {
 
 internal object InstantAdapter : ColumnAdapter<Instant, Long> {
 
-    override fun decode(databaseValue: Long) =
-        Instant.fromEpochMilliseconds(databaseValue)
+    override fun decode(databaseValue: Long) = Instant.fromEpochMilliseconds(databaseValue)
 
-    override fun encode(value: Instant) =
-        value.toEpochMilliseconds()
+    override fun encode(value: Instant) = value.toEpochMilliseconds()
 }
 
 class EnumAdapter<T : Enum<T>>(private val values: Array<T>) : ColumnAdapter<T, Long> {
 
-    override fun decode(databaseValue: Long) =
-        values[databaseValue.toInt()]
+    override fun decode(databaseValue: Long) = values[databaseValue.toInt()]
 
-    override fun encode(value: T) =
-        value.ordinal.toLong()
+    override fun encode(value: T) = value.ordinal.toLong()
 }

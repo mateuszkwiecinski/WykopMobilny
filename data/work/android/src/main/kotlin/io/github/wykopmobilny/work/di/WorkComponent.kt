@@ -17,9 +17,7 @@ interface WorkManagerComponent : WorkApi {
     @Component.Factory
     interface Factory {
 
-        fun create(
-            @BindsInstance context: Context,
-        ): WorkManagerComponent
+        fun create(@BindsInstance context: Context): WorkManagerComponent
     }
 }
 

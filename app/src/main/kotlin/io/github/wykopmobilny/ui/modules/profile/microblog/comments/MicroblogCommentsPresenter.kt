@@ -39,14 +39,11 @@ class MicroblogCommentsPresenter(
             .intoComposite(compositeObservable)
     }
 
-    override fun voteComment(comment: EntryComment) =
-        entryCommentInteractor.voteComment(comment).processEntryCommentSingle(comment)
+    override fun voteComment(comment: EntryComment) = entryCommentInteractor.voteComment(comment).processEntryCommentSingle(comment)
 
-    override fun unvoteComment(comment: EntryComment) =
-        entryCommentInteractor.unvoteComment(comment).processEntryCommentSingle(comment)
+    override fun unvoteComment(comment: EntryComment) = entryCommentInteractor.unvoteComment(comment).processEntryCommentSingle(comment)
 
-    override fun deleteComment(comment: EntryComment) =
-        entryCommentInteractor.deleteComment(comment).processEntryCommentSingle(comment)
+    override fun deleteComment(comment: EntryComment) = entryCommentInteractor.deleteComment(comment).processEntryCommentSingle(comment)
 
     override fun getVoters(comment: EntryComment) {
         view?.openVotersMenu()

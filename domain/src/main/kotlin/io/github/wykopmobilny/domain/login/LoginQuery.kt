@@ -30,21 +30,20 @@ class LoginQuery @Inject constructor(
     private val appScopes: AppScopes,
 ) : Login {
 
-    override fun invoke() =
-        viewStateStorage.state.map { viewState ->
-            LoginUi(
-                urlToLoad = loginConfig().connectUrl,
-                isLoading = viewState.isLoading,
-                errorDialog = viewState.failedAction?.let { failure ->
-                    ErrorDialogUi(
-                        error = failure.cause,
-                        retryAction = failure.retryAction,
-                        dismissAction = { appScopes.safe<LoginScope> { viewStateStorage.update { it.copy(failedAction = null) } } },
-                    )
-                },
-                parseUrlAction = ::onUrlInvoked,
-            )
-        }
+    override fun invoke() = viewStateStorage.state.map { viewState ->
+        LoginUi(
+            urlToLoad = loginConfig().connectUrl,
+            isLoading = viewState.isLoading,
+            errorDialog = viewState.failedAction?.let { failure ->
+                ErrorDialogUi(
+                    error = failure.cause,
+                    retryAction = failure.retryAction,
+                    dismissAction = { appScopes.safe<LoginScope> { viewStateStorage.update { it.copy(failedAction = null) } } },
+                )
+            },
+            parseUrlAction = ::onUrlInvoked,
+        )
+    }
 
     private fun onUrlInvoked(url: String) = appScopes.safe<LoginScope> {
         val userSession = withContext(Dispatchers.Default) {

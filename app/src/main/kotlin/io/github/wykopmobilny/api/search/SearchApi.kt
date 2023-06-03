@@ -7,15 +7,9 @@ import io.github.wykopmobilny.models.dataclass.Link
 import io.reactivex.Single
 
 interface SearchApi {
-    fun searchLinks(
-        page: Int,
-        query: String,
-    ): Single<FilteredData<Link>>
+    fun searchLinks(page: Int, query: String): Single<FilteredData<Link>>
 
-    fun searchEntries(
-        page: Int,
-        query: String,
-    ): Single<FilteredData<Entry>>
+    fun searchEntries(page: Int, query: String): Single<FilteredData<Entry>>
 
     fun searchProfiles(query: String): Single<List<Author>>
 }

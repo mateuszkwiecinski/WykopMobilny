@@ -24,17 +24,16 @@ internal class GetNotificationsRefreshWorkDetailsQuery @Inject constructor(
     private val appStorage: AppStorage,
 ) : GetNotificationsRefreshWorkDetails {
 
-    override fun invoke() =
-        WorkData(
-            onWorkRequested = {
-                if (sessionStorage.session.first() != null) {
-                    runCatching { doRefresh() }
-                } else {
-                    Napier.i("User not logged in, skipping notification refresh")
-                    Result.success(Unit)
-                }
-            },
-        )
+    override fun invoke() = WorkData(
+        onWorkRequested = {
+            if (sessionStorage.session.first() != null) {
+                runCatching { doRefresh() }
+            } else {
+                Napier.i("User not logged in, skipping notification refresh")
+                Result.success(Unit)
+            }
+        },
+    )
 
     private suspend fun doRefresh() {
         val notifications = store.fresh(key = 0)

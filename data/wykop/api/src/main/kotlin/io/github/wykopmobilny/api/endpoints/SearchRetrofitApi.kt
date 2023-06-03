@@ -13,17 +13,11 @@ import retrofit2.http.Path
 interface SearchRetrofitApi {
     @FormUrlEncoded
     @POST("/search/links/page/{page}/appkey/$APP_KEY")
-    suspend fun searchLinks(
-        @Path("page") page: Int,
-        @Field("q") query: String,
-    ): WykopApiResponse<List<LinkResponse>>
+    suspend fun searchLinks(@Path("page") page: Int, @Field("q") query: String): WykopApiResponse<List<LinkResponse>>
 
     @FormUrlEncoded
     @POST("/search/entries/page/{page}/appkey/$APP_KEY")
-    suspend fun searchEntries(
-        @Path("page") page: Int,
-        @Field("q") query: String,
-    ): WykopApiResponse<List<EntryResponse>>
+    suspend fun searchEntries(@Path("page") page: Int, @Field("q") query: String): WykopApiResponse<List<EntryResponse>>
 
     @FormUrlEncoded
     @POST("/search/profiles/appkey/$APP_KEY")

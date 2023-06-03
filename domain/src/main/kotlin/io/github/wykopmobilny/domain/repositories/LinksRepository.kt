@@ -103,11 +103,7 @@ internal class LinksRepository @Inject constructor(
         )
     }
 
-    private suspend fun updateLinkVotes(
-        linkId: Long,
-        response: DigResponse,
-        userVote: UserVote?,
-    ) = withContext(AppDispatchers.IO) {
+    private suspend fun updateLinkVotes(linkId: Long, response: DigResponse, userVote: UserVote?) = withContext(AppDispatchers.IO) {
         appCache.linksQueries.vote(
             id = linkId,
             voteCount = response.diggs,
@@ -116,37 +112,29 @@ internal class LinksRepository @Inject constructor(
         )
     }
 
-    private suspend fun updateCommentVotes(
-        linkId: Long,
-        commentId: Long,
-        response: LinkVoteResponse,
-        userVote: UserVote?,
-    ) = withContext(AppDispatchers.IO) {
-        appCache.linkCommentsQueries.vote(
-            id = commentId,
-            linkId = linkId,
-            userVote = userVote,
-            voteCount = response.voteCount,
-            voteCountPlus = response.voteCountPlus,
-        )
-    }
-
-    private suspend fun updateRelatedLinks(
-        linkId: Long,
-        relatedId: Long,
-        response: VoteResponse,
-        userVote: UserVote,
-    ) = withContext(AppDispatchers.IO) {
-        val voteCount = response.voteCount
-        if (voteCount != null) {
-            appCache.linksRelatedQueries.vote(
-                id = relatedId,
+    private suspend fun updateCommentVotes(linkId: Long, commentId: Long, response: LinkVoteResponse, userVote: UserVote?) =
+        withContext(AppDispatchers.IO) {
+            appCache.linkCommentsQueries.vote(
+                id = commentId,
                 linkId = linkId,
                 userVote = userVote,
-                voteCount = voteCount,
+                voteCount = response.voteCount,
+                voteCountPlus = response.voteCountPlus,
             )
         }
-    }
+
+    private suspend fun updateRelatedLinks(linkId: Long, relatedId: Long, response: VoteResponse, userVote: UserVote) =
+        withContext(AppDispatchers.IO) {
+            val voteCount = response.voteCount
+            if (voteCount != null) {
+                appCache.linksRelatedQueries.vote(
+                    id = relatedId,
+                    linkId = linkId,
+                    userVote = userVote,
+                    voteCount = voteCount,
+                )
+            }
+        }
 }
 
 private val VoteDownReason.apiValue: Int

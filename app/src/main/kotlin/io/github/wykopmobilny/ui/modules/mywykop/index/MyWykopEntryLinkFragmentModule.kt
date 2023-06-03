@@ -19,6 +19,5 @@ class MyWykopEntryLinkFragmentModule {
         entriesInteractor: EntriesInteractor,
         entriesApi: EntriesApi,
         linksApi: LinksApi,
-    ) =
-        MyWykopEntryLinkPresenter(schedulers, entriesApi, entriesInteractor, linksInteractor, linksApi, myWykopApi)
+    ) = MyWykopEntryLinkPresenter(schedulers, entriesApi, entriesInteractor, linksInteractor, linksApi, myWykopApi)
 }

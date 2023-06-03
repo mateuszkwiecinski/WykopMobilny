@@ -16,12 +16,11 @@ class FavoritePagerAdapter(
 
     val registeredFragments = SparseArray<Fragment>()
 
-    override fun getItem(position: Int): Fragment =
-        if (position == 0) {
-            LinksFavoriteFragment.newInstance()
-        } else {
-            EntryFavoriteFragment.newInstance()
-        }
+    override fun getItem(position: Int): Fragment = if (position == 0) {
+        LinksFavoriteFragment.newInstance()
+    } else {
+        EntryFavoriteFragment.newInstance()
+    }
 
     override fun getCount() = 2
 
@@ -36,10 +35,9 @@ class FavoritePagerAdapter(
         super.destroyItem(container, position, `object`)
     }
 
-    override fun getPageTitle(position: Int) =
-        if (position == 0) {
-            resources.getString(R.string.links)
-        } else {
-            resources.getString(R.string.entries)
-        }
+    override fun getPageTitle(position: Int) = if (position == 0) {
+        resources.getString(R.string.links)
+    } else {
+        resources.getString(R.string.entries)
+    }
 }

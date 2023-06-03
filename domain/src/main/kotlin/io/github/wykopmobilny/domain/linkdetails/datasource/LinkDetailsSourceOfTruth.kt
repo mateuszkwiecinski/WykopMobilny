@@ -15,9 +15,7 @@ import io.github.wykopmobilny.domain.profile.toGenderDomain
 import io.github.wykopmobilny.kotlin.AppDispatchers
 import kotlinx.coroutines.flow.map
 
-internal fun linkDetailsSourceOfTruth(
-    cache: AppCache,
-) = SourceOfTruth.of<Long, LinkResponse, LinkInfo>(
+internal fun linkDetailsSourceOfTruth(cache: AppCache) = SourceOfTruth.of<Long, LinkResponse, LinkInfo>(
     reader = { linkId ->
         cache.linksQueries.selectById(id = linkId)
             .asFlow()

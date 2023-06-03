@@ -19,46 +19,45 @@ import io.github.wykopmobilny.utils.bindings.setOnClick
 import androidx.appcompat.R as AppcompatR
 import io.github.wykopmobilny.ui.base.android.R as BaseR
 
-internal fun LinkDetailsHeaderBinding.bindHeader(header: LinkDetailsHeaderUi) =
-    when (header) {
-        LinkDetailsHeaderUi.Loading -> {
-            root.isInvisible = true
-        }
-        is LinkDetailsHeaderUi.WithData -> {
-            root.isVisible = true
-            txtTitle.text = header.title
-            txtTitle.setOnClick(header.viewLinkAction)
-            txtDescription.text = header.body
-            txtDescription.setOnClick(header.viewLinkAction)
-            txtUser.setUserNick(header.author)
-            txtTimestamp.text = header.postedAgo
-            tagsContainer.updateTags(header.tags)
-            hotBadgeStrip.isVisible = header.badge != null
-            hotBadgeStrip.setBackgroundColor(header.badge.toColorInt(hotBadgeStrip.context).defaultColor)
-            txtPercentage.text = header.upvotePercentage
-
-            favoriteButton.isVisible = header.favoriteButton.isVisible
-            favoriteButton.setOnClick(header.favoriteButton.clickAction)
-            favoriteButton.setImageResource(
-                if (header.favoriteButton.isToggled) {
-                    BaseR.drawable.ic_favorite
-                } else {
-                    BaseR.drawable.ic_favorite_outlined
-                },
-            )
-            favoriteButton.imageTintList = if (header.favoriteButton.isToggled) {
-                ColorStateList.valueOf(ContextCompat.getColor(favoriteButton.context, BaseR.color.favorite_enabled))
-            } else {
-                favoriteButton.context.readColorAttr(AppcompatR.attr.colorControlNormal)
-            }
-            commentButton.bind(header.commentsCount)
-            voteButton.bind(header.voteCount)
-            moreButton.setOnClick(header.moreAction)
-            commentSortButton.bind(header.commentsSort)
-            addCommentButton.setOnClick(header.addCommentAction)
-            imgAvatar.bind(header.currentUser?.avatar)
-        }
+internal fun LinkDetailsHeaderBinding.bindHeader(header: LinkDetailsHeaderUi) = when (header) {
+    LinkDetailsHeaderUi.Loading -> {
+        root.isInvisible = true
     }
+    is LinkDetailsHeaderUi.WithData -> {
+        root.isVisible = true
+        txtTitle.text = header.title
+        txtTitle.setOnClick(header.viewLinkAction)
+        txtDescription.text = header.body
+        txtDescription.setOnClick(header.viewLinkAction)
+        txtUser.setUserNick(header.author)
+        txtTimestamp.text = header.postedAgo
+        tagsContainer.updateTags(header.tags)
+        hotBadgeStrip.isVisible = header.badge != null
+        hotBadgeStrip.setBackgroundColor(header.badge.toColorInt(hotBadgeStrip.context).defaultColor)
+        txtPercentage.text = header.upvotePercentage
+
+        favoriteButton.isVisible = header.favoriteButton.isVisible
+        favoriteButton.setOnClick(header.favoriteButton.clickAction)
+        favoriteButton.setImageResource(
+            if (header.favoriteButton.isToggled) {
+                BaseR.drawable.ic_favorite
+            } else {
+                BaseR.drawable.ic_favorite_outlined
+            },
+        )
+        favoriteButton.imageTintList = if (header.favoriteButton.isToggled) {
+            ColorStateList.valueOf(ContextCompat.getColor(favoriteButton.context, BaseR.color.favorite_enabled))
+        } else {
+            favoriteButton.context.readColorAttr(AppcompatR.attr.colorControlNormal)
+        }
+        commentButton.bind(header.commentsCount)
+        voteButton.bind(header.voteCount)
+        moreButton.setOnClick(header.moreAction)
+        commentSortButton.bind(header.commentsSort)
+        addCommentButton.setOnClick(header.addCommentAction)
+        imgAvatar.bind(header.currentUser?.avatar)
+    }
+}
 
 private fun ConstraintLayout.updateTags(tags: List<TagUi>) {
     val newValue = tags.map { it.name }

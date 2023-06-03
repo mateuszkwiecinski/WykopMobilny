@@ -36,26 +36,23 @@ internal class RetrofitModule {
         @BaseUrl apiUrl: String,
         cacheDir: File,
         moshi: Moshi,
-    ) =
-        Retrofit.Builder()
-            .client(
-                okHttpClient.newBuilder()
-                    .cache(Cache(cacheDir, maxSize = CACHE_SIZE))
-                    .addInterceptor(pathFixing)
-                    .addInterceptor(signing)
-                    .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                    .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                    .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                    .build(),
-            )
-            .baseUrl(apiUrl)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
+    ) = Retrofit.Builder()
+        .client(
+            okHttpClient.newBuilder()
+                .cache(Cache(cacheDir, maxSize = CACHE_SIZE))
+                .addInterceptor(pathFixing)
+                .addInterceptor(signing)
+                .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .build(),
+        )
+        .baseUrl(apiUrl)
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
 
     @Provides
-    fun errorBodyParser(
-        errorBodyParser: MoshiErrorBodyParser,
-    ): ErrorBodyParser = errorBodyParser
+    fun errorBodyParser(errorBodyParser: MoshiErrorBodyParser): ErrorBodyParser = errorBodyParser
 
     companion object {
 

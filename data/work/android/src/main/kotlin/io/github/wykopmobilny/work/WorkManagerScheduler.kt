@@ -15,10 +15,7 @@ internal class WorkManagerScheduler @Inject constructor(
     private val workManager: WorkManager,
 ) : WorkScheduler {
 
-    override suspend fun setupBlacklistRefresh(
-        repeatInterval: Duration,
-        flexDuration: Duration,
-    ) {
+    override suspend fun setupBlacklistRefresh(repeatInterval: Duration, flexDuration: Duration) {
         (1 until RefreshBlacklistRequest.VERSION).forEach { oldVersion ->
             workManager.cancelAllWorkByTag("${RefreshBlacklistRequest.WORK_NAME}_v$oldVersion")
         }
@@ -41,9 +38,7 @@ internal class WorkManagerScheduler @Inject constructor(
         workManager.enqueueUniquePeriodicWork(RefreshBlacklistRequest.WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, request)
     }
 
-    override suspend fun setupNotificationsCheck(
-        repeatInterval: Duration,
-    ) {
+    override suspend fun setupNotificationsCheck(repeatInterval: Duration) {
         (1 until CheckNotificationsRequest.VERSION).forEach { oldVersion ->
             Napier.i("Cancel CheckNotificationsRequest version=$oldVersion")
             workManager.cancelAllWorkByTag("${CheckNotificationsRequest.WORK_NAME}_v$oldVersion")

@@ -8,6 +8,5 @@ import io.github.wykopmobilny.base.Schedulers
 @Module
 class MyWykopObservedTagsModule {
     @Provides
-    fun provideMyWykopObservedTagsView(schedulers: Schedulers, tagApi: TagApi) =
-        MyWykopObservedTagsPresenter(schedulers, tagApi)
+    fun provideMyWykopObservedTagsView(schedulers: Schedulers, tagApi: TagApi) = MyWykopObservedTagsPresenter(schedulers, tagApi)
 }

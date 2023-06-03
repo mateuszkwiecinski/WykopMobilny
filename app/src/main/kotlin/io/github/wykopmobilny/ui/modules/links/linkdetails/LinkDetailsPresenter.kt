@@ -24,29 +24,21 @@ class LinkDetailsPresenter @Inject constructor(
     var sortBy = "best"
     var linkId = -1L
 
-    override fun digLink(link: Link) =
-        linkHeaderInteractor.digLink(link).processLinkSingle(link)
+    override fun digLink(link: Link) = linkHeaderInteractor.digLink(link).processLinkSingle(link)
 
-    override fun buryLink(link: Link, reason: Int) =
-        linkHeaderInteractor.buryLink(link, reason).processLinkSingle(link)
+    override fun buryLink(link: Link, reason: Int) = linkHeaderInteractor.buryLink(link, reason).processLinkSingle(link)
 
-    override fun removeVote(link: Link) =
-        linkHeaderInteractor.removeVote(link).processLinkSingle(link)
+    override fun removeVote(link: Link) = linkHeaderInteractor.removeVote(link).processLinkSingle(link)
 
-    override fun markFavorite(link: Link) =
-        linkHeaderInteractor.markFavorite(link).processLinkSingle(link)
+    override fun markFavorite(link: Link) = linkHeaderInteractor.markFavorite(link).processLinkSingle(link)
 
-    override fun digComment(comment: LinkComment) =
-        linkCommentInteractor.commentVoteUp(comment).processLinkCommentSingle(comment)
+    override fun digComment(comment: LinkComment) = linkCommentInteractor.commentVoteUp(comment).processLinkCommentSingle(comment)
 
-    override fun buryComment(comment: LinkComment) =
-        linkCommentInteractor.commentVoteDown(comment).processLinkCommentSingle(comment)
+    override fun buryComment(comment: LinkComment) = linkCommentInteractor.commentVoteDown(comment).processLinkCommentSingle(comment)
 
-    override fun removeVote(comment: LinkComment) =
-        linkCommentInteractor.commentVoteCancel(comment).processLinkCommentSingle(comment)
+    override fun removeVote(comment: LinkComment) = linkCommentInteractor.commentVoteCancel(comment).processLinkCommentSingle(comment)
 
-    override fun deleteComment(comment: LinkComment) =
-        linkCommentInteractor.removeComment(comment).processLinkCommentSingle(comment)
+    override fun deleteComment(comment: LinkComment) = linkCommentInteractor.removeComment(comment).processLinkCommentSingle(comment)
 
     fun loadComments(scrollCommentId: Long? = null) {
         linksApi.getLinkComments(linkId, sortBy)

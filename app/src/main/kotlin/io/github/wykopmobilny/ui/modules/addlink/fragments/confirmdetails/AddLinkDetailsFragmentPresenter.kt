@@ -28,15 +28,7 @@ class AddLinkDetailsFragmentPresenter(
             .intoComposite(compositeObservable)
     }
 
-    fun publishLink(
-        key: String,
-        title: String,
-        sourceUrl: String,
-        description: String,
-        tags: String,
-        plus18: Boolean,
-        imageKey: String?,
-    ) {
+    fun publishLink(key: String, title: String, sourceUrl: String, description: String, tags: String, plus18: Boolean, imageKey: String?) {
         view?.showLinkUploading(true)
         addLinkApi.publishLink(key, title, description, tags, imageKey.orEmpty(), sourceUrl, plus18)
             .subscribeOn(schedulers.backgroundThread())
