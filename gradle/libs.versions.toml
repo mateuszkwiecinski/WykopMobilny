@@ -55,7 +55,7 @@ mavencentral-markdown = "0.4.1"
 mavencentral-junit = "5.9.3"
 mavencentral-napier = "2.6.1"
 mavencentral-checker = "3.21.2"
-mavencentral-kotlin = "1.8.21"
+mavencentral-kotlin = "1.8.22"
 jitpack-photoview = "2.3.0"
 jitpack-subsampling-scale-image-view = "3.10.0"
 
