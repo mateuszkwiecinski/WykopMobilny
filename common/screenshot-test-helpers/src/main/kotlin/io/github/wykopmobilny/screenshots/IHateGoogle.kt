@@ -18,10 +18,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import io.github.wykopmobilny.screenshots.FragmentScenarioIHateGoogle.EmptyFragmentActivityIHateGoogle.Companion.THEME_EXTRAS_BUNDLE_KEY
+import androidx.fragment.testing.manifest.R as FragmentTestingR
 
 inline fun <reified F : Fragment> launchFragmentInContainer(
     fragmentArgs: Bundle? = null,
-    @StyleRes themeResId: Int = androidx.fragment.testing.R.style.FragmentScenarioEmptyFragmentActivityTheme,
+    @StyleRes themeResId: Int = FragmentTestingR.style.FragmentScenarioEmptyFragmentActivityTheme,
     initialState: Lifecycle.State = Lifecycle.State.RESUMED,
     crossinline instantiate: () -> F,
 ): FragmentScenarioIHateGoogle<F> = FragmentScenarioIHateGoogle.launchInContainer(
@@ -72,7 +73,7 @@ class FragmentScenarioIHateGoogle<F : Fragment>(
             setTheme(
                 intent.getIntExtra(
                     THEME_EXTRAS_BUNDLE_KEY,
-                    androidx.fragment.testing.R.style.FragmentScenarioEmptyFragmentActivityTheme,
+                    FragmentTestingR.style.FragmentScenarioEmptyFragmentActivityTheme,
                 ),
             )
 
@@ -127,7 +128,7 @@ class FragmentScenarioIHateGoogle<F : Fragment>(
         fun <F : Fragment> launchInContainer(
             fragmentClass: Class<F>,
             fragmentArgs: Bundle? = null,
-            @StyleRes themeResId: Int = androidx.fragment.testing.R.style.FragmentScenarioEmptyFragmentActivityTheme,
+            @StyleRes themeResId: Int = FragmentTestingR.style.FragmentScenarioEmptyFragmentActivityTheme,
             initialState: Lifecycle.State = Lifecycle.State.RESUMED,
             factory: FragmentFactory? = null,
         ): FragmentScenarioIHateGoogle<F> = internalLaunch(
