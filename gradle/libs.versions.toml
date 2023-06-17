@@ -23,7 +23,7 @@ google-browser = "1.5.0"
 google-viewpager2 = "1.0.0"
 google-androidxcore = "1.10.1"
 google-activity = "1.7.2"
-google-fragment = "1.5.7"
+google-fragment = "1.6.0"
 google-datastore = "1.0.0"
 google-cardview = "1.0.0"
 google-exifinterface = "1.3.6"
@@ -33,7 +33,6 @@ google-espresso = "3.5.1"
 google-annotation = "1.6.0"
 google-play-services = "4.3.15"
 google-crashlytics = "2.9.6"
-google-performance = "1.4.2"
 google-tools = "31.0.2"
 google-agp = "8.0.2"
 google-ksp = "1.8.22-1.0.11"
@@ -76,6 +75,7 @@ viewpager2-core = { module = "androidx.viewpager2:viewpager2", version.ref = "go
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "google-androidxcore" }
 activity-core = { module = "androidx.activity:activity-ktx", version.ref = "google-activity" }
 fragment-core = { module = "androidx.fragment:fragment-ktx", version.ref = "google-fragment" }
+fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "google-fragment" }
 cardview-core = { module = "androidx.cardview:cardview", version.ref = "google-cardview" }
 annotation-core = { module = "androidx.annotation:annotation", version.ref = "google-annotation" }
 exifinterface-core = { module = "androidx.exifinterface:exifinterface", version.ref = "google-exifinterface" }

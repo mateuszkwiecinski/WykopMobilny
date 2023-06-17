@@ -15,7 +15,7 @@ android {
 
 dependencies {
     implementation(project(":ui:base:android"))
-    implementation("androidx.fragment:fragment-testing:1.5.7")
+    implementation(libs.fragment.testing)
     implementation(libs.bundles.espresso)
     implementation(libs.glide.core)
     implementation(libs.usefulness.screenshotTesting.core)
