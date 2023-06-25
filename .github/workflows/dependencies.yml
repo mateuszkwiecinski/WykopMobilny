@@ -1,14 +1,11 @@
 name: Generate dependency diff
 
 on:
-  pull_request:
-    branches:
-      - master
-      - main
-      - trunk
-      - develop
-      - maine
-      - mane
+  pull_request
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 
 jobs:
   generate-diff:
@@ -29,12 +26,13 @@ jobs:
       - uses: gradle/gradle-build-action@v2
 
       - id: dependency-diff
-        name: Generate dependency diff
+        if: github.event_name == 'pull_request'
         uses: usefulness/dependency-tree-diff-action@v1
         with:
           configuration: releaseRuntimeClasspath
 
       - uses: peter-evans/find-comment@v2
+        if: github.event_name == 'pull_request'
         id: find_comment
         with:
           issue-number: ${{ github.event.pull_request.number }}

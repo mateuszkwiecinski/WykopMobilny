@@ -60,7 +60,7 @@ allprojects {
             setMatchingFallbacks("debug")
         }
     }
-    configurations.configureEach {
+    configurations.matching { it.name != "detekt" }.configureEach {
         resolutionStrategy.eachDependency {
             if (requested.group == "org.checkerframework" && requested.name != "checker-compat-qual") {
                 useVersion(libs.versions.mavencentral.checker.get())
