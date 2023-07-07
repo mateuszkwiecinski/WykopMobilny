@@ -49,7 +49,7 @@ internal class GeneralPreferencesFragment : PreferenceFragmentCompat() {
     }
 
     private val refreshPeriodMapping by lazy {
-        RefreshPeriodUi.values().associateWith { period ->
+        RefreshPeriodUi.entries.associateWith { period ->
             when (period) {
                 RefreshPeriodUi.FifteenMinutes -> R.string.preferences_notification_period_15_minutes
                 RefreshPeriodUi.ThirtyMinutes -> R.string.preferences_notification_period_30_minutes

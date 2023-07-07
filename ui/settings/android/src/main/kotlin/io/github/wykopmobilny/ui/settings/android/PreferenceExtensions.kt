@@ -13,14 +13,20 @@ import io.github.wykopmobilny.ui.settings.SliderSetting
 internal fun PreferenceFragmentCompat.bindPreference(key: String, onClick: (() -> Unit)?) {
     val pref = findPreference<Preference>(key) ?: return Napier.w("missing preference with key=$key")
     pref.isVisible = onClick != null
-    pref.setOnPreferenceClickListener { onClick?.invoke(); true }
+    pref.setOnPreferenceClickListener {
+        onClick?.invoke()
+        true
+    }
 }
 
 internal fun PreferenceFragmentCompat.bindCheckbox(key: String, setting: Setting) {
     val pref = findPreference<CheckBoxPreference>(key) ?: return Napier.w("missing preference with key=$key")
     pref.isChecked = setting.currentValue
     pref.isEnabled = setting.isEnabled
-    pref.setOnPreferenceClickListener { setting.onClicked(); true }
+    pref.setOnPreferenceClickListener {
+        setting.onClicked()
+        true
+    }
 }
 
 internal fun <T> PreferenceFragmentCompat.bindList(key: String, setting: ListSetting<T>, mapping: Map<T, String>) {
@@ -42,5 +48,8 @@ internal fun PreferenceFragmentCompat.bindSlider(key: String, setting: SliderSet
     pref.max = setting.values.last
     pref.value = setting.currentValue
     pref.isEnabled = setting.isEnabled
-    pref.setOnPreferenceChangeListener { _, newValue -> setting.onChanged(newValue as Int); true }
+    pref.setOnPreferenceChangeListener { _, newValue ->
+        setting.onChanged(newValue as Int)
+        true
+    }
 }

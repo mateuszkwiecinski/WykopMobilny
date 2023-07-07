@@ -63,7 +63,7 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
     private fun appearanceFlow(): Flow<AppearanceSectionUi> = getAppearanceSectionPreferences().map { appearance ->
         AppearanceSectionUi(
             userThemeSetting = ListSetting(
-                values = AppThemeUi.values().toList(),
+                values = AppThemeUi.entries.toList(),
                 currentValue = appearance.appThemePreference.toUi(),
                 onSelected = { updateUserSetting(UserSettings.appTheme, it.toDomain()) },
             ),
@@ -78,12 +78,12 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
                 onClicked = { updateUserSetting(UserSettings.useAmoledTheme, !appearance.isAmoledTheme) },
             ),
             fontSize = ListSetting(
-                values = FontSizeUi.values().toList(),
+                values = FontSizeUi.entries.toList(),
                 currentValue = appearance.defaultFont.toUi(),
                 onSelected = { updateUserSetting(UserSettings.font, it.toDomain()) },
             ),
             startScreen = ListSetting(
-                values = MainScreenUi.values().toList(),
+                values = MainScreenUi.entries.toList(),
                 currentValue = appearance.defaultScreen.toUi(),
                 onSelected = { updateUserSetting(UserSettings.defaultScreen, it.toDomain()) },
             ),
@@ -110,7 +110,7 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
     private fun mikroblogFlow() = getMikroblogPreferences().map {
         MikroblogSectionUi(
             mikroblogScreen = ListSetting(
-                values = MikroblogScreenUi.values().toList(),
+                values = MikroblogScreenUi.entries.toList(),
                 currentValue = it.defaultScreen.toUi(),
                 onSelected = { updateUserSetting(UserSettings.mikroblogScreen, it.toDomain()) },
             ),
@@ -137,7 +137,7 @@ class GetAppearancePreferencesQuery @Inject internal constructor(
                 onClicked = { updateUserSetting(UserSettings.showLinkThumbnail, !it.showLinkThumbnail) },
             ),
             imagePosition = ListSetting(
-                values = LinkImagePositionUi.values().toList(),
+                values = LinkImagePositionUi.entries.toList(),
                 isEnabled = !it.useSimpleList && it.showLinkThumbnail,
                 currentValue = it.imagePosition.toUi(),
                 onSelected = { updateUserSetting(UserSettings.imagePosition, it.toDomain()) },

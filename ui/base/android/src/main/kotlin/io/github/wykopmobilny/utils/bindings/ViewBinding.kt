@@ -27,7 +27,10 @@ fun View.setOnLongClick(callback: (() -> Unit)?) {
         setOnLongClickListener(null)
         isLongClickable = false
     } else {
-        setOnLongClickListener { callback(); true }
+        setOnLongClickListener {
+            callback()
+            true
+        }
     }
 }
 

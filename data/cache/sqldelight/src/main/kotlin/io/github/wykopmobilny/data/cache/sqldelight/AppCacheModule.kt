@@ -38,26 +38,26 @@ internal class AppCacheModule {
         ),
         profileEntityAdapter = ProfileEntity.Adapter(
             signupAtAdapter = InstantAdapter,
-            colorAdapter = EnumAdapter(UserColorEntity.values()),
-            genderAdapter = EnumAdapter(GenderEntity.values()),
+            colorAdapter = EnumAdapter(UserColorEntity.entries),
+            genderAdapter = EnumAdapter(GenderEntity.entries),
         ),
         linkEntityAdapter = LinkEntity.Adapter(
             postedAtAdapter = InstantAdapter,
-            userVoteAdapter = EnumAdapter(UserVote.values()),
+            userVoteAdapter = EnumAdapter(UserVote.entries),
         ),
         entryEntityAdapter = EntryEntity.Adapter(
             postedAtAdapter = InstantAdapter,
-            userVoteAdapter = EnumAdapter(UserVote.values()),
+            userVoteAdapter = EnumAdapter(UserVote.entries),
         ),
         embedAdapter = Embed.Adapter(
-            typeAdapter = EnumAdapter(EmbedType.values()),
+            typeAdapter = EnumAdapter(EmbedType.entries),
         ),
         linkCommentsEntityAdapter = LinkCommentsEntity.Adapter(
             postedAtAdapter = InstantAdapter,
-            userVoteAdapter = EnumAdapter(UserVote.values()),
+            userVoteAdapter = EnumAdapter(UserVote.entries),
         ),
         relatedLinkEntityAdapter = RelatedLinkEntity.Adapter(
-            userVoteAdapter = EnumAdapter(UserVote.values()),
+            userVoteAdapter = EnumAdapter(UserVote.entries),
         ),
     )
 }
@@ -69,7 +69,7 @@ internal object InstantAdapter : ColumnAdapter<Instant, Long> {
     override fun encode(value: Instant) = value.toEpochMilliseconds()
 }
 
-class EnumAdapter<T : Enum<T>>(private val values: Array<T>) : ColumnAdapter<T, Long> {
+class EnumAdapter<T : Enum<T>>(private val values: List<T>) : ColumnAdapter<T, Long> {
 
     override fun decode(databaseValue: Long) = values[databaseValue.toInt()]
 
