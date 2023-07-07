@@ -138,7 +138,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                                 viewState.copy(
                                     picker = OptionPickerUi(
                                         title = Strings.Link.BURY_REASON_TITLE,
-                                        reasons = VoteDownReason.values().map { reason ->
+                                        reasons = VoteDownReason.entries.map { reason ->
                                             OptionPickerUi.Option(
                                                 label = reason.label,
                                                 clickAction = safeCallback { linksRepository.voteDown(link.id, reason) },
@@ -230,7 +230,7 @@ internal class GetLinkDetailsQuery @Inject constructor(
                             viewState.copy(
                                 picker = OptionPickerUi(
                                     title = Strings.Link.COMMENTS_SORT_TITLE,
-                                    reasons = CommentsDefaultSort.values().map { option ->
+                                    reasons = CommentsDefaultSort.entries.map { option ->
                                         OptionPickerUi.Option(
                                             label = Strings.Link.commentsSortOption(option.label),
                                             clickAction = safeCallback { appStorage.update(UserSettings.commentsSort, option) },

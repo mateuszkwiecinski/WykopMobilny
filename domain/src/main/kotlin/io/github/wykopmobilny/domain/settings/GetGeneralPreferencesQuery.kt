@@ -49,7 +49,7 @@ class GetGeneralPreferencesQuery @Inject internal constructor(
                     onClicked = { updateUserSetting(UserSettings.notificationsEnabled, !notifications.notificationsEnabled) },
                 ),
                 notificationRefreshPeriod = ListSetting(
-                    values = RefreshPeriodUi.values().toList(),
+                    values = RefreshPeriodUi.entries.toList(),
                     currentValue = notifications.notificationRefreshPeriod.toUi(),
                     isEnabled = notifications.notificationsEnabled,
                     onSelected = { updateUserSetting(UserSettings.notificationsRefreshPeriod, it.toDomain().duration) },

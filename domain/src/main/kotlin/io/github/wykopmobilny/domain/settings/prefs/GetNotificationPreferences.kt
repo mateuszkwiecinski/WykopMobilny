@@ -30,7 +30,7 @@ internal class GetNotificationPreferences @Inject constructor(
     }
         .distinctUntilChanged()
 
-    private fun findRefreshPeriod(duration: Duration) = NotificationsPreferences.RefreshPeriod.values()
+    private fun findRefreshPeriod(duration: Duration) = NotificationsPreferences.RefreshPeriod.entries
         .sortedByDescending { it.duration }
         .firstOrNull { it.duration <= duration }
 }

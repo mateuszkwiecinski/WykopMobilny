@@ -55,7 +55,7 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
     }
 
     private val themeSettingMapping by lazy {
-        AppThemeUi.values().associateWith { screen ->
+        AppThemeUi.entries.associateWith { screen ->
             when (screen) {
                 AppThemeUi.Automatic -> R.string.automatic
                 AppThemeUi.Light -> R.string.light_mode
@@ -66,7 +66,7 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
     }
 
     private val defaultScreenMapping by lazy {
-        MainScreenUi.values().associateWith { screen ->
+        MainScreenUi.entries.associateWith { screen ->
             when (screen) {
                 MainScreenUi.Promoted -> R.string.main_page
                 MainScreenUi.Mikroblog -> R.string.mikroblog
@@ -78,7 +78,7 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
     }
 
     private val fontMapping by lazy {
-        FontSizeUi.values().associateWith { font ->
+        FontSizeUi.entries.associateWith { font ->
             when (font) {
                 FontSizeUi.VerySmall -> R.string.fontsize_tiny
                 FontSizeUi.Small -> R.string.fontsize_small
@@ -91,7 +91,7 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
     }
 
     private val imagePositionMapping by lazy {
-        LinkImagePositionUi.values().associateWith { position ->
+        LinkImagePositionUi.entries.associateWith { position ->
             when (position) {
                 LinkImagePositionUi.Left -> R.string.link_image_position_left
                 LinkImagePositionUi.Right -> R.string.link_image_position_right
@@ -103,7 +103,7 @@ internal class AppearancePreferencesFragment : PreferenceFragmentCompat() {
     }
 
     private val defaultMikroblogScreenMapping by lazy {
-        MikroblogScreenUi.values().associateWith { screen ->
+        MikroblogScreenUi.entries.associateWith { screen ->
             when (screen) {
                 MikroblogScreenUi.Active -> R.string.active_entries
                 MikroblogScreenUi.Newest -> R.string.newest_entries

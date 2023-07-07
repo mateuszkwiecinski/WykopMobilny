@@ -30,7 +30,7 @@ internal class AndroidAppGateway @Inject constructor(
 
     override fun getInstalledYoutubeApps() = application.observeInstalledPackages()
         .map {
-            YoutubeApp.values()
+            YoutubeApp.entries
                 .filter { application.isPackageInstalled(knownAppId(it)) }
                 .toSet()
         }
@@ -38,7 +38,7 @@ internal class AndroidAppGateway @Inject constructor(
 
     override fun getInstalledAuthenticatorApps() = application.observeInstalledPackages()
         .map {
-            AuthenticatorApp.values()
+            AuthenticatorApp.entries
                 .filter { application.isPackageInstalled(knownAppId(it)) }
                 .toSet()
         }

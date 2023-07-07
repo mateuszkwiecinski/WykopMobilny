@@ -46,7 +46,7 @@ abstract class BaseScreenshotTest {
     fun record(
         beforeScreenshot: View.() -> Unit = {},
         size: Size = exactHeight(),
-        themes: List<ScreenshotTheme> = ScreenshotTheme.values().toList(),
+        themes: List<ScreenshotTheme> = ScreenshotTheme.entries,
     ) {
         @Suppress("ThrowingExceptionsWithoutMessageOrCause")
         val testName = Throwable().stackTrace[2].methodName
