@@ -15,7 +15,10 @@ suspend fun Flow<List<ContextMenuOptionUi>>.collectMenuOptions(toolbar: Material
             toolbar.menu.clear()
             options.forEach { menuOption ->
                 toolbar.menu.add(menuOption.label).apply {
-                    setOnMenuItemClickListener { menuOption.onClick(); true }
+                    setOnMenuItemClickListener {
+                        menuOption.onClick()
+                        true
+                    }
                     menuOption.icon?.drawableRes?.let(::setIcon)?.let { setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM) }
                 }
             }

@@ -19,7 +19,10 @@ internal class GetBlacklistRefreshWorkDetailsQuery @Inject constructor(
         WorkData(
             onWorkRequested = {
                 if (sessionStorage.session.first() != null) {
-                    runCatching { store.fresh(Unit); Unit }
+                    runCatching {
+                        store.fresh(Unit)
+                        Unit
+                    }
                 } else {
                     Napier.i("User not logged in, skipping blacklist refresh")
                     Result.success(Unit)
